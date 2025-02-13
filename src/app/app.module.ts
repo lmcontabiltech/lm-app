@@ -5,7 +5,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './login/login.component';
+import { TemplateModule } from './template/template.module';
 import { LayoutComponent } from './layout/layout.component';
+import { SistemaModule } from './sistema/sistema.module';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -16,7 +19,10 @@ import { LayoutComponent } from './layout/layout.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    TemplateModule,
+    SistemaModule,
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]

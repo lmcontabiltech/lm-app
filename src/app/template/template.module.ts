@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { TemplateRoutingModule } from './template-routing.module';
 import { NavbarComponent } from './navbar/navbar.component';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
@@ -11,7 +12,11 @@ import { NavbarComponent } from './navbar/navbar.component';
   ],
   imports: [
     CommonModule,
-    TemplateRoutingModule
+    TemplateRoutingModule,
+    RouterModule,
+  ],
+  exports:[
+    NavbarComponent
   ]
 })
 export class TemplateModule { }

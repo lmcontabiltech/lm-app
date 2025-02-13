@@ -1,4 +1,77 @@
-/* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap");
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  background: var(--lm-background);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--lm-text);
+  transition: background-color 0.4s;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+:root {
+  --lm-primary: #172973;
+  --lm-accent: #273e74;
+  --lm-background: #e4e5eb;
+  --lm-text: #37383c;
+  --lm-sidebar-bg: #f9f9f9;
+  --lm-branco: #ffffff;
+  --success: #5ea828;
+  --info: #177ab8;
+  --warning: #ffc107;
+  --danger: #b72130;
+}
+
+article,
+aside,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+nav,
+section {
+  display: block;
+}
+
+a {
+  text-decoration: none;
+}
+
+hr {
+  box-sizing: content-box;
+  height: 0;
+  overflow: visible;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+button {
+  all: unset;
+}
