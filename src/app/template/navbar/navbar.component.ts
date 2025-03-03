@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -6,11 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
-  constructor() {}
+  constructor(
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.showSidebar('header-toggle', 'sidebar', 'header');
-    this.activateLink();
     this.setupDropdown();
     this.setupCloseSidebar();
   }
@@ -30,15 +32,8 @@ export class NavbarComponent implements OnInit {
     }
   }
 
-  activateLink(): void {
-    const sidebarLinks = document.querySelectorAll('.sidebar-link');
-
-    function linkColor(this: HTMLElement): void {
-      sidebarLinks.forEach((l) => l.classList.remove('active-link'));
-      this.classList.add('active-link');
-    }
-
-    sidebarLinks.forEach((l) => l.addEventListener('click', linkColor));
+  isActive(route: string): boolean {
+    return this.router.isActive(route, true);
   }
 
   setupDropdown(): void {
