@@ -42,9 +42,14 @@
           <h3 class="sidebar-title">HOME</h3>
 
           <div class="sidebar-list">
-            <a href="#" class="sidebar-link active-link">
+            <a routerLink="/usuario/painel-principal" class="sidebar-link active-link">
               <img src="assets/icones/home-icon.svg" alt="home icon" />
               <span>Inicio</span>
+            </a>
+
+            <a routerLink="/usuario/notificacoes" class="sidebar-link">
+              <img src="assets/icones/notificacao.svg" alt="home icon" />
+              <span>Notificações</span>
             </a>
           </div>
         </div>
@@ -53,12 +58,12 @@
           <h3 class="sidebar-title">ADMINISTRATIVO</h3>
 
           <div class="sidebar-list">
-            <a href="#" class="sidebar-link">
+            <a routerLink="/usuario/colaboradores" class="sidebar-link">
                 <img src="assets/icones/People-icon.svg" alt="image" />
               <span>Colaboradores</span>
             </a>
 
-            <a href="#" class="sidebar-link">
+            <a routerLink="/usuario/empresas" class="sidebar-link">
               <img src="assets/icones/empresas-icon.svg" alt="home icon" />
               <span>Empresas</span>
             </a>
@@ -74,14 +79,24 @@
                 <span>Processos</span>
               </a>
   
-              <a href="#" class="sidebar-link">
+              <a routerLink="/usuario/atividades" class="sidebar-link">
                 <img src="assets/icones/kanban-icon.svg" alt="home icon" />
                 <span>Atividades</span>
               </a>
 
-              <a href="#" class="sidebar-link">
+              <!-- <a href="#" class="sidebar-link">
                 <img src="assets/icones/relatorio-icon.svg" alt="home icon" />
                 <span>Relatórios</span>
+              </a> -->
+
+              <a routerLink="/usuario/chat" class="sidebar-link">
+                <img src="assets/icones/chat.svg" alt="home icon" />
+                <span>Chat de avisos</span>
+              </a>
+
+              <a routerLink="/usuario/forum-de-noticias" class="sidebar-link">
+                <img src="assets/icones/forum.svg" alt="home icon" />
+                <span>Fórum de notícias</span>
               </a>
             </div>
           </div>
