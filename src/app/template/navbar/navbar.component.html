@@ -1,7 +1,7 @@
 <!-- HEADER -->
-<header class="header" id="header">
+<header #header class="header" id="header" [class.left-pd]="isSidebarOpen">
     <div class="header-container">
-      <button class="header-toggle" id="header-toggle">
+      <button (click)="toggleSidebar()" class="header-toggle" id="header-toggle">
         <img src="assets/icones/menu-icon.svg" alt="image" />
       </button>
 
@@ -13,10 +13,10 @@
             <span class="user-cargo">Administrador</span>
           </div>
         </div>
-        <button class="dropdown-toggle" id="dropdown-toggle">
+        <button (click)="toggleDropdown()" class="dropdown-toggle" id="dropdown-toggle">
           <img src="assets/icones/seta-down-icon.svg" alt="Dropdown Icon" class="dropdown-icon" />
         </button>
-        <div class="dropdown-menu" id="dropdown-menu">
+        <div class="dropdown-menu" id="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
           <a href="#" class="dropdown-item">Meu perfil</a>
           <a href="#" class="dropdown-item">Sair</a>
         </div>
@@ -26,7 +26,7 @@
 
   <mat-drawer-container>
   <!-- SIDEBAR -->
-  <mat-drawer class="sidebar" id="sidebar" mode="side" opened>
+  <mat-drawer #sidebar class="sidebar" id="sidebar" mode="side" opened [class.show-sidebar]="isSidebarOpen">
     <div class="sidebar-container">
       <div class="sidebar-logo">
         <div class="sidebar-img">
@@ -106,7 +106,7 @@
   </mat-drawer>
 
 <!-- MAIN CONTENT -->
-  <mat-drawer-content class="mat-drawer-content">
+  <mat-drawer-content #content class="mat-drawer-content" [class.shifted]="isSidebarOpen">
     <div class="mat-drawer-content">
       <router-outlet></router-outlet>
     </div>
