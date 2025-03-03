@@ -24,8 +24,9 @@
     </div>
   </header>
 
+  <mat-drawer-container>
   <!-- SIDEBAR -->
-  <nav class="sidebar" id="sidebar">
+  <mat-drawer class="sidebar" id="sidebar" mode="side" opened>
     <div class="sidebar-container">
       <div class="sidebar-logo">
         <div class="sidebar-img">
@@ -102,4 +103,12 @@
           </div>
       </div>
     </div>
-  </nav>
+  </mat-drawer>
+
+<!-- MAIN CONTENT -->
+  <mat-drawer-content class="mat-drawer-content">
+    <div class="mat-drawer-content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>

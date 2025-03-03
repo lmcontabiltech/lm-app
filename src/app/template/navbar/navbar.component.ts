@@ -19,11 +19,13 @@ export class NavbarComponent implements OnInit {
     const toggle = document.getElementById(toggleId);
     const sidebar = document.getElementById(sidebarId);
     const header = document.getElementById(headerId);
+    const content = document.querySelector('.mat-drawer-content');
 
-    if (toggle && sidebar && header) {
+    if (toggle && sidebar && header && content) {
       toggle.addEventListener('click', () => {
         sidebar.classList.toggle('show-sidebar');
         header.classList.toggle('left-pd');
+        content.classList.toggle('shifted');
       });
     }
   }
@@ -56,12 +58,14 @@ export class NavbarComponent implements OnInit {
     const sidebar = document.getElementById('sidebar');
     const header = document.getElementById('header');
     const overlay = document.getElementById('overlay');
+    const content = document.querySelector('.mat-drawer-content');
 
-    if (closeSidebar && sidebar && header && overlay) {
+    if (closeSidebar && sidebar && header && overlay && content) {
       closeSidebar.addEventListener('click', () => {
         sidebar.classList.remove('show-sidebar');
         header.classList.remove('left-pd');
         overlay.classList.remove('show');
+        content.classList.remove('shifted');
       });
     }
   }
