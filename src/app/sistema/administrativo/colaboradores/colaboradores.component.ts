@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-colaboradores',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ColaboradoresComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
+  }
+
+  cadastrarColaborador(): void {
+    this.router.navigate(['/usuario/cadastro-de-colaborador']); 
   }
 
 }
