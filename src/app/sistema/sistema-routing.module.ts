@@ -11,7 +11,7 @@ import { CadastroDeColaboradorComponent } from './administrativo/cadastro-de-col
 import { CadastroDeEmpresaComponent } from './administrativo/cadastro-de-empresa/cadastro-de-empresa.component';
 import { AtividadesComponent } from './gerenciamento/atividades/atividades.component';
 import { ChatComponent } from './gerenciamento/chat/chat.component';
-import { ForumDeNoticiasComponent } from './gerenciamento/forum-de-noticias/forum-de-noticias.component';
+import { ForumDeNoticiaComponent } from './gerenciamento/forum-de-noticia/forum-de-noticia.component';
 import { CadastroDeAtividadeComponent } from './gerenciamento/cadastro-de-atividade/cadastro-de-atividade.component';
 import { CadastroDeNoticiaComponent } from './gerenciamento/cadastro-de-noticia/cadastro-de-noticia.component';
 
@@ -30,7 +30,7 @@ const routes: Routes = [
 
       { path: 'atividades', component: AtividadesComponent},
       { path: 'chat', component: ChatComponent},
-      { path: 'forum-de-noticias', component: ForumDeNoticiasComponent},
+      { path: 'forum-de-noticias', component: ForumDeNoticiaComponent},
       { path: 'cadastro-de-atividade', component: CadastroDeAtividadeComponent},
       { path: 'cadastro-de-noticia', component: CadastroDeNoticiaComponent},
     ] 

@@ -8,7 +8,8 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '', component: LayoutComponent, children: [
-    { path: '', component: PainelPrincipalComponent }
+    { path : 'usuario/painel-princiapl', component: PainelPrincipalComponent },
+    { path: '', redirectTo: 'usuario/painel-princiapl', pathMatch: 'full' }
   ]}
 ];
 
