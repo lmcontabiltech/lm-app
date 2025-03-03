@@ -20,7 +20,6 @@
 }
 
 .header-toggle {
-  font-size: 1.5rem;
   cursor: pointer;
   background: none;
 }
@@ -29,7 +28,7 @@
   display: flex;
   align-items: center;
   position: relative;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .usuario {
@@ -68,6 +67,7 @@
   background: none;
   border: none;
   cursor: pointer;
+  padding: 8px;
 }
 
 .dropdown-menu {
@@ -264,6 +264,16 @@
 
 /* BREAKPOINTS */
 @media screen and (max-width: 720px) {
+  .header {
+    margin: 0;
+    padding-left: 0;
+    transition: padding 0.4s;
+  }
+
+  .left-pd {
+    padding-left: 200px;
+  }
+
   .header-container {
     padding-inline: 1rem;
     margin: 0;
@@ -301,7 +311,7 @@
   }
 
   .header-user {
-    gap: 1rem;
+    gap: 0;
   }
 
   .user-name,
@@ -344,6 +354,14 @@
 
   .overlay.show {
     display: block;
+  }
+
+  .dropdown-menu {
+    width: 140px;
+  }
+
+  .header-toggle {
+    padding: 8px;
   }
 }
 
