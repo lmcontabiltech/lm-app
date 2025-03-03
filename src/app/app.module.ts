@@ -9,6 +9,7 @@ import { TemplateModule } from './template/template.module';
 import { LayoutComponent } from './layout/layout.component';
 import { SistemaModule } from './sistema/sistema.module';
 import { SharedModule } from './shared/shared.module';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { SharedModule } from './shared/shared.module';
     BrowserAnimationsModule,
     TemplateModule,
     SistemaModule,
-    SharedModule
+    SharedModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
