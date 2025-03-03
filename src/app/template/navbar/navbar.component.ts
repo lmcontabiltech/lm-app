@@ -1,4 +1,10 @@
-import { Component, ElementRef, OnInit, ViewChild, Renderer2 } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+  Renderer2,
+} from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -16,9 +22,7 @@ export class NavbarComponent implements OnInit {
   isSidebarOpen = false;
   isDropdownOpen = false;
 
-  constructor(
-    private router: Router,
-  private renderer: Renderer2) {}
+  constructor(private router: Router, private renderer: Renderer2) {}
 
   ngOnInit(): void {}
 

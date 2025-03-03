@@ -13,7 +13,7 @@
             <span class="user-cargo">Administrador</span>
           </div>
         </div>
-        <button (click)="toggleDropdown()" class="dropdown-toggle" id="dropdown-toggle">
+        <button #dropdownToggle (click)="toggleDropdown()" class="dropdown-toggle" id="dropdown-toggle">
           <img src="assets/icones/seta-down-icon.svg" alt="Dropdown Icon" class="dropdown-icon" />
         </button>
         <div class="dropdown-menu" id="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
