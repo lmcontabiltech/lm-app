@@ -9,7 +9,7 @@ import { PainelPrincipalComponent } from './sistema/painel-principal/painel-prin
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: 'reset-password', component: ResetPasswordComponent },
+  { path: 'recuperacao-de-senha', component: ResetPasswordComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '', component: LayoutComponent, children: [
     { path : 'usuario/painel-principal', component: PainelPrincipalComponent},

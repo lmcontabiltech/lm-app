@@ -26,6 +26,12 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  ngAfterViewInit(): void {
+    if (!this.sidebar || !this.header || !this.content) {
+      console.error('Erro: Elementos da Navbar não foram encontrados');
+    }
+  }
+
   toggleSidebar(): void {
     this.isSidebarOpen = !this.isSidebarOpen;
 
@@ -34,10 +40,14 @@ export class NavbarComponent implements OnInit {
         this.renderer.addClass(this.sidebar.nativeElement, 'show-sidebar');
         this.renderer.addClass(this.header.nativeElement, 'left-pd');
         this.renderer.addClass(this.content.nativeElement, 'shifted');
+        // 🔹 Ajusta a margem dinamicamente para 280px
+        this.renderer.setStyle(this.content.nativeElement, 'margin-left', '280px');
       } else {
         this.renderer.removeClass(this.sidebar.nativeElement, 'show-sidebar');
         this.renderer.removeClass(this.header.nativeElement, 'left-pd');
         this.renderer.removeClass(this.content.nativeElement, 'shifted');
+        // 🔹 Ajusta a margem dinamicamente para 90px
+        this.renderer.setStyle(this.content.nativeElement, 'margin-left', '90px');
       }
     }
   }

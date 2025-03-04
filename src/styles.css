@@ -31,6 +31,7 @@ html {
   --lm-primary: #172973;
   --lm-accent: #273e74;
   --lm-background: #e4e5eb;
+  --lm-bg-second: #fbfdfb;
   --lm-text: #37383c;
   --lm-sidebar-bg: #f9f9f9;
   --lm-branco: #ffffff;
@@ -38,6 +39,7 @@ html {
   --info: #177ab8;
   --warning: #ffc107;
   --danger: #b72130;
+  --lm-border: #e0e0e0;
 }
 
 article,

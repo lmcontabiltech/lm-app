@@ -17,7 +17,7 @@
           <img src="assets/icones/seta-down-icon.svg" alt="Dropdown Icon" class="dropdown-icon" />
         </button>
         <div class="dropdown-menu" id="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
-          <a href="#" class="dropdown-item">Meu perfil</a>
+          <a routerLink="/usuario/meu-perfil" class="dropdown-item">Meu perfil</a>
           <a href="#" class="dropdown-item">Sair</a>
         </div>
       </div>
@@ -106,8 +106,8 @@
   </mat-drawer>
 
 <!-- MAIN CONTENT -->
-  <mat-drawer-content #content class="mat-drawer-content" [class.shifted]="isSidebarOpen">
-    <div class="mat-drawer-content">
+  <mat-drawer-content #content class="drawer-content" [class.shifted]="isSidebarOpen">
+    <div>
       <router-outlet></router-outlet>
     </div>
   </mat-drawer-content>

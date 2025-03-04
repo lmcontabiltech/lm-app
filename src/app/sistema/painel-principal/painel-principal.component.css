@@ -67,6 +67,11 @@
   justify-content: space-between;
 }
 
+.card img {
+  width: 28px;
+  height: 28px;
+}
+
 .cards-setores span {
   color: #08195d;
   font-size: 28px;
