@@ -1,1 +1,9 @@
-<p>search works!</p>
+<div class="search-container">
+    <input 
+      type="text" 
+      placeholder="Search..." 
+      [(ngModel)]="searchTerm" 
+      (input)="onSearchChange()" 
+      class="search-input"
+    />
+  </div>

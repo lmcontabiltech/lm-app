@@ -6,6 +6,7 @@ import { ModalGeralComponent } from './modal-geral/modal-geral.component';
 import { MultiploSelectComponent } from './multiplo-select/multiplo-select.component';
 import { SelectPadraoComponent } from './select-padrao/select-padrao.component';
 import { SearchComponent } from './search/search.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -20,6 +21,7 @@ import { SearchComponent } from './search/search.component';
   ],
   imports: [
     CommonModule,
+    FormsModule
   ],
   exports: [
     InputArquivosComponent,

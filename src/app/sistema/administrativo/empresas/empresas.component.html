@@ -4,5 +4,14 @@
         <button class="btn btn-primary" (click)="cadastrarEmpresa()">Cadastrar empresas +</button>
     </div>
 
-    <div class="table-container"></div>
+    <div class="table-container">
+        <div class="filtro-container">
+            <app-select-padrao
+                  label="Todos os setores"
+                  [customStyles]="{'background': '#FFFFFF'}">
+            </app-select-padrao>
+
+            <app-search (searchChange)="onSearch($event)"></app-search>
+        </div>
+    </div>
 </div>

@@ -29,3 +29,17 @@
   border-radius: 8px;
   min-height: 48px;
 }
+
+.filtro-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 16px;
+  width: 100%;
+}
+
+.select-container {
+  display: flex;
+  align-items: center;
+  width: 200px;
+}

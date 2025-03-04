@@ -19,4 +19,8 @@ export class EmpresasComponent implements OnInit {
     this.router.navigate(['/usuario/cadastro-de-empresa']); 
   }
 
+  onSearch(searchTerm: string) {
+    console.log('Search term:', searchTerm);
+  }
+
 }
