@@ -33,6 +33,12 @@ import { ForumDeNoticiaComponent } from './gerenciamento/forum-de-noticia/forum-
     CadastroDeAtividadeComponent,
     ForumDeNoticiaComponent,
   ],
-  imports: [CommonModule, SistemaRoutingModule, FormsModule, SharedModule],
+  imports:
+  [
+    CommonModule, 
+    SistemaRoutingModule, 
+    FormsModule, 
+    SharedModule
+  ],
 })
 export class SistemaModule {}

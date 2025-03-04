@@ -1,36 +1,58 @@
 <main>
-    <div class="login-container">
-      <div class="login-form">
-        <img src="assets/imagens/Logo-LM.svg" alt="Logo" class="logo-lm"/>
-        <h2>Bem-vindo(a) de volta!</h2>
-        <div class="body-login">
-          <form class="container-input" (ngSubmit)="onLogin()">
-            <div class="form-group container-input">
-              <label class="small mb-1">Username</label>
-              <input type="text" name="username" autocomplete="off" class="form-control input-login"
-                placeholder="Informe o seu username" [(ngModel)]="username" required />
+  <div class="login-container">
+    <div class="login-form">
+      <img src="assets/imagens/Logo-LM.svg" alt="Logo" class="logo-lm" />
+      <h2>Bem-vindo(a) de volta!</h2>
+      <div class="body-login">
+        <form class="container-input" (ngSubmit)="onSubmit()">
+          <div class="form-group container-input">
+            <label class="small mb-1">E-mail</label>
+            <div class="input-group">
+              <input 
+                type="email" 
+                name="email" 
+                autocomplete="off" 
+                class="form-control input-login"
+                placeholder="Informe o seu e-mail" 
+                [(ngModel)]="email" 
+                required 
+              />
             </div>
-  
-            <div class="form-group container-input">
-              <label class="small mb-1">Senha</label>
-              <div class="input-group">
-                <input type="password" name="password" class="form-control py-2 responsive-input"
-                  placeholder="Informe a sua senha" [(ngModel)]="password" required />
-                <div class="input-icon" type="button">
-                  <img src="assets/icones/eye-open.svg" alt="Mostrar senha" width="16" height="16" class="toggle-password">
-                </div>
+          </div>
+
+          <div class="form-group container-input">
+            <label class="small mb-1">Senha</label>
+            <div class="input-group">
+              <input 
+              [type]="passwordVisible['password'] ? 'text' : 'password'"
+                name="password" 
+                class="form-control py-2 responsive-input"
+                placeholder="Informe a sua senha" 
+                [(ngModel)]="password" 
+                required 
+              />
+              <div class="input-icon" type="button" (click)="togglePasswordVisibility('password')">
+                <img 
+                  src="assets/icones/eye-open.svg" 
+                  alt="Mostrar senha" 
+                  width="16" 
+                  height="16" 
+                  class="toggle-password"
+                />
               </div>
             </div>
-            <div>
-              <span>Esqueci minha senha</span>
-            </div>   
-            <button class="btn-login" type="submit">Entrar</button>
-          </form>
-        </div>
-      </div>
-      <div class="login-image">
-        <img src="assets/imagens/bgLogin-LM.png" alt="Login Image" />
+          </div>
+
+          <div>
+            <span>Esqueci minha senha</span>
+          </div>
+
+          <button class="btn-login" type="submit">Entrar</button>
+        </form>
       </div>
     </div>
-  </main>
-  
+    <div class="login-image">
+      <img src="assets/imagens/bgLogin-LM.png" alt="Login Image" />
+    </div>
+  </div>
+</main>

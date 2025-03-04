@@ -14,10 +14,12 @@ import { ChatComponent } from './gerenciamento/chat/chat.component';
 import { ForumDeNoticiaComponent } from './gerenciamento/forum-de-noticia/forum-de-noticia.component';
 import { CadastroDeAtividadeComponent } from './gerenciamento/cadastro-de-atividade/cadastro-de-atividade.component';
 import { CadastroDeNoticiaComponent } from './gerenciamento/cadastro-de-noticia/cadastro-de-noticia.component';
+import { AuthGuard } from '../services/auth.guard';
 
 const routes: Routes = [
-  { path: 'usuario', 
+  {  path: 'usuario', 
     component: LayoutComponent,  
+    canActivate: [AuthGuard], 
     children: [
       { path: 'painel-principal', component: PainelPrincipalComponent},
       { path: 'meu-perfil', component:MeuPerfilComponent},
