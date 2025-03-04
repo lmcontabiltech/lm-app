@@ -89,7 +89,6 @@
   display: block;
 }
 
-
 .dropdown-menu .dropdown-item {
   padding: 0.5rem 1rem;
   display: block;
@@ -267,12 +266,8 @@
   z-index: 14;
 }
 
-.mat-drawer-content {
-  height: 100vh;
-  width: 100%;
-}
-
-.mat-toolbar-row, .mat-toolbar-single-row {
+.mat-toolbar-row,
+.mat-toolbar-single-row {
   height: 80px;
   padding: 0;
 }
@@ -287,8 +282,13 @@ mat-drawer {
   transition: width 0.4s ease-in-out, left 0.4s ease-in-out;
 }
 
-.mat-drawer-content.shifted {
-  margin-left: 90px;
+mat-drawer-content {
+  transition: margin-left 0.3s ease-in-out;
+  margin-left: 280px !important;
+}
+
+mat-drawer-content.shifted {
+  margin-left: 90px !important;
 }
 
 /* BREAKPOINTS */
@@ -396,6 +396,11 @@ mat-drawer {
   .header-toggle {
     padding: 8px;
   }
+
+  mat-drawer-content {
+    margin-left: 0 !important;
+    width: 100%;
+  }
 }
 
 @media screen and (min-width: 900px) {
@@ -466,5 +471,10 @@ mat-drawer {
 
   .show-sidebar .sidebar-link span {
     display: none;
+  }
+
+  .drawer-content {
+    width: 100%;
+    margin-left: 0;
   }
 }
