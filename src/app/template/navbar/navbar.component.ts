@@ -1,4 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+  Renderer2,
+} from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -6,63 +13,50 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
-  constructor() {}
+  @ViewChild('sidebar') sidebar!: ElementRef;
+  @ViewChild('header') header!: ElementRef;
+  @ViewChild('content') content!: ElementRef;
+  @ViewChild('dropdownMenu') dropdownMenu!: ElementRef;
+  @ViewChild('dropdownToggle') dropdownToggle!: ElementRef;
 
-  ngOnInit(): void {
-    this.showSidebar('header-toggle', 'sidebar', 'header');
-    this.activateLink();
-    this.setupDropdown();
-    this.setupCloseSidebar();
-  }
+  isSidebarOpen = false;
+  isDropdownOpen = false;
 
-  showSidebar(toggleId: string, sidebarId: string, headerId: string): void {
-    const toggle = document.getElementById(toggleId);
-    const sidebar = document.getElementById(sidebarId);
-    const header = document.getElementById(headerId);
+  constructor(private router: Router, private renderer: Renderer2) {}
 
-    if (toggle && sidebar && header) {
-      toggle.addEventListener('click', () => {
-        sidebar.classList.toggle('show-sidebar');
-        header.classList.toggle('left-pd');
-      });
+  ngOnInit(): void {}
+
+  toggleSidebar(): void {
+    this.isSidebarOpen = !this.isSidebarOpen;
+
+    if (this.sidebar && this.header && this.content) {
+      if (this.isSidebarOpen) {
+        this.renderer.addClass(this.sidebar.nativeElement, 'show-sidebar');
+        this.renderer.addClass(this.header.nativeElement, 'left-pd');
+        this.renderer.addClass(this.content.nativeElement, 'shifted');
+      } else {
+        this.renderer.removeClass(this.sidebar.nativeElement, 'show-sidebar');
+        this.renderer.removeClass(this.header.nativeElement, 'left-pd');
+        this.renderer.removeClass(this.content.nativeElement, 'shifted');
+      }
     }
   }
 
-  activateLink(): void {
-    const sidebarLinks = document.querySelectorAll('.sidebar-link');
+  closeSidebar(): void {
+    this.isSidebarOpen = false;
 
-    function linkColor(this: HTMLElement): void {
-      sidebarLinks.forEach((l) => l.classList.remove('active-link'));
-      this.classList.add('active-link');
-    }
-
-    sidebarLinks.forEach((l) => l.addEventListener('click', linkColor));
-  }
-
-  setupDropdown(): void {
-    const dropdownToggle = document.getElementById('dropdown-toggle');
-    const dropdownMenu = document.getElementById('dropdown-menu');
-
-    if (dropdownToggle && dropdownMenu) {
-      dropdownToggle.addEventListener('click', () => {
-        dropdownToggle.classList.toggle('active');
-        dropdownMenu.classList.toggle('show');
-      });
+    if (this.sidebar && this.header && this.content) {
+      this.renderer.removeClass(this.sidebar.nativeElement, 'show-sidebar');
+      this.renderer.removeClass(this.header.nativeElement, 'left-pd');
+      this.renderer.removeClass(this.content.nativeElement, 'shifted');
     }
   }
 
-  setupCloseSidebar(): void {
-    const closeSidebar = document.getElementById('close-sidebar');
-    const sidebar = document.getElementById('sidebar');
-    const header = document.getElementById('header');
-    const overlay = document.getElementById('overlay');
+  toggleDropdown(): void {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
 
-    if (closeSidebar && sidebar && header && overlay) {
-      closeSidebar.addEventListener('click', () => {
-        sidebar.classList.remove('show-sidebar');
-        header.classList.remove('left-pd');
-        overlay.classList.remove('show');
-      });
-    }
+  isActive(route: string): boolean {
+    return this.router.isActive(route, true);
   }
 }

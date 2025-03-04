@@ -1,7 +1,7 @@
 <!-- HEADER -->
-<header class="header" id="header">
+<header #header class="header" id="header" [class.left-pd]="isSidebarOpen">
     <div class="header-container">
-      <button class="header-toggle" id="header-toggle">
+      <button (click)="toggleSidebar()" class="header-toggle" id="header-toggle">
         <img src="assets/icones/menu-icon.svg" alt="image" />
       </button>
 
@@ -13,10 +13,10 @@
             <span class="user-cargo">Administrador</span>
           </div>
         </div>
-        <button class="dropdown-toggle" id="dropdown-toggle">
+        <button #dropdownToggle (click)="toggleDropdown()" class="dropdown-toggle" id="dropdown-toggle">
           <img src="assets/icones/seta-down-icon.svg" alt="Dropdown Icon" class="dropdown-icon" />
         </button>
-        <div class="dropdown-menu" id="dropdown-menu">
+        <div class="dropdown-menu" id="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
           <a href="#" class="dropdown-item">Meu perfil</a>
           <a href="#" class="dropdown-item">Sair</a>
         </div>
@@ -24,8 +24,9 @@
     </div>
   </header>
 
+  <mat-drawer-container>
   <!-- SIDEBAR -->
-  <nav class="sidebar" id="sidebar">
+  <mat-drawer #sidebar class="sidebar" id="sidebar" mode="side" opened [class.show-sidebar]="isSidebarOpen">
     <div class="sidebar-container">
       <div class="sidebar-logo">
         <div class="sidebar-img">
@@ -37,17 +38,17 @@
         </div>
       </div>
 
-      <div class="sidebar-content">
+      <mat-nav-list class="sidebar-content">
         <div>
           <h3 class="sidebar-title">HOME</h3>
 
           <div class="sidebar-list">
-            <a routerLink="/usuario/painel-principal" class="sidebar-link active-link">
+            <a routerLink="/usuario/painel-principal" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/painel-principal')}">
               <img src="assets/icones/home-icon.svg" alt="home icon" />
               <span>Inicio</span>
             </a>
 
-            <a routerLink="/usuario/notificacoes" class="sidebar-link">
+            <a routerLink="/usuario/notificacoes" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/notificacoes')}">
               <img src="assets/icones/notificacao.svg" alt="home icon" />
               <span>Notificações</span>
             </a>
@@ -58,12 +59,12 @@
           <h3 class="sidebar-title">ADMINISTRATIVO</h3>
 
           <div class="sidebar-list">
-            <a routerLink="/usuario/colaboradores" class="sidebar-link">
+            <a routerLink="/usuario/colaboradores" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/colaboradores')}">
                 <img src="assets/icones/People-icon.svg" alt="image" />
               <span>Colaboradores</span>
             </a>
 
-            <a routerLink="/usuario/empresas" class="sidebar-link">
+            <a routerLink="/usuario/empresas" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/empresas')}">
               <img src="assets/icones/empresas-icon.svg" alt="home icon" />
               <span>Empresas</span>
             </a>
@@ -74,12 +75,12 @@
             <h3 class="sidebar-title">GERENCIAMENTO</h3>
   
             <div class="sidebar-list">
-              <a href="#" class="sidebar-link">
+              <a href="#" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/processos')}">
                 <img src="assets/icones/processo-icon.svg" alt="home icon" />
                 <span>Processos</span>
               </a>
   
-              <a routerLink="/usuario/atividades" class="sidebar-link">
+              <a routerLink="/usuario/atividades" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/atividades')}">
                 <img src="assets/icones/kanban-icon.svg" alt="home icon" />
                 <span>Atividades</span>
               </a>
@@ -89,17 +90,25 @@
                 <span>Relatórios</span>
               </a> -->
 
-              <a routerLink="/usuario/chat" class="sidebar-link">
+              <a routerLink="/usuario/chat" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/chat')}">
                 <img src="assets/icones/chat.svg" alt="home icon" />
                 <span>Chat de avisos</span>
               </a>
 
-              <a routerLink="/usuario/forum-de-noticias" class="sidebar-link">
+              <a routerLink="/usuario/forum-de-noticias" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/forum-de-noticias')}">
                 <img src="assets/icones/forum.svg" alt="home icon" />
                 <span>Fórum de notícias</span>
               </a>
             </div>
           </div>
-      </div>
+      </mat-nav-list>
     </div>
-  </nav>
+  </mat-drawer>
+
+<!-- MAIN CONTENT -->
+  <mat-drawer-content #content class="mat-drawer-content" [class.shifted]="isSidebarOpen">
+    <div class="mat-drawer-content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>

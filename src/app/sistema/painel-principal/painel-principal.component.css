@@ -1,9 +1,103 @@
 .main-container {
-  margin: 290px 32px 24px;
+  margin: 120px 32px 24px;
   max-width: 100%;
-  background: #ffffff;
-  border-radius: 24px;
-  padding: 32px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+}
+
+.title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.title-container h2 {
+  font-size: 24px;
+  color: #37383c;
+}
+
+.cards-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 24px;
+}
+
+.cards-moedas,
+.cards-setores,
+.cards-infos {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 24px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 120px;
+  padding: 24px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  border: #bfc4de 1px solid;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.101);
+}
+
+.moeda-card {
+  background: #283c8a;
+}
+
+.moeda-card span {
+  color: #ffffff;
+  font-size: 28px;
+  font-weight: 500;
+}
+
+.moeda-card p {
+  color: #ffffff;
+  font-size: 14px;
+  margin: 0;
+}
+
+.value,
+.title,
+.qtd {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cards-setores span {
+  color: #08195d;
+  font-size: 28px;
+  font-weight: 500;
+}
+
+.cards-setores label {
+  color: #37383c;
+  font-size: 12px;
+}
+
+.cards-infos span {
+  color: #08195d;
+  font-size: 28px;
+  font-weight: 500;
+}
+
+.cards-infos p {
+  color: #37383c;
+  font-size: 14px;
+  margin: 0;
+}
+
+@media screen and (max-width: 720px) {
+  .main-container {
+    margin: 100px 24px 16px;
+  }
+
+  .cards-moedas,
+  .cards-setores,
+  .cards-infos {
+    flex-direction: column;
+  }
 }

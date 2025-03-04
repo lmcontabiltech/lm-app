@@ -85,6 +85,11 @@
   padding: 8px;
 }
 
+.dropdown-menu.show {
+  display: block;
+}
+
+
 .dropdown-menu .dropdown-item {
   padding: 0.5rem 1rem;
   display: block;
@@ -262,6 +267,30 @@
   z-index: 14;
 }
 
+.mat-drawer-content {
+  height: 100vh;
+  width: 100%;
+}
+
+.mat-toolbar-row, .mat-toolbar-single-row {
+  height: 80px;
+  padding: 0;
+}
+
+mat-drawer-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+}
+
+mat-drawer {
+  transition: width 0.4s ease-in-out, left 0.4s ease-in-out;
+}
+
+.mat-drawer-content.shifted {
+  margin-left: 90px;
+}
+
 /* BREAKPOINTS */
 @media screen and (max-width: 720px) {
   .header {
@@ -272,6 +301,10 @@
 
   .left-pd {
     padding-left: 200px;
+  }
+
+  .mat-drawer-content.shifted {
+    margin-left: 0;
   }
 
   .header-container {
