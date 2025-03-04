@@ -19,7 +19,7 @@ import { AuthGuard } from '../services/auth.guard';
 const routes: Routes = [
   {  path: 'usuario', 
     component: LayoutComponent,  
-    canActivate: [AuthGuard], 
+   
     children: [
       { path: 'painel-principal', component: PainelPrincipalComponent},
       { path: 'meu-perfil', component:MeuPerfilComponent},
