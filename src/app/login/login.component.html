@@ -4,7 +4,9 @@
       <img src="assets/imagens/Logo-LM.svg" alt="Logo" class="logo-lm" />
       <h2>Bem-vindo(a) de volta!</h2>
       <div class="body-login">
+        
         <form class="container-input" (ngSubmit)="onSubmit()">
+          <div></div>
           <div class="form-group container-input">
             <label class="small mb-1">E-mail</label>
             <div class="input-group">
@@ -32,22 +34,17 @@
                 required 
               />
               <div class="input-icon" type="button" (click)="togglePasswordVisibility('password')">
-                <img 
-                  src="assets/icones/eye-open.svg" 
-                  alt="Mostrar senha" 
-                  width="16" 
-                  height="16" 
-                  class="toggle-password"
-                />
+                <img *ngIf="!passwordVisible['password']" src="assets/icones/eye-open.svg" alt="Mostrar senha" class="toggle-password"/>
+                <img *ngIf="passwordVisible['password']" src="assets/icones/eye-closed.svg" alt="Mostrar senha" class="toggle-password"/>
               </div>
             </div>
           </div>
 
-          <div>
-            <span>Esqueci minha senha</span>
+          <div class="recuperacao-senha">
+            <a>Esqueci minha senha</a>
           </div>
 
-          <button class="btn-login" type="submit">Entrar</button>
+            <button class="btn-login" type="submit">Entrar</button>
         </form>
       </div>
     </div>
