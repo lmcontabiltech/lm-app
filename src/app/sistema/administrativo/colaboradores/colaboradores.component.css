@@ -81,12 +81,21 @@ tr:hover {
   background-color: #e5e8f1;
 }
 
+.container-acoes {
+  display: flex;
+  gap: 14px;
+}
+
 .btn-acao {
   border: none;
   background: none;
   cursor: pointer;
-  margin-right: 8px;
   border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 10px 18px;
 }
 
 .btn-acao img {
@@ -98,8 +107,16 @@ tr:hover {
   background: var(--info);
 }
 
+.edit:hover {
+  background: var(--info-hover);
+}
+
 .delete {
   background: var(--danger);
+}
+
+.delete:hover {
+  background: var(--danger-hover);
 }
 
 .perfil {

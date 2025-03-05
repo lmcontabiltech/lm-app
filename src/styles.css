@@ -40,6 +40,8 @@ html {
   --warning: #ffc107;
   --danger: #b72130;
   --lm-border: #e0e0e0;
+  --info-hover:#1b88cc;
+  --danger-hover: #d22536;
 }
 
 article,
