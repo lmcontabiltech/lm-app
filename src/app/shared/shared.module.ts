@@ -7,6 +7,7 @@ import { MultiploSelectComponent } from './multiplo-select/multiplo-select.compo
 import { SelectPadraoComponent } from './select-padrao/select-padrao.component';
 import { SearchComponent } from './search/search.component';
 import { FormsModule } from '@angular/forms';
+import { SetorTagComponent } from './setor-tag/setor-tag.component';
 
 
 
@@ -17,7 +18,8 @@ import { FormsModule } from '@angular/forms';
     ModalGeralComponent,
     MultiploSelectComponent,
     SelectPadraoComponent,
-    SearchComponent
+    SearchComponent,
+    SetorTagComponent
   ],
   imports: [
     CommonModule,

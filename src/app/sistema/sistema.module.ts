@@ -16,6 +16,7 @@ import { CadastroDeNoticiaComponent } from './gerenciamento/cadastro-de-noticia/
 import { CadastroDeAtividadeComponent } from './gerenciamento/cadastro-de-atividade/cadastro-de-atividade.component';
 import { SharedModule } from '../shared/shared.module';
 import { ForumDeNoticiaComponent } from './gerenciamento/forum-de-noticia/forum-de-noticia.component';
+import { ProcessosComponent } from './gerenciamento/processos/processos.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { ForumDeNoticiaComponent } from './gerenciamento/forum-de-noticia/forum-
     CadastroDeNoticiaComponent,
     CadastroDeAtividadeComponent,
     ForumDeNoticiaComponent,
+    ProcessosComponent,
   ],
   imports:
   [
