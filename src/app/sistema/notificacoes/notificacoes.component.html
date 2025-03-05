@@ -1,1 +1,16 @@
-<p>notificacoes works!</p>
+<div class="main-container">
+    <div class="header-container">
+        <h2>Notificações</h2>
+    </div>
+
+    <div class="table-container">
+        <div class="filtro-container">
+            <app-select-padrao
+                  label="Todos os setores"
+                  [customStyles]="{'background': '#FFFFFF'}">
+            </app-select-padrao>
+
+            <app-search (searchChange)="onSearch($event)"></app-search>
+        </div>
+    </div>
+</div>

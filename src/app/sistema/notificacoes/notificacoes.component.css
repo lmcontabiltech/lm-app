@@ -1,0 +1,47 @@
+.main-container {
+  margin: 120px 32px 24px;
+  max-width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.header-container h2 {
+  font-size: 24px;
+  color: #37383c;
+  margin: 0;
+}
+
+.table-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  background: #ffffff;
+  border: #ccd0de 1px solid;
+  border-radius: 8px;
+  min-height: 48px;
+  padding: 24px;
+}
+
+.filtro-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.select-container {
+  display: flex;
+  align-items: center;
+  width: 200px;
+}
