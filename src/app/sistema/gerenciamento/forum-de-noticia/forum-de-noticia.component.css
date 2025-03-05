@@ -45,3 +45,127 @@
   align-items: center;
   width: 200px;
 }
+
+/* tabela */
+.tabela {
+  width: 100%;
+  border-radius: 8px;
+  border: var(--lm-border) solid 1px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--lm-branco);
+  border-radius: 8px;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 12px 16px;
+}
+
+th {
+  background: var(--lm-accent);
+  font-weight: 500;
+  font-size: 16px;
+  color: var(--lm-branco);
+}
+
+tr:nth-child(even) {
+  background: #fafafa;
+}
+
+tr:hover {
+  background-color: #e5e8f1;
+}
+
+.container-acoes {
+  display: flex;
+  gap: 14px;
+}
+
+.btn-acao {
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 10px 18px;
+}
+
+.btn-acao img {
+  width: 20px;
+  height: 20px;
+}
+
+.edit {
+  background: var(--info);
+}
+
+.edit:hover {
+  background: var(--info-hover);
+}
+
+.delete {
+  background: var(--danger);
+}
+
+.delete:hover {
+  background: var(--danger-hover);
+}
+
+.perfil {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.perfil a {
+  text-decoration: none;
+  color: var(--info);
+  cursor: pointer;
+}
+
+.perfil a:hover {
+  text-decoration: underline;
+}
+
+/* paginação */
+.paginacao {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  gap: 5px;
+}
+
+.paginacao button {
+  border: none;
+  background: transparent;
+  padding: 8px 12px;
+  border-radius: 25%;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 16px;
+  font-weight: 500;
+  color: #585a60;
+}
+
+.paginacao button.ativo {
+  background: #e5e8f1;
+  color: #37383c;
+  font-weight: 600;
+}
+
+.paginacao button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.paginacao button:not(:disabled):hover {
+  background: rgba(0, 123, 255, 0.2);
+}

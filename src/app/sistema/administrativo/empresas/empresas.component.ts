@@ -64,5 +64,4 @@ export class EmpresasComponent implements OnInit {
       this.atualizarPaginacao();
     }
   }
-
 }
