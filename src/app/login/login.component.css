@@ -94,6 +94,11 @@ main {
 
 .btn-login {
   margin-top: 24px;
+  background: var(--lm-accent);
+}
+
+.btn-login:hover {
+  background: var(--lm-primary);
 }
 
 .recuperacao-senha {
