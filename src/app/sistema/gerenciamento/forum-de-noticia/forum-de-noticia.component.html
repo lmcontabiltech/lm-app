@@ -1,1 +1,17 @@
-<p>forum-de-noticia works!</p>
+<div class="main-container">
+    <div class="header-container">
+        <h2>Fórum de notícias</h2>
+        <button class="btn btn-primary" (click)="cadastrarNoticia()">Cadastrar notícia +</button>
+    </div>
+
+    <div class="table-container">
+        <div class="filtro-container">
+            <app-select-padrao
+                  label="Todos as notícias"
+                  [customStyles]="{'background': '#FFFFFF'}">
+            </app-select-padrao>
+
+            <app-search (searchChange)="onSearch($event)"></app-search>
+        </div>
+    </div>
+</div>
