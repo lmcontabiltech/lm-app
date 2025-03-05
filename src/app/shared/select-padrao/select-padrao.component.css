@@ -22,7 +22,7 @@ label.active {
   top: 12px;
   left: 10px;
   font-size: 12px;
-  color: #cb4417;
+  color: var(--lm-primary);
   font-weight: 700;
   margin: 0;
 }
@@ -68,7 +68,7 @@ label.active {
 .option:hover,
 .option.selected {
   background: #f0f0f0;
-  color: #cb4417;
+  color: var(--lm-primary);
   font-weight: 700;
 }
 
@@ -87,7 +87,7 @@ label.active {
 
 .select-dropdown.active .arrow-down,
 .select-dropdown:hover .arrow-down {
-  border-top-color: #cb4417;
+  border-top-color: var(--lm-primary);
 }
 
 @media (max-width: 768px) {

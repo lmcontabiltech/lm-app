@@ -7,19 +7,24 @@ import { Component, OnInit, Input, HostListener, Output, EventEmitter, ElementRe
 })
 export class SelectPadraoComponent {
   @Input() label: string = '';
-  @Input() options: any[] = [];
-  @Input() selectedValue: any;
-  @Output() selectedValueChange: EventEmitter<any> = new EventEmitter<any>();
+  @Input() options: { value: string, description: string }[] = [];
+  @Input() selectedValue: string = '';
+  @Output() selectedValueChange = new EventEmitter<string>();
   @Input() customStyles: { [key: string]: string } = {};
 
   isOpen: boolean = false;
 
   constructor(private elementRef: ElementRef) {}
 
-  onSelect(value: any) {
-    this.selectedValue = value;
-    this.selectedValueChange.emit(value);
+  onSelect(option: { value: string, description: string }) {
+    this.selectedValue = option.value;
+    this.selectedValueChange.emit(this.selectedValue);
     this.isOpen = false;
+  }
+
+  getSelectedDescription(): string {
+    const selectedOption = this.options.find(option => option.value === this.selectedValue);
+    return selectedOption ? selectedOption.description : '';
   }
 
   @HostListener('document:click', ['$event'])
