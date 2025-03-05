@@ -8,17 +8,23 @@ import { SetorDescricao } from '../../sistema/administrativo/cadastro-de-colabor
   styleUrls: ['./setor-tag.component.css'],
 })
 export class SetorTagComponent {
-  @Input() setor?: Setor;
+  @Input() setor?: Setor | 'ALL';
 
   constructor() {}
 
   ngOnInit(): void {}
 
   get descricao(): string {
+    if (this.setor === 'ALL') {
+      return 'Todos os Setores';
+    }
     return this.setor ? SetorDescricao[this.setor] : '';
   }
 
   get cor(): string {
+    if (this.setor === 'ALL') {
+      return '#424242';
+    }
     switch (this.setor) {
       case Setor.CONTABIL:
         return '#FF5733';

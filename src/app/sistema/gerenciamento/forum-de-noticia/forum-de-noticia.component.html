@@ -36,7 +36,9 @@
                             </div>
                         </td>
                         <td>{{ noticia.data }}</td>
-                        <td>{{ noticia.setor }}</td>
+                        <td>
+                            <app-setor-tag [setor]="noticia.setor"></app-setor-tag>
+                        </td>
                         <td>
                             <div class="container-acoes">
                                 <button class="btn-acao edit">

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Noticia } from './noticia';
+import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
 
 @Component({
   selector: 'app-forum-de-noticia',
@@ -9,14 +10,14 @@ import { Noticia } from './noticia';
 })
 export class ForumDeNoticiaComponent implements OnInit {
   noticias: Noticia[] = [
-      { titulo: 'Título da notícia', data: '22/12/2024 às 12:30', setor: 'Setor Fiscal' },
-      { titulo: 'Título da notícia', data: '22/12/2024 às 12:30', setor: 'Setor Pessoal' },
-      { titulo: 'Título da notícia', data: '22/12/2024 às 12:30', setor: 'Setor Contábil' },
-      { titulo: 'Título da notícia', data: '22/12/2024 às 12:30', setor: 'Todos os setores' },
-      { titulo: 'Título da notícia', data: '22/12/2024 às 12:30', setor: 'Setor Fiscal' },
-      { titulo: 'Título da notícia', data: '22/12/2024 às 12:30', setor: 'Setor Contábil' },
-      { titulo: 'Título da notícia', data: '22/12/2024 às 12:30', setor: 'Setor Pessoal' },
-      { titulo: 'Título da notícia', data: '22/12/2024 às 12:30', setor: 'Setor Fiscal' }
+      { titulo: 'Título da notícia', data: '22/12/2024 às 12:30', setor: Setor.FISCAL },
+      { titulo: 'Título da notícia', data: '22/12/2024 às 12:30', setor: Setor.PESSOAL },
+      { titulo: 'Título da notícia', data: '22/12/2024 às 12:30', setor: Setor.CONTABIL },
+      { titulo: 'Título da notícia', data: '22/12/2024 às 12:30', setor: Setor.FISCAL },
+      { titulo: 'Título da notícia', data: '22/12/2024 às 12:30', setor: 'ALL' },
+      { titulo: 'Título da notícia', data: '22/12/2024 às 12:30', setor: Setor.CONTABIL },
+      { titulo: 'Título da notícia', data: '22/12/2024 às 12:30', setor: Setor.PESSOAL },
+      { titulo: 'Título da notícia', data: '22/12/2024 às 12:30', setor: Setor.FISCAL }
     ];
 
     itensPorPagina = 5;
