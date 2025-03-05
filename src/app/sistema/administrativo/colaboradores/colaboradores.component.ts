@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Colaborador } from './colaborador';
+import { Setor } from '../cadastro-de-colaborador/setor';
 
 @Component({
   selector: 'app-colaboradores',
@@ -9,14 +10,14 @@ import { Colaborador } from './colaborador';
 })
 export class ColaboradoresComponent implements OnInit {
   colaboradores: Colaborador[] = [
-      { nome: 'Carla Américo', setor: 'Setor Pessoal', email: 'exemplo@exemplo.com' },
-      { nome: 'Darrell Steward', setor: 'Setor Fiscal', email: 'exemplo@exemplo.com' },
-      { nome: 'Darlene Robertson', setor: 'Setor Contábil', email: 'exemplo@exemplo.com' },
-      { nome: 'Kristin Watson', setor: 'Setor Paralegal', email: 'exemplo@exemplo.com' },
-      { nome: 'Jacob Jones', setor: 'Setor Financeiro', email: 'exemplo@exemplo.com' },
-      { nome: 'Ralph Edwards', setor: 'Setor Pessoal', email: 'exemplo@exemplo.com' },
-      { nome: 'Annette Black', setor: 'Setor Fiscal', email: 'exemplo@exemplo.com' },
-      { nome: 'Carla Américo', setor: 'Setor Pessoal', email: 'exemplo@exemplo.com' }
+      { nome: 'Carla Américo', setor: Setor.PESSOAL, email: 'exemplo@exemplo.com' },
+      { nome: 'Darrell Steward', setor: Setor.FISCAL, email: 'exemplo@exemplo.com' },
+      { nome: 'Darlene Robertson', setor: Setor.CONTABIL, email: 'exemplo@exemplo.com' },
+      { nome: 'Kristin Watson', setor: Setor.PARALEGAL, email: 'exemplo@exemplo.com' },
+      { nome: 'Jacob Jones', setor: Setor.FINANCEIRO, email: 'exemplo@exemplo.com' },
+      { nome: 'Ralph Edwards', setor: Setor.PESSOAL, email: 'exemplo@exemplo.com' },
+      { nome: 'Annette Black', setor: Setor.FISCAL, email: 'exemplo@exemplo.com' },
+      { nome: 'Carla Américo', setor: Setor.PESSOAL, email: 'exemplo@exemplo.com' }
     ];
   
     itensPorPagina = 5;

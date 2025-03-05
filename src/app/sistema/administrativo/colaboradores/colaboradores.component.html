@@ -36,7 +36,9 @@
                                 </span>
                             </div>
                         </td>
-                        <td>{{ colaborador.setor }}</td>
+                        <td>
+                            <app-setor-tag [setor]="colaborador.setor"></app-setor-tag>
+                        </td>
                         <td>{{ colaborador.email }}</td>
                         <td>
                             <div class="container-acoes">

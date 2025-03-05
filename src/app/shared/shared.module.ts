@@ -31,7 +31,8 @@ import { SetorTagComponent } from './setor-tag/setor-tag.component';
     ModalGeralComponent,
     MultiploSelectComponent,
     SelectPadraoComponent,
-    SearchComponent
+    SearchComponent,
+    SetorTagComponent
   ]
 })
 export class SharedModule { }
