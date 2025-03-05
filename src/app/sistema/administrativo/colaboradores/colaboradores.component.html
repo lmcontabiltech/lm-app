@@ -4,5 +4,63 @@
         <button class="btn btn-primary" (click)="cadastrarColaborador()">Cadastrar colaborador +</button>
     </div>
 
-    <div class="table-container"></div>
+    <div class="table-container">
+        <div class="filtro-container">
+            <app-select-padrao
+                  label="Todos os setores"
+                  [customStyles]="{'background': '#FFFFFF'}">
+            </app-select-padrao>
+
+            <app-search (searchChange)="onSearch($event)"></app-search>
+        </div>
+
+        <div class="tabela">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Setor</th>
+                        <th>E-mail coorporativo</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let colaborador of colaboradoresPaginados">
+                        <td>
+                            <div class="perfil">
+                                <div class="avatar"></div>
+                                <span>
+                                    <a (click)="cadastrarColaborador()" >
+                                        {{ colaborador.nome }}
+                                    </a>
+                                </span>
+                            </div>
+                        </td>
+                        <td>{{ colaborador.setor }}</td>
+                        <td>{{ colaborador.email }}</td>
+                        <td>
+                            <button class="btn-acao edit">
+                                <img src="assets/icones/edit.svg" alt="Editar">
+                            </button>
+                            <button class="btn-acao delete">
+                                <img src="assets/icones/delete.svg" alt="Excluir">
+
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="paginacao">
+            <button (click)="paginaAnterior()" [disabled]="paginaAtual === 1">&lt;</button>
+                <span *ngFor="let pagina of [].constructor(totalPaginas); let i = index">
+
+                <button (click)="mudarPagina(i + 1)" [class.ativo]="paginaAtual === i + 1">
+                    {{ i + 1 }}
+                </button>
+            </span>
+            <button (click)="proximaPagina()" [disabled]="paginaAtual === totalPaginas">&gt;</button>
+        </div>
+    </div>
 </div>

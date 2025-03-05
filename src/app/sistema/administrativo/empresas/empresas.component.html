@@ -13,5 +13,56 @@
 
             <app-search (searchChange)="onSearch($event)"></app-search>
         </div>
+
+        <div class="tabela">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Razão social</th>
+                        <th>CNPJ</th>
+                        <th>Código do Questor</th>
+                        <th>Regime da Empresa</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let empresa of empresasPaginados">
+                        <td>
+                            <div class="perfil">
+                                <div class="avatar"></div>
+                                <span>
+                                    <a (click)="cadastrarEmpresa()" >
+                                        {{ empresa.razaoSocial }}
+                                    </a>
+                                </span>
+                            </div>
+                        </td>
+                        <td>{{ empresa.cnpj }}</td>
+                        <td>{{ empresa.codQuestor }}</td>
+                        <td>{{ empresa.regimeEmpresa }}</td>
+                        <td>
+                            <button class="btn-acao edit">
+                                <img src="assets/icones/edit.svg" alt="Editar">
+                            </button>
+                            <button class="btn-acao delete">
+                                <img src="assets/icones/delete.svg" alt="Excluir">
+
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="paginacao">
+            <button (click)="paginaAnterior()" [disabled]="paginaAtual === 1">&lt;</button>
+                <span *ngFor="let pagina of [].constructor(totalPaginas); let i = index">
+
+                <button (click)="mudarPagina(i + 1)" [class.ativo]="paginaAtual === i + 1">
+                    {{ i + 1 }}
+                </button>
+            </span>
+            <button (click)="proximaPagina()" [disabled]="paginaAtual === totalPaginas">&gt;</button>
+        </div>
     </div>
 </div>
