@@ -17,4 +17,8 @@ export class SearchComponent {
   onSearchChange() {
     this.searchChange.emit(this.searchTerm);
   }
+
+  onSearchClick() {
+    this.searchChange.emit(this.searchTerm);
+  }
 }
