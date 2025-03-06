@@ -23,21 +23,21 @@ export class SetorTagComponent {
 
   get cor(): string {
     if (this.setor === 'ALL') {
-      return '#424242';
+      return '#47484e';
     }
     switch (this.setor) {
       case Setor.CONTABIL:
-        return '#FF5733';
+        return '#08195D';
       case Setor.FISCAL:
-        return '#1e6c20';
+        return '#1F337F';
       case Setor.PESSOAL:
-        return '#3357FF'; 
+        return '#4E5DA1'; 
       case Setor.PARALEGAL:
-        return '#FF33A1';
+        return '#585A60';
       case Setor.FINANCEIRO:
-        return '#d99400';
+        return '#8B8D97';
       default:
-        return '#ffffff';
+        return '#CCD0DE';
     }
   }
 
