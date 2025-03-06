@@ -64,6 +64,14 @@ export class NavbarComponent implements OnInit {
 
   toggleDropdown(): void {
     this.isDropdownOpen = !this.isDropdownOpen;
+    const dropdownToggle = document.getElementById('dropdown-toggle');
+    if (dropdownToggle) {
+      if (this.isDropdownOpen) {
+        dropdownToggle.classList.add('active');
+      } else {
+        dropdownToggle.classList.remove('active');
+      }
+    }
   }
 
   isActive(route: string): boolean {

@@ -75,7 +75,7 @@
             <h3 class="sidebar-title">GERENCIAMENTO</h3>
   
             <div class="sidebar-list">
-              <a href="#" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/processos')}">
+              <a routerLink="/usuario/processos" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/processos')}">
                 <img src="assets/icones/processo-icon.svg" alt="home icon" />
                 <span>Processos</span>
               </a>
@@ -84,11 +84,6 @@
                 <img src="assets/icones/kanban-icon.svg" alt="home icon" />
                 <span>Atividades</span>
               </a>
-
-              <!-- <a href="#" class="sidebar-link">
-                <img src="assets/icones/relatorio-icon.svg" alt="home icon" />
-                <span>Relatórios</span>
-              </a> -->
 
               <a routerLink="/usuario/chat" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/chat')}">
                 <img src="assets/icones/chat.svg" alt="home icon" />

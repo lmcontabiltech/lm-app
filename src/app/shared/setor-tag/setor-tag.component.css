@@ -1,0 +1,14 @@
+.setor-tag {
+  padding: 6px 12px;
+  border-radius: 40px;
+  border: 2px solid;
+  color: #ffffff;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.setor-tag:hover {
+  background-color: #5c0095;
+  border-color: #424242;
+}

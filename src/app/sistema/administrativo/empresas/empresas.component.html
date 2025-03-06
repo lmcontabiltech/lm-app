@@ -4,5 +4,72 @@
         <button class="btn btn-primary" (click)="cadastrarEmpresa()">Cadastrar empresas +</button>
     </div>
 
-    <div class="table-container"></div>
+    <div class="table-container">
+        <div class="filtro-container">
+            <app-select-padrao
+                  label="Todos os setores"
+                  [customStyles]="{'background': '#FFFFFF'}">
+            </app-select-padrao>
+
+            <app-search (searchChange)="onSearch($event)"></app-search>
+        </div>
+
+        <div class="tabela">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Razão social</th>
+                        <th>CNPJ</th>
+                        <th>Código do Questor</th>
+                        <th>Regime da Empresa</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let empresa of empresasPaginados">
+                        <td>
+                            <div class="perfil">
+                                <div class="avatar"></div>
+                                <span>
+                                    <a (click)="cadastrarEmpresa()" >
+                                        {{ empresa.razaoSocial }}
+                                    </a>
+                                </span>
+                            </div>
+                        </td>
+                        <td>{{ empresa.cnpj }}</td>
+                        <td>{{ empresa.codQuestor }}</td>
+                        <td>{{ empresa.regimeEmpresa }}</td>
+                        <td>
+                            <div class="container-acoes">
+                                <button class="btn-acao edit">
+                                    <img src="assets/icones/edit.svg" alt="Editar">
+                                    Editar
+                                </button>
+                                <button class="btn-acao delete">
+                                    <img src="assets/icones/delete.svg" alt="Excluir">
+                                     Excluir
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="paginacao">
+            <button (click)="paginaAnterior()" [disabled]="paginaAtual === 1">
+                <img src="assets/icones/carret-left.svg" alt="Esquerda">
+            </button>
+                <span *ngFor="let pagina of [].constructor(totalPaginas); let i = index">
+
+                <button (click)="mudarPagina(i + 1)" [class.ativo]="paginaAtual === i + 1">
+                    {{ i + 1 }}
+                </button>
+            </span>
+            <button (click)="proximaPagina()" [disabled]="paginaAtual === totalPaginas">
+                <img src="assets/icones/carret-right.svg" alt="Direita">
+            </button>
+        </div>
+    </div>
 </div>
