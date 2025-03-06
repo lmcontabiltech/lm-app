@@ -11,7 +11,9 @@
                   [customStyles]="{'background': '#FFFFFF'}">
             </app-select-padrao>
 
-            <app-search (searchChange)="onSearch($event)"></app-search>
+            <div class="search-container">
+                <app-search (searchChange)="onSearch($event)"></app-search>
+            </div>
         </div>
 
         <div class="tabela">
