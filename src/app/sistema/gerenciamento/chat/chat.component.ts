@@ -62,6 +62,17 @@ export class ChatComponent implements OnInit, OnDestroy {
     return this.notifications[chat] || 0;
   }
 
+  getMessagesForSelectedChat(): { username: string, message: string, timestamp: string }[] {
+    if (this.selectedChat === 'Setor Fiscal') {
+      return [
+        { username: 'Mayki Santana', message: 'Olá, como posso ajudar?', timestamp: '20/12/2024 às 16:00' },
+        { username: 'Haroldo Andrade', message: 'Preciso de informações sobre o setor fiscal.', timestamp: '20/12/2024 às 16:01' },
+        { username: 'Mayki Santana', message: 'Claro, vou te passar as informações.', timestamp: '20/12/2024 às 16:02' }
+      ];
+    }
+    return [];
+  }
+
   // Envia mensagem no chat atual
   enviarMensagem() {
   }

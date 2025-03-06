@@ -51,14 +51,27 @@
         </div>
       </div>
     </div>
+
     <div class="conversa-container">
         <header class="chat-header">
             <h3>{{ selectedChat }}</h3>
         </header>
-        <section class="chat-messages"></section>
+        <section class="chat-messages">
+            <div *ngIf="selectedChat === 'Setor Fiscal'">
+                <div *ngFor="let message of getMessagesForSelectedChat()">
+                    <div class="message" [ngClass]="{'user': message.username === 'Haroldo Andrade', 'other': message.username !== 'Haroldo Andrade'}">
+                      <div class="message-content">
+                        <span class="message-username">{{ message.username }}</span>
+                        <p>{{ message.message }}</p>
+                        <span class="message-timestamp">{{ message.timestamp }}</span>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </section>
         <footer class="chat-input">
             <form [formGroup]="chatForm">
-              <textarea placeholder="Digite uma mensagem..." formControlName="replymessage" (keyup.enter)="enviarMensagem()"></textarea>
+              <textarea placeholder="Envie uma mensagem" formControlName="replymessage" (keyup.enter)="enviarMensagem()"></textarea>
               <button (click)="enviarMensagem()">
                 <img src="assets/icones/send.svg" alt="Enviar" class="send-icon">
               </button>

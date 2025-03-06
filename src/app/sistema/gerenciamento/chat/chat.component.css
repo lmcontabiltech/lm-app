@@ -186,3 +186,62 @@
   overflow-y: auto;
   padding: 16px;
 }
+
+/* mensagens */
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+.message {
+  display: flex;
+  margin-bottom: 16px;
+}
+
+.message.user {
+  justify-content: flex-end;
+}
+
+.message.other {
+  justify-content: flex-start;
+}
+
+.message-content {
+  max-width: 60%;
+  padding: 12px;
+  border-radius: 8px;
+  background: #f1f1f1;
+  position: relative;
+}
+
+.message.user .message-content {
+  background: #dbf4e9;
+}
+
+.message.other .message-content {
+  background: #e1ebfd;
+}
+
+.message-username {
+  font-size: 12px;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.message.other .message-username {
+  color: var(--lm-primary);
+}
+
+.message.user .message-username {
+  color: #4c8920;
+}
+
+.message-timestamp {
+  font-size: 11px;
+  color: #595959;
+  display: block;
+  text-align: right;
+  margin-top: 8px;
+}
