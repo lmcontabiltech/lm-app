@@ -63,7 +63,10 @@
   padding: 12px;
   cursor: pointer;
   border-radius: 8px;
-  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .chat-item:hover {
@@ -75,17 +78,39 @@
   font-weight: 600;
 }
 
+.chat-perfil {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 2px;
+}
+
+.chat-perfil p {
+  margin: 0;
+}
+
+.setor-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #778bdb;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 500;
+  margin-right: 8px;
+}
+
 .notification-badge {
   background: #5ea828;
   color: #ffffff;
   border-radius: 50%;
   font-size: 10px;
   font-weight: 500;
-  position: absolute;
-  top: 8px;
-  right: 8px;
   width: 24px;
-  height: 24px; 
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;

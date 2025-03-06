@@ -8,27 +8,45 @@
       <app-search (searchChange)="onSearch($event)"></app-search>
       <div class="container-itens">
         <div class="chat-item" [class.selected]="selectedChat === 'Todos os setores'" (click)="selectChat('Todos os setores')">
-            Todos os setores
+            <div class="chat-perfil">
+                <span class="setor-icon">TS</span>
+                <p>Todos os Setores</p>
+            </div>
             <span *ngIf="getNotificationCount('Todos os setores') > 0" class="notification-badge">{{ getNotificationCount('Todos os setores') }}</span>
         </div>
         <div class="chat-item" [class.selected]="selectedChat === 'Setor Fiscal'" (click)="selectChat('Setor Fiscal')">
-            Setor Fiscal
+            <div class="chat-perfil">
+                <span class="setor-icon">SF</span>
+                <p>Setor Fiscal</p>
+            </div>
             <span *ngIf="getNotificationCount('Setor Fiscal') > 0" class="notification-badge">{{ getNotificationCount('Setor Fiscal') }}</span>
         </div>
         <div class="chat-item" [class.selected]="selectedChat === 'Setor Pessoal'" (click)="selectChat('Setor Pessoal')">
-            Setor Pessoal
+            <div class="chat-perfil">
+                <span class="setor-icon">SP</span>
+                <p>Setor Pessoal</p>
+            </div>
             <span *ngIf="getNotificationCount('Setor Pessoal') > 0" class="notification-badge">{{ getNotificationCount('Setor Pessoal') }}</span>
         </div>
         <div class="chat-item" [class.selected]="selectedChat === 'Setor Contábil'" (click)="selectChat('Setor Contábil')">
-            Setor Contábil
+            <div class="chat-perfil">
+                <span class="setor-icon">SC</span>
+                <p>Setor Contábil</p>
+            </div>
             <span *ngIf="getNotificationCount('Setor Contábil') > 0" class="notification-badge">{{ getNotificationCount('Setor Contábil') }}</span>
         </div>
         <div class="chat-item" [class.selected]="selectedChat === 'Setor Paralegal'" (click)="selectChat('Setor Paralegal')">
-            Setor Paralegal
+            <div class="chat-perfil">
+                <span class="setor-icon">SP</span>
+                <p>Setor Paralegal</p>
+            </div>
             <span *ngIf="getNotificationCount('Setor Paralegal') > 0" class="notification-badge">{{ getNotificationCount('Setor Paralegal') }}</span>
         </div>
         <div class="chat-item" [class.selected]="selectedChat === 'Setor Financeiro'" (click)="selectChat('Setor Financeiro')">
-            Setor Financeiro
+            <div class="chat-perfil">
+                <span class="setor-icon">SF</span>
+                <p>Setor Financeiro</p>
+            </div>
             <span *ngIf="getNotificationCount('Setor Financeiro') > 0" class="notification-badge">{{ getNotificationCount('Setor Financeiro') }}</span>
         </div>
       </div>
