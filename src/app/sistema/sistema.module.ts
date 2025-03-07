@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { SistemaRoutingModule } from './sistema-routing.module';
 import { PainelPrincipalComponent } from './painel-principal/painel-principal.component';
 import { MeuPerfilComponent } from './meu-perfil/meu-perfil.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NotificacoesComponent } from './notificacoes/notificacoes.component';
 import { EmpresasComponent } from './administrativo/empresas/empresas.component';
 import { ColaboradoresComponent } from './administrativo/colaboradores/colaboradores.component';
@@ -35,12 +35,12 @@ import { ProcessosComponent } from './gerenciamento/processos/processos.componen
     ForumDeNoticiaComponent,
     ProcessosComponent,
   ],
-  imports:
-  [
+  imports:[
     CommonModule, 
     SistemaRoutingModule, 
     FormsModule, 
-    SharedModule
+    SharedModule,
+    ReactiveFormsModule
   ],
 })
 export class SistemaModule {}

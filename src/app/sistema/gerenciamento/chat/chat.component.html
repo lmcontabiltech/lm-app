@@ -1,1 +1,82 @@
-<p>chat works!</p>
+<div class="main-container">
+  <div class="header-container">
+    <h2>Chat de avisos</h2>
+  </div>
+
+  <div class="chat-container">
+    <div class="chats">
+      <app-search (searchChange)="onSearch($event)"></app-search>
+      <div class="container-itens">
+        <div class="chat-item" [class.selected]="selectedChat === 'Todos os setores'" (click)="selectChat('Todos os setores')">
+            <div class="chat-perfil">
+                <span class="setor-icon">TS</span>
+                <p>Todos os Setores</p>
+            </div>
+            <span *ngIf="getNotificationCount('Todos os setores') > 0" class="notification-badge">{{ getNotificationCount('Todos os setores') }}</span>
+        </div>
+        <div class="chat-item" [class.selected]="selectedChat === 'Setor Fiscal'" (click)="selectChat('Setor Fiscal')">
+            <div class="chat-perfil">
+                <span class="setor-icon">SF</span>
+                <p>Setor Fiscal</p>
+            </div>
+            <span *ngIf="getNotificationCount('Setor Fiscal') > 0" class="notification-badge">{{ getNotificationCount('Setor Fiscal') }}</span>
+        </div>
+        <div class="chat-item" [class.selected]="selectedChat === 'Setor Pessoal'" (click)="selectChat('Setor Pessoal')">
+            <div class="chat-perfil">
+                <span class="setor-icon">SP</span>
+                <p>Setor Pessoal</p>
+            </div>
+            <span *ngIf="getNotificationCount('Setor Pessoal') > 0" class="notification-badge">{{ getNotificationCount('Setor Pessoal') }}</span>
+        </div>
+        <div class="chat-item" [class.selected]="selectedChat === 'Setor Contábil'" (click)="selectChat('Setor Contábil')">
+            <div class="chat-perfil">
+                <span class="setor-icon">SC</span>
+                <p>Setor Contábil</p>
+            </div>
+            <span *ngIf="getNotificationCount('Setor Contábil') > 0" class="notification-badge">{{ getNotificationCount('Setor Contábil') }}</span>
+        </div>
+        <div class="chat-item" [class.selected]="selectedChat === 'Setor Paralegal'" (click)="selectChat('Setor Paralegal')">
+            <div class="chat-perfil">
+                <span class="setor-icon">SP</span>
+                <p>Setor Paralegal</p>
+            </div>
+            <span *ngIf="getNotificationCount('Setor Paralegal') > 0" class="notification-badge">{{ getNotificationCount('Setor Paralegal') }}</span>
+        </div>
+        <div class="chat-item" [class.selected]="selectedChat === 'Setor Financeiro'" (click)="selectChat('Setor Financeiro')">
+            <div class="chat-perfil">
+                <span class="setor-icon">SF</span>
+                <p>Setor Financeiro</p>
+            </div>
+            <span *ngIf="getNotificationCount('Setor Financeiro') > 0" class="notification-badge">{{ getNotificationCount('Setor Financeiro') }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="conversa-container">
+        <header class="chat-header">
+            <h3>{{ selectedChat }}</h3>
+        </header>
+        <section class="chat-messages">
+            <div *ngIf="selectedChat === 'Setor Fiscal'">
+                <div *ngFor="let message of getMessagesForSelectedChat()">
+                    <div class="message" [ngClass]="{'user': message.username === 'Haroldo Andrade', 'other': message.username !== 'Haroldo Andrade'}">
+                      <div class="message-content">
+                        <span class="message-username">{{ message.username }}</span>
+                        <p>{{ message.message }}</p>
+                        <span class="message-timestamp">{{ message.timestamp }}</span>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <footer class="chat-input">
+            <form [formGroup]="chatForm">
+              <textarea placeholder="Envie uma mensagem" formControlName="replymessage" (keyup.enter)="enviarMensagem()"></textarea>
+              <button (click)="enviarMensagem()">
+                <img src="assets/icones/send.svg" alt="Enviar" class="send-icon">
+              </button>
+            </form>
+        </footer>
+    </div>
+  </div>
+</div>

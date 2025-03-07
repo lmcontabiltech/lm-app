@@ -46,6 +46,10 @@
   width: 200px;
 }
 
+.search-container {
+  width: 400px;
+}
+
 /* tabela */
 .tabela {
   width: 100%;

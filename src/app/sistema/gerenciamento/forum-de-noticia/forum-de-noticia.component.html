@@ -11,7 +11,9 @@
                   [customStyles]="{'background': '#FFFFFF'}">
             </app-select-padrao>
 
-            <app-search (searchChange)="onSearch($event)"></app-search>
+            <div class="search-container">
+                <app-search (searchChange)="onSearch($event)"></app-search>
+            </div>
         </div>
 
         <div class="tabela">
@@ -19,8 +21,8 @@
                 <thead>
                     <tr>
                         <th>Título</th>
-                        <th>Data/Horário</th>
                         <th>Destinatário</th>
+                        <th>Data/Horário</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -35,10 +37,10 @@
                                 </span>
                             </div>
                         </td>
-                        <td>{{ noticia.data }}</td>
                         <td>
                             <app-setor-tag [setor]="noticia.setor"></app-setor-tag>
                         </td>
+                        <td>{{ noticia.data }}</td>
                         <td>
                             <div class="container-acoes">
                                 <button class="btn-acao edit">
