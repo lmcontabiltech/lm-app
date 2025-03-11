@@ -209,7 +209,7 @@ export class AuthService {
   }
   
   tentarLogar( email: string, password: string ) : Observable<any> {    const params = new HttpParams()
-                        .set('email', email)
+                        .set('username', email)
                         .set('password', password)
                         .set('grant_type', 'password')
 
