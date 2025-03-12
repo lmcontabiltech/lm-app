@@ -17,28 +17,42 @@ export class CadastroDeColaboradorComponent implements OnInit {
     description: SetorDescricao[Setor[key as keyof typeof Setor]]
   }));
 
-  selectedSetor: string = '';
-  cadastroForm: FormGroup;
+  // selectedSetor: string = '';
+  cadastroForm!: FormGroup;
   isLoading = false;
   successMessage: string | null = null;
   errorMessage: string | null = null;
+
+  get selectedSetor(): string {
+    return this.cadastroForm.get('setor')?.value;
+  }
+  
+  set selectedSetor(value: string) {
+    this.cadastroForm.get('setor')?.setValue(value);
+  }
 
   constructor(
     private location: Location,
     private formBuilder: FormBuilder,
     private colaboradoresService: ColaboradoresService
-  ) {
+  ) {}
+
+  private initForm(): void {
     this.cadastroForm = this.formBuilder.group({
+      id: [''],
       confirmPassword: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       nome: ['', Validators.required],
       password: ['', Validators.required],
-      setor: ['', Validators.required]
+      setor: ['', Validators.required],
+      permissao: [''],
+      fotoKey: [''],
+      fotoUrl: [''],
     });
   }
 
   ngOnInit(): void {
-    this.cadastroForm.get('setor')?.setValue(this.selectedSetor);
+    this.initForm();
   }
 
   goBack() {
@@ -46,6 +60,12 @@ export class CadastroDeColaboradorComponent implements OnInit {
   }
 
   onSubmit(): void {
+    if (this.cadastroForm.invalid) {
+      this.cadastroForm.markAllAsTouched();
+      this.errorMessage = 'Preencha todos os campos obrigatórios corretamente.';
+      return;
+    }
+
     console.log('Formulário enviado');
     this.isLoading = true;
     this.successMessage = null;
@@ -60,6 +80,7 @@ export class CadastroDeColaboradorComponent implements OnInit {
         this.isLoading = false;
         this.successMessage = 'Usuário cadastrado com sucesso!';
         this.errorMessage = null;
+        this.cadastroForm.reset();
         console.debug('Usuário cadastrado com sucesso:', response);
       },
       error => {
