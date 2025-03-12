@@ -77,4 +77,8 @@ export class NavbarComponent implements OnInit {
   isActive(route: string): boolean {
     return this.router.isActive(route, true);
   }
+
+  logout() {
+    this.router.navigate(['/login']);
+  }
 }

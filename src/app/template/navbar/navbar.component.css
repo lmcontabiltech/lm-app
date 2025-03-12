@@ -90,10 +90,18 @@
 }
 
 .dropdown-menu .dropdown-item {
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0;
   display: block;
   text-decoration: none;
   color: var(--lm-text);
+  width: 100%;
+}
+
+.dropdown-menu button {
+  background: none;
+  border: none;
+  text-align: start;
+  padding: 0;
 }
 
 .dropdown-menu .dropdown-item:hover {
