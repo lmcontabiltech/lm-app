@@ -51,8 +51,9 @@
 }
 
 /* tabela */
-.tabela {
+.tabela-container {
   width: 100%;
+  overflow-x: auto;
   border-radius: 8px;
   border: var(--lm-border) solid 1px;
 }
