@@ -29,13 +29,10 @@ export class CadastroDeColaboradorComponent implements OnInit {
     private colaboradoresService: ColaboradoresService
   ) {
     this.cadastroForm = this.formBuilder.group({
-      confirmPassword: [''],
+      confirmPassword: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      fotoKey: [''],
-      fotoUrl: [''],
       nome: ['', Validators.required],
       password: ['', Validators.required],
-      permissao: [''],
       setor: ['', Validators.required]
     });
   }

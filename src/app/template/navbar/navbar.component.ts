@@ -6,6 +6,7 @@ import {
   Renderer2,
 } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -22,9 +23,19 @@ export class NavbarComponent implements OnInit {
   isSidebarOpen = false;
   isDropdownOpen = false;
 
-  constructor(private router: Router, private renderer: Renderer2) {}
+  nomeUsuario: string = 'Haroldo Andrade';
 
-  ngOnInit(): void {}
+  constructor(
+    private router: Router, 
+    private renderer: Renderer2,
+    private authService: AuthService,) {}
+
+  ngOnInit(): void {
+    this.authService.obterNomeUsuario().subscribe(
+      nome => this.nomeUsuario = nome,
+      err => console.error('Erro ao buscar nome do usuário', err)
+    );
+  }
 
   ngAfterViewInit(): void {
     if (!this.sidebar || !this.header || !this.content) {
@@ -79,6 +90,7 @@ export class NavbarComponent implements OnInit {
   }
 
   logout() {
+    this.authService.encerrarSessao();
     this.router.navigate(['/login']);
   }
 }

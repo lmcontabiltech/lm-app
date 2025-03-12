@@ -6,7 +6,15 @@
       <div class="body-login">
         
         <form class="container-input" (ngSubmit)="onSubmit()">
-          <div></div>
+          <div class="alerts">
+            <div class="alert alert-success" *ngIf="mensagemSucesso">
+              {{ mensagemSucesso }}
+            </div>
+
+            <div class="alert alert-danger" *ngFor="let erro of errors">
+                {{ erro }}
+            </div>
+          </div>
           <div class="form-group container-input">
             <label class="small mb-1">E-mail</label>
             <div class="input-group">
