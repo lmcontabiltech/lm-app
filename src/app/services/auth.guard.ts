@@ -20,7 +20,7 @@ export class AuthGuard implements CanActivate {
       const role = usuario.permissao;
   
       // Verifica se o usuário tem a permissão necessária
-      if (role === 'ROLE_ADMIN' || role === 'ROLE_COORDENADOR' || role === 'ROLE_COLABORADOR') {
+      if (role === 'ROLE_ADMIN' || role === 'ROLE_COORDENADOR' || role === 'ROLE_USER') {
         return true;
       }
     }

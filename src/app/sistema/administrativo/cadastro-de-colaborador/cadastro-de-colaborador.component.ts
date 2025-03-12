@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Setor } from './setor';
 import { SetorDescricao } from './setor-descricao';
 import { ColaboradoresService } from '../../../services/colaboradores.service';
-import { Usuario } from "../../../login/usuario"; 
+import { Usuario } from "../../../login/usuario";
 
 @Component({
   selector: 'app-cadastro-de-colaborador',
@@ -17,7 +17,6 @@ export class CadastroDeColaboradorComponent implements OnInit {
     description: SetorDescricao[Setor[key as keyof typeof Setor]]
   }));
 
-  // selectedSetor: string = '';
   cadastroForm!: FormGroup;
   isLoading = false;
   successMessage: string | null = null;
@@ -81,13 +80,11 @@ export class CadastroDeColaboradorComponent implements OnInit {
         this.successMessage = 'Usuário cadastrado com sucesso!';
         this.errorMessage = null;
         this.cadastroForm.reset();
-        console.debug('Usuário cadastrado com sucesso:', response);
       },
       error => {
         this.isLoading = false;
         this.errorMessage = 'Erro ao cadastrar usuário.';
         this.successMessage = null;
-        console.error('Erro ao cadastrar usuário:', error);
       }
     );
   }
