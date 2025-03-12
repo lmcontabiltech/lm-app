@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Setor } from './setor';
 import { SetorDescricao } from './setor-descricao';
+import { ColaboradoresService } from '../../../services/colaboradores.service';
+import { Usuario } from "../../../login/usuario"; 
 
 @Component({
   selector: 'app-cadastro-de-colaborador',
@@ -15,27 +18,59 @@ export class CadastroDeColaboradorComponent implements OnInit {
   }));
 
   selectedSetor: string = '';
-  nome: string = '';
-  email: string = '';
-  senha: string = '';
+  cadastroForm: FormGroup;
+  isLoading = false;
+  successMessage: string | null = null;
+  errorMessage: string | null = null;
 
   constructor(
-    private location: Location
-  ) { }
+    private location: Location,
+    private formBuilder: FormBuilder,
+    private colaboradoresService: ColaboradoresService
+  ) {
+    this.cadastroForm = this.formBuilder.group({
+      confirmPassword: [''],
+      email: ['', [Validators.required, Validators.email]],
+      fotoKey: [''],
+      fotoUrl: [''],
+      nome: ['', Validators.required],
+      password: ['', Validators.required],
+      permissao: [''],
+      setor: ['', Validators.required]
+    });
+  }
 
   ngOnInit(): void {
+    this.cadastroForm.get('setor')?.setValue(this.selectedSetor);
   }
 
   goBack() {
     this.location.back();
   }
 
-  onSubmit() {
-    console.log('Form Data:', {
-      nome: this.nome,
-      email: this.email,
-      senha: this.senha,
-      selectedSetor: this.selectedSetor
-    });
+  onSubmit(): void {
+    console.log('Formulário enviado');
+    this.isLoading = true;
+    this.successMessage = null;
+    this.errorMessage = null;
+    this.cadastroForm.get('setor')?.setValue(this.selectedSetor);
+
+    const usuario: Usuario = this.cadastroForm.value;
+    console.log('Dados do usuário a serem enviados:', usuario);
+
+    this.colaboradoresService.cadastrarUsuario(usuario).subscribe(
+      response => {
+        this.isLoading = false;
+        this.successMessage = 'Usuário cadastrado com sucesso!';
+        this.errorMessage = null;
+        console.debug('Usuário cadastrado com sucesso:', response);
+      },
+      error => {
+        this.isLoading = false;
+        this.errorMessage = 'Erro ao cadastrar usuário.';
+        this.successMessage = null;
+        console.error('Erro ao cadastrar usuário:', error);
+      }
+    );
   }
 }
