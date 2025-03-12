@@ -71,4 +71,20 @@ export class ColaboradoresComponent implements OnInit {
       }
     );
   }
+
+  deleteColaborador(id: string): void {
+    if (confirm('Tem certeza que deseja excluir este colaborador?')) {
+      this.colaboradoresService.deleteUsuarioById(id).subscribe(
+        () => {
+          this.colaboradores = this.colaboradores.filter(colaborador => colaborador.id !== id);
+          this.totalPaginas = Math.ceil(this.colaboradores.length / this.itensPorPagina);
+          this.atualizarPaginacao();
+          console.log('Colaborador excluído com sucesso');
+        },
+        (error: any) => {
+          console.error('Erro ao excluir colaborador:', error);
+        }
+      );
+    }
+  }
 }
