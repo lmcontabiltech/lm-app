@@ -40,7 +40,7 @@ import { ProcessosComponent } from './gerenciamento/processos/processos.componen
     SistemaRoutingModule, 
     FormsModule, 
     SharedModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
 })
 export class SistemaModule {}
