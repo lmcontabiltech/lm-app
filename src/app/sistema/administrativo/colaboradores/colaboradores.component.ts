@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Colaborador } from './colaborador';
 import { Setor } from '../cadastro-de-colaborador/setor';
+import { ColaboradoresService } from '../../../services/colaboradores.service';
 
 @Component({
   selector: 'app-colaboradores',
@@ -9,25 +10,19 @@ import { Setor } from '../cadastro-de-colaborador/setor';
   styleUrls: ['./colaboradores.component.css'],
 })
 export class ColaboradoresComponent implements OnInit {
-  colaboradores: Colaborador[] = [
-      { nome: 'Carla Américo', setor: Setor.PESSOAL, email: 'exemplo@exemplo.com' },
-      { nome: 'Darrell Steward', setor: Setor.FISCAL, email: 'exemplo@exemplo.com' },
-      { nome: 'Darlene Robertson', setor: Setor.CONTABIL, email: 'exemplo@exemplo.com' },
-      { nome: 'Kristin Watson', setor: Setor.PARALEGAL, email: 'exemplo@exemplo.com' },
-      { nome: 'Jacob Jones', setor: Setor.FINANCEIRO, email: 'exemplo@exemplo.com' },
-      { nome: 'Ralph Edwards', setor: Setor.PESSOAL, email: 'exemplo@exemplo.com' },
-      { nome: 'Annette Black', setor: Setor.FISCAL, email: 'exemplo@exemplo.com' },
-      { nome: 'Carla Américo', setor: Setor.PESSOAL, email: 'exemplo@exemplo.com' }
-    ];
-  
-    itensPorPagina = 5;
-    paginaAtual = 1;
-    totalPaginas = Math.ceil(this.colaboradores.length / this.itensPorPagina);
-    colaboradoresPaginados: Colaborador[] = [];
+  colaboradores: Colaborador[] = [];
+  itensPorPagina = 5;
+  paginaAtual = 1;
+  totalPaginas = Math.ceil(this.colaboradores.length / this.itensPorPagina);
+  colaboradoresPaginados: Colaborador[] = [];
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private colaboradoresService: ColaboradoresService
+  ) {}
 
   ngOnInit(): void {
+    this.fetchColaboradores();
     this.atualizarPaginacao();
   }
 
@@ -62,5 +57,18 @@ export class ColaboradoresComponent implements OnInit {
       this.paginaAtual++;
       this.atualizarPaginacao();
     }
+  }
+
+  fetchColaboradores(): void {
+    this.colaboradoresService.getUsuarios().subscribe(
+      (response: Colaborador[]) => {
+        this.colaboradores = response;
+        this.totalPaginas = Math.ceil(this.colaboradores.length / this.itensPorPagina);
+        this.atualizarPaginacao();
+      },
+      (error) => {
+        console.error('Erro ao buscar colaboradores:', error);
+      }
+    );
   }
 }
