@@ -32,7 +32,7 @@
                             <div class="perfil">
                                 <div class="avatar"></div>
                                 <span>
-                                    <a (click)="cadastrarColaborador()" >
+                                    <a (click)="openModalDeletar()" >
                                         {{ colaborador.nome }}
                                     </a>
                                 </span>
@@ -75,3 +75,6 @@
         </div>
     </div>
 </div>
+
+<!-- modal delete -->
+<app-modal-geral [show]="showModalDeletar" (closeModal)="closeModalDeletar()" size="max-w-7xl" [footer]="false"></app-modal-geral>
