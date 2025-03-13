@@ -99,9 +99,12 @@ export class AuthService {
   }
 
   
-  obterNomeUsuario(): Observable<string> {
-    return this.http.get<{ nome: string }>(`${this.apiURL}/nome`).pipe(
-      map(response => response.nome)  
+  obterPerfilUsuario(id: string): Observable<{ nome: string, permissao: string }> {
+    return this.http.get<{ nome: string, permissao: string }>(`${this.apiURL}/${id}`).pipe(
+      map(response => ({
+        nome: response.nome,
+        permissao: response.permissao
+      }))
     );
   }
 

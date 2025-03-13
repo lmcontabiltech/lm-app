@@ -2,13 +2,15 @@
   margin: 120px 32px 24px;
   max-width: 100%;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .title-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
 }
 
 .title-container h2 {
@@ -95,6 +97,32 @@
   margin: 0;
 }
 
+/* graficos */
+.graficos-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.duo-container {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+}
+
+.grafico {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 120px;
+  padding: 24px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  border: #bfc4de 1px solid;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.101);
+}
+
 @media screen and (max-width: 720px) {
   .main-container {
     margin: 100px 24px 16px;
@@ -103,6 +131,10 @@
   .cards-moedas,
   .cards-setores,
   .cards-infos {
+    flex-direction: column;
+  }
+
+  .duo-container {
     flex-direction: column;
   }
 }

@@ -6,6 +6,8 @@ import {
   Renderer2,
 } from '@angular/core';
 import { Router } from '@angular/router';
+import { Permissao } from 'src/app/login/permissao';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -22,9 +24,28 @@ export class NavbarComponent implements OnInit {
   isSidebarOpen = false;
   isDropdownOpen = false;
 
-  constructor(private router: Router, private renderer: Renderer2) {}
+  nomeUsuario: string = 'Haroldo Andrade';
+  permissao: string = 'Administrador';
+  id: string = '';
 
-  ngOnInit(): void {}
+  constructor(
+    private router: Router,
+    private renderer: Renderer2,
+    private authService: AuthService
+  ) {}
+
+  ngOnInit(): void {
+    // Obter o ID do usuário a partir do localStorage
+    this.id = localStorage.getItem('user_id') || '';
+
+    this.authService.obterPerfilUsuario(this.id).subscribe(
+      (response: { nome: string; permissao: string }) => {
+        this.nomeUsuario = response.nome;
+        this.permissao = response.permissao;
+      },
+      (err: any) => console.error('Erro ao buscar perfil do usuário', err)
+    );
+  }
 
   ngAfterViewInit(): void {
     if (!this.sidebar || !this.header || !this.content) {
@@ -41,13 +62,21 @@ export class NavbarComponent implements OnInit {
         this.renderer.addClass(this.header.nativeElement, 'left-pd');
         this.renderer.addClass(this.content.nativeElement, 'shifted');
         // 🔹 Ajusta a margem dinamicamente para 280px
-        this.renderer.setStyle(this.content.nativeElement, 'margin-left', '280px');
+        this.renderer.setStyle(
+          this.content.nativeElement,
+          'margin-left',
+          '280px'
+        );
       } else {
         this.renderer.removeClass(this.sidebar.nativeElement, 'show-sidebar');
         this.renderer.removeClass(this.header.nativeElement, 'left-pd');
         this.renderer.removeClass(this.content.nativeElement, 'shifted');
         // 🔹 Ajusta a margem dinamicamente para 90px
-        this.renderer.setStyle(this.content.nativeElement, 'margin-left', '90px');
+        this.renderer.setStyle(
+          this.content.nativeElement,
+          'margin-left',
+          '90px'
+        );
       }
     }
   }
@@ -76,5 +105,10 @@ export class NavbarComponent implements OnInit {
 
   isActive(route: string): boolean {
     return this.router.isActive(route, true);
+  }
+
+  logout() {
+    this.authService.encerrarSessao();
+    this.router.navigate(['/login']);
   }
 }

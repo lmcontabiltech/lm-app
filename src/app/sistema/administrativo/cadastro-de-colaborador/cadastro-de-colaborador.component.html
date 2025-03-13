@@ -5,10 +5,10 @@
     </div>
   
     <div class="forms-container">
-        <form (ngSubmit)="onSubmit()">
+        <form (ngSubmit)="onSubmit()" [formGroup]="cadastroForm">
             <div class="form-group">
                 <label for="nome">Nome</label>
-                <input type="text" id="nome" name="nome" [(ngModel)]="nome" class="form-control" placeholder="Digite" required>
+                <input type="text" id="nome" name="nome" formControlName="nome" class="form-control" placeholder="Digite" required>
             </div>
 
             <div class="form-group">
@@ -21,14 +21,19 @@
                 </app-select-padrao>
             </div>
 
+            <div class="form-group">
+                <label for="email">E-mail coorporativo</label>
+                <input type="text" id="email" name="email" formControlName="email" class="form-control" placeholder="Digite" required>
+            </div>
+
             <div class="input-duo">
                 <div class="form-group">
-                    <label for="email">E-mail coorporativo</label>
-                    <input type="text" id="email" name="email" [(ngModel)]="email" class="form-control" placeholder="Digite" required>
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" name="senha" formControlName="password" class="form-control" placeholder="Digite" required>
                 </div>
                 <div class="form-group">
-                    <label for="senha">Senha</label>
-                    <input type="password" id="senha" name="senha" [(ngModel)]="senha" class="form-control" placeholder="Digite" required>
+                    <label for="confirmaSenha">Confirme senha</label>
+                    <input type="password" id="confirmaSenha" name="confirmaSenha" formControlName="confirmPassword" class="form-control" placeholder="Digite" required>
                 </div>
             </div>
 
@@ -39,4 +44,8 @@
             </div>
         </form>
     </div>
+
+    <div *ngIf="isLoading">Carregando...</div>
+    <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
 </div>

@@ -459,3 +459,24 @@ select:focus {
 .align-items-center {
   align-items: center;
 }
+
+.alert {
+  padding: 12px 24px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+
+.alert-success {
+  background-color: var(--success);
+  color: var(--lm-branco);
+}
+
+.alert-warning {
+  background-color: var(--warning);
+  color: var(--lm-branco);
+}
+
+.alert-danger {
+  background-color: var(--danger);
+  color: var(--lm-branco);
+}

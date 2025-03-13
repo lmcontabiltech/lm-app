@@ -12,7 +12,7 @@ const routes: Routes = [
   { path: 'recuperacao-de-senha', component: ResetPasswordComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '', component: LayoutComponent, children: [
-    { path : 'usuario/painel-principal', component: PainelPrincipalComponent},
+    { path : 'usuario/painel-principal', component: PainelPrincipalComponent, canActivate: [AuthGuard] },
     { path: '', redirectTo: 'usuario/painel-principal', pathMatch: 'full' }
   ]}
 ];

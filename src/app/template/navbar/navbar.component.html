@@ -9,7 +9,7 @@
         <div class="usuario">
           <img src="assets/imagens/user-photo.png" alt="User Photo" class="user-photo" />
           <div class="user-info">
-            <h3 class="user-name">Haroldo Andrade</h3>
+            <h3 class="user-name">{{ nomeUsuario }}</h3>
             <span class="user-cargo">Administrador</span>
           </div>
         </div>
@@ -17,8 +17,8 @@
           <img src="assets/icones/seta-down-icon.svg" alt="Dropdown Icon" class="dropdown-icon" />
         </button>
         <div class="dropdown-menu" id="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
-          <a routerLink="/usuario/meu-perfil" class="dropdown-item">Meu perfil</a>
-          <a href="#" class="dropdown-item">Sair</a>
+          <button routerLink="/usuario/meu-perfil" class="dropdown-item">Meu perfil</button>
+          <button class="dropdown-item" (click)="logout()">Sair</button>
         </div>
       </div>
     </div>
