@@ -24,9 +24,15 @@ export class NavbarComponent implements OnInit {
   isSidebarOpen = false;
   isDropdownOpen = false;
 
-  nomeUsuario: string = 'Haroldo Andrade';
-  permissao: string = 'Administrador';
-  id: string = '';
+  nomeUsuario: string = '';
+  permissaoUsuario: string = '';
+
+   // Mapeamento das permissões para suas descrições
+   private permissaoDescricao: { [key: string]: string } = {
+    'ADMIN': 'Administrador',
+    'COORDENADOR': 'Coordenador',
+    'USER': 'Colaborador'
+  };
 
   constructor(
     private router: Router,
@@ -35,13 +41,11 @@ export class NavbarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Obter o ID do usuário a partir do localStorage
-    this.id = localStorage.getItem('user_id') || '';
-
-    this.authService.obterPerfilUsuario(this.id).subscribe(
+    this.authService.obterPerfilUsuario().subscribe(
       (response: { nome: string; permissao: string }) => {
         this.nomeUsuario = response.nome;
-        this.permissao = response.permissao;
+        const permissao = response.permissao;
+        this.permissaoUsuario = this.permissaoDescricao[permissao] || 'Permissão desconhecida';
       },
       (err: any) => console.error('Erro ao buscar perfil do usuário', err)
     );

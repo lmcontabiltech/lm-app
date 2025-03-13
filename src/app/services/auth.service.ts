@@ -99,12 +99,13 @@ export class AuthService {
   }
 
   
-  obterPerfilUsuario(id: string): Observable<{ nome: string, permissao: string }> {
-    return this.http.get<{ nome: string, permissao: string }>(`${this.apiURL}/${id}`).pipe(
-      map(response => ({
-        nome: response.nome,
-        permissao: response.permissao
-      }))
+  obterPerfilUsuario(): Observable<Usuario> {
+    return this.http.get<Usuario>(`${this.apiURL}/token`).pipe(
+      map((response) => response),
+      catchError((error: HttpErrorResponse) => {
+        console.error('Erro ao obter perfil do usuário:', error);
+        return throwError('Erro ao obter perfil do usuário. Por favor, tente novamente.');
+      })
     );
   }
 

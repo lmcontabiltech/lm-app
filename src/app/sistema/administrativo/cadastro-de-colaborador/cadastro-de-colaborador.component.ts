@@ -17,41 +17,32 @@ export class CadastroDeColaboradorComponent implements OnInit {
     description: SetorDescricao[Setor[key as keyof typeof Setor]]
   }));
 
-  cadastroForm!: FormGroup;
+  cadastroForm: FormGroup;
   isLoading = false;
   successMessage: string | null = null;
   errorMessage: string | null = null;
 
-  get selectedSetor(): string {
-    return this.cadastroForm.get('setor')?.value;
-  }
-  
-  set selectedSetor(value: string) {
-    this.cadastroForm.get('setor')?.setValue(value);
-  }
+  selectedSetor: string = '';
 
   constructor(
     private location: Location,
     private formBuilder: FormBuilder,
     private colaboradoresService: ColaboradoresService
-  ) {}
-
-  private initForm(): void {
+  ) {
     this.cadastroForm = this.formBuilder.group({
-      id: [''],
-      confirmPassword: ['', Validators.required],
+      confirmPassword: [''],
       email: ['', [Validators.required, Validators.email]],
-      nome: ['', Validators.required],
-      password: ['', Validators.required],
-      setor: ['', Validators.required],
-      permissao: [''],
       fotoKey: [''],
       fotoUrl: [''],
+      nome: ['', Validators.required],
+      password: ['', Validators.required],
+      permissao: [''],
+      setor: ['', Validators.required]
     });
   }
 
   ngOnInit(): void {
-    this.initForm();
+    this.cadastroForm.get('setor')?.setValue(this.selectedSetor);
   }
 
   goBack() {
@@ -59,19 +50,17 @@ export class CadastroDeColaboradorComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.cadastroForm.invalid) {
-      this.cadastroForm.markAllAsTouched();
-      this.errorMessage = 'Preencha todos os campos obrigatórios corretamente.';
-      return;
-    }
-
     console.log('Formulário enviado');
     this.isLoading = true;
     this.successMessage = null;
     this.errorMessage = null;
     this.cadastroForm.get('setor')?.setValue(this.selectedSetor);
 
-    const usuario: Usuario = this.cadastroForm.value;
+    const usuario: Usuario = {
+      ...this.cadastroForm.value,
+      setor: this.cadastroForm.get('setor')?.value || null,
+      permissao: this.cadastroForm.get('permissao')?.value || null
+    };
     console.log('Dados do usuário a serem enviados:', usuario);
 
     this.colaboradoresService.cadastrarUsuario(usuario).subscribe(
@@ -79,12 +68,13 @@ export class CadastroDeColaboradorComponent implements OnInit {
         this.isLoading = false;
         this.successMessage = 'Usuário cadastrado com sucesso!';
         this.errorMessage = null;
-        this.cadastroForm.reset();
+        console.debug('Usuário cadastrado com sucesso:', response);
       },
       error => {
         this.isLoading = false;
         this.errorMessage = 'Erro ao cadastrar usuário.';
         this.successMessage = null;
+        console.error('Erro ao cadastrar usuário:', error);
       }
     );
   }
