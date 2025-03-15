@@ -16,6 +16,8 @@ export class ColaboradoresComponent implements OnInit {
   totalPaginas = Math.ceil(this.colaboradores.length / this.itensPorPagina);
   colaboradoresPaginados: Colaborador[] = [];
 
+  showModalDeletar: boolean = false;
+
   constructor(
     private router: Router,
     private colaboradoresService: ColaboradoresService
@@ -86,5 +88,13 @@ export class ColaboradoresComponent implements OnInit {
         }
       );
     }
+  }
+
+  openModalDeletar() {
+    this.showModalDeletar  = true;
+  }
+
+  closeModalDeletar() {
+    this.showModalDeletar = false;
   }
 }

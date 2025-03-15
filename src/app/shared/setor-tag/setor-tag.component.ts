@@ -18,7 +18,7 @@ export class SetorTagComponent {
     if (this.setor === 'ALL') {
       return 'Todos os Setores';
     }
-    return this.setor ? SetorDescricao[this.setor] : '';
+    return this.setor ? SetorDescricao[this.setor] : 'Desconhecido';
   }
 
   get cor(): string {

@@ -10,7 +10,7 @@
           <img src="assets/imagens/user-photo.png" alt="User Photo" class="user-photo" />
           <div class="user-info">
             <h3 class="user-name">{{ nomeUsuario }}</h3>
-            <span class="user-cargo">Administrador</span>
+            <span class="user-cargo">{{ permissaoUsuario }}</span>
           </div>
         </div>
         <button #dropdownToggle (click)="toggleDropdown()" class="dropdown-toggle" id="dropdown-toggle">
