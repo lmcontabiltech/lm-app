@@ -54,6 +54,7 @@ export class CadastroDeColaboradorComponent implements OnInit {
       this.isEditMode = true;
       this.colaboradoresService.getUsuarioById(this.colaboradorId).subscribe(
         (usuario: Usuario) => {
+          console.log('Dados do colaborador recebidos:', usuario);
           this.cadastroForm.patchValue(usuario);
           this.selectedSetor = usuario.setor || '';
         },
