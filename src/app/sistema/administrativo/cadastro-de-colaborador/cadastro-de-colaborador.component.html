@@ -49,7 +49,7 @@
                 <input type="text" id="email" name="email" formControlName="email" class="form-control" placeholder="Digite" required>
             </div>
 
-            <div class="input-duo">
+            <div class="input-duo" *ngIf="!isEditMode">
                 <div class="form-group">
                     <label for="senha">Senha</label>
                     <input type="password" id="senha" name="senha" formControlName="password" class="form-control" placeholder="Digite" required>
