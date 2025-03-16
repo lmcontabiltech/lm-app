@@ -97,4 +97,8 @@ export class ColaboradoresComponent implements OnInit {
   closeModalDeletar() {
     this.showModalDeletar = false;
   }
+
+  editarColaborador(id: string): void {
+    this.router.navigate(['/usuario/cadastro-de-colaborador', id]);
+  }
 }

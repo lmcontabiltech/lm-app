@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Setor } from './setor';
 import { SetorDescricao } from './setor-descricao';
@@ -28,7 +29,8 @@ export class CadastroDeColaboradorComponent implements OnInit {
   constructor(
     private location: Location,
     private formBuilder: FormBuilder,
-    private colaboradoresService: ColaboradoresService
+    private colaboradoresService: ColaboradoresService,
+    private route: ActivatedRoute
   ) {
     this.cadastroForm = this.formBuilder.group({
       confirmPassword: [''],
@@ -44,6 +46,18 @@ export class CadastroDeColaboradorComponent implements OnInit {
 
   ngOnInit(): void {
     this.cadastroForm.get('setor')?.setValue(this.selectedSetor);
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.colaboradoresService.getUsuarioById(id).subscribe(
+        (usuario: Usuario) => {
+          this.cadastroForm.patchValue(usuario);
+          this.selectedSetor = usuario.setor || '';
+        },
+        (error) => {
+          console.error('Erro ao carregar os dados do colaborador:', error);
+        }
+      );
+    }
   }
 
   goBack() {

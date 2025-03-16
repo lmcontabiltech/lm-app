@@ -44,7 +44,7 @@
                         <td>{{ colaborador.email }}</td>
                         <td>
                             <div class="container-acoes">
-                                <button class="btn-acao edit">
+                                <button class="btn-acao edit" (click)="editarColaborador(colaborador.id)">
                                     <img src="assets/icones/edit.svg" alt="Editar">
                                     Editar
                                 </button>
