@@ -23,6 +23,7 @@ export class CadastroDeColaboradorComponent implements OnInit {
   errorMessage: string | null = null;
 
   selectedSetor: string = '';
+  permissao: string = 'USER';
 
   constructor(
     private location: Location,
@@ -36,7 +37,7 @@ export class CadastroDeColaboradorComponent implements OnInit {
       fotoUrl: [''],
       nome: ['', Validators.required],
       password: ['', Validators.required],
-      permissao: [''],
+      permissao: ['USER', Validators.required],
       setor: ['', Validators.required]
     });
   }

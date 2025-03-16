@@ -22,6 +22,20 @@
             </div>
 
             <div class="form-group">
+                <label>Permissão</label>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="colaborador" name="permissao" value="USER" formControlName="permissao" checked>
+                        <label for="colaborador">Colaborador</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="coordenador" name="permissao" value="COORDENADOR" formControlName="permissao">
+                        <label for="coordenador">Coordenador</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
                 <label for="email">E-mail coorporativo</label>
                 <input type="text" id="email" name="email" formControlName="email" class="form-control" placeholder="Digite" required>
             </div>
