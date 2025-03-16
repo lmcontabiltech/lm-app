@@ -30,4 +30,21 @@ export class EmpresasService {
       })
     );
   }
+
+  getEmpresas(): Observable<Empresa[]> {
+    return this.http.get<Empresa[]>(this.apiURL).pipe(
+      map((response) => response),
+      catchError((error) => {
+        let errorMessage = 'Erro ao buscar as empresas.';
+
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
 }
