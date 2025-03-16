@@ -1,7 +1,7 @@
 <div class="main-container">
     <div class="back-title">
         <img src="assets/icones/back-left.svg" alt="Back" class="back-icon" (click)="goBack()">
-        <span>Cadastrar colaborador</span>
+        <span>{{ isEditMode ? 'Editar colaborador' : 'Cadastrar colaborador' }}</span>
     </div>
   
     <div class="forms-container">
@@ -53,7 +53,7 @@
 
             <div class="container-btn">
                 <button type="submit" class="btn-cadastrar">
-                    Cadastrar colaborador
+                    {{ isEditMode ? 'Atualizar colaborador' : 'Cadastrar colaborador' }}
                 </button>
             </div>
         </form>
