@@ -8,6 +8,8 @@
         <div class="filtro-container">
             <app-select-padrao
                   label="Todos os setores"
+                  [options]="setores"
+                  [(selectedValue)]="selectedSetor"
                   [customStyles]="{'background': '#FFFFFF'}">
             </app-select-padrao>
 
