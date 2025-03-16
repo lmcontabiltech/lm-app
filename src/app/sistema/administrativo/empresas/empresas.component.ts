@@ -8,16 +8,7 @@ import { Empresa } from './empresa';
   styleUrls: ['./empresas.component.css']
 })
 export class EmpresasComponent implements OnInit {
-  empresas: Empresa[] = [
-    { razaoSocial: 'J. Erivaldo e Cia LTDA', cnpj: '06.001.044/0001-12', codQuestor: '000000', regimeEmpresa: 'Lucro Real' },
-    { razaoSocial: 'J. Erivaldo e Cia LTDA', cnpj: '06.001.044/0001-12', codQuestor: '000000', regimeEmpresa: 'Lucro Real' },
-    { razaoSocial: 'J. Erivaldo e Cia LTDA', cnpj: '06.001.044/0001-12', codQuestor: '000000', regimeEmpresa: 'Lucro Real' },
-    { razaoSocial: 'J. Erivaldo e Cia LTDA', cnpj: '06.001.044/0001-12', codQuestor: '000000', regimeEmpresa: 'Lucro Real' },
-    { razaoSocial: 'J. Erivaldo e Cia LTDA', cnpj: '06.001.044/0001-12', codQuestor: '000000', regimeEmpresa: 'Lucro Real' },
-    { razaoSocial: 'J. Erivaldo e Cia LTDA', cnpj: '06.001.044/0001-12', codQuestor: '000000', regimeEmpresa: 'Lucro Real' },
-    { razaoSocial: 'J. Erivaldo e Cia LTDA', cnpj: '06.001.044/0001-12', codQuestor: '000000', regimeEmpresa: 'Lucro Real' },
-    { razaoSocial: 'J. Erivaldo e Cia LTDA', cnpj: '06.001.044/0001-12', codQuestor: '000000', regimeEmpresa: 'Lucro Real' }
-  ];
+  empresas: Empresa[] = [];
 
   itensPorPagina = 5;
   paginaAtual = 1;

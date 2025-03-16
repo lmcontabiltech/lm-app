@@ -5,25 +5,25 @@
     </div>
   
     <div class="forms-container">
-        <form>
+        <form (ngSubmit)="onSubmit()" [formGroup]="empresaForm">
             <div class="form-group">
                 <label for="razaoSocial">Razão social</label>
-                <input type="text" id="razaoSocial" name="razaoSocial" class="form-control" placeholder="Digite" required>
+                <input type="text" id="razaoSocial" name="razaoSocial" formControlName="razaoSocial" class="form-control" placeholder="Digite" required>
             </div>
 
             <div class="form-group">
                 <label for="cnpj">CNPJ</label>
-                <input type="text" id="cnpj" name="cnpj" class="form-control" placeholder="Digite" required>
+                <input type="text" id="cnpj" name="cnpj" formControlName="cnpj" class="form-control" placeholder="Digite" required>
             </div>
 
             <div class="form-group">
                 <label for="codEmpresa">Código da empresa no Questor</label>
-                <input type="text" id="codEmpresa" name="codEmpresa" class="form-control" placeholder="Digite" required>
+                <input type="text" id="codEmpresa" name="codEmpresa" formControlName="codQuestor" class="form-control" placeholder="Digite" required>
             </div>
 
             <div class="form-group">
                 <label for="regimeEmpresa">Regime da empresa</label>
-                <input type="text" id="regimeEmpresa" name="regimeEmpresa" class="form-control" placeholder="Digite" required>
+                <input type="text" id="regimeEmpresa" name="regimeEmpresa" formControlName="regimeEmpresa" class="form-control" placeholder="Digite" required>
             </div>
 
             <div class="container-btn">
@@ -33,4 +33,8 @@
             </div>
         </form>
     </div>
+
+    <div *ngIf="isLoading">Carregando...</div>
+    <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
 </div>
