@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Setor } from './setor';
 import { SetorDescricao } from './setor-descricao';
@@ -21,13 +22,18 @@ export class CadastroDeColaboradorComponent implements OnInit {
   isLoading = false;
   successMessage: string | null = null;
   errorMessage: string | null = null;
+  isEditMode = false;
+  colaboradorId: string | null = null;
 
   selectedSetor: string = '';
+  permissao: string = 'USER';
 
   constructor(
     private location: Location,
     private formBuilder: FormBuilder,
-    private colaboradoresService: ColaboradoresService
+    private colaboradoresService: ColaboradoresService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.cadastroForm = this.formBuilder.group({
       confirmPassword: [''],
@@ -36,13 +42,27 @@ export class CadastroDeColaboradorComponent implements OnInit {
       fotoUrl: [''],
       nome: ['', Validators.required],
       password: ['', Validators.required],
-      permissao: [''],
+      permissao: ['USER', Validators.required],
       setor: ['', Validators.required]
     });
   }
 
   ngOnInit(): void {
     this.cadastroForm.get('setor')?.setValue(this.selectedSetor);
+    this.colaboradorId = this.route.snapshot.paramMap.get('id');
+    if (this.colaboradorId) {
+      this.isEditMode = true;
+      this.colaboradoresService.getUsuarioById(this.colaboradorId).subscribe(
+        (usuario: Usuario) => {
+          console.log('Dados do colaborador recebidos:', usuario);
+          this.cadastroForm.patchValue(usuario);
+          this.selectedSetor = usuario.setor || '';
+        },
+        (error) => {
+          console.error('Erro ao carregar os dados do colaborador:', error);
+        }
+      );
+    }
   }
 
   goBack() {
@@ -63,19 +83,38 @@ export class CadastroDeColaboradorComponent implements OnInit {
     };
     console.log('Dados do usuário a serem enviados:', usuario);
 
-    this.colaboradoresService.cadastrarUsuario(usuario).subscribe(
-      response => {
-        this.isLoading = false;
-        this.successMessage = 'Usuário cadastrado com sucesso!';
-        this.errorMessage = null;
-        console.debug('Usuário cadastrado com sucesso:', response);
-      },
-      error => {
-        this.isLoading = false;
-        this.errorMessage = 'Erro ao cadastrar usuário.';
-        this.successMessage = null;
-        console.error('Erro ao cadastrar usuário:', error);
-      }
-    );
+    if (this.isEditMode && this.colaboradorId) {
+      this.colaboradoresService.atualizarUsuario(this.colaboradorId, usuario).subscribe(
+        response => {
+          this.isLoading = false;
+          this.successMessage = 'Usuário atualizado com sucesso!';
+          this.errorMessage = null;
+          this.router.navigate(['/usuario/colaboradores']);
+          console.debug('Usuário atualizado com sucesso:', response);
+        },
+        error => {
+          this.isLoading = false;
+          this.errorMessage = 'Erro ao atualizar usuário.';
+          this.successMessage = null;
+          console.error('Erro ao atualizar usuário:', error);
+        }
+      );
+    } else {
+      this.colaboradoresService.cadastrarUsuario(usuario).subscribe(
+        response => {
+          this.isLoading = false;
+          this.successMessage = 'Usuário cadastrado com sucesso!';
+          this.errorMessage = null;
+          this.cadastroForm.reset();
+          console.debug('Usuário cadastrado com sucesso:', response);
+        },
+        error => {
+          this.isLoading = false;
+          this.errorMessage = 'Erro ao cadastrar usuário.';
+          this.successMessage = null;
+          console.error('Erro ao cadastrar usuário:', error);
+        }
+      );
+    }
   }
 }

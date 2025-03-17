@@ -86,6 +86,31 @@ form {
   gap: 40px;
 }
 
+/* radio btn */
+.radio-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.radio-group input[type="radio"] {
+  width: 24px;
+  height: 24px;
+}
+
+.radio-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Alertas */
+.alerts-container {
+  padding: 12px 24px;
+  border-radius: 8px;
+  margin-top: 24px;
+}
+
 /* Breakpoints */
 @media (min-width: 1200px) {
   .main-container {

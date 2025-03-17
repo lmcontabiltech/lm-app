@@ -29,7 +29,9 @@ const routes: Routes = [
       { path: 'colaboradores', component: ColaboradoresComponent},
       { path: 'empresas', component: EmpresasComponent},
       { path: 'cadastro-de-colaborador', component: CadastroDeColaboradorComponent},
+      { path: 'cadastro-de-colaborador/:id', component: CadastroDeColaboradorComponent},
       { path: 'cadastro-de-empresa', component: CadastroDeEmpresaComponent},
+      { path: 'cadastro-de-empresa/:id', component: CadastroDeEmpresaComponent},
 
       { path: 'atividades', component: AtividadesComponent},
       { path: 'chat', component: ChatComponent},

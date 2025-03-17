@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Colaborador } from './colaborador';
 import { Setor } from '../cadastro-de-colaborador/setor';
+import { SetorDescricao } from '../cadastro-de-colaborador/setor-descricao';
 import { ColaboradoresService } from '../../../services/colaboradores.service';
 
 @Component({
@@ -10,12 +11,18 @@ import { ColaboradoresService } from '../../../services/colaboradores.service';
   styleUrls: ['./colaboradores.component.css'],
 })
 export class ColaboradoresComponent implements OnInit {
+  setores = Object.keys(Setor).map(key => ({
+      value: Setor[key as keyof typeof Setor],
+      description: SetorDescricao[Setor[key as keyof typeof Setor]]
+   }));
+
   colaboradores: Colaborador[] = [];
   itensPorPagina = 5;
   paginaAtual = 1;
   totalPaginas = Math.ceil(this.colaboradores.length / this.itensPorPagina);
   colaboradoresPaginados: Colaborador[] = [];
 
+    selectedSetor: string = '';
   showModalDeletar: boolean = false;
 
   constructor(
@@ -96,5 +103,9 @@ export class ColaboradoresComponent implements OnInit {
 
   closeModalDeletar() {
     this.showModalDeletar = false;
+  }
+
+  editarColaborador(id: string): void {
+    this.router.navigate(['/usuario/cadastro-de-colaborador', id]);
   }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Empresa } from './empresa';
+import { EmpresasService } from '../../../services/empresas.service';
 
 @Component({
   selector: 'app-empresas',
@@ -8,16 +9,7 @@ import { Empresa } from './empresa';
   styleUrls: ['./empresas.component.css']
 })
 export class EmpresasComponent implements OnInit {
-  empresas: Empresa[] = [
-    { razaoSocial: 'J. Erivaldo e Cia LTDA', cnpj: '06.001.044/0001-12', codQuestor: '000000', regimeEmpresa: 'Lucro Real' },
-    { razaoSocial: 'J. Erivaldo e Cia LTDA', cnpj: '06.001.044/0001-12', codQuestor: '000000', regimeEmpresa: 'Lucro Real' },
-    { razaoSocial: 'J. Erivaldo e Cia LTDA', cnpj: '06.001.044/0001-12', codQuestor: '000000', regimeEmpresa: 'Lucro Real' },
-    { razaoSocial: 'J. Erivaldo e Cia LTDA', cnpj: '06.001.044/0001-12', codQuestor: '000000', regimeEmpresa: 'Lucro Real' },
-    { razaoSocial: 'J. Erivaldo e Cia LTDA', cnpj: '06.001.044/0001-12', codQuestor: '000000', regimeEmpresa: 'Lucro Real' },
-    { razaoSocial: 'J. Erivaldo e Cia LTDA', cnpj: '06.001.044/0001-12', codQuestor: '000000', regimeEmpresa: 'Lucro Real' },
-    { razaoSocial: 'J. Erivaldo e Cia LTDA', cnpj: '06.001.044/0001-12', codQuestor: '000000', regimeEmpresa: 'Lucro Real' },
-    { razaoSocial: 'J. Erivaldo e Cia LTDA', cnpj: '06.001.044/0001-12', codQuestor: '000000', regimeEmpresa: 'Lucro Real' }
-  ];
+  empresas: Empresa[] = [];
 
   itensPorPagina = 5;
   paginaAtual = 1;
@@ -25,10 +17,12 @@ export class EmpresasComponent implements OnInit {
   empresasPaginados: Empresa[] = [];
 
   constructor(
-    private router: Router
+    private router: Router,
+    private empresasService: EmpresasService
   ) { }
 
   ngOnInit(): void {
+    this.fetchEmpresas();
     this.atualizarPaginacao();
   }
 
@@ -38,6 +32,19 @@ export class EmpresasComponent implements OnInit {
 
   onSearch(searchTerm: string) {
     console.log('Search term:', searchTerm);
+  }
+
+  fetchEmpresas(): void {
+    this.empresasService.getEmpresas().subscribe(
+      (empresas: Empresa[]) => {
+        this.empresas = empresas;
+        this.totalPaginas = Math.ceil(this.empresas.length / this.itensPorPagina);
+        this.atualizarPaginacao();
+      },
+      (error) => {
+        console.error('Erro ao carregar empresas:', error);
+      }
+    );
   }
 
   atualizarPaginacao(): void {
