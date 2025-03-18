@@ -18,6 +18,7 @@ import { SharedModule } from '../shared/shared.module';
 import { ForumDeNoticiaComponent } from './gerenciamento/forum-de-noticia/forum-de-noticia.component';
 import { ProcessosComponent } from './gerenciamento/processos/processos.component';
 
+
 @NgModule({
   declarations: [
     PainelPrincipalComponent,

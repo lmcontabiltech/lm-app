@@ -1,7 +1,7 @@
 .main-container {
   margin: 120px 32px 24px;
   max-width: 100%;
-  background: #ffffff;
+  background: var(--form-background);
   border-radius: 24px;
   padding: 32px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

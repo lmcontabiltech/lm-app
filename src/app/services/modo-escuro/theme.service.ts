@@ -1,0 +1,94 @@
+import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ThemeService {
+
+  private darkMode: boolean = false;
+
+  constructor() {
+    const savedDarkMode = localStorage.getItem('darkMode');
+    if (savedDarkMode !== null) {
+      this.darkMode = JSON.parse(savedDarkMode);
+    } else {
+      // this.darkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      this.darkMode = false; // Default do light mode
+    }
+    console.log('Constructor - Dark Mode:', this.darkMode); 
+    this.loadTheme(this.darkMode);
+  }
+
+  getVariableColors(darkMode: boolean = true) {
+    let lmBg: string, primaryFont: string, secondaryFont: string, 
+        primaryButton: string, sidebar: string, formBackground: string, 
+        containerBG: string, inputs: string, borda: string;
+
+    if (darkMode) {
+      // default dark mode
+      lmBg = "#010409";
+      primaryFont = "#FFFFFF";
+      secondaryFont = "#FFFFFF";
+      primaryButton = "#5ea828";
+      sidebar = "000000";
+      formBackground = "#0D1117";
+      containerBG = "#0D1117";
+      inputs = "#F9F9F9";
+      borda = "#37383c";
+    } else {
+      // light mode
+      lmBg = "#e4e5eb";
+      primaryFont = "#37383c";
+      secondaryFont = "#1a1918";
+      primaryButton = "#5ea828";
+      sidebar = "#F9F9F9";
+      formBackground = "#FFFFFF";
+      containerBG = "#FFFFFF";
+      inputs = "#37383c";
+      borda = "#ced4da";
+    }
+    return {
+      "lmBg": lmBg,
+      "primaryFont": primaryFont,
+      "secondaryFont": secondaryFont,
+      "primaryButton": primaryButton,
+      "sidebar": sidebar,
+      "formBackground": formBackground,
+      "containerBG": containerBG,
+      "inputs": inputs,
+      "borda": borda,
+    };
+  }
+
+  getTheme(darkMode: boolean) {
+    const variableColors = this.getVariableColors(darkMode);
+
+    return {
+      variableColors
+    };
+  }
+
+  loadTheme(darkMode: boolean = true): void {
+    this.darkMode = darkMode;
+    let theme = this.getTheme(darkMode);
+    const root = document.documentElement;
+
+    // cores variaveis
+    root.style.setProperty('--lm-background', theme.variableColors.lmBg);
+    root.style.setProperty('--lm-text', theme.variableColors.primaryFont);
+    root.style.setProperty('--lm-text02', theme.variableColors.secondaryFont);
+    root.style.setProperty('--primary-button', theme.variableColors.primaryButton);
+    root.style.setProperty('--lm-sidebar-bg', theme.variableColors.sidebar);
+    root.style.setProperty('--form-background', theme.variableColors.formBackground);
+    root.style.setProperty('--form-background', theme.variableColors.containerBG);
+    root.style.setProperty('--lm-border02', theme.variableColors.borda);
+  }
+
+  isDarkMode(): boolean {
+    return this.darkMode;
+  }
+
+  toggleDarkMode(): void {
+    this.loadTheme(!this.darkMode);
+  }
+}
