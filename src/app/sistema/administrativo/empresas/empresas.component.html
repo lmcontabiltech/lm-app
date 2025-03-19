@@ -15,8 +15,8 @@
             </div>
         </div>
 
-        <div class="tabela-container">
-            <table>
+        <div [ngClass]="{'tabela-container': true, 'no-data': empresasPaginados.length === 0}">
+            <table *ngIf="empresasPaginados.length > 0; else noDataTemplate">
                 <thead>
                     <tr>
                         <th>Razão social</th>
@@ -56,6 +56,12 @@
                     </tr>
                 </tbody>
             </table>
+            <ng-template #noDataTemplate>
+                <div class="no-data-message">
+                    <img src="assets/imagens/no-data.svg" alt="Sem dados">
+                    <p>Não há empresas cadastradas.</p>
+                </div>
+            </ng-template>
         </div>
 
         <div class="paginacao">

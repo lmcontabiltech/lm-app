@@ -17,8 +17,8 @@
             </div>
         </div>
 
-        <div class="tabela-container">
-            <table>
+        <div [ngClass]="{'tabela-container': true, 'no-data': colaboradoresPaginados.length === 0}">
+            <table *ngIf="colaboradoresPaginados.length > 0; else noDataTemplate">
                 <thead>
                     <tr>
                         <th>Nome</th>
@@ -58,6 +58,12 @@
                     </tr>
                 </tbody>
             </table>
+            <ng-template #noDataTemplate>
+                <div class="no-data-message">
+                    <img src="assets/imagens/no-data.svg" alt="Sem dados">
+                    <p>Não há colaboradores cadastrados.</p>
+                </div>
+            </ng-template>
         </div>
 
         <div class="paginacao">
@@ -78,4 +84,4 @@
 </div>
 
 <!-- modal delete -->
-<app-modal-geral [show]="showModalDeletar" (closeModal)="closeModalDeletar()" size="max-w-7xl" [footer]="false"></app-modal-geral>
+<!-- <app-modal-geral [show]="showModalDeletar" (closeModal)="closeModalDeletar()" size="max-w-7xl" [footer]="false"></app-modal-geral> -->

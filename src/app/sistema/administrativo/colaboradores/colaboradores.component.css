@@ -58,6 +58,10 @@
   border: var(--lm-border) solid 1px;
 }
 
+.tabela-container.no-data {
+  border: none;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
