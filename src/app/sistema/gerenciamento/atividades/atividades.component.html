@@ -1,1 +1,20 @@
-<p>atividades works!</p>
+<div class="main-container">
+  <div class="kanban-board">
+    <div class="kanban-column" *ngFor="let status of statuses">
+        <h3>{{ statusLabels[status] }}</h3>
+
+      <div
+        cdkDropList
+        [id]="status"
+        [cdkDropListData]="tasks[status]"
+        [cdkDropListConnectedTo]="statuses"
+        class="task-list"
+        (cdkDropListDropped)="drop($event)"
+      >
+        <div class="task-card" *ngFor="let task of tasks[status]" cdkDrag>
+          {{ task.title }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

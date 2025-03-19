@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { SistemaRoutingModule } from './sistema-routing.module';
 import { PainelPrincipalComponent } from './painel-principal/painel-principal.component';
@@ -44,6 +45,7 @@ import { ProcessosComponent } from './gerenciamento/processos/processos.componen
     SharedModule,
     ReactiveFormsModule,
     NgxMaskModule.forRoot(),
+    DragDropModule
   ],
 })
 export class SistemaModule {}
