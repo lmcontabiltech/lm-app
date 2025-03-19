@@ -23,7 +23,8 @@ export class ThemeService {
     let lmBg: string, primaryFont: string, secondaryFont: string, 
         primaryButton: string, sidebar: string, formBackground: string, 
         containerBG: string, inputs: string, borda: string,
-        modalBG: string, tabelaBG: string, tabelaChild: string;
+        modalBG: string, tabelaBG: string, tabelaChild: string,
+        borda02: string, borda03: string;
 
     if (darkMode) {
       // default dark mode
@@ -36,6 +37,8 @@ export class ThemeService {
       containerBG = "#0D1117";
       inputs = "#F9F9F9";
       borda = "#37383c";
+      borda02 = "#37383c";
+      borda03 = "#37383c";
       modalBG = "#151B23";
       tabelaBG = "#151B23";
       tabelaChild = "#212a36";
@@ -50,6 +53,8 @@ export class ThemeService {
       containerBG = "#FFFFFF";
       inputs = "#37383c";
       borda = "#ced4da";
+      borda02 = "#e0e0e0";
+      borda03 = "#bfc4de";
       modalBG = "#FFFFFF";
       tabelaBG = "#ffffff";
       tabelaChild = "#fafafa";
@@ -66,7 +71,9 @@ export class ThemeService {
       "borda": borda,
       "modalBG": modalBG,
       "tabelaBG": tabelaBG,
-      "tabelaChild": tabelaChild
+      "tabelaChild": tabelaChild,
+      "borda02": borda02,
+      "borda03": borda03
     };
   }
 
@@ -91,7 +98,9 @@ export class ThemeService {
     root.style.setProperty('--lm-sidebar-bg', theme.variableColors.sidebar);
     root.style.setProperty('--form-background', theme.variableColors.formBackground);
     root.style.setProperty('--container-background', theme.variableColors.containerBG);
-    root.style.setProperty('--lm-border02', theme.variableColors.borda);
+    root.style.setProperty('--lm-border', theme.variableColors.borda);
+    root.style.setProperty('--lm-border02', theme.variableColors.borda02);
+    root.style.setProperty('--lm-border03', theme.variableColors.borda03);
     root.style.setProperty('--container-modal', theme.variableColors.modalBG);
     root.style.setProperty('--table', theme.variableColors.tabelaBG);
     root.style.setProperty('--table-child', theme.variableColors.tabelaChild);
