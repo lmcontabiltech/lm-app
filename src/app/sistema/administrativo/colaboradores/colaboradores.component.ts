@@ -69,7 +69,7 @@ export class ColaboradoresComponent implements OnInit {
   }
 
   fetchColaboradores(): void {
-    this.colaboradoresService.getUsuarios().subscribe(
+    this.colaboradoresService.getUsuariosNonAdmin().subscribe(
       (response: Colaborador[]) => {
         this.colaboradores = response;
         this.totalPaginas = Math.ceil(this.colaboradores.length / this.itensPorPagina);

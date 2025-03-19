@@ -65,6 +65,24 @@ export class ColaboradoresService {
     );
   }
 
+  getUsuariosNonAdmin(): Observable<Usuario[]> {
+    const url = `${this.apiURL}/usuarios-non-admin`;
+    return this.http.get<Usuario[]>(url).pipe(
+      map((response) => response),
+      catchError((error) => {
+        let errorMessage = 'Erro ao buscar os usuários não administradores.';
+  
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
   deleteUsuarioById(id: string): Observable<void> {
     const url = `${this.apiURL}/${id}`;
     return this.http.delete<void>(url).pipe(
