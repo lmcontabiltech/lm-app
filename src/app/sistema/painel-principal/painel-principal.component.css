@@ -15,7 +15,7 @@
 
 .title-container h2 {
   font-size: 24px;
-  color: #37383c;
+  color: var(--lm-text);
 }
 
 .cards-container {
@@ -40,9 +40,9 @@
   width: 100%;
   min-height: 120px;
   padding: 24px;
-  background-color: #ffffff;
+  background: var(--container-background);
   border-radius: 8px;
-  border: #bfc4de 1px solid;
+  border: var(--lm-border03) 1px solid;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.101);
 }
 
@@ -81,7 +81,7 @@
 }
 
 .cards-setores label {
-  color: #37383c;
+  color: var(--lm-text);
   font-size: 12px;
 }
 
@@ -92,7 +92,7 @@
 }
 
 .cards-infos p {
-  color: #37383c;
+  color: var(--lm-text);
   font-size: 14px;
   margin: 0;
 }
@@ -117,9 +117,9 @@
   width: 100%;
   min-height: 120px;
   padding: 24px;
-  background-color: #ffffff;
+  background: var(--container-background);
   border-radius: 8px;
-  border: #bfc4de 1px solid;
+  border: var(--lm-border03) 1px solid;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.101);
 }
 
