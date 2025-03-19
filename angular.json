@@ -26,7 +26,11 @@
               "src/custom-theme.scss",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "@auth0/angular-jwt",
+              "apexcharts"
+            ]
           },
           "configurations": {
             "production": {
