@@ -28,8 +28,11 @@
   flex-direction: column;
 }
 
-.kanban-column.empty-column {
-  height: 120px;
+.kanban-column h3 {
+  font-size: 16px;
+  color: var(--lm-text);
+  font-weight: 500;
+  margin-bottom: 16px;
 }
 
 .task-list {
