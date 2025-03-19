@@ -54,8 +54,12 @@ html {
   /* container background */
   --form-background: #ffffff;
   --container-background: #ffffff;
+  --container-modal: #ffffff;
   /* inputs */
   --bg-input: #ffffff;
+  /* tabela */
+  --table: #ffffff;
+  --table-child: #fafafa;
 }
 
 article,

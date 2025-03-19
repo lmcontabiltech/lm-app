@@ -22,7 +22,8 @@ export class ThemeService {
   getVariableColors(darkMode: boolean = true) {
     let lmBg: string, primaryFont: string, secondaryFont: string, 
         primaryButton: string, sidebar: string, formBackground: string, 
-        containerBG: string, inputs: string, borda: string;
+        containerBG: string, inputs: string, borda: string,
+        modalBG: string, tabelaBG: string, tabelaChild: string;
 
     if (darkMode) {
       // default dark mode
@@ -30,11 +31,14 @@ export class ThemeService {
       primaryFont = "#FFFFFF";
       secondaryFont = "#FFFFFF";
       primaryButton = "#5ea828";
-      sidebar = "000000";
+      sidebar = "#0D1117";
       formBackground = "#0D1117";
       containerBG = "#0D1117";
       inputs = "#F9F9F9";
       borda = "#37383c";
+      modalBG = "#151B23";
+      tabelaBG = "#151B23";
+      tabelaChild = "#212a36";
     } else {
       // light mode
       lmBg = "#e4e5eb";
@@ -46,6 +50,9 @@ export class ThemeService {
       containerBG = "#FFFFFF";
       inputs = "#37383c";
       borda = "#ced4da";
+      modalBG = "#FFFFFF";
+      tabelaBG = "#ffffff";
+      tabelaChild = "#fafafa";
     }
     return {
       "lmBg": lmBg,
@@ -57,6 +64,9 @@ export class ThemeService {
       "containerBG": containerBG,
       "inputs": inputs,
       "borda": borda,
+      "modalBG": modalBG,
+      "tabelaBG": tabelaBG,
+      "tabelaChild": tabelaChild
     };
   }
 
@@ -80,8 +90,11 @@ export class ThemeService {
     root.style.setProperty('--primary-button', theme.variableColors.primaryButton);
     root.style.setProperty('--lm-sidebar-bg', theme.variableColors.sidebar);
     root.style.setProperty('--form-background', theme.variableColors.formBackground);
-    root.style.setProperty('--form-background', theme.variableColors.containerBG);
+    root.style.setProperty('--container-background', theme.variableColors.containerBG);
     root.style.setProperty('--lm-border02', theme.variableColors.borda);
+    root.style.setProperty('--container-modal', theme.variableColors.modalBG);
+    root.style.setProperty('--table', theme.variableColors.tabelaBG);
+    root.style.setProperty('--table-child', theme.variableColors.tabelaChild);
   }
 
   isDarkMode(): boolean {
