@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgxMaskModule, IConfig } from 'ngx-mask';
 
 import { SistemaRoutingModule } from './sistema-routing.module';
 import { PainelPrincipalComponent } from './painel-principal/painel-principal.component';
@@ -42,6 +43,7 @@ import { ProcessosComponent } from './gerenciamento/processos/processos.componen
     FormsModule, 
     SharedModule,
     ReactiveFormsModule,
+    NgxMaskModule.forRoot(),
   ],
 })
 export class SistemaModule {}
