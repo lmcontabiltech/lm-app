@@ -29,7 +29,7 @@ export class AtividadesComponent implements OnInit {
   };
 
   tasks: Tasks = {
-    backlog: [{ title: 'Tarefa 1' }, { title: 'Tarefa 2' }],
+    backlog: [{ title: 'Tarefa 1' }, { title: 'Tarefa 2' }, { title: 'Tarefa 3' }, { title: 'Tarefa 4' }, { title: 'Tarefa 5' }, { title: 'Tarefa 6' }],
     emProgresso: [],
     revisao: [],
     concluido: [],
