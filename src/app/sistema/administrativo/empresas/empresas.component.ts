@@ -6,11 +6,10 @@ import { EmpresasService } from '../../../services/empresas.service';
 @Component({
   selector: 'app-empresas',
   templateUrl: './empresas.component.html',
-  styleUrls: ['./empresas.component.css']
+  styleUrls: ['./empresas.component.css'],
 })
 export class EmpresasComponent implements OnInit {
   empresas: Empresa[] = [];
-
   itensPorPagina = 5;
   paginaAtual = 1;
   totalPaginas = Math.ceil(this.empresas.length / this.itensPorPagina);
@@ -19,7 +18,7 @@ export class EmpresasComponent implements OnInit {
   constructor(
     private router: Router,
     private empresasService: EmpresasService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.fetchEmpresas();
@@ -27,7 +26,7 @@ export class EmpresasComponent implements OnInit {
   }
 
   cadastrarEmpresa(): void {
-    this.router.navigate(['/usuario/cadastro-de-empresa']); 
+    this.router.navigate(['/usuario/cadastro-de-empresa']);
   }
 
   onSearch(searchTerm: string) {
@@ -38,7 +37,9 @@ export class EmpresasComponent implements OnInit {
     this.empresasService.getEmpresas().subscribe(
       (empresas: Empresa[]) => {
         this.empresas = empresas;
-        this.totalPaginas = Math.ceil(this.empresas.length / this.itensPorPagina);
+        this.totalPaginas = Math.ceil(
+          this.empresas.length / this.itensPorPagina
+        );
         this.atualizarPaginacao();
       },
       (error) => {
@@ -70,5 +71,27 @@ export class EmpresasComponent implements OnInit {
       this.paginaAtual++;
       this.atualizarPaginacao();
     }
+  }
+
+  deletarEmpresa(id: string): void {
+    if (confirm('Tem certeza que deseja excluir esta empresa?')) {
+      this.empresasService.deletarEmpresa(id).subscribe(
+        () => {
+          this.empresas = this.empresas.filter((empresa) => empresa.id !== id);
+          this.totalPaginas = Math.ceil(
+            this.empresas.length / this.itensPorPagina
+          );
+          this.atualizarPaginacao();
+          console.log('Empresa excluída com sucesso');
+        },
+        (error: any) => {
+          console.error('Erro ao excluir empresa:', error);
+        }
+      );
+    }
+  }
+
+  editarEmpresa(id: string): void {
+    this.router.navigate(['/usuario/cadastro-de-empresa', id]);
   }
 }

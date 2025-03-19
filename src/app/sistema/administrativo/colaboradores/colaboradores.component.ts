@@ -22,7 +22,7 @@ export class ColaboradoresComponent implements OnInit {
   totalPaginas = Math.ceil(this.colaboradores.length / this.itensPorPagina);
   colaboradoresPaginados: Colaborador[] = [];
 
-    selectedSetor: string = '';
+  selectedSetor: string = '';
   showModalDeletar: boolean = false;
 
   constructor(
