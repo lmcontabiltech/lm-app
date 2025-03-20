@@ -25,7 +25,6 @@
           <img [src]="selectedImageUrl || defaultImageUrl" class="profile-photo" alt="Foto de perfil"/>
           <input #fileInput type="file" accept="image/*" (change)="onImageSelected($event)" style="display: none;"/>
         </div>
-        <!-- Botão para alterar foto de perfil visível no modo edição -->
         <div *ngIf="isEditing" class="edit-profile-photo">
           <button (click)="fileInput.click()">Alterar foto</button>
         </div>
@@ -35,15 +34,22 @@
         <span>Diretoria</span>
       </div>
     </div>
-    <div class="data-profile">
-      <div *ngIf="isEditing" class="data-item">
-        <label>Nome:</label>
-        <input [(ngModel)]="user.name" type="email">
-      </div>
-      <div class="data-item">
-        <label>E-mail:</label>
-        <span *ngIf="!isEditing">{{ user.email }}</span>
-        <input *ngIf="isEditing" [(ngModel)]="user.email" type="email">
+    <div class="data-profile" *ngIf="!isEditing">
+        <div class="data-item">
+          <label class="label-item">E-mail:</label>
+          <span>{{ user.email }}</span>
+        </div>
+    </div>
+    <div class="data-profile-edit">
+      <div *ngIf="isEditing" class="form-group">
+        <div class="data-edit form-group">
+          <label for="name">Nome:</label>
+          <input [(ngModel)]="user.name" type="text" id="name" name="name" class="input-perfil">
+        </div>
+        <div class="data-edit form-group">
+          <label for="email">E-mail:</label>
+          <input [(ngModel)]="user.email" id="email" name="email" type="email" class="input-perfil">
+        </div>
       </div>
     </div>
   </div>

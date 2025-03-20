@@ -201,6 +201,7 @@ input:checked + .slider:before {
   justify-content: flex-end;
   gap: 16px;
   margin-top: 40px;
+  padding: 0 24px;
 }
 
 .btn-edit {
@@ -219,4 +220,28 @@ input:checked + .slider:before {
 
 .btn-line:hover {
   background: #dfdfdf;
+}
+
+/* modo edicao */
+.data-profile-edit {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.form-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-perfil {
+  padding: 8px;
+  border: 1px solid var(--lm-border);
+  background: transparent;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 100%;
+  height: 48px;
 }
