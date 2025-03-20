@@ -9,11 +9,45 @@
   overflow: hidden;
 }
 
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* titulo */
+.back-title {
+  display: flex;
+  align-items: center;
+}
+
+.back-title span {
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--lm-text);
+  margin-left: 12px;
+}
+
+.back-title img {
+  width: 30px;
+  height: auto;
+  color: #1a1918;
+  margin: 0;
+  padding: 4px;
+  cursor: pointer;
+}
+
+.back-title img:hover {
+  background: #dfdfdf;
+  border-radius: 50%;
+}
+
+/* switch */
 .toggle-container {
   display: flex;
-  align-items: start;
-  flex-direction: column;
-  gap: 8px;
+  align-items: center;
+  flex-direction: row;
+  gap: 12px;
 }
 
 .switch {
@@ -59,4 +93,107 @@ input:checked + .slider {
 
 input:checked + .slider:before {
   transform: translateX(26px);
+}
+
+/* profile */
+.container-perfil {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 64px;
+  padding: 24px;
+}
+
+.profile-attributes {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 24px;
+}
+
+.profile-picture {
+  flex-shrink: 0;
+}
+
+.profile-img {
+  width: 140px;
+  height: 140px;
+  border-radius: 24px;
+  object-fit: cover;
+}
+
+.profile-name {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.profile-name h4 {
+  font-size: 26px;
+  font-weight: 500;
+  color: var(--lm-text);
+  margin: 0;
+}
+
+.profile-name span {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--lm-text);
+  margin: 0;
+}
+
+/* dados perfil */
+.data-profile {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.data-item {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  justify-items: start;
+}
+
+.data-item label {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--lm-text);
+  margin: 0;
+  padding: 0;
+}
+
+.data-item span {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--lm-text);
+  margin: 0;
+  padding: 0;
+}
+
+/* button */
+.container-btn {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 40px;
+}
+
+.btn-edit {
+  background: var(--lm-primary);
+}
+
+.btn-edit:hover {
+  background: var(--lm-accent);
+}
+
+.btn-alterar {
+  background: transparent;
+  color: var(--lm-primary);
+  border: 1px solid var(--lm-primary);
+}
+
+.btn-alterar:hover {
+  background: #dfdfdf;
 }

@@ -1,10 +1,42 @@
 <div class="main-container">
-  <h1>Meu Perfil</h1>
-  <div class="toggle-container">
-    <span>{{ themeService.isDarkMode() ? 'Dark Mode' : 'Light Mode' }}</span>
-    <label class="switch">
-      <input type="checkbox" [checked]="themeService.isDarkMode()" (change)="toggleDarkMode()">
-      <span class="slider round"></span>
-    </label>
+  <div class="header-container">
+    <div class="back-title">
+      <img
+        src="assets/icones/back-left.svg"
+        alt="Back"
+        class="back-icon"
+        (click)="goBack()"
+      />
+      <span>Meu Perfil</span>
+    </div>
+    <div class="toggle-container">
+      <span>{{ themeService.isDarkMode() ? "Modo Escuro" : "Modo Claro" }}</span>
+      <label class="switch">
+        <input type="checkbox" [checked]="themeService.isDarkMode()" (change)="toggleDarkMode()"/>
+        <span class="slider round"></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="container-perfil">
+    <div class="profile-attributes">
+      <div class="profile-picture">
+        <img src="assets/imagens/default-profile.png" alt="Profile Picture" class="profile-img">
+      </div>
+      <div class="profile-name">
+        <h4>Haroldo Andrade</h4>
+        <span>Diretoria</span>
+      </div>
+    </div>
+    <div class="data-profile">
+      <div class="data-item">
+        <label>E-mail:</label>
+        <span>haroldo.gmail.com</span>
+      </div>
+    </div>
+  </div>
+  <div class="container-btn">
+    <button class="btn btn-edit">Editar Perfil</button>
+    <button class="btn btn-alterar">Alterar senha</button>
   </div>
 </div>
