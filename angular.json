@@ -42,9 +42,9 @@
                 },
                 {
                   "type": "any",
-                  "maximumWarning": "1.5mb",
-                   "maximumError": "2mb"
-                }
+                  "maximumWarning": "2mb",
+                  "maximumError": "2.5mb"
+                }                
               ],
               "fileReplacements": [
                 {
