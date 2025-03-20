@@ -188,12 +188,12 @@ input:checked + .slider:before {
   background: var(--lm-accent);
 }
 
-.btn-alterar {
+.btn-line {
   background: transparent;
   color: var(--lm-primary);
   border: 1px solid var(--lm-primary);
 }
 
-.btn-alterar:hover {
+.btn-line:hover {
   background: #dfdfdf;
 }

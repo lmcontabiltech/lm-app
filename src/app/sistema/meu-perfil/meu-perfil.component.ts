@@ -8,6 +8,12 @@ import { Location } from '@angular/common';
   styleUrls: ['./meu-perfil.component.css'],
 })
 export class MeuPerfilComponent implements OnInit {
+  isEditing = false;
+  user = {
+    name: 'Haroldo Andrade',
+    email: 'haroldo@gmail.com'
+  };
+
   constructor(public themeService: ThemeService, private location: Location) {}
 
   ngOnInit(): void {}
@@ -18,5 +24,23 @@ export class MeuPerfilComponent implements OnInit {
 
   goBack() {
     this.location.back();
+  }
+
+  toggleEdit() {
+    this.isEditing = true;
+  }
+
+  saveChanges() {
+    this.isEditing = false;
+  }
+
+  cancelEdit() {
+    this.isEditing = false;
+  }
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+    }
   }
 }

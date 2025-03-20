@@ -23,20 +23,27 @@
       <div class="profile-picture">
         <img src="assets/imagens/default-profile.png" alt="Profile Picture" class="profile-img">
       </div>
-      <div class="profile-name">
+      <div *ngIf="!isEditing" class="profile-name">
         <h4>Haroldo Andrade</h4>
         <span>Diretoria</span>
       </div>
     </div>
     <div class="data-profile">
+      <div *ngIf="isEditing" class="data-item">
+        <label>Nome:</label>
+        <input [(ngModel)]="user.name" type="email">
+      </div>
       <div class="data-item">
         <label>E-mail:</label>
-        <span>haroldo.gmail.com</span>
+        <span *ngIf="!isEditing">{{ user.email }}</span>
+        <input *ngIf="isEditing" [(ngModel)]="user.email" type="email">
       </div>
     </div>
   </div>
   <div class="container-btn">
-    <button class="btn btn-edit">Editar Perfil</button>
-    <button class="btn btn-alterar">Alterar senha</button>
+    <button *ngIf="!isEditing" class="btn btn-edit" (click)="toggleEdit()">Editar Perfil</button>
+    <button *ngIf="!isEditing" class="btn btn-line">Alterar senha</button>
+    <button *ngIf="isEditing" class="btn btn-line" (click)="cancelEdit()">Cancelar</button>
+    <button *ngIf="isEditing" class="btn" (click)="saveChanges()">Salvar</button>
   </div>
 </div>
