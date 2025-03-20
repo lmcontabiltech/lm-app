@@ -11,8 +11,11 @@ export class MeuPerfilComponent implements OnInit {
   isEditing = false;
   user = {
     name: 'Haroldo Andrade',
-    email: 'haroldo@gmail.com'
+    email: 'haroldo@gmail.com',
   };
+
+  defaultImageUrl = 'assets/imagens/default-profile.png';
+  selectedImageUrl: string | ArrayBuffer | null = null;
 
   constructor(public themeService: ThemeService, private location: Location) {}
 
@@ -38,9 +41,16 @@ export class MeuPerfilComponent implements OnInit {
     this.isEditing = false;
   }
 
-  onFileSelected(event: any) {
+  onImageSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (e.target?.result) {
+          this.selectedImageUrl = e.target.result;
+        }
+      };
+      reader.readAsDataURL(file);
     }
   }
 }

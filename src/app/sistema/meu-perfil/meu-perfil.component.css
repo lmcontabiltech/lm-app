@@ -111,15 +111,38 @@ input:checked + .slider:before {
   gap: 24px;
 }
 
-.profile-picture {
-  flex-shrink: 0;
+.container-photo {
+  position: relative;
 }
 
-.profile-img {
+.image-container {
+  position: relative;
+  cursor: pointer;
+}
+
+.profile-photo {
   width: 140px;
   height: 140px;
   border-radius: 24px;
   object-fit: cover;
+}
+
+.edit-profile-photo {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+}
+
+.edit-profile-photo button {
+  width: 100%;
+  background: var(--info);
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+}
+
+.edit-profile-photo button:hover {
+  background: var(--info-hover);
 }
 
 .profile-name {

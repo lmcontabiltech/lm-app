@@ -20,8 +20,15 @@
 
   <div class="container-perfil">
     <div class="profile-attributes">
-      <div class="profile-picture">
-        <img src="assets/imagens/default-profile.png" alt="Profile Picture" class="profile-img">
+      <div class="container-photo">
+        <div class="image-container" (click)="isEditing && fileInput.click()">
+          <img [src]="selectedImageUrl || defaultImageUrl" class="profile-photo" alt="Foto de perfil"/>
+          <input #fileInput type="file" accept="image/*" (change)="onImageSelected($event)" style="display: none;"/>
+        </div>
+        <!-- Botão para alterar foto de perfil visível no modo edição -->
+        <div *ngIf="isEditing" class="edit-profile-photo">
+          <button (click)="fileInput.click()">Alterar foto</button>
+        </div>
       </div>
       <div *ngIf="!isEditing" class="profile-name">
         <h4>Haroldo Andrade</h4>
