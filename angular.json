@@ -41,10 +41,10 @@
                   "maximumError": "5mb"
                 },
                 {
-                  "type": "any",
-                  "maximumWarning": "1.5mb",
-                   "maximumError": "2mb"
-                }
+                  "type": "initial",
+                  "maximumWarning": "4.5mb",
+                  "maximumError": "5.5mb"
+                }                               
               ],
               "fileReplacements": [
                 {
