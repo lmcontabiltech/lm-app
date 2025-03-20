@@ -75,7 +75,7 @@
   position: absolute;
   top: 150%;
   right: 0;
-  background: var(--lm-sidebar-bg);
+  background: var(--container-modal);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   overflow: hidden;
@@ -284,6 +284,7 @@ mat-drawer-container {
   width: 100%;
   height: 100vh;
   display: flex;
+  background: var(--lm-sidebar-bg);
 }
 
 mat-drawer {
@@ -293,6 +294,7 @@ mat-drawer {
 mat-drawer-content {
   transition: margin-left 0.3s ease-in-out;
   margin-left: 280px !important;
+  background: var(--lm-background);
 }
 
 mat-drawer-content.shifted {

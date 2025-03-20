@@ -16,7 +16,7 @@
 
 .header-container h2 {
   font-size: 24px;
-  color: #37383c;
+  color: var(--lm-text);
   margin: 0;
 }
 
@@ -26,8 +26,8 @@
   flex-direction: column;
   gap: 24px;
   width: 100%;
-  background: #ffffff;
-  border: #ccd0de 1px solid;
+  background: var(--container-background);
+  border: var(--lm-border02) 1px solid;
   border-radius: 8px;
   min-height: 48px;
   padding: 24px;

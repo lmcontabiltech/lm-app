@@ -7,7 +7,7 @@ body {
 body {
   margin: 0;
   font-family: "Inter", sans-serif;
-  background: var(--lm-background);
+  background: var(--form-background);
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
@@ -30,19 +30,37 @@ html {
 :root {
   --lm-primary: #172973;
   --lm-accent: #273e74;
-  --lm-accent-02: #A9ABAE;
+  --lm-accent-02: #a9abae;
   --lm-background: #e4e5eb;
   --lm-bg-second: #fbfdfb;
-  --lm-text: #37383c;
   --lm-sidebar-bg: #f9f9f9;
   --lm-branco: #ffffff;
+  /* texto */
+  --lm-text: #37383c;
+  --lm-text02: #1a1918;
+  /* sistema */
   --success: #5ea828;
   --info: #177ab8;
   --warning: #ffc107;
   --danger: #b72130;
-  --lm-border: #e0e0e0;
   --info-hover: #1b88cc;
   --danger-hover: #d22536;
+  /* borda */
+  --lm-border: #e0e0e0;
+  --lm-border02: #ced4da;
+  --lm-border03: #bfc4de;
+  /* Buttons */
+  --primary-button: #5ea828;
+  --primary-btnHover: #1d7206;
+  /* container background */
+  --form-background: #ffffff;
+  --container-background: #ffffff;
+  --container-modal: #ffffff;
+  /* inputs */
+  --bg-input: #ffffff;
+  /* tabela */
+  --table: #ffffff;
+  --table-child: #fafafa;
 }
 
 article,
@@ -90,7 +108,7 @@ button {
   font-size: 16px;
   font-weight: 500;
   color: var(--lm-branco);
-  background-color: var(--success);
+  background-color: var(--primary-button);
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -99,7 +117,7 @@ button {
 }
 
 button:hover {
-  background-color: #1d7206;
+  background-color: var(--primary-btnHover);
 }
 
 button:focus-visible {
@@ -119,6 +137,7 @@ input[type="radio"],
 input[type="checkbox"] {
   box-sizing: border-box;
   padding: 0;
+  background: var(--form-background);
 }
 
 input,
@@ -130,6 +149,8 @@ select {
   border: 1px solid #ccc;
   border-radius: 4px;
   transition: border-color var(--transition);
+  background: var(--form-background);
+  color: var(--lm-text);
 }
 
 input:focus,
@@ -479,4 +500,26 @@ select:focus {
 .alert-danger {
   background-color: var(--danger);
   color: var(--lm-branco);
+}
+
+.no-data-message {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  height: 100%;
+  padding: 24px;
+  margin-top: 32px;
+}
+
+.no-data-message img {
+  width: 140px;
+  height: auto;
+}
+
+.no-data-message p {
+  color: var(--lm-text);
+  font-size: 1rem;
+  font-weight: 400;
 }

@@ -5,7 +5,7 @@
   width: 100%;
   min-width: 250px;
   height: 50px;
-  border: 1px solid #ced4da;
+  border: 1px solid var(--lm-border02);
   border-radius: 8px;
 }
 
@@ -16,6 +16,7 @@ label {
   transform: translateY(-50%);
   transition: all 0.3s ease;
   pointer-events: none;
+  color: var(--lm-text);
 }
 
 label.active {
@@ -28,8 +29,7 @@ label.active {
 }
 
 .select-dropdown {
-  background: #ffffff;
-  border: 1px solid #ffffff;
+  background: var(--form-background);
   padding: 10px;
   cursor: pointer;
   height: 100%;
@@ -40,9 +40,10 @@ label.active {
 
 .selected-value {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   flex-grow: 1;
   padding-top: 12px;
+  color: var(--lm-text);
 }
 
 .options-container {
@@ -50,7 +51,8 @@ label.active {
   top: 50%;
   left: 0;
   width: 100%;
-  background: #ffffff;
+  background: var(--container-modal);
+  color: var(--lm-text);
   border-radius: 8px;
   max-height: 200px;
   overflow-y: auto;
@@ -61,7 +63,8 @@ label.active {
 .option {
   padding: 10px;
   cursor: pointer;
-  background: #ffffff;
+  color: var(--lm-text);
+  background: var(--container-modal);
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 

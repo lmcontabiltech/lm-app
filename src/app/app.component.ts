@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ThemeService } from './services/modo-escuro/theme.service'; 
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'lm-app';
+
+  constructor(private themeService: ThemeService) {
+    // O serviço será inicializado automaticamente pelo Angular
+  }
 }

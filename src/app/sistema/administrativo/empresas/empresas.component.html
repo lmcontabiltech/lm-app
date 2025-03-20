@@ -7,8 +7,7 @@
     <div class="table-container">
         <div class="filtro-container">
             <app-select-padrao
-                  label="Todos os setores"
-                  [customStyles]="{'background': '#FFFFFF'}">
+                  label="Todos os regimes">
             </app-select-padrao>
 
             <div class="search-container">
@@ -16,8 +15,8 @@
             </div>
         </div>
 
-        <div class="tabela-container">
-            <table>
+        <div [ngClass]="{'tabela-container': true, 'no-data': empresasPaginados.length === 0}">
+            <table *ngIf="empresasPaginados.length > 0; else noDataTemplate">
                 <thead>
                     <tr>
                         <th>Razão social</th>
@@ -44,11 +43,11 @@
                         <td>{{ empresa.regimeEmpresa }}</td>
                         <td>
                             <div class="container-acoes">
-                                <button class="btn-acao edit">
+                                <button class="btn-acao edit" (click)="editarEmpresa(empresa.id)">
                                     <img src="assets/icones/edit.svg" alt="Editar">
                                     Editar
                                 </button>
-                                <button class="btn-acao delete">
+                                <button class="btn-acao delete" (click)="deletarEmpresa(empresa.id)">
                                     <img src="assets/icones/delete.svg" alt="Excluir">
                                      Excluir
                                 </button>
@@ -57,6 +56,12 @@
                     </tr>
                 </tbody>
             </table>
+            <ng-template #noDataTemplate>
+                <div class="no-data-message">
+                    <img src="assets/imagens/no-data.svg" alt="Sem dados">
+                    <p>Não há empresas cadastradas.</p>
+                </div>
+            </ng-template>
         </div>
 
         <div class="paginacao">

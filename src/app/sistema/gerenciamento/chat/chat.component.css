@@ -16,7 +16,7 @@
 
 .header-container h2 {
   font-size: 24px;
-  color: #37383c;
+  color: var(--lm-text);
   margin: 0;
 }
 

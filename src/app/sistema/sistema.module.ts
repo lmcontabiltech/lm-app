@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgxMaskModule, IConfig } from 'ngx-mask';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { SistemaRoutingModule } from './sistema-routing.module';
 import { PainelPrincipalComponent } from './painel-principal/painel-principal.component';
@@ -17,6 +19,7 @@ import { CadastroDeAtividadeComponent } from './gerenciamento/cadastro-de-ativid
 import { SharedModule } from '../shared/shared.module';
 import { ForumDeNoticiaComponent } from './gerenciamento/forum-de-noticia/forum-de-noticia.component';
 import { ProcessosComponent } from './gerenciamento/processos/processos.component';
+
 
 @NgModule({
   declarations: [
@@ -41,6 +44,8 @@ import { ProcessosComponent } from './gerenciamento/processos/processos.componen
     FormsModule, 
     SharedModule,
     ReactiveFormsModule,
+    NgxMaskModule.forRoot(),
+    DragDropModule
   ],
 })
 export class SistemaModule {}

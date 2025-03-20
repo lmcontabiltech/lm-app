@@ -1,1 +1,10 @@
-<p>meu-perfil works!</p>
+<div class="main-container">
+  <h1>Meu Perfil</h1>
+  <div class="toggle-container">
+    <span>{{ themeService.isDarkMode() ? 'Dark Mode' : 'Light Mode' }}</span>
+    <label class="switch">
+      <input type="checkbox" [checked]="themeService.isDarkMode()" (change)="toggleDarkMode()">
+      <span class="slider round"></span>
+    </label>
+  </div>
+</div>
