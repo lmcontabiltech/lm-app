@@ -4,7 +4,7 @@
   background: var(--form-background);
   color: var(--lm-text);
   border-radius: 24px;
-  padding: 32px;
+  padding: 40px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
