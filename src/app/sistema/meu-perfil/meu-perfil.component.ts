@@ -12,6 +12,7 @@ export class MeuPerfilComponent implements OnInit {
   user = {
     name: 'Haroldo Andrade',
     email: 'haroldo@gmail.com',
+    setor: 'Diretoria'
   };
 
   defaultImageUrl = 'assets/imagens/default-profile.png';

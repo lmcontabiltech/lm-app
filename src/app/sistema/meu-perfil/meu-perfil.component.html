@@ -29,15 +29,19 @@
           <button (click)="fileInput.click()">Alterar foto</button>
         </div>
       </div>
-      <div *ngIf="!isEditing" class="profile-name">
-        <h4>{{ user.name }}</h4>
-        <span>Diretoria</span>
-      </div>
     </div>
     <div class="data-profile" *ngIf="!isEditing">
+      <div class="data-item">
+          <label class="label-item">Nome:</label>
+          <span>{{ user.name }}</span>
+        </div>
         <div class="data-item">
           <label class="label-item">E-mail:</label>
           <span>{{ user.email }}</span>
+        </div>
+        <div class="data-item">
+          <label class="label-item">Setor:</label>
+          <span>{{ user.setor }}</span>
         </div>
     </div>
     <div class="data-profile-edit">
