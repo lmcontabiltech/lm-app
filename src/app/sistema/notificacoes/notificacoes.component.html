@@ -13,14 +13,13 @@
     </div>
 
     <div class="notificacao-container">
-        <div class="notificacao-item" *ngFor="let notificacao of notificacoesPaginadas">
+        <div class="notificacao-item" *ngFor="let notificacao of notificacoesPaginadas" (click)="marcarComoLida(notificacao)" [class.lida]="notificacao.lida">
           <div class="notificacao-mensagem">
             <div class="avatar"></div>
             <span>{{ notificacao.usuario }}</span>
             <p>{{ notificacao.descricao }}</p>
           </div>
-            <div class="notificacao-new">
-            </div>
+          <div class="notificacao-new" *ngIf="!notificacao.lida"></div>
         </div>
       </div>
     

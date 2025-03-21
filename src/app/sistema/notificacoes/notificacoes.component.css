@@ -109,6 +109,11 @@
   background: #429941;
 }
 
+.notificacao-item.lida {
+  background-color: #f1f1f1c6;
+  cursor: default;
+}
+
 /* paginação */
 .paginacao {
   display: flex;

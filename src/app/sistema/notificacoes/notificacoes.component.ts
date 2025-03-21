@@ -8,20 +8,20 @@ import { Notificacao } from './notificacao';
 })
 export class NotificacoesComponent implements OnInit {
    notificacoes: Notificacao[] = [
-        { usuario: 'Carla Américo', descricao: 'moveu a atividade “Rescisão” de “Em adamento” para “Concluído”.'},
-        { usuario: 'Carla Américo', descricao: 'moveu a atividade “Rescisão” de “Em adamento” para “Concluído”.'},
-        { usuario: 'Carla Américo', descricao: 'moveu a atividade “Rescisão” de “Em adamento” para “Concluído”.'},
-        { usuario: 'Carla Américo', descricao: 'moveu a atividade “Rescisão” de “Em adamento” para “Concluído”.'},
-        { usuario: 'Carla Américo', descricao: 'moveu a atividade “Rescisão” de “Em adamento” para “Concluído”.'},
-        { usuario: 'Carla Américo', descricao: 'alterou a prioridade da atividade “Rescisão”.'},
-        { usuario: 'Carla Américo', descricao: 'alterou a prioridade da atividade “Rescisão”.'},
-        { usuario: 'Carla Américo', descricao: 'alterou a prioridade da atividade “Rescisão”.'}
+        { usuario: 'Carla Américo', descricao: 'moveu a atividade “Rescisão” de “Em adamento” para “Concluído”.', lida: false },
+        { usuario: 'Carla Américo', descricao: 'moveu a atividade “Rescisão” de “Em adamento” para “Concluído”.', lida: false },
+        { usuario: 'Carla Américo', descricao: 'moveu a atividade “Rescisão” de “Em adamento” para “Concluído”.', lida: false },
+        { usuario: 'Carla Américo', descricao: 'moveu a atividade “Rescisão” de “Em adamento” para “Concluído”.', lida: false },
+        { usuario: 'Carla Américo', descricao: 'moveu a atividade “Rescisão” de “Em adamento” para “Concluído”.', lida: true },
+        { usuario: 'Carla Américo', descricao: 'alterou a prioridade da atividade “Rescisão”.', lida: false },
+        { usuario: 'Carla Américo', descricao: 'alterou a prioridade da atividade “Rescisão”.', lida: true },
+        { usuario: 'Carla Américo', descricao: 'alterou a prioridade da atividade “Rescisão”.', lida: true }
       ];
 
-       itensPorPagina = 5;
-       paginaAtual = 1;
-       totalPaginas = Math.ceil(this.notificacoes.length / this.itensPorPagina);
-       notificacoesPaginadas: Notificacao[] = [];
+  itensPorPagina = 5;
+  paginaAtual = 1;
+  totalPaginas = Math.ceil(this.notificacoes.length / this.itensPorPagina);
+  notificacoesPaginadas: Notificacao[] = [];
 
   constructor() {}
 
@@ -32,6 +32,11 @@ export class NotificacoesComponent implements OnInit {
   onSearch(searchTerm: string) {
     console.log('Search term:', searchTerm);
   }
+
+  marcarComoLida(notificacao: Notificacao) {
+    notificacao.lida = true; 
+    console.log('Notificação marcada como lida:', notificacao);
+  }  
 
   atualizarPaginacao(): void {
     const inicio = (this.paginaAtual - 1) * this.itensPorPagina;
