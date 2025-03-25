@@ -1,10 +1,66 @@
 <div class="main-container">
-  <h1>Meu Perfil</h1>
-  <div class="toggle-container">
-    <span>{{ themeService.isDarkMode() ? 'Dark Mode' : 'Light Mode' }}</span>
-    <label class="switch">
-      <input type="checkbox" [checked]="themeService.isDarkMode()" (change)="toggleDarkMode()">
-      <span class="slider round"></span>
-    </label>
+  <div class="header-container">
+    <div class="back-title">
+      <img
+        src="assets/icones/back-left.svg"
+        alt="Back"
+        class="back-icon"
+        (click)="goBack()"
+      />
+      <span>Meu Perfil</span>
+    </div>
+    <div class="toggle-container">
+      <span>{{ themeService.isDarkMode() ? "Modo Escuro" : "Modo Claro" }}</span>
+      <label class="switch">
+        <input type="checkbox" [checked]="themeService.isDarkMode()" (change)="toggleDarkMode()"/>
+        <span class="slider round"></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="container-perfil">
+    <div class="profile-attributes">
+      <div class="container-photo">
+        <div class="image-container" (click)="isEditing && fileInput.click()">
+          <img [src]="selectedImageUrl || defaultImageUrl" class="profile-photo" alt="Foto de perfil"/>
+          <input #fileInput type="file" accept="image/*" (change)="onImageSelected($event)" style="display: none;"/>
+        </div>
+        <div *ngIf="isEditing" class="edit-profile-photo">
+          <button (click)="fileInput.click()">Alterar foto</button>
+        </div>
+      </div>
+    </div>
+    <div class="data-profile" *ngIf="!isEditing">
+      <div class="data-item">
+          <label class="label-item">Nome:</label>
+          <span>{{ user.name }}</span>
+        </div>
+        <div class="data-item">
+          <label class="label-item">E-mail:</label>
+          <span>{{ user.email }}</span>
+        </div>
+        <div class="data-item">
+          <label class="label-item">Setor:</label>
+          <span>{{ user.setor }}</span>
+        </div>
+    </div>
+    <div class="data-profile-edit">
+      <div *ngIf="isEditing" class="form-group">
+        <div class="data-edit form-group">
+          <label for="name">Nome:</label>
+          <input [(ngModel)]="user.name" type="text" id="name" name="name" class="input-perfil">
+        </div>
+        <div class="data-edit form-group">
+          <label for="email">E-mail:</label>
+          <input [(ngModel)]="user.email" id="email" name="email" type="email" class="input-perfil">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-btn">
+    <button *ngIf="!isEditing" class="btn btn-edit" (click)="toggleEdit()">Editar Perfil</button>
+    <button *ngIf="!isEditing" class="btn btn-line">Alterar senha</button>
+    <button *ngIf="isEditing" class="btn btn-line" (click)="cancelEdit()">Cancelar</button>
+    <button *ngIf="isEditing" class="btn" (click)="saveChanges()">Salvar</button>
   </div>
 </div>
