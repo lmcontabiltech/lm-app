@@ -19,6 +19,7 @@ import { CadastroDeAtividadeComponent } from './gerenciamento/cadastro-de-ativid
 import { SharedModule } from '../shared/shared.module';
 import { ForumDeNoticiaComponent } from './gerenciamento/forum-de-noticia/forum-de-noticia.component';
 import { ProcessosComponent } from './gerenciamento/processos/processos.component';
+import { CadastroDeProcessosComponent } from './gerenciamento/cadastro-de-processos/cadastro-de-processos.component';
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import { ProcessosComponent } from './gerenciamento/processos/processos.componen
     CadastroDeAtividadeComponent,
     ForumDeNoticiaComponent,
     ProcessosComponent,
+    CadastroDeProcessosComponent,
   ],
   imports:[
     CommonModule, 
