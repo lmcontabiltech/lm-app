@@ -34,7 +34,7 @@ export class ProcessosComponent implements OnInit {
   }
 
   cadastrarProcesso(): void {
-    this.router.navigate(['/usuario/cadastro-de-processo']);
+    this.router.navigate(['/usuario/cadastro-de-processos']);
   }
 
   onSearch(searchTerm: string) {
