@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ExchangeService } from 'src/app/services/exchange.service';
 import * as ApexCharts from 'apexcharts';
 import {
   ApexAxisChartSeries,
@@ -6,8 +7,8 @@ import {
   ChartComponent,
   ApexDataLabels,
   ApexXAxis,
-  ApexPlotOptions
-} from "ng-apexcharts";
+  ApexPlotOptions,
+} from 'ng-apexcharts';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -20,38 +21,74 @@ export type ChartOptions = {
 @Component({
   selector: 'app-painel-principal',
   templateUrl: './painel-principal.component.html',
-  styleUrls: ['./painel-principal.component.css']
+  styleUrls: ['./painel-principal.component.css'],
 })
 export class PainelPrincipalComponent implements OnInit {
+  cotacoes: any = {};
+  selic: string = '';
 
-  constructor() { }
+  constructor(private exchangeService: ExchangeService) {}
 
   ngOnInit(): void {
     this.renderChart();
     this.renderBarChart();
     this.renderPieChart();
+    this.loadTaxas();
   }
+
+  loadTaxas(): void {
+    this.exchangeService.getExchangeRates().subscribe({
+      next: (data) => {
+        this.cotacoes = data;
+        console.log('Taxas de câmbio:', this.cotacoes);
+      },
+      error: (err) => console.error('Erro ao buscar taxas de câmbio:', err)
+    });
+  
+    this.exchangeService.getSelicRate().subscribe({
+      next: (rate) => {
+        this.selic = rate.toFixed(2);
+        console.log('Taxa Selic:', this.selic);
+      },
+      error: (err) => console.error('Erro ao buscar taxa Selic:', err)
+    });
+  }  
 
   renderChart(): void {
     const options = {
       chart: {
         type: 'line',
         height: 350,
-        width: '100%'
+        width: '100%',
       },
-      series: [{
-        name: 'Desempenho',
-        data: [30, 40, 35, 50, 49, 60, 70, 91, 125, 15, 200, 20]
-      }],
+      series: [
+        {
+          name: 'Desempenho',
+          data: [30, 40, 35, 50, 49, 60, 70, 91, 125, 15, 200, 20],
+        },
+      ],
       xaxis: {
-        categories: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'out', 'nov', 'dez']
+        categories: [
+          'Jan',
+          'Fev',
+          'Mar',
+          'Abr',
+          'Mai',
+          'Jun',
+          'Jul',
+          'Ago',
+          'Set',
+          'out',
+          'nov',
+          'dez',
+        ],
       },
       theme: {
-        palette: 'palette3'
-      }
+        palette: 'palette3',
+      },
     };
 
-    const chart = new ApexCharts(document.querySelector("#chart"), options);
+    const chart = new ApexCharts(document.querySelector('#chart'), options);
     chart.render();
   }
 
@@ -63,39 +100,46 @@ export class PainelPrincipalComponent implements OnInit {
         height: 350,
         width: '100%',
         events: {
-          click: function(chart: any, w: any, e: any) {
-          }
-        }
+          click: function (chart: any, w: any, e: any) {},
+        },
       },
       colors: colors,
-        plotOptions: {
-          bar: {
-            columnWidth: '45%',
-            distributed: true,
-          }
+      plotOptions: {
+        bar: {
+          columnWidth: '45%',
+          distributed: true,
         },
-        dataLabels: {
-          enabled: false
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      legend: {
+        show: false,
+      },
+      series: [
+        {
+          name: 'Funcionários',
+          data: [20, 30, 40, 50, 60],
         },
-        legend: {
-          show: false
-        },
-      series: [{
-        name: 'Funcionários',
-        data: [20, 30, 40, 50, 60]
-      }],
+      ],
       xaxis: {
-        categories: ['Setor Contábil', 'Setor Pessoal', 'Setor Fiscal', 'Setor Paralegal', 'Setor Financeiro']
+        categories: [
+          'Setor Contábil',
+          'Setor Pessoal',
+          'Setor Fiscal',
+          'Setor Paralegal',
+          'Setor Financeiro',
+        ],
       },
       labels: {
         style: {
           colors: colors,
-          fontSize: '12px'
-        }
-      }
+          fontSize: '12px',
+        },
+      },
     };
 
-    const chart = new ApexCharts(document.querySelector("#barChart"), options);
+    const chart = new ApexCharts(document.querySelector('#barChart'), options);
     chart.render();
   }
 
@@ -104,29 +148,29 @@ export class PainelPrincipalComponent implements OnInit {
       chart: {
         type: 'donut',
         height: 350,
-        width: '100%'
+        width: '100%',
       },
       series: [44, 55, 13],
       labels: ['Simples Nacional', 'Lucro Presumido', 'Lucro Real'],
       theme: {
-        palette: 'palette2'
+        palette: 'palette2',
       },
       responsive: [
         {
           breakpoint: 980,
           options: {
             chart: {
-              width: 250
+              width: 250,
             },
             legend: {
-              position: "bottom"
-            }
-          }
-        }
-      ]
+              position: 'bottom',
+            },
+          },
+        },
+      ],
     };
 
-    const chart = new ApexCharts(document.querySelector("#pieChart"), options);
+    const chart = new ApexCharts(document.querySelector('#pieChart'), options);
     chart.render();
   }
 }

@@ -6,21 +6,21 @@
         <div class="cards-moedas">
             <div class="card moeda-card">
                 <div class="value">
-                    <span>6,06</span>
+                    <span>{{ cotacoes.euro | number:'1.2-2' }}</span>
                     <img src="assets/icones/dashboard/euro.svg" alt="moeda euro">
                 </div>
-                <p>€1,000 EUR = R$6,055 BRL</p>
+                <p>€1,000 EUR = R${{ (cotacoes.euro * 1000) | number:'1.2-2' }} BRL</p>
             </div>
             <div class="card moeda-card">
                 <div class="value">
-                    <span>5,844</span>
+                    <span>{{ cotacoes.dolar | number:'1.2-2' }}</span>
                     <img src="assets/icones/dashboard/dolar.svg" alt="moeda dolar">
                 </div>
-                <p>$1,000 USD = R$5,844 BRL</p>
+                <p>$1,000 USD = R${{ (cotacoes.dolar * 1000) | number:'1.2-2' }} BRL</p>
             </div>
             <div class="card moeda-card">
                 <div class="value">
-                    <span>13,25%</span>
+                    <span>{{ selic }}%</span>
                     <img src="assets/icones/dashboard/aumento.svg" alt="aumento">
                 </div>
                 <p>Taxa Selic</p>
