@@ -15,6 +15,7 @@ import { ForumDeNoticiaComponent } from './gerenciamento/forum-de-noticia/forum-
 import { CadastroDeAtividadeComponent } from './gerenciamento/cadastro-de-atividade/cadastro-de-atividade.component';
 import { CadastroDeNoticiaComponent } from './gerenciamento/cadastro-de-noticia/cadastro-de-noticia.component';
 import { ProcessosComponent } from './gerenciamento/processos/processos.component';
+import { CadastroDeProcessosComponent } from './gerenciamento/cadastro-de-processos/cadastro-de-processos.component';
 import { AuthGuard } from '../services/auth.guard';
 
 const routes: Routes = [
@@ -38,7 +39,8 @@ const routes: Routes = [
       { path: 'forum-de-noticias', component: ForumDeNoticiaComponent},
       { path: 'cadastro-de-atividade', component: CadastroDeAtividadeComponent},
       { path: 'cadastro-de-noticia', component: CadastroDeNoticiaComponent},
-      { path: 'processos', component: ProcessosComponent}
+      { path: 'processos', component: ProcessosComponent},
+      { path: 'cadastro-de-processos', component: CadastroDeProcessosComponent},
     ] 
   }
 ];

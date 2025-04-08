@@ -1,7 +1,7 @@
 .main-container {
   margin: 120px 32px 24px;
   max-width: 100%;
-  background: var(--form-background);
+  background: #ffffff;
   border-radius: 24px;
   padding: 32px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -16,7 +16,7 @@
 .back-title span {
   font-size: 24px;
   font-weight: 500;
-  color: var(--lm-text);
+  color: #37383c;
   margin-left: 12px;
 }
 
@@ -59,7 +59,7 @@ form {
 .form-group label {
   font-size: 16px;
   font-weight: 400;
-  color: var(--lm-text02);
+  color: #1a1918;
   margin: 0;
   padding: 0;
 }
@@ -68,7 +68,7 @@ form {
   width: 100%;
   height: 50px;
   padding: 10px;
-  border: 1px solid var(--lm-border02);
+  border: 1px solid #ced4da;
   border-radius: 8px;
   font-size: 14px;
 }
@@ -86,16 +86,30 @@ form {
   gap: 40px;
 }
 
-/* Divisão */
-.divisao {
-  width: 100%;
+/* radio btn */
+.radio-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
-.divisao p {
-  font-size: 16px;
-  font-weight: 600;
-  margin: 0;
-  color: var(--lm-text);
+.radio-group input[type="radio"] {
+  width: 24px;
+  height: 24px;
+  background: var(--form-background);
+}
+
+.radio-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Alertas */
+.alerts-container {
+  padding: 12px 24px;
+  border-radius: 8px;
+  margin-top: 24px;
 }
 
 /* Breakpoints */
@@ -126,5 +140,11 @@ form {
   .back-title img {
     width: 22px;
     height: auto;
+  }
+
+  .input-duo {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
 }

@@ -1,1 +1,77 @@
-<p>processos works!</p>
+<div class="main-container">
+    <div class="header-container">
+        <h2>Processos</h2>
+        <button class="btn btn-primary" (click)="cadastrarProcesso()">Cadastrar processo +</button>
+    </div>
+
+    <div class="table-container">
+        <div class="filtro-container">
+            <app-select-padrao
+                  label="Todos os setores">
+            </app-select-padrao>
+
+            <div class="search-container">
+                <app-search (searchChange)="onSearch($event)"></app-search>
+            </div>
+        </div>
+
+        <div class="tabela-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome do processo</th>
+                        <th>Tipo</th>
+                        <th>Setor</th>
+                        <th>Data/Horário</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let processo of processosPaginados">
+                        <td>
+                            <div class="perfil">
+                                <span>
+                                    <a>
+                                        {{ processo.nome }}
+                                    </a>
+                                </span>
+                            </div>
+                        </td>
+                        <td>{{ processo.tipo }}</td>
+                        <td>
+                            <app-setor-tag [setor]="processo.setor"></app-setor-tag>
+                        </td>
+                        <td>{{ processo.data }}</td>
+                        <td>
+                            <div class="container-acoes">
+                                <button class="btn-acao edit">
+                                    <img src="assets/icones/edit.svg" alt="Editar">
+                                    Editar
+                                </button>
+                                <button class="btn-acao delete">
+                                    <img src="assets/icones/delete.svg" alt="Excluir">
+                                     Excluir
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="paginacao">
+            <button (click)="paginaAnterior()" [disabled]="paginaAtual === 1">
+                <img src="assets/icones/carret-left.svg" alt="Esquerda">
+            </button>
+                <span *ngFor="let pagina of [].constructor(totalPaginas); let i = index">
+
+                <button (click)="mudarPagina(i + 1)" [class.ativo]="paginaAtual === i + 1">
+                    {{ i + 1 }}
+                </button>
+            </span>
+            <button (click)="proximaPagina()" [disabled]="paginaAtual === totalPaginas">
+                <img src="assets/icones/carret-right.svg" alt="Direita">
+            </button>
+        </div>
+    </div>
+</div>
