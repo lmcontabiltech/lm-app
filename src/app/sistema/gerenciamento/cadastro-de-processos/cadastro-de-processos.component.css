@@ -105,6 +105,18 @@ form {
   gap: 8px;
 }
 
+/* Divisão */
+.divisao {
+  width: 100%;
+}
+
+.divisao p {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--lm-text);
+}
+
 /* Alertas */
 .alerts-container {
   padding: 12px 24px;

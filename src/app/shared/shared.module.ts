@@ -8,6 +8,7 @@ import { SelectPadraoComponent } from './select-padrao/select-padrao.component';
 import { SearchComponent } from './search/search.component';
 import { FormsModule } from '@angular/forms';
 import { SetorTagComponent } from './setor-tag/setor-tag.component';
+import { InputPlusComponent } from './input-plus/input-plus.component';
 
 
 
@@ -19,7 +20,8 @@ import { SetorTagComponent } from './setor-tag/setor-tag.component';
     MultiploSelectComponent,
     SelectPadraoComponent,
     SearchComponent,
-    SetorTagComponent
+    SetorTagComponent,
+    InputPlusComponent
   ],
   imports: [
     CommonModule,
@@ -32,7 +34,8 @@ import { SetorTagComponent } from './setor-tag/setor-tag.component';
     MultiploSelectComponent,
     SelectPadraoComponent,
     SearchComponent,
-    SetorTagComponent
+    SetorTagComponent,
+    InputPlusComponent
   ]
 })
 export class SharedModule { }
