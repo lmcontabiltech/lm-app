@@ -9,14 +9,14 @@
                     <span>{{ cotacoes.euro | number:'1.2-2' }}</span>
                     <img src="assets/icones/dashboard/euro.svg" alt="moeda euro">
                 </div>
-                <p>€1,000 EUR = R${{ (cotacoes.euro * 1000) | number:'1.2-2' }} BRL</p>
+                <p>€1,00 EUR = R${{ (cotacoes.euro * 1000) | number:'1.0-0' }} BRL</p>
             </div>
             <div class="card moeda-card">
                 <div class="value">
                     <span>{{ cotacoes.dolar | number:'1.2-2' }}</span>
                     <img src="assets/icones/dashboard/dolar.svg" alt="moeda dolar">
                 </div>
-                <p>$1,000 USD = R${{ (cotacoes.dolar * 1000) | number:'1.2-2' }} BRL</p>
+                <p>$1,00 USD = R${{ (cotacoes.dolar * 1000) | number:'1.0-0' }} BRL</p>
             </div>
             <div class="card moeda-card">
                 <div class="value">

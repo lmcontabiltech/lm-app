@@ -6,17 +6,21 @@ import { Observable, map } from 'rxjs';
   providedIn: 'root',
 })
 export class ExchangeService {
-  private ratesUrl = 'https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL';
+  private ratesUrl =
+    'https://economia.awesomeapi.com.br/json/last/USD-BRL,EUR-BRL';
   private selicUrl = '';
 
   constructor(private http: HttpClient) {}
 
   getExchangeRates(): Observable<any> {
     return this.http.get<any>(this.ratesUrl).pipe(
-      map((data) => ({
-        dolar: parseFloat(data.USDBRL.bid),
-        euro: parseFloat(data.EURBRL.bid),
-      }))
+      map((data) => {
+        console.log('Dados retornados pela API:', data);
+        return {
+          dolar: parseFloat(data.USDBRL.bid),
+          euro: parseFloat(data.EURBRL.bid), 
+        };
+      })
     );
   }
 
@@ -28,5 +32,4 @@ export class ExchangeService {
       })
     );
   }
-  
 }
