@@ -16,14 +16,61 @@
                 <input type="text" id="cnpj" name="cnpj" formControlName="cnpj" class="form-control" placeholder="Digite" mask="00.000.000/0000-00" [dropSpecialCharacters]="false" required>
             </div>
 
-            <div class="form-group">
-                <label for="codEmpresa">Código da empresa no Questor</label>
-                <input type="text" id="codEmpresa" name="codEmpresa" formControlName="codQuestor" class="form-control" placeholder="Digite" required>
+            <div class="input-duo">
+                <div class="form-group">
+                    <label for="codEmpresa">Código da empresa no Questor</label>
+                    <input type="text" id="codEmpresa" name="codEmpresa" formControlName="codQuestor" class="form-control" placeholder="Digite" required>
+                </div>
+    
+                <div class="form-group">
+                    <label for="codDominio">Código da empresa no Domínio</label>
+                    <input type="text" id="codDominio" name="codDominio" formControlName="codDominio" class="form-control" placeholder="Digite" required>
+                </div>
             </div>
 
             <div class="form-group">
                 <label for="regimeEmpresa">Regime da empresa</label>
                 <input type="text" id="regimeEmpresa" name="regimeEmpresa" formControlName="regimeEmpresa" class="form-control" placeholder="Digite" required>
+            </div>
+
+            <div class="divisao">
+                <p>Funcionários responsáveis</p>
+                <hr class="line">
+            </div>
+
+            <div class="form-group">
+                <label for="contabil">Setor Contábil</label>
+                <app-select-padrao
+                  label="Selecionar funcionário">
+                </app-select-padrao>
+            </div>
+
+            <div class="form-group">
+                <label for="fiscal">Setor Fiscal</label>
+                <app-select-padrao
+                  label="Selecionar funcionário">
+                </app-select-padrao>
+            </div>
+
+            <div class="form-group">
+                <label for="pessoal">Setor Pessoal</label>
+                <app-select-padrao
+                  label="Selecionar funcionário">
+                </app-select-padrao>
+            </div>
+
+            <div class="form-group">
+                <label for="paralegal">Setor Paralegal</label>
+                <app-select-padrao
+                  label="Selecionar funcionário">
+                </app-select-padrao>
+            </div>
+
+            <div class="form-group">
+                <label for="financeiro">Setor Financeiro</label>
+                <app-select-padrao
+                  label="Selecionar funcionário">
+                </app-select-padrao>
             </div>
 
             <div class="container-btn">

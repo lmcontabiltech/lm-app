@@ -80,6 +80,23 @@ form {
   padding-top: 24px;
 }
 
+.input-duo {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+/* Divisão */
+.divisao {
+  width: 100%;
+}
+
+.divisao p {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
 /* Breakpoints */
 @media (min-width: 1200px) {
   .main-container {
