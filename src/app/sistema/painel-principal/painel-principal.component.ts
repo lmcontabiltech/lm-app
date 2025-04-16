@@ -40,19 +40,11 @@ export class PainelPrincipalComponent implements OnInit {
     this.exchangeService.getExchangeRates().subscribe({
       next: (data) => {
         this.cotacoes = data;
-        console.log('Taxas de câmbio:', this.cotacoes);
+        console.log('Cotações armazenadas:', this.cotacoes);
       },
-      error: (err) => console.error('Erro ao buscar taxas de câmbio:', err)
+      error: (err) => console.error('Erro ao buscar taxas de câmbio:', err),
     });
-  
-    this.exchangeService.getSelicRate().subscribe({
-      next: (rate) => {
-        this.selic = rate.toFixed(2);
-        console.log('Taxa Selic:', this.selic);
-      },
-      error: (err) => console.error('Erro ao buscar taxa Selic:', err)
-    });
-  }  
+  }
 
   renderChart(): void {
     const options = {

@@ -1,0 +1,19 @@
+<div *ngFor="let item of items; let i = index" class="item-row">
+    <input
+      type="checkbox"
+      [(ngModel)]="item.checked"
+      (ngModelChange)="emitChange()"
+    />
+    <input
+      type="text"
+      [(ngModel)]="item.description"
+      (ngModelChange)="emitChange()"
+      placeholder="Digite a tarefa"
+    />
+    <button type="button" class="delete-button" (click)="removeItem(i)">×</button>
+</div>
+  
+<button type="button" class="add-button" (click)="addItem()">
+    + Adicionar tarefa
+</button>
+  

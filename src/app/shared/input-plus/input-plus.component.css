@@ -1,0 +1,64 @@
+.item-row {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding: 12px 0;
+  gap: 12px;
+  position: relative;
+}
+
+.item-row input[type="checkbox"] {
+  transform: scale(1.2);
+  cursor: pointer;
+  accent-color: #177ab8;
+}
+
+.item-row input[type="text"] {
+  flex: 1;
+  border: none;
+  border-bottom: 1px solid transparent;
+  font-size: 16px;
+  padding: 4px;
+  outline: none;
+  background: transparent;
+  height: 48px;
+  border-radius: none;
+}
+
+.item-row input[type="text"]:focus {
+  border-bottom: 1px solid #273e74;
+}
+
+/* botoes */
+.item-row button {
+  background: none;
+  border: none;
+  border-radius: 50%;
+  color: #6d6d6d;
+  font-size: 24px;
+  cursor: pointer;
+  height: 32px;
+  width: 32px;
+  transition: color 0.2s ease;
+  padding: 0;
+}
+
+.item-row button:hover {
+  background: #e4e4e47d;
+}
+
+.add-button {
+  margin-top: 16px;
+  padding: 8px 16px;
+  background: var(--lm-accent);
+  color: var(--lm-branco);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.add-button:hover {
+  background: var(--lm-primary);
+}
