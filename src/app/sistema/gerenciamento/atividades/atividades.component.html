@@ -1,4 +1,8 @@
 <div class="main-container">
+  <div class="header-container">
+    <h2>Atividades</h2>
+    <button class="btn btn-primary" (click)="cadastrarAtividade()">Cadastrar atividade +</button>
+  </div>
   <div class="kanban-board">
     <div class="kanban-column" *ngFor="let status of statuses">
         <h3>{{ statusLabels[status] }}</h3>

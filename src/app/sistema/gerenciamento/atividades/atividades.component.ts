@@ -4,6 +4,7 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
+import { Router } from '@angular/router';
 import { Atividade } from './atividades';
 import { Prioridade } from './prioridade';
 import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
@@ -73,7 +74,9 @@ export class AtividadesComponent implements OnInit {
 
   dropListIds: string[] = [];
 
-  constructor() {}
+  constructor(
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.dropListIds = this.statuses.map((status) => status);
@@ -95,5 +98,9 @@ export class AtividadesComponent implements OnInit {
       );
     }
     console.log('Tasks after drop:', this.atividades);
+  }
+
+  cadastrarAtividade(): void {
+    this.router.navigate(['/usuario/cadastro-de-atividade']);
   }
 }
