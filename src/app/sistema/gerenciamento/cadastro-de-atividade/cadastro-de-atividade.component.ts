@@ -61,12 +61,14 @@ export class CadastroDeAtividadeComponent implements OnInit {
     this.atividadeForm = this.formBuilder.group({
       titulo: ['', Validators.required],
       descricao: [''],
+      empresa: ['', Validators.required],
       setor: ['', Validators.required],
       processo: [''],
       dataInicio: [''],
       dataFim: [''],
       prioridade: ['', Validators.required],
       status: ['', Validators.required],
+      membros: [[]],
     });
   }
 
@@ -112,5 +114,8 @@ export class CadastroDeAtividadeComponent implements OnInit {
     );
   }
 
-  onSubmit(): void {}
+  onSubmit(): void {
+    console.log('Membros selecionados:', this.selectedMembro);
+    console.log('Atividade Form:', this.atividadeForm.value);
+  }
 }
