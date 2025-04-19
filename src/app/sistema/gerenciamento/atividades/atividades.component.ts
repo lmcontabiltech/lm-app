@@ -6,7 +6,7 @@ import {
 } from '@angular/cdk/drag-drop';
 import { Router } from '@angular/router';
 import { Atividade } from './atividades';
-import { Prioridade } from './prioridade';
+import { Prioridade } from './enums/prioridade';
 import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
 
 interface Tasks {
@@ -74,9 +74,7 @@ export class AtividadesComponent implements OnInit {
 
   dropListIds: string[] = [];
 
-  constructor(
-    private router: Router
-  ) {}
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
     this.dropListIds = this.statuses.map((status) => status);

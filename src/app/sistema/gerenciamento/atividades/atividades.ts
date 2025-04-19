@@ -1,5 +1,5 @@
 import { Empresa } from '../../administrativo/empresas/empresa';
-import { Prioridade } from './prioridade';
+import { Prioridade } from './enums/prioridade';
 import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
 
 export interface Atividade {

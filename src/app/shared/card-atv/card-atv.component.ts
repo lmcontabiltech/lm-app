@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Atividade } from 'src/app/sistema/gerenciamento/atividades/atividades';
-import { Prioridade } from 'src/app/sistema/gerenciamento/atividades/prioridade';
+import { Prioridade } from 'src/app/sistema/gerenciamento/atividades/enums/prioridade';
 import { Setor } from 'src/app/sistema/administrativo/cadastro-de-colaborador/setor';
 
 @Component({

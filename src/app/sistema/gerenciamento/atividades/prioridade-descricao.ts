@@ -1,2 +1,0 @@
-import { Prioridade } from "./prioridade";
-
