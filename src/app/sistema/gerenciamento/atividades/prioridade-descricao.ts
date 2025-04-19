@@ -1,0 +1,2 @@
+import { Prioridade } from "./prioridade";
+

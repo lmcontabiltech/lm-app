@@ -5,6 +5,7 @@ import {
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { Atividade } from './atividades';
+import { Prioridade } from './prioridade';
 
 interface Tasks {
   [key: string]: Atividade[];
@@ -31,28 +32,28 @@ export class AtividadesComponent implements OnInit {
         title: 'Tarefa 1',
         description: 'Descrição da tarefa 1',
         date: '2025-04-08',
-        prioridade: 'Alta',
+        prioridade: Prioridade.ALTA,
         setor: 'Financeiro',
       },
       {
         title: 'Tarefa 2',
         description: 'Descrição da tarefa 2',
         date: '2025-04-09',
-        prioridade: 'Média',
+        prioridade: Prioridade.MEDIA,
         setor: 'Fiscal',
       },
       {
         title: 'Tarefa 3',
         description: 'Descrição da tarefa 3',
         date: '2025-04-09',
-        prioridade: 'Baixa',
+        prioridade: Prioridade.BAIXA,
         setor: 'Fiscal',
       },
       {
         title: 'Tarefa 4',
         description: 'Descrição da tarefa 4',
         date: '2025-04-09',
-        prioridade: 'Média',
+        prioridade: Prioridade.MEDIA,
         setor: 'Pessoal',
       },
     ],
