@@ -1,5 +1,5 @@
 .main-container {
-  margin: 120px 20px 24px;
+  margin: 120px 32px 24px;
   max-width: 100%;
   overflow: hidden;
   display: flex;
@@ -52,4 +52,23 @@
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   cursor: pointer;
+}
+
+/* Breakpoints */
+@media (min-width: 1200px) {
+  .main-container {
+    margin: 120px 32px 24px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+  .main-container {
+    margin: 100px 20px 24px;
+  }
+}
+
+@media (max-width: 767px) {
+  .main-container {
+    margin: 100px 20px 24px;
+  }
 }
