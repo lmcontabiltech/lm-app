@@ -55,10 +55,18 @@ export class AtividadesComponent implements OnInit {
         description: 'Descrição da tarefa 4',
         date: '2025-04-09',
         prioridade: Prioridade.MEDIA,
-        setor: Setor.FINANCEIRO,
+        setor: Setor.PARALEGAL,
       },
     ],
-    emProgresso: [],
+    emProgresso: [
+      {
+        title: 'Nome da atividade',
+        description: 'J. Erivaldo e Cia LTDA',
+        date: '2025-05-24',
+        prioridade: Prioridade.BAIXA,
+        setor: Setor.CONTABIL,
+      },
+    ],
     revisao: [],
     concluido: [],
   };

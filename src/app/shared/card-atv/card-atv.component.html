@@ -1,7 +1,10 @@
 <div class="card">
   <h3>{{ title }}</h3>
   <p>{{ description }}</p>
-  <span class="date">{{ date }}</span>
+  <span class="date">
+    <img src="assets/icones/calendar-orange.svg" alt="data" />
+    {{ date | date: 'dd/MM/yyyy' }}
+  </span>
   <div class="tags">
     <span class="priority-tag" [ngClass]="getPriorityClass()">
       {{ priority }}

@@ -21,9 +21,14 @@
 }
 
 .date {
-  color: #680909;
+  color: #B44727;
   font-size: 0.875rem;
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+  gap: 5px;
+  flex-direction: row;
 }
 
 .tags {
@@ -34,8 +39,12 @@
 }
 
 .priority-tag {
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
   padding: 4px 8px;
+  margin: 0;
   border-radius: 4px;
   font-size: 12px;
   font-weight: 500;
@@ -43,16 +52,16 @@
 }
 
 .priority-high {
-  background: #ea1f08a0;
+  background: #ea0808a0;
   color: #670d04;
 }
 
 .priority-medium {
-  background: #f1c40fc8;
-  color: #977a03;
+  background: #edf10fc8;
+  color: #8e7202;
 }
 
 .priority-low {
-  background: #03d70ba8;
+  background: #4dd703a8;
   color: #028606;
 }
