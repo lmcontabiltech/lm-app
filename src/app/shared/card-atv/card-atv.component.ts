@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Atividade } from 'src/app/sistema/gerenciamento/atividades/atividades';
 import { Prioridade } from 'src/app/sistema/gerenciamento/atividades/prioridade';
+import { Setor } from 'src/app/sistema/administrativo/cadastro-de-colaborador/setor';
 
 @Component({
   selector: 'app-card-atv',
@@ -12,7 +13,7 @@ export class CardAtvComponent {
   @Input() description!: string;
   @Input() date!: string;
   @Input() priority!: Prioridade;
-  @Input() sector!: string;
+  @Input() sector!: Setor;
 
   constructor() {}
 

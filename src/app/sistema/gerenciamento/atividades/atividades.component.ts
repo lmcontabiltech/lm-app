@@ -6,6 +6,7 @@ import {
 } from '@angular/cdk/drag-drop';
 import { Atividade } from './atividades';
 import { Prioridade } from './prioridade';
+import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
 
 interface Tasks {
   [key: string]: Atividade[];
@@ -33,28 +34,28 @@ export class AtividadesComponent implements OnInit {
         description: 'Descrição da tarefa 1',
         date: '2025-04-08',
         prioridade: Prioridade.ALTA,
-        setor: 'Financeiro',
+        setor: Setor.FINANCEIRO,
       },
       {
         title: 'Tarefa 2',
         description: 'Descrição da tarefa 2',
         date: '2025-04-09',
         prioridade: Prioridade.MEDIA,
-        setor: 'Fiscal',
+        setor: Setor.FISCAL,
       },
       {
         title: 'Tarefa 3',
         description: 'Descrição da tarefa 3',
         date: '2025-04-09',
         prioridade: Prioridade.BAIXA,
-        setor: 'Fiscal',
+        setor: Setor.PESSOAL,
       },
       {
         title: 'Tarefa 4',
         description: 'Descrição da tarefa 4',
         date: '2025-04-09',
         prioridade: Prioridade.MEDIA,
-        setor: 'Pessoal',
+        setor: Setor.FINANCEIRO,
       },
     ],
     emProgresso: [],
