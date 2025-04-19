@@ -9,6 +9,7 @@ import { SearchComponent } from './search/search.component';
 import { FormsModule } from '@angular/forms';
 import { SetorTagComponent } from './setor-tag/setor-tag.component';
 import { InputPlusComponent } from './input-plus/input-plus.component';
+import { CardAtvComponent } from './card-atv/card-atv.component';
 
 
 
@@ -21,7 +22,8 @@ import { InputPlusComponent } from './input-plus/input-plus.component';
     SelectPadraoComponent,
     SearchComponent,
     SetorTagComponent,
-    InputPlusComponent
+    InputPlusComponent,
+    CardAtvComponent
   ],
   imports: [
     CommonModule,
@@ -35,7 +37,8 @@ import { InputPlusComponent } from './input-plus/input-plus.component';
     SelectPadraoComponent,
     SearchComponent,
     SetorTagComponent,
-    InputPlusComponent
+    InputPlusComponent,
+    CardAtvComponent
   ]
 })
 export class SharedModule { }

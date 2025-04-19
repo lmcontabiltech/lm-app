@@ -6,14 +6,20 @@
       <div
         cdkDropList
         [id]="status"
-        [cdkDropListData]="tasks[status]"
+        [cdkDropListData]="atividades[status]"
         [cdkDropListConnectedTo]="statuses"
         class="task-list"
         (cdkDropListDropped)="drop($event)"
       >
-        <div class="task-card" *ngFor="let task of tasks[status]" cdkDrag>
-          {{ task.title }}
-        </div>
+      <app-card-atv
+        *ngFor="let atividade of atividades[status]"
+        [title]="atividade.title"
+        [description]="atividade.description"
+        [date]="atividade.date"
+        [priority]="atividade.prioridade"
+        [sector]="atividade.setor"
+        cdkDrag
+      ></app-card-atv>
       </div>
     </div>
   </div>

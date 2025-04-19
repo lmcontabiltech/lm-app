@@ -4,13 +4,10 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-
-interface Task {
-  title: string;
-}
+import { Atividade } from './atividades';
 
 interface Tasks {
-  [key: string]: Task[];
+  [key: string]: Atividade[];
 }
 
 @Component({
@@ -28,14 +25,22 @@ export class AtividadesComponent implements OnInit {
     concluido: 'Concluído',
   };
 
-  tasks: Tasks = {
+  atividades: Tasks = {
     backlog: [
-      { title: 'Tarefa 1' },
-      { title: 'Tarefa 2' },
-      { title: 'Tarefa 3' },
-      { title: 'Tarefa 4' },
-      { title: 'Tarefa 5' },
-      { title: 'Tarefa 6' },
+      {
+        title: 'Tarefa 1',
+        description: 'Descrição da tarefa 1',
+        date: '2025-04-08',
+        prioridade: 'Alta',
+        setor: 'Financeiro',
+      },
+      {
+        title: 'Tarefa 2',
+        description: 'Descrição da tarefa 2',
+        date: '2025-04-09',
+        prioridade: 'Média',
+        setor: 'RH',
+      },
     ],
     emProgresso: [],
     revisao: [],
@@ -50,7 +55,7 @@ export class AtividadesComponent implements OnInit {
     this.dropListIds = this.statuses.map((status) => status);
   }
 
-  drop(event: CdkDragDrop<Task[]>) {
+  drop(event: CdkDragDrop<Atividade[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,
@@ -65,6 +70,6 @@ export class AtividadesComponent implements OnInit {
         event.currentIndex
       );
     }
-    console.log('Tasks after drop:', this.tasks);
+    console.log('Tasks after drop:', this.atividades);
   }
 }
