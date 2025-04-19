@@ -9,6 +9,8 @@ import { Prioridade } from '../atividades/enums/prioridade';
 import { PrioridadeDescricao } from '../atividades/enums/prioridade-descricao';
 import { Status } from '../atividades/enums/status';
 import { StatusDescricao } from '../atividades/enums/status-descricao';
+import { ColaboradoresService } from 'src/app/services/colaboradores.service';
+import { EmpresasService } from 'src/app/services/empresas.service';
 
 @Component({
   selector: 'app-cadastro-de-atividade',
@@ -43,6 +45,9 @@ export class CadastroDeAtividadeComponent implements OnInit {
   selectedStatus: string = '';
   selectedPrioridade: string = '';
 
+  empresas: { value: string; description: string }[] = [];
+  selectedEmpresa: string = '';
+
   valor: string[] = [
     'Alice Santos',
     'Bruno Oliveira',
@@ -61,7 +66,9 @@ export class CadastroDeAtividadeComponent implements OnInit {
     private location: Location,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private colaboradoresService: ColaboradoresService,
+    private empresasService: EmpresasService
   ) {
     this.atividadeForm = this.formBuilder.group({
       titulo: ['', Validators.required],
@@ -75,10 +82,31 @@ export class CadastroDeAtividadeComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.carregarEmpresas();
+  }
 
   goBack() {
     this.location.back();
+  }
+
+  carregarEmpresas(): void {
+    this.empresasService.getEmpresas().subscribe(
+      (empresas) => {
+        this.empresas = empresas.map((empresa) => ({
+          value: empresa.id,
+          description: empresa.razaoSocial,
+        }));
+      },
+      (error) => {
+        console.error('Erro ao carregar as empresas:', error);
+      }
+    );
+  }
+
+  atualizarEmpresas(): void {
+    console.log('Atualizando lista de lojas...');
+    this.carregarEmpresas();
   }
 
   onSubmit(): void {}

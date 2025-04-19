@@ -29,7 +29,9 @@
                 <div class="form-group">
                     <label for="setor">Empresa</label>
                     <app-select-padrao
-                      label="Selecionar a empresa">
+                      label="Selecionar a empresa"
+                      [options]="empresas"
+                      [(selectedValue)]="selectedEmpresa">
                     </app-select-padrao>
                 </div>
                 <div class="form-group">
