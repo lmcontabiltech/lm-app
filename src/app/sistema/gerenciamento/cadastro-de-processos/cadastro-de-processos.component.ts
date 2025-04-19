@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ChecklistItem } from 'src/app/shared/input-plus/input-plus.component';
 
 @Component({
@@ -9,12 +11,29 @@ import { ChecklistItem } from 'src/app/shared/input-plus/input-plus.component';
 })
 export class CadastroDeProcessosComponent implements OnInit {
   checklist: ChecklistItem[] = [];
+  processoForm: FormGroup;
+  isLoading = false;
+  successMessage: string | null = null;
+  errorMessage: string | null = null;
+  isEditMode = false;
+  processoId: string | null = null;
 
-  constructor(private location: Location) {}
+  constructor(
+    private location: Location,
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
+    this.processoForm = this.formBuilder.group({
+      nome: ['', Validators.required],
+    });
+  }
 
   ngOnInit(): void {}
 
   goBack() {
     this.location.back();
   }
+
+  onSubmit(): void {}
 }

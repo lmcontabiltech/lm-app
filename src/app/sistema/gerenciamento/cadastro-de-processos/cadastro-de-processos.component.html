@@ -5,10 +5,10 @@
     </div>
   
     <div class="forms-container">
-        <form>
+        <form (ngSubmit)="onSubmit()" [formGroup]="processoForm">
             <div class="form-group">
                 <label for="nome">Nome</label>
-                <input type="text" id="nome" name="nome" class="form-control" placeholder="Digite" required>
+                <input type="text" id="nome" name="nome" formControlName="nome" class="form-control" placeholder="Digite" required>
             </div>
 
             <div class="form-group">
@@ -22,11 +22,11 @@
                 <label>Tipo de processo</label>
                 <div class="radio-group">
                     <div class="radio-item">
-                        <input type="radio" id="fixo" name="tipo" value="fixo" formControlName="tipo" checked>
+                        <input type="radio" id="fixo" name="tipoDeProcesso" value="Fixo" formControlName="tipoDeProcesso" checked>
                         <label for="fixo">Fixo</label>
                     </div>
                     <div class="radio-item">
-                        <input type="radio" id="variavel" name="tipo" value="variavel" formControlName="tipo">
+                        <input type="radio" id="variavel" name="tipoDeProcesso" value="Variável" formControlName="tipoDeProcesso">
                         <label for="variavel">Variável</label>
                     </div>
                 </div>

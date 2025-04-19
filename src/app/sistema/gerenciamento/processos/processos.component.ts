@@ -9,16 +9,7 @@ import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
   styleUrls: ['./processos.component.css']
 })
 export class ProcessosComponent implements OnInit {
-  processos: Processo[] = [
-        { nome: 'Título da notícia', tipo: 'Fixo', data: '22/12/2024 às 12:30', setor: Setor.FISCAL },
-        { nome: 'Título da notícia', tipo: 'Variável', data: '22/12/2024 às 12:30', setor: Setor.PESSOAL },
-        { nome: 'Título da notícia', tipo: 'Fixo', data: '22/12/2024 às 12:30', setor: Setor.CONTABIL },
-        { nome: 'Título da notícia', tipo: 'Fixo', data: '22/12/2024 às 12:30', setor: Setor.FISCAL },
-        { nome: 'Título da notícia', tipo: 'Variável', data: '22/12/2024 às 12:30', setor: Setor.CONTABIL },
-        { nome: 'Título da notícia', tipo: 'Variável', data: '22/12/2024 às 12:30', setor: Setor.CONTABIL },
-        { nome: 'Título da notícia', tipo: 'Fixo', data: '22/12/2024 às 12:30', setor: Setor.PESSOAL },
-        { nome: 'Título da notícia', tipo: 'Fixo', data: '22/12/2024 às 12:30', setor: Setor.FISCAL }
-      ];
+  processos: Processo[] = [];
   
       itensPorPagina = 5;
       paginaAtual = 1;
