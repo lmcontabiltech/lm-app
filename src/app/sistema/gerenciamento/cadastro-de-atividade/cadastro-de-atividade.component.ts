@@ -47,19 +47,7 @@ export class CadastroDeAtividadeComponent implements OnInit {
 
   empresas: { value: string; description: string }[] = [];
   selectedEmpresa: string = '';
-
-  valor: string[] = [
-    'Alice Santos',
-    'Bruno Oliveira',
-    'Carla Mendes',
-    'Diego Ferreira',
-    'Elisa Costa',
-    'Felipe Almeida',
-    'Gabriela Rocha',
-    'Henrique Souza',
-    'Isabela Martins',
-    'João Pereira',
-  ];
+  membros: { value: string; description: string }[] = [];
   selectedMembro: string = '';
 
   constructor(
@@ -84,6 +72,7 @@ export class CadastroDeAtividadeComponent implements OnInit {
 
   ngOnInit(): void {
     this.carregarEmpresas();
+    this.carregarUsuarios();
   }
 
   goBack() {
@@ -107,6 +96,20 @@ export class CadastroDeAtividadeComponent implements OnInit {
   atualizarEmpresas(): void {
     console.log('Atualizando lista de lojas...');
     this.carregarEmpresas();
+  }
+
+  carregarUsuarios(): void {
+    this.colaboradoresService.getUsuariosNonAdmin().subscribe(
+      (usuarios) => {
+        this.membros = usuarios.map((usuario) => ({
+          value: usuario.id,
+          description: usuario.nome,
+        }));
+      },
+      (error) => {
+        console.error('Erro ao carregar os usuários:', error);
+      }
+    );
   }
 
   onSubmit(): void {}
