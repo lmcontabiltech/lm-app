@@ -11,6 +11,7 @@ import { Status } from '../atividades/enums/status';
 import { StatusDescricao } from '../atividades/enums/status-descricao';
 import { ColaboradoresService } from 'src/app/services/colaboradores.service';
 import { EmpresasService } from 'src/app/services/empresas.service';
+import { ProcessoService } from 'src/app/services/gerenciamento/processo.service';
 
 @Component({
   selector: 'app-cadastro-de-atividade',
@@ -49,6 +50,8 @@ export class CadastroDeAtividadeComponent implements OnInit {
   selectedEmpresa: string = '';
   membros: { value: string; description: string }[] = [];
   selectedMembro: string = '';
+  processos: { value: string; description: string }[] = [];
+  selectedProcesso: string = '';
 
   constructor(
     private location: Location,
@@ -56,7 +59,8 @@ export class CadastroDeAtividadeComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private colaboradoresService: ColaboradoresService,
-    private empresasService: EmpresasService
+    private empresasService: EmpresasService,
+    private processoService: ProcessoService
   ) {
     this.atividadeForm = this.formBuilder.group({
       titulo: ['', Validators.required],
@@ -75,6 +79,7 @@ export class CadastroDeAtividadeComponent implements OnInit {
   ngOnInit(): void {
     this.carregarEmpresas();
     this.carregarUsuarios();
+    this.carregarProcessos();
   }
 
   goBack() {
@@ -110,6 +115,20 @@ export class CadastroDeAtividadeComponent implements OnInit {
       },
       (error) => {
         console.error('Erro ao carregar os usuários:', error);
+      }
+    );
+  }
+
+  carregarProcessos(): void {
+    this.processoService.getProcessos().subscribe(
+      (processos) => {
+        this.processos = processos.map((processo) => ({
+          value: processo.id,
+          description: processo.nome,
+        }));
+      },
+      (error) => {
+        console.error('Erro ao carregar os processos:', error);
       }
     );
   }

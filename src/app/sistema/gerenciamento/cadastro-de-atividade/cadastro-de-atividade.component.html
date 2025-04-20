@@ -47,7 +47,9 @@
             <div class="form-group">
                 <label for="processo">Processo</label>
                 <app-select-padrao
-                  label="Selecionar o processo">
+                  label="Selecionar o processo"
+                  [options]="processos"
+                  [(selectedValue)]="selectedProcesso">
                 </app-select-padrao>
             </div>
 
