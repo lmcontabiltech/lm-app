@@ -44,11 +44,11 @@
                         <td>{{ processo.dataCadastro }}</td>
                         <td>
                             <div class="container-acoes">
-                                <button class="btn-acao edit">
+                                <button class="btn-acao edit" (click)="editarProcesso(processo.id)">
                                     <img src="assets/icones/edit.svg" alt="Editar">
                                     Editar
                                 </button>
-                                <button class="btn-acao delete">
+                                <button class="btn-acao delete" (click)="deletarProcesso(processo.id)">
                                     <img src="assets/icones/delete.svg" alt="Excluir">
                                      Excluir
                                 </button>

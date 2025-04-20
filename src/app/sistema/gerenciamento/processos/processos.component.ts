@@ -74,4 +74,26 @@ export class ProcessosComponent implements OnInit {
       this.atualizarPaginacao();
     }
   }
+
+  editarProcesso(id: string): void {
+    this.router.navigate(['/usuario/cadastro-de-processos', id]);
+  }
+
+  deletarProcesso(id: string): void {
+    if (confirm('Tem certeza que deseja excluir este processo?')) {
+      this.processoService.deletarProcesso(id).subscribe(
+        () => {
+          this.processos = this.processos.filter((processo) => processo.id !== id);
+          this.totalPaginas = Math.ceil(
+            this.processos.length / this.itensPorPagina
+          );
+          this.atualizarPaginacao();
+          console.log('Processo excluída com sucesso');
+        },
+        (error: any) => {
+          console.error('Erro ao excluir processo:', error);
+        }
+      );
+    }
+  }
 }
