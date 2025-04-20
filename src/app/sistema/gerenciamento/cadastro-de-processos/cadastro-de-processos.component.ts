@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ChecklistItem } from 'src/app/shared/input-plus/input-plus.component';
+import { Tarefa } from '../processos/tarefas';
 import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
 import { SetorDescricao } from '../../administrativo/cadastro-de-colaborador/setor-descricao';
 import { Escolha } from '../processos/enums/escolha';
@@ -16,7 +16,7 @@ import { ProcessoService } from 'src/app/services/gerenciamento/processo.service
   styleUrls: ['./cadastro-de-processos.component.css'],
 })
 export class CadastroDeProcessosComponent implements OnInit {
-  checklist: ChecklistItem[] = [];
+  subprocessos: Tarefa[] = [];
   processoForm: FormGroup;
   isLoading = false;
   successMessage: string | null = null;
@@ -51,7 +51,7 @@ export class CadastroDeProcessosComponent implements OnInit {
       setor: ['', Validators.required],
       dependeDeOutroSetor: [''],
       setorDeDependencia: [''],
-      // subprocessos: this.formBuilder.array([]),
+      subprocessos: [[]],
     });
   }
 
