@@ -31,22 +31,37 @@ export class InputPlusComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.items.length === 0 && this.initialCount > 0) {
-      const newItems: any[] = Array.from({ length: this.initialCount }, () => ({
-        id: 0,
-        tarefa: '',
-        checked: false,
-      }));
-      this.items = [...this.items, ...newItems];
+      const newItems: Tarefa[] = Array.from(
+        { length: this.initialCount },
+        (_, i) => ({
+          id: 0,
+          tarefa: '',
+          checked: false,
+        })
+      );
+      this.items = [...newItems];
+      this.onChange(this.items);
       this.itemsChange.emit(this.items);
-      console.log('Inicializados:', this.items);
+      console.log('Inicializado com itens vazios:', this.items);
     }
   }
 
   writeValue(value: any[]): void {
-    if (value) {
+    if (value && value.length > 0) {
       this.items = value;
-      this.emitChange();
+    } else if (this.items.length === 0 && this.initialCount > 0) {
+      const newItems: Tarefa[] = Array.from(
+        { length: this.initialCount },
+        (_, i) => ({
+          id: 0,
+          tarefa: '',
+          checked: false,
+        })
+      );
+      this.items = [...newItems];
     }
+    this.onChange(this.items);
+    this.emitChange();
   }
 
   registerOnChange(fn: (value: any[]) => void): void {
@@ -58,11 +73,6 @@ export class InputPlusComponent implements OnInit {
   }
 
   addItem() {
-    // const newId =
-    //   this.items.length > 0
-    //     ? Math.max(...this.items.map((item) => item.id)) + 1
-    //     : 1;
-
     const newItem: Tarefa = {
       id: 0,
       tarefa: '',

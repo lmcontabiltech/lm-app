@@ -51,7 +51,7 @@ export class CadastroDeProcessosComponent implements OnInit {
       setor: ['', Validators.required],
       dependeDeOutroSetor: [''],
       setorDeDependencia: ['', this.nullIfEmptyValidator()],
-      subprocessos: [[]],
+      subprocessos: [[{ id: 0, tarefa: '', checked: false }]],
     });
   }
 
