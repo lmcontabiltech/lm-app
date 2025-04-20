@@ -37,6 +37,7 @@ export class ProcessosComponent implements OnInit {
   fetchProcessos(): void {
     this.processoService.getProcessos().subscribe(
       (processos: Processo[]) => {
+        console.log('Processos retornados pelo backend:', processos);
         this.processos = processos;
         this.totalPaginas = Math.ceil(
           this.processos.length / this.itensPorPagina
