@@ -38,9 +38,12 @@ const routes: Routes = [
       { path: 'chat', component: ChatComponent},
       { path: 'forum-de-noticias', component: ForumDeNoticiaComponent},
       { path: 'cadastro-de-atividade', component: CadastroDeAtividadeComponent},
+      { path: 'cadastro-de-atividade/:id', component: CadastroDeAtividadeComponent},
       { path: 'cadastro-de-noticia', component: CadastroDeNoticiaComponent},
+      { path: 'cadastro-de-noticia/:id', component: CadastroDeNoticiaComponent},
       { path: 'processos', component: ProcessosComponent},
       { path: 'cadastro-de-processos', component: CadastroDeProcessosComponent},
+      { path: 'cadastro-de-processos/:id', component: CadastroDeProcessosComponent},
     ] 
   }
 ];
