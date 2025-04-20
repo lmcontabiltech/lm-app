@@ -2,25 +2,27 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Processo } from './processo';
 import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
+import { ProcessoService } from 'src/app/services/gerenciamento/processo.service';
 
 @Component({
   selector: 'app-processos',
   templateUrl: './processos.component.html',
-  styleUrls: ['./processos.component.css']
+  styleUrls: ['./processos.component.css'],
 })
 export class ProcessosComponent implements OnInit {
   processos: Processo[] = [];
-  
-      itensPorPagina = 5;
-      paginaAtual = 1;
-      totalPaginas = Math.ceil(this.processos.length / this.itensPorPagina);
-      processosPaginados: Processo[] = [];
+  itensPorPagina = 5;
+  paginaAtual = 1;
+  totalPaginas = Math.ceil(this.processos.length / this.itensPorPagina);
+  processosPaginados: Processo[] = [];
 
   constructor(
-    private router: Router
-  ) { }
+    private router: Router,
+    private processoService: ProcessoService
+  ) {}
 
   ngOnInit(): void {
+    this.fetchProcessos();
     this.atualizarPaginacao();
   }
 
@@ -30,6 +32,21 @@ export class ProcessosComponent implements OnInit {
 
   onSearch(searchTerm: string) {
     console.log('Search term:', searchTerm);
+  }
+
+  fetchProcessos(): void {
+    this.processoService.getProcessos().subscribe(
+      (processos: Processo[]) => {
+        this.processos = processos;
+        this.totalPaginas = Math.ceil(
+          this.processos.length / this.itensPorPagina
+        );
+        this.atualizarPaginacao();
+      },
+      (error) => {
+        console.error('Erro ao carregar processos:', error);
+      }
+    );
   }
 
   atualizarPaginacao(): void {
