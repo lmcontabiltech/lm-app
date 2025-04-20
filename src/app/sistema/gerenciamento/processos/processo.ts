@@ -7,6 +7,6 @@ export class Processo {
   dataCadastro!: string;
   setor!: Setor;
   dependeDeOutroSetor!: string;
-  setorDeDependencia!: Setor;
+  setorDeDependencia!: Setor | null;
   subprocessos!: { tarefa: string; id: number; checked: boolean }[];;
 }

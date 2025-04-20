@@ -50,7 +50,7 @@ export class CadastroDeProcessosComponent implements OnInit {
       tipoDeProcesso: ['Fixo', Validators.required],
       setor: ['', Validators.required],
       dependeDeOutroSetor: [''],
-      setorDeDependencia: [''],
+      setorDeDependencia: ['', this.nullIfEmptyValidator()],
       subprocessos: [[]],
     });
   }
@@ -93,5 +93,14 @@ export class CadastroDeProcessosComponent implements OnInit {
         }
       );
     }
+  }
+
+  nullIfEmptyValidator() {
+    return (control: any) => {
+      if (control.value === '') {
+        control.setValue(null, { emitEvent: false });
+      }
+      return null;
+    };
   }
 }
