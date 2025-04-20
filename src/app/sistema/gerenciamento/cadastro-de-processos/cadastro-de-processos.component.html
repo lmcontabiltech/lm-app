@@ -14,7 +14,10 @@
             <div class="form-group">
                 <label for="setor">Setor</label>
                 <app-select-padrao
-                  label="Selecionar o setor">
+                  label="Selecionar o setor"
+                  [options]="setores"
+                  [(selectedValue)]="selectedSetor"
+                  formControlName="setor">
                 </app-select-padrao>
             </div>
 
@@ -34,16 +37,19 @@
 
             <div class="input-duo">
                 <div class="form-group">
-                    <label for="status">Depende de outro setor?</label>
+                    <label for="dependeDeOutroSetor">Depende de outro setor?</label>
                     <app-select-padrao
-                      label="Selecionar">
+                      label="Selecionar"
+                      formControlName="dependeDeOutroSetor">
                     </app-select-padrao>
                 </div>
 
                 <div class="form-group">
-                    <label for="setor">Setor de dependência</label>
+                    <label for="setorDeDependencia">Setor de dependência</label>
                     <app-select-padrao
-                      label="Selecionar o setor">
+                      label="Selecionar o setor"
+                      formControlName="setorDeDependencia"
+                      [options]="setores">
                     </app-select-padrao>
                 </div>
             </div>
@@ -66,5 +72,15 @@
                 </button>
             </div>
         </form>
+
+        <div *ngIf="isLoading">Carregando...</div>
+        <div class="alerts">
+            <div class="alerts-container alert-success" *ngIf="successMessage">
+              {{ successMessage }}
+            </div>
+            <div class=" alerts-container alert-danger" *ngIf="errorMessage">
+                {{ errorMessage }}
+            </div>
+        </div>
     </div>
 </div>

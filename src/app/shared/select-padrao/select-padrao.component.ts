@@ -19,28 +19,37 @@ export class SelectPadraoComponent {
   @Input() selectedValue: string = '';
   @Output() selectedValueChange = new EventEmitter<string>();
   @Input() customStyles: { [key: string]: string } = {};
+  @Input() disabled: boolean = false;
 
   isOpen: boolean = false;
 
-  private onChange: (value: any) => void = () => {};
-  private onTouched: () => void = () => {};
+  onChange = (value: string) => {};
+  onTouched = () => {};
+  value: string = '';
 
   constructor(private elementRef: ElementRef) {}
 
-  writeValue(value: any): void {
-    this.selectedValue = value;
+  writeValue(value: string): void {
+    this.value = value;
   }
 
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: (value: string) => void): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
+  }
+
+  setDisabledState?(isDisabled: boolean): void {
+    this.disabled = isDisabled;
   }
 
   onSelect(option: { value: string, description: string }) {
     this.selectedValue = option.value;
+    this.value = option.value;
+    this.onChange(this.value);
+    this.onTouched();
     this.selectedValueChange.emit(this.selectedValue);
     this.isOpen = false;
   }

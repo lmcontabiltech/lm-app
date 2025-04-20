@@ -4,7 +4,7 @@ export class Processo {
   id!: string;
   nome!: string;
   tipoDeProcesso!: string;
-  data!: string;
+  dataCadastro!: string;
   setor!: Setor;
   dependeDeOutroSetor!: string;
   setorDeDependencia!: Setor;
