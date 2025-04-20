@@ -41,7 +41,7 @@
                         <td>
                             <app-setor-tag [setor]="processo.setor"></app-setor-tag>
                         </td>
-                        <td>{{ processo.dataCadastro }}</td>
+                        <td>{{ processo.dataCadastro | date: 'dd/MM/yyyy' }} às {{ processo.dataCadastro | date: 'HH:mm' }}</td>
                         <td>
                             <div class="container-acoes">
                                 <button class="btn-acao edit" (click)="editarProcesso(processo.id)">
