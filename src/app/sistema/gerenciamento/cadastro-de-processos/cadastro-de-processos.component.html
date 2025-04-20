@@ -40,7 +40,9 @@
                     <label for="dependeDeOutroSetor">Depende de outro setor?</label>
                     <app-select-padrao
                       label="Selecionar"
-                      formControlName="dependeDeOutroSetor">
+                      formControlName="dependeDeOutroSetor"
+                      [options]="escolhas"
+                      [(selectedValue)]="selectedDependeDeOutroSetor">
                     </app-select-padrao>
                 </div>
 
@@ -49,7 +51,8 @@
                     <app-select-padrao
                       label="Selecionar o setor"
                       formControlName="setorDeDependencia"
-                      [options]="setores">
+                      [options]="setores"
+                      [(selectedValue)]="selectedSetorDeDependencia">
                     </app-select-padrao>
                 </div>
             </div>

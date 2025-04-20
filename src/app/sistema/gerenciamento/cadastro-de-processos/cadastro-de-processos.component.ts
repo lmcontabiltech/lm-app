@@ -5,6 +5,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ChecklistItem } from 'src/app/shared/input-plus/input-plus.component';
 import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
 import { SetorDescricao } from '../../administrativo/cadastro-de-colaborador/setor-descricao';
+import { Escolha } from '../processos/enums/escolha';
+import { EscolhaDescricao } from '../processos/enums/escolha-descricao';
 import { Processo } from '../processos/processo';
 import { ProcessoService } from 'src/app/services/gerenciamento/processo.service';
 
@@ -28,6 +30,13 @@ export class CadastroDeProcessosComponent implements OnInit {
     description: SetorDescricao[Setor[key as keyof typeof Setor]],
   }));
   selectedSetor: string = '';
+  selectedSetorDeDependencia: string = '';
+
+  escolhas = Object.keys(Escolha).map((key) => ({
+    value: Escolha[key as keyof typeof Escolha],
+    description: EscolhaDescricao[Escolha[key as keyof typeof Escolha]],
+  }));
+  selectedDependeDeOutroSetor: string = '';
 
   constructor(
     private location: Location,
