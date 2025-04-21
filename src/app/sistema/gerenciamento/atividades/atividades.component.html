@@ -1,4 +1,8 @@
 <div class="main-container">
+  <div class="header-container">
+    <h2>Atividades</h2>
+    <button class="btn btn-primary" (click)="cadastrarAtividade()">Cadastrar atividade +</button>
+  </div>
   <div class="kanban-board">
     <div class="kanban-column" *ngFor="let status of statuses">
         <h3>{{ statusLabels[status] }}</h3>
@@ -6,14 +10,20 @@
       <div
         cdkDropList
         [id]="status"
-        [cdkDropListData]="tasks[status]"
+        [cdkDropListData]="atividades[status]"
         [cdkDropListConnectedTo]="statuses"
         class="task-list"
         (cdkDropListDropped)="drop($event)"
       >
-        <div class="task-card" *ngFor="let task of tasks[status]" cdkDrag>
-          {{ task.title }}
-        </div>
+      <app-card-atv
+        *ngFor="let atividade of atividades[status]"
+        [title]="atividade.title"
+        [description]="atividade.description"
+        [date]="atividade.date"
+        [priority]="atividade.prioridade"
+        [sector]="atividade.setor"
+        cdkDrag
+      ></app-card-atv>
       </div>
     </div>
   </div>

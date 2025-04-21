@@ -4,13 +4,13 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-
-interface Task {
-  title: string;
-}
+import { Router } from '@angular/router';
+import { Atividade } from './atividades';
+import { Prioridade } from './enums/prioridade';
+import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
 
 interface Tasks {
-  [key: string]: Task[];
+  [key: string]: Atividade[];
 }
 
 @Component({
@@ -28,29 +28,59 @@ export class AtividadesComponent implements OnInit {
     concluido: 'Concluído',
   };
 
-  tasks: Tasks = {
+  atividades: Tasks = {
     backlog: [
-      { title: 'Tarefa 1' },
-      { title: 'Tarefa 2' },
-      { title: 'Tarefa 3' },
-      { title: 'Tarefa 4' },
-      { title: 'Tarefa 5' },
-      { title: 'Tarefa 6' },
+      {
+        title: 'Tarefa 1',
+        description: 'Descrição da tarefa 1',
+        date: '2025-04-08',
+        prioridade: Prioridade.ALTA,
+        setor: Setor.FINANCEIRO,
+      },
+      {
+        title: 'Tarefa 2',
+        description: 'Descrição da tarefa 2',
+        date: '2025-04-09',
+        prioridade: Prioridade.MEDIA,
+        setor: Setor.FISCAL,
+      },
+      {
+        title: 'Tarefa 3',
+        description: 'Descrição da tarefa 3',
+        date: '2025-04-09',
+        prioridade: Prioridade.BAIXA,
+        setor: Setor.PESSOAL,
+      },
+      {
+        title: 'Tarefa 4',
+        description: 'Descrição da tarefa 4',
+        date: '2025-04-09',
+        prioridade: Prioridade.MEDIA,
+        setor: Setor.PARALEGAL,
+      },
     ],
-    emProgresso: [],
+    emProgresso: [
+      {
+        title: 'Nome da atividade',
+        description: 'J. Erivaldo e Cia LTDA',
+        date: '2025-05-24',
+        prioridade: Prioridade.BAIXA,
+        setor: Setor.CONTABIL,
+      },
+    ],
     revisao: [],
     concluido: [],
   };
 
   dropListIds: string[] = [];
 
-  constructor() {}
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
     this.dropListIds = this.statuses.map((status) => status);
   }
 
-  drop(event: CdkDragDrop<Task[]>) {
+  drop(event: CdkDragDrop<Atividade[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,
@@ -65,6 +95,10 @@ export class AtividadesComponent implements OnInit {
         event.currentIndex
       );
     }
-    console.log('Tasks after drop:', this.tasks);
+    console.log('Tasks after drop:', this.atividades);
+  }
+
+  cadastrarAtividade(): void {
+    this.router.navigate(['/usuario/cadastro-de-atividade']);
   }
 }

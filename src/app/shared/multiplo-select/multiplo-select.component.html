@@ -3,7 +3,7 @@
     <div [ngStyle]="customStyles" class="select-dropdown" (click)="toggleDropdown()">
       <div *ngIf="multiple && selectedValue.length > 0" class="selected-values">
         <span *ngFor="let value of selectedValue" class="selected-value">
-          {{ value }}
+          {{ value.description }}
           <span class="remove-value" (click)="removeValue(value)">x</span>
         </span>
       </div>
@@ -15,7 +15,7 @@
   
     <div class="options-container" *ngIf="isOpen">
       <div class="option" *ngFor="let option of options" (click)="onSelect(option)" [class.selected]="selectedValue.includes(option)">
-        {{ option }}
+        {{ option.description }}
       </div>
     </div>
 </div>

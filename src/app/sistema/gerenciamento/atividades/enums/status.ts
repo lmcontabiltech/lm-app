@@ -1,0 +1,6 @@
+export enum Status {
+  BACKLOG = 'BACKLOG',
+  EM_PROGRESSO = 'EM_PROGRESSO',
+  REVISAO = 'REVISAO',
+  CONCLUIDO = 'CONCLUIDO',
+}

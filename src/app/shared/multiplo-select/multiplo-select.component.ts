@@ -1,19 +1,30 @@
-import { Component, OnInit, Input, HostListener, Output, EventEmitter, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, HostListener, Output, EventEmitter, ElementRef, forwardRef } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-multiplo-select',
   templateUrl: './multiplo-select.component.html',
-  styleUrls: ['./multiplo-select.component.css']
+  styleUrls: ['./multiplo-select.component.css'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => MultiploSelectComponent),
+      multi: true,
+    },
+  ],
 })
 export class MultiploSelectComponent {
   @Input() label: string = '';
-  @Input() options: any[] = [];
+  @Input() options: { value: string; description: string } [] = [];
   @Input() selectedValue: any[] | any;
   @Output() selectedValueChange: EventEmitter<any> = new EventEmitter<any>();
   @Input() customStyles: { [key: string]: string } = {};
   @Input() multiple: boolean = false;
 
   isOpen: boolean = false;
+
+  private onChange: (value: any) => void = () => {};
+  private onTouched: () => void = () => {};
 
   constructor(private elementRef: ElementRef) {}
 
@@ -23,6 +34,18 @@ export class MultiploSelectComponent {
     } else if (!this.multiple) {
       this.selectedValue = null;
     }
+  }
+
+  writeValue(value: any): void {
+    this.selectedValue = value;
+  }
+
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
   }
 
   onSelect(value: any) {
@@ -36,11 +59,13 @@ export class MultiploSelectComponent {
           this.selectedValue.push(value);
         }
       }
+      console.log('Valores selecionados:', this.selectedValue);
       this.selectedValueChange.emit(this.selectedValue);
     } else {
       this.selectedValue = value;
       this.selectedValueChange.emit(value);
     }
+    console.log('Valor selecionado:', this.selectedValue);
     this.isOpen = false;
   }
 

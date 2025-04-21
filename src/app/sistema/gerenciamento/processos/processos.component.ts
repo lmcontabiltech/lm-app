@@ -2,34 +2,27 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Processo } from './processo';
 import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
+import { ProcessoService } from 'src/app/services/gerenciamento/processo.service';
 
 @Component({
   selector: 'app-processos',
   templateUrl: './processos.component.html',
-  styleUrls: ['./processos.component.css']
+  styleUrls: ['./processos.component.css'],
 })
 export class ProcessosComponent implements OnInit {
-  processos: Processo[] = [
-        { nome: 'Título da notícia', tipo: 'Fixo', data: '22/12/2024 às 12:30', setor: Setor.FISCAL },
-        { nome: 'Título da notícia', tipo: 'Variável', data: '22/12/2024 às 12:30', setor: Setor.PESSOAL },
-        { nome: 'Título da notícia', tipo: 'Fixo', data: '22/12/2024 às 12:30', setor: Setor.CONTABIL },
-        { nome: 'Título da notícia', tipo: 'Fixo', data: '22/12/2024 às 12:30', setor: Setor.FISCAL },
-        { nome: 'Título da notícia', tipo: 'Variável', data: '22/12/2024 às 12:30', setor: Setor.CONTABIL },
-        { nome: 'Título da notícia', tipo: 'Variável', data: '22/12/2024 às 12:30', setor: Setor.CONTABIL },
-        { nome: 'Título da notícia', tipo: 'Fixo', data: '22/12/2024 às 12:30', setor: Setor.PESSOAL },
-        { nome: 'Título da notícia', tipo: 'Fixo', data: '22/12/2024 às 12:30', setor: Setor.FISCAL }
-      ];
-  
-      itensPorPagina = 5;
-      paginaAtual = 1;
-      totalPaginas = Math.ceil(this.processos.length / this.itensPorPagina);
-      processosPaginados: Processo[] = [];
+  processos: Processo[] = [];
+  itensPorPagina = 5;
+  paginaAtual = 1;
+  totalPaginas = Math.ceil(this.processos.length / this.itensPorPagina);
+  processosPaginados: Processo[] = [];
 
   constructor(
-    private router: Router
-  ) { }
+    private router: Router,
+    private processoService: ProcessoService
+  ) {}
 
   ngOnInit(): void {
+    this.fetchProcessos();
     this.atualizarPaginacao();
   }
 
@@ -39,6 +32,22 @@ export class ProcessosComponent implements OnInit {
 
   onSearch(searchTerm: string) {
     console.log('Search term:', searchTerm);
+  }
+
+  fetchProcessos(): void {
+    this.processoService.getProcessos().subscribe(
+      (processos: Processo[]) => {
+        console.log('Processos retornados pelo backend:', processos);
+        this.processos = processos;
+        this.totalPaginas = Math.ceil(
+          this.processos.length / this.itensPorPagina
+        );
+        this.atualizarPaginacao();
+      },
+      (error) => {
+        console.error('Erro ao carregar processos:', error);
+      }
+    );
   }
 
   atualizarPaginacao(): void {
@@ -63,6 +72,28 @@ export class ProcessosComponent implements OnInit {
     if (this.paginaAtual < this.totalPaginas) {
       this.paginaAtual++;
       this.atualizarPaginacao();
+    }
+  }
+
+  editarProcesso(id: string): void {
+    this.router.navigate(['/usuario/cadastro-de-processos', id]);
+  }
+
+  deletarProcesso(id: string): void {
+    if (confirm('Tem certeza que deseja excluir este processo?')) {
+      this.processoService.deletarProcesso(id).subscribe(
+        () => {
+          this.processos = this.processos.filter((processo) => processo.id !== id);
+          this.totalPaginas = Math.ceil(
+            this.processos.length / this.itensPorPagina
+          );
+          this.atualizarPaginacao();
+          console.log('Processo excluída com sucesso');
+        },
+        (error: any) => {
+          console.error('Erro ao excluir processo:', error);
+        }
+      );
     }
   }
 }

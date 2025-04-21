@@ -37,18 +37,18 @@
                                 </span>
                             </div>
                         </td>
-                        <td>{{ processo.tipo }}</td>
+                        <td>{{ processo.tipoDeProcesso }}</td>
                         <td>
                             <app-setor-tag [setor]="processo.setor"></app-setor-tag>
                         </td>
-                        <td>{{ processo.data }}</td>
+                        <td>{{ processo.dataCadastro | date: 'dd/MM/yyyy' }} às {{ processo.dataCadastro | date: 'HH:mm' }}</td>
                         <td>
                             <div class="container-acoes">
-                                <button class="btn-acao edit">
+                                <button class="btn-acao edit" (click)="editarProcesso(processo.id)">
                                     <img src="assets/icones/edit.svg" alt="Editar">
                                     Editar
                                 </button>
-                                <button class="btn-acao delete">
+                                <button class="btn-acao delete" (click)="deletarProcesso(processo.id)">
                                     <img src="assets/icones/delete.svg" alt="Excluir">
                                      Excluir
                                 </button>

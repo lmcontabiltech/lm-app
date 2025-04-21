@@ -7,6 +7,19 @@
   gap: 24px;
 }
 
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.header-container h2 {
+  font-size: 24px;
+  color: var(--lm-text);
+  margin: 0;
+}
+
 .kanban-board {
   display: flex;
   gap: 24px;
@@ -52,4 +65,23 @@
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   cursor: pointer;
+}
+
+/* Breakpoints */
+@media (min-width: 1200px) {
+  .main-container {
+    margin: 120px 32px 24px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+  .main-container {
+    margin: 100px 20px 24px;
+  }
+}
+
+@media (max-width: 767px) {
+  .main-container {
+    margin: 100px 20px 24px;
+  }
 }
