@@ -23,8 +23,8 @@
                 </div>
     
                 <div class="form-group">
-                    <label for="codDominio">Código da empresa no Domínio</label>
-                    <input type="text" id="codDominio" name="codDominio" formControlName="codDominio" class="form-control" placeholder="Digite" required>
+                    <label for="codEmpDominio">Código da empresa no Domínio</label>
+                    <input type="text" id="codEmpDominio" name="codEmpDominio" formControlName="codEmpDominio" class="form-control" placeholder="Digite" required>
                 </div>
             </div>
 
@@ -41,35 +41,50 @@
             <div class="form-group">
                 <label for="contabil">Setor Contábil</label>
                 <app-select-padrao
-                  label="Selecionar funcionário">
+                  label="Selecionar funcionário"
+                  [options]="funcionariosContabil"
+                  [(selectedValue)]="selectedContabil"                
+                  formControlName="identificadorContabil">
                 </app-select-padrao>
             </div>
 
             <div class="form-group">
                 <label for="fiscal">Setor Fiscal</label>
                 <app-select-padrao
-                  label="Selecionar funcionário">
+                  label="Selecionar funcionário"
+                  [options]="funcionariosFiscal"
+                  [(selectedValue)]="selectedFiscal"
+                  formControlName="identificadorFiscal">
                 </app-select-padrao>
             </div>
 
             <div class="form-group">
                 <label for="pessoal">Setor Pessoal</label>
                 <app-select-padrao
-                  label="Selecionar funcionário">
+                  label="Selecionar funcionário"
+                  [options]="funcionariosPessoal"
+                  [(selectedValue)]="selectedPessoal"
+                  formControlName="identificadorPessoal">
                 </app-select-padrao>
             </div>
 
             <div class="form-group">
                 <label for="paralegal">Setor Paralegal</label>
                 <app-select-padrao
-                  label="Selecionar funcionário">
+                  label="Selecionar funcionário"
+                  [options]="funcionariosParalegal"
+                  [(selectedValue)]="selectedParalegal"
+                  formControlName="identificadorParalegal">
                 </app-select-padrao>
             </div>
 
             <div class="form-group">
                 <label for="financeiro">Setor Financeiro</label>
                 <app-select-padrao
-                  label="Selecionar funcionário">
+                  label="Selecionar funcionário"
+                  [options]="funcionariosFinanceiro"
+                  [(selectedValue)]="selectedFinanceiro"
+                  formControlName="identificadorFinanceiro">
                 </app-select-padrao>
             </div>
 
