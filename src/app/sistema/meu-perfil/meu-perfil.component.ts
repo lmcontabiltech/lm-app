@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ThemeService } from '../../services/modo-escuro/theme.service';
 import { Location } from '@angular/common';
+import { ColaboradoresService } from 'src/app/services/colaboradores.service';
 
 @Component({
   selector: 'app-meu-perfil',

@@ -55,7 +55,9 @@ export class CadastroDeProcessosComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.verificarModoEdicao();
+  }
 
   goBack() {
     this.location.back();
@@ -78,13 +80,29 @@ export class CadastroDeProcessosComponent implements OnInit {
     console.log('Dados enviados para o backend:', processo);
 
     if (this.isEditMode && this.processoId) {
+      this.processoService
+        .atualizarProcesso(this.processoId, processo)
+        .subscribe(
+          (response) => {
+            this.isLoading = false;
+            this.successMessage = 'Processo atualizado com sucesso!';
+            this.errorMessage = null;
+            this.router.navigate(['/usuario/processos']);
+          },
+          (error) => {
+            this.isLoading = false;
+            this.errorMessage =
+              error.message || 'Erro ao atualizar o processo.';
+            this.successMessage = null;
+          }
+        );
     } else {
       this.processoService.cadastrarProcesso(processo).subscribe(
         (response) => {
           this.isLoading = false;
           this.successMessage = 'Processo cadastrado com sucesso!';
           this.errorMessage = null;
-          // this.colaboradorForm.reset();
+          this.processoForm.reset();
         },
         (error) => {
           this.isLoading = false;
@@ -102,5 +120,31 @@ export class CadastroDeProcessosComponent implements OnInit {
       }
       return null;
     };
+  }
+
+  private verificarModoEdicao(): void {
+    this.processoId = this.route.snapshot.paramMap.get('id');
+    if (this.processoId) {
+      this.isEditMode = true;
+      this.processoService.getProcessoById(this.processoId).subscribe(
+        (processo: Processo) => {
+          console.log('Dados do processo recebidos:', processo);
+          this.processoForm.patchValue({
+            ...processo,
+            setorDeDependencia: processo.setorDeDependencia || null,
+            subprocessos: processo.subprocessos || [
+              { id: null, tarefa: '', checked: false },
+            ],
+          });
+
+          this.selectedSetor = processo.setor;
+          this.selectedDependeDeOutroSetor = processo.dependeDeOutroSetor;
+          this.selectedSetorDeDependencia = processo.setorDeDependencia ?? '';
+        },
+        (error) => {
+          console.error('Erro ao carregar os dados do processo:', error);
+        }
+      );
+    }
   }
 }
