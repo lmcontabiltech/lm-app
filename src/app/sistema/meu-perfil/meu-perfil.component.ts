@@ -14,15 +14,29 @@ export class MeuPerfilComponent implements OnInit {
   user = {
     name: 'Haroldo Andrade',
     email: 'haroldo@gmail.com',
-    setor: 'Diretoria'
+    setor: 'Diretoria',
   };
 
   defaultImageUrl = 'assets/imagens/default-profile.png';
   selectedImageUrl: string | ArrayBuffer | null = null;
 
-  constructor(public themeService: ThemeService, private location: Location) {}
+  constructor(
+    public themeService: ThemeService,
+    private location: Location,
+    private colaboradoresService: ColaboradoresService
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.colaboradoresService.getUsuarioByToken().subscribe(
+      (usuario) => {
+        this.userId = usuario.id;
+        console.log('ID do usuário carregado:', this.userId);
+      },
+      (error) => {
+        console.error('Erro ao carregar o ID do usuário:', error);
+      }
+    );
+  }
 
   toggleDarkMode() {
     console.log('Enviando para o backend:', {
