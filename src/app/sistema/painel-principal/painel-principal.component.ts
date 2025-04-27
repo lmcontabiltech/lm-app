@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ExchangeService } from 'src/app/services/exchange.service';
+import { Usuario } from 'src/app/login/usuario';
+import { ColaboradoresService } from 'src/app/services/colaboradores.service';
 import * as ApexCharts from 'apexcharts';
 import {
   ApexAxisChartSeries,
@@ -24,16 +26,29 @@ export type ChartOptions = {
   styleUrls: ['./painel-principal.component.css'],
 })
 export class PainelPrincipalComponent implements OnInit {
+  usuario: Usuario | null = null;
   cotacoes: any = {};
   selic: string = '';
 
-  constructor(private exchangeService: ExchangeService) {}
+  constructor(
+    private exchangeService: ExchangeService,
+    private colaboradorService: ColaboradoresService
+  ) {}
 
   ngOnInit(): void {
     this.renderChart();
     this.renderBarChart();
     this.renderPieChart();
     this.loadTaxas();
+    this.colaboradorService.getUsuarioByToken().subscribe(
+      (usuario) => {
+        this.usuario = usuario;
+        console.log('Perfil do usuário:', usuario);
+      },
+      (error) => {
+        console.error('Erro ao obter perfil do usuário:', error);
+      }
+    );
   }
 
   loadTaxas(): void {
