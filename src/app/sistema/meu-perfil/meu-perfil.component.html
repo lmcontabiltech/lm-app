@@ -33,26 +33,26 @@
     <div class="data-profile" *ngIf="!isEditing">
       <div class="data-item">
           <label class="label-item">Nome:</label>
-          <span>{{ user.name }}</span>
+          <span>{{ name }}</span>
         </div>
         <div class="data-item">
           <label class="label-item">E-mail:</label>
-          <span>{{ user.email }}</span>
+          <span>{{ email }}</span>
         </div>
         <div class="data-item">
           <label class="label-item">Setor:</label>
-          <span>{{ user.setor }}</span>
+          <span>{{ setor }}</span>
         </div>
     </div>
     <div class="data-profile-edit">
       <div *ngIf="isEditing" class="form-group">
         <div class="data-edit form-group">
           <label for="name">Nome:</label>
-          <input [(ngModel)]="user.name" type="text" id="name" name="name" class="input-perfil">
+          <input [(ngModel)]="name" type="text" id="name" name="name" class="input-perfil">
         </div>
         <div class="data-edit form-group">
           <label for="email">E-mail:</label>
-          <input [(ngModel)]="user.email" id="email" name="email" type="email" class="input-perfil">
+          <input [(ngModel)]="email" id="email" name="email" type="email" class="input-perfil">
         </div>
       </div>
     </div>
