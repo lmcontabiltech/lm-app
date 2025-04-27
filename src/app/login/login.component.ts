@@ -4,14 +4,14 @@ import { AuthService } from '../services/auth.service';
 import { Usuario } from './usuario';
 import { Permissao } from './permissao';
 import { Setor } from '../sistema/administrativo/cadastro-de-colaborador/setor';
+import { ThemeService } from '../services/modo-escuro/theme.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
-
   username: string = '';
   password: string = '';
   nome: string = '';
@@ -27,7 +27,7 @@ export class LoginComponent {
 
   confirmPasswordError: string | null = null;
   confirmPassword: string = '';
-  consentimento: boolean = false;  
+  consentimento: boolean = false;
 
   showTooltip: boolean = false;
   passwordValidations = {
@@ -40,12 +40,13 @@ export class LoginComponent {
 
   passwordVisible: { [key: string]: boolean } = {
     password: false,
-    confirmPassword: false
+    confirmPassword: false,
   };
 
   constructor(
-    private router: Router,
-    private authService: AuthService
+    private router: Router, 
+    private authService: AuthService, 
+    private themeService: ThemeService
   ) {}
 
   onSubmit() {
@@ -58,27 +59,35 @@ export class LoginComponent {
         localStorage.setItem('user_id', userId || '');
 
         const usuario: Usuario = {
-          id: userId,  
-          fotoUrl: null, 
-          username: response.username, 
-          password: '', 
+          id: userId,
+          fotoUrl: null,
+          username: response.username,
+          password: '',
           email: response.email || '',
           nome: response.nome || '',
-          confirmPassword: '', 
+          confirmPassword: '',
           tipoUsuario: '',
-          permissao: response.authorities.length > 0 ? response.authorities[0] : null,
-          setor: response.setor || null
+          permissao:
+            response.authorities.length > 0 ? response.authorities[0] : null,
+          setor: response.setor || null,
+          darkMode: response.darkMode || false,
         };
         localStorage.setItem('usuario', JSON.stringify(usuario));
 
-        if (usuario.permissao === Permissao.ADMIN || usuario.permissao === Permissao.COORDENADOR || 
-            usuario.permissao === Permissao.USER) {
+        // Chama o ThemeService para carregar e aplicar o tema
+        this.themeService.loadDarkModeFromServer();
+
+        if (
+          usuario.permissao === Permissao.ADMIN ||
+          usuario.permissao === Permissao.COORDENADOR ||
+          usuario.permissao === Permissao.USER
+        ) {
           this.router.navigate(['/usuario/painel-principal']);
         } else {
           this.router.navigate(['/forbidden']);
         }
       },
-      errorResponse => {
+      (errorResponse) => {
         this.errors = ['Usuário e/ou senha incorreto(s).'];
       }
     );
@@ -87,7 +96,7 @@ export class LoginComponent {
   preparaCadastrar(event: Event) {
     event.preventDefault();
     this.cadastrando = true;
-    this.showForgotPassword = false; 
+    this.showForgotPassword = false;
   }
 
   cancelaCadastro() {
@@ -96,15 +105,22 @@ export class LoginComponent {
 
   cadastrar() {
     this.errors = [];
-    if (this.password.length < 8 || !/[A-Z]/.test(this.password) || !/[a-z]/.test(this.password) ||
-        !/[0-9]/.test(this.password) || !/[!@#$%^&*]/.test(this.password)) {
-      this.errors.push("A senha deve conter pelo menos 8 caracteres, incluindo maiúscula, minúscula, número e caractere especial.");
+    if (
+      this.password.length < 8 ||
+      !/[A-Z]/.test(this.password) ||
+      !/[a-z]/.test(this.password) ||
+      !/[0-9]/.test(this.password) ||
+      !/[!@#$%^&*]/.test(this.password)
+    ) {
+      this.errors.push(
+        'A senha deve conter pelo menos 8 caracteres, incluindo maiúscula, minúscula, número e caractere especial.'
+      );
     }
     if (!this.username || !this.email || !this.nome) {
-      this.errors.push("Todos os campos obrigatórios devem ser preenchidos.");
+      this.errors.push('Todos os campos obrigatórios devem ser preenchidos.');
     }
     if (this.password !== this.confirmPassword) {
-      this.errors.push("As senhas não coincidem.");
+      this.errors.push('As senhas não coincidem.');
     }
     if (this.errors.length > 0) return;
 
@@ -118,16 +134,18 @@ export class LoginComponent {
       nome: this.nome,
       tipoUsuario: '',
       permissao: this.permissaoUsuario,
-      setor: this.setorUsuario
+      setor: this.setorUsuario,
+      darkMode: false,
     };
-    
+
     this.authService.salvar(usuario, this.permissaoUsuario).subscribe(
-      response => {
-        this.mensagemSucesso = "Cadastro realizado com sucesso! Efetue o login.";
+      (response) => {
+        this.mensagemSucesso =
+          'Cadastro realizado com sucesso! Efetue o login.';
         this.cadastrando = false;
         this.errors = [];
       },
-      errorResponse => {
+      (errorResponse) => {
         if (errorResponse.status === 400) {
           this.errors = [errorResponse.error];
         } else {
@@ -137,7 +155,6 @@ export class LoginComponent {
     );
   }
 
-  
   salvaUserLocal() {
     this.authService.obterUsuarioAutenticadoDoBackend().subscribe(
       (usuario: Usuario) => {
@@ -146,7 +163,7 @@ export class LoginComponent {
         this.router.navigate(['/usuario/inicio']);
         localStorage.setItem('usuario', usuario.username);
       },
-      error => {
+      (error) => {
         console.error('Erro ao obter dados do usuário:', error);
       }
     );
@@ -155,14 +172,14 @@ export class LoginComponent {
   forgotPassword(event: Event) {
     event.preventDefault();
     this.showForgotPassword = true;
-    this.cadastrando = false; 
+    this.cadastrando = false;
   }
 
   sendForgotPasswordEmail() {
     this.authService.forgotPassword(this.forgotEmail).subscribe(
       (response: any) => {
         this.mensagemSucesso = response.message;
-        this.showForgotPassword = false; 
+        this.showForgotPassword = false;
         this.forgotEmail = '';
       },
       (error) => {
@@ -172,11 +189,13 @@ export class LoginComponent {
         } else if (error.status === 500) {
           this.errors = ['Erro ao enviar e-mail de recuperação de senha.'];
         } else {
-          this.errors = ['Erro desconhecido ao enviar e-mail de recuperação de senha.'];
+          this.errors = [
+            'Erro desconhecido ao enviar e-mail de recuperação de senha.',
+          ];
         }
       }
     );
-  }  
+  }
 
   cancelForgotPassword() {
     this.showForgotPassword = false;
@@ -195,7 +214,10 @@ export class LoginComponent {
     this.passwordVisible[field] = !this.passwordVisible[field];
     const passwordInput = document.querySelector(`input[name="${field}"]`);
     if (passwordInput) {
-      passwordInput.setAttribute('type', this.passwordVisible[field] ? 'text' : 'password');
+      passwordInput.setAttribute(
+        'type',
+        this.passwordVisible[field] ? 'text' : 'password'
+      );
     }
   }
 
@@ -206,5 +228,4 @@ export class LoginComponent {
       this.confirmPasswordError = null;
     }
   }
-
 }

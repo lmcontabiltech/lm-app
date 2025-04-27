@@ -10,6 +10,7 @@ import { ColaboradoresService } from 'src/app/services/colaboradores.service';
 })
 export class MeuPerfilComponent implements OnInit {
   isEditing = false;
+  userId: string = '';
   user = {
     name: 'Haroldo Andrade',
     email: 'haroldo@gmail.com',
@@ -24,7 +25,11 @@ export class MeuPerfilComponent implements OnInit {
   ngOnInit(): void {}
 
   toggleDarkMode() {
-    this.themeService.toggleDarkMode();
+    console.log('Enviando para o backend:', {
+      userId: this.userId,
+      darkMode: !this.themeService.isDarkMode(),
+    });
+    this.themeService.toggleDarkMode(this.userId);
   }
 
   goBack() {
