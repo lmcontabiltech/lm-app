@@ -10,21 +10,30 @@ import { ColaboradoresService } from 'src/app/services/colaboradores.service';
 })
 export class MeuPerfilComponent implements OnInit {
   isEditing = false;
-  user = {
-    name: 'Haroldo Andrade',
-    email: 'haroldo@gmail.com',
-    setor: 'Diretoria'
-  };
+  userId: string = '';
+  name: string = '';
+  email: string = '';
+  setor: string = '';
 
   defaultImageUrl = 'assets/imagens/default-profile.png';
   selectedImageUrl: string | ArrayBuffer | null = null;
 
-  constructor(public themeService: ThemeService, private location: Location) {}
+  constructor(
+    public themeService: ThemeService,
+    private location: Location,
+    private colaboradoresService: ColaboradoresService
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loadUserData();
+  }
 
   toggleDarkMode() {
-    this.themeService.toggleDarkMode();
+    console.log('Enviando para o backend:', {
+      userId: this.userId,
+      darkMode: !this.themeService.isDarkMode(),
+    });
+    this.themeService.toggleDarkMode(this.userId);
   }
 
   goBack() {
@@ -54,5 +63,25 @@ export class MeuPerfilComponent implements OnInit {
       };
       reader.readAsDataURL(file);
     }
+  }
+
+  private loadUserData(): void {
+    this.colaboradoresService.getUsuarioByToken().subscribe(
+      (usuario) => {
+        this.userId = usuario.id;
+        this.name = usuario.nome;
+        this.email = usuario.email;
+        this.setor = usuario.setor;
+        console.log('Dados do usuário carregados:', {
+          id: this.userId,
+          nome: this.name,
+          email: this.email,
+          setor: this.setor,
+        });
+      },
+      (error) => {
+        console.error('Erro ao carregar os dados do usuário:', error);
+      }
+    );
   }
 }

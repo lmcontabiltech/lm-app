@@ -12,4 +12,5 @@ export class Usuario {
   tipoUsuario!: string;
   permissao!: Permissao;  
   setor!: Setor;
+  darkMode!: boolean;
 }

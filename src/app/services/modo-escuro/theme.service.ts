@@ -1,22 +1,44 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { ColaboradoresService } from '../colaboradores.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ThemeService {
-
+  apiURL: string = environment.apiURLBase + '/api/usuarios';
   private darkMode: boolean = false;
 
-  constructor() {
-    const savedDarkMode = localStorage.getItem('darkMode');
-    if (savedDarkMode !== null) {
-      this.darkMode = JSON.parse(savedDarkMode);
-    } else {
-      // this.darkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-      this.darkMode = false; // Default do light mode
-    }
-    console.log('Constructor - Dark Mode:', this.darkMode); 
-    this.loadTheme(this.darkMode);
+  constructor(
+    private http: HttpClient,
+    private colaboradoresService: ColaboradoresService
+  ) {
+    this.loadDarkModeFromServer();
+  }
+
+  public loadDarkModeFromServer(): void {
+    this.colaboradoresService.getUsuarioByToken().subscribe(
+      (usuario) => {
+        this.darkMode = usuario.darkMode;
+        console.log('Valor carregado para darkMode:', this.darkMode);
+        this.loadTheme(this.darkMode);
+      },
+      (error) => {
+        console.error('Erro ao carregar o modo escuro:', error);
+      }
+    );
+  }
+
+  toggleDarkMode(userId: string): void {
+    const newDarkMode = !this.darkMode; 
+    const url = `${this.apiURL}/darkMode/${userId}`; // Passa o ID do usuário na URL
+    this.http.put(url, newDarkMode).subscribe(() => {
+      this.darkMode = newDarkMode;
+      this.loadTheme(this.darkMode);
+    });
   }
 
   getVariableColors(darkMode: boolean = true) {
@@ -81,7 +103,7 @@ export class ThemeService {
     const variableColors = this.getVariableColors(darkMode);
 
     return {
-      variableColors
+      variableColors,
     };
   }
 
@@ -110,7 +132,7 @@ export class ThemeService {
     return this.darkMode;
   }
 
-  toggleDarkMode(): void {
-    this.loadTheme(!this.darkMode);
-  }
+  // toggleDarkMode(): void {
+  //   this.loadTheme(!this.darkMode);
+  // }
 }

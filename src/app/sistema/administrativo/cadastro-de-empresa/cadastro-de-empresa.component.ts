@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Empresa } from '../empresas/empresa';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmpresasService } from '../../../services/empresas.service';
+import { ColaboradoresService } from 'src/app/services/colaboradores.service';
 
 @Component({
   selector: 'app-cadastro-de-empresa',
@@ -17,37 +18,42 @@ export class CadastroDeEmpresaComponent implements OnInit {
   errorMessage: string | null = null;
   isEditMode = false;
   empresaId: string | null = null;
+  funcionariosFiscal: { value: string; description: string }[] = [];
+  selectedFiscal: string = '';
+  funcionariosFinanceiro: { value: string; description: string }[] = [];
+  selectedFinanceiro: string = '';
+  funcionariosParalegal: { value: string; description: string }[] = [];
+  selectedParalegal: string = '';
+  funcionariosPessoal: { value: string; description: string }[] = [];
+  selectedPessoal: string = '';
+  funcionariosContabil: { value: string; description: string }[] = [];
+  selectedContabil: string = '';
 
   constructor(
     private location: Location,
     private formBuilder: FormBuilder,
     private empresasService: EmpresasService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private colaboradorService: ColaboradoresService
   ) {
     this.empresaForm = this.formBuilder.group({
-      atividades: [''],
       razaoSocial: ['', Validators.required],
       cnpj: ['', Validators.required],
       regimeEmpresa: ['', Validators.required],
       codQuestor: ['', Validators.required],
+      codEmpDominio: ['', Validators.required],
+      identificadorContabil: [''],
+      identificadorFiscal: [''],
+      identificadorFinanceiro: [''],
+      identificadorParalegal: [''],
+      identificadorPessoal: [''],
     });
   }
 
   ngOnInit(): void {
-    this.empresaId = this.route.snapshot.paramMap.get('id');
-    if (this.empresaId) {
-      this.isEditMode = true;
-      this.empresasService.getEmpresaById(this.empresaId).subscribe(
-        (empresa: Empresa) => {
-          console.log('Dados da empresa recebidos:', empresa);
-          this.empresaForm.patchValue(empresa);
-        },
-        (error) => {
-          console.error('Erro ao carregar os dados da empresa:', error);
-        }
-      );
-    }
+    this.verificarModoEdicao();
+    this.carregarFuncionarios();
   }
 
   goBack() {
@@ -66,7 +72,6 @@ export class CadastroDeEmpresaComponent implements OnInit {
 
     const empresa: Empresa = {
       ...this.empresaForm.value,
-      atividades: null,
     };
 
     console.log('Dados da empresa a serem enviados:', empresa);
@@ -103,6 +108,113 @@ export class CadastroDeEmpresaComponent implements OnInit {
           console.error('Erro ao cadastrar empresa:', error);
         }
       );
+    }
+  }
+
+  private verificarModoEdicao(): void {
+    this.empresaId = this.route.snapshot.paramMap.get('id');
+    if (this.empresaId) {
+      this.isEditMode = true;
+      this.carregarDadosEmpresa(this.empresaId);
+    }
+  }
+
+  private carregarDadosEmpresa(empresaId: string): void {
+    this.empresasService.getEmpresaById(empresaId).subscribe(
+      (empresa: Empresa) => {
+        console.log('Dados da empresa recebidos:', empresa);
+
+        this.empresaForm.patchValue({
+          ...empresa,
+        });
+
+        this.tratarColaboradores(empresa);
+      },
+      (error) => {
+        console.error('Erro ao carregar os dados da empresa:', error);
+      }
+    );
+  }
+
+  carregarFuncionarios(): void {
+    const setores = [
+      { setor: 'CONTABIL', targetArray: 'funcionariosContabil' },
+      { setor: 'FISCAL', targetArray: 'funcionariosFiscal' },
+      { setor: 'FINANCEIRO', targetArray: 'funcionariosFinanceiro' },
+      { setor: 'PARALEGAL', targetArray: 'funcionariosParalegal' },
+      { setor: 'PESSOAL', targetArray: 'funcionariosPessoal' },
+    ];
+
+    setores.forEach(({ setor, targetArray }) => {
+      this.colaboradorService.getUsuariosBySetor(setor).subscribe(
+        (usuarios) => {
+          (this[targetArray as keyof CadastroDeEmpresaComponent] as {
+            value: string;
+            description: string;
+          }[]) = usuarios.map((usuario) => ({
+            value: usuario.id,
+            description: usuario.nome,
+          }));
+        },
+        (error) => {
+          console.error(
+            `Erro ao carregar os usuários do setor ${setor}:`,
+            error
+          );
+        }
+      );
+    });
+  }
+
+  private tratarColaboradores(empresa: Empresa): void {
+    if (empresa.fiscal) {
+      this.selectedFiscal = empresa.fiscal.id;
+      this.funcionariosFiscal = [
+        {
+          value: empresa.fiscal.id,
+          description: empresa.fiscal.nome,
+        },
+      ];
+    }
+
+    if (empresa.pessoal) {
+      this.selectedPessoal = empresa.pessoal.id;
+      this.funcionariosPessoal = [
+        {
+          value: empresa.pessoal.id,
+          description: empresa.pessoal.nome,
+        },
+      ];
+    }
+
+    if (empresa.financeiro) {
+      this.selectedFinanceiro = empresa.financeiro.id;
+      this.funcionariosFinanceiro = [
+        {
+          value: empresa.financeiro.id,
+          description: empresa.financeiro.nome,
+        },
+      ];
+    }
+
+    if (empresa.paralegal) {
+      this.selectedParalegal = empresa.paralegal.id;
+      this.funcionariosParalegal = [
+        {
+          value: empresa.paralegal.id,
+          description: empresa.paralegal.nome,
+        },
+      ];
+    }
+
+    if (empresa.contabil) {
+      this.selectedContabil = empresa.contabil.id;
+      this.funcionariosContabil = [
+        {
+          value: empresa.contabil.id,
+          description: empresa.contabil.nome,
+        },
+      ];
     }
   }
 }
