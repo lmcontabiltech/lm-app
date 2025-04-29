@@ -82,7 +82,7 @@ export class CadastroDeEmpresaComponent implements OnInit {
           this.isLoading = false;
           this.successMessage = 'Empresa atualizada com sucesso!';
           this.errorMessage = null;
-          this.router.navigate(['/sistema/administrativo/empresas']);
+          this.router.navigate(['usuario/empresas']);
           console.debug('Empresa atualizada com sucesso:', response);
         },
         (error) => {
