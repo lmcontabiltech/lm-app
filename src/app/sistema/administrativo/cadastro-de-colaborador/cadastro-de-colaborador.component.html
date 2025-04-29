@@ -51,11 +51,23 @@
             <div class="input-duo" *ngIf="!isEditMode">
                 <div class="form-group">
                     <label for="senha">Senha</label>
-                    <input type="password" id="senha" name="senha" formControlName="password" class="form-control" placeholder="Digite" required>
+                    <div class="input-group">
+                        <input [type]="passwordVisible['password'] ? 'text' : 'password'" id="password" name="password" formControlName="password" class="form-control" placeholder="Digite" required>
+                        <div class="input-icon" type="button" (click)="togglePasswordVisibility('password')">
+                            <img *ngIf="!passwordVisible['password']" src="assets/icones/eye-open.svg" alt="Mostrar senha" class="toggle-password"/>
+                            <img *ngIf="passwordVisible['password']" src="assets/icones/eye-closed.svg" alt="Mostrar senha" class="toggle-password"/>
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="confirmaSenha">Confirme senha</label>
-                    <input type="password" id="confirmaSenha" name="confirmaSenha" formControlName="confirmPassword" class="form-control" placeholder="Digite" required>
+                    <label for="confirmPassword">Confirme senha</label>
+                    <div class="input-group">
+                        <input [type]="passwordVisible['confirmPassword'] ? 'text' : 'password'" id="confirmPassword" name="confirmPassword" formControlName="confirmPassword" class="form-control" placeholder="Digite" required>
+                        <div class="input-icon" type="button" (click)="togglePasswordVisibility('confirmPassword')">
+                            <img *ngIf="!passwordVisible['confirmPassword']" src="assets/icones/eye-open.svg" alt="Mostrar senha" class="toggle-password"/>
+                            <img *ngIf="passwordVisible['confirmPassword']" src="assets/icones/eye-closed.svg" alt="Mostrar senha" class="toggle-password"/>
+                        </div>
+                    </div>
                 </div>
             </div>
 
