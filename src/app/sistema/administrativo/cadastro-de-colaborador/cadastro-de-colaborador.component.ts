@@ -6,6 +6,7 @@ import { Setor } from './setor';
 import { SetorDescricao } from './setor-descricao';
 import { ColaboradoresService } from '../../../services/colaboradores.service';
 import { Usuario } from '../../../login/usuario';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-cadastro-de-colaborador',
@@ -24,6 +25,7 @@ export class CadastroDeColaboradorComponent implements OnInit {
   errorMessage: string | null = null;
   isEditMode = false;
   colaboradorId: string | null = null;
+  permissaoUsuario: string = '';
 
   selectedSetor: string = '';
   permissao: string = 'USER';
@@ -37,6 +39,7 @@ export class CadastroDeColaboradorComponent implements OnInit {
     private formBuilder: FormBuilder,
     private colaboradoresService: ColaboradoresService,
     private route: ActivatedRoute,
+    private authService: AuthService,
     private router: Router
   ) {
     this.cadastroForm = this.formBuilder.group({
@@ -66,6 +69,19 @@ export class CadastroDeColaboradorComponent implements OnInit {
           console.error('Erro ao carregar os dados do colaborador:', error);
         }
       );
+    }
+    const usuario = this.authService.getUsuarioAutenticado();
+    if (usuario?.permissao) {
+      this.permissaoUsuario = this.mapPermissao(usuario.permissao);
+    }
+  }
+
+  private mapPermissao(permissao: string): string {
+    switch (permissao) {
+      case 'ROLE_ADMIN': return 'Administrador';
+      case 'ROLE_COORDENADOR': return 'Coordenador';
+      case 'ROLE_USER': return 'Colaborador';
+      default: return 'Desconhecido';
     }
   }
 

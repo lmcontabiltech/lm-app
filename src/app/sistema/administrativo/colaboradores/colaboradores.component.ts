@@ -4,6 +4,7 @@ import { Colaborador } from './colaborador';
 import { Setor } from '../cadastro-de-colaborador/setor';
 import { SetorDescricao } from '../cadastro-de-colaborador/setor-descricao';
 import { ColaboradoresService } from '../../../services/colaboradores.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-colaboradores',
@@ -22,17 +23,34 @@ export class ColaboradoresComponent implements OnInit {
   totalPaginas = Math.ceil(this.colaboradores.length / this.itensPorPagina);
   colaboradoresPaginados: Colaborador[] = [];
 
+  permissaoUsuario: string = ''; 
+
   selectedSetor: string = '';
   showModalDeletar: boolean = false;
 
   constructor(
     private router: Router,
-    private colaboradoresService: ColaboradoresService
+    private colaboradoresService: ColaboradoresService,
+    private authService: AuthService 
   ) {}
 
   ngOnInit(): void {
     this.fetchColaboradores();
     this.atualizarPaginacao();
+
+    const usuario = this.authService.getUsuarioAutenticado();
+    if (usuario?.permissao) {
+      this.permissaoUsuario = this.mapPermissao(usuario.permissao);
+    }
+  }
+
+  private mapPermissao(permissao: string): string {
+    switch (permissao) {
+      case 'ROLE_ADMIN': return 'Administrador';
+      case 'ROLE_COORDENADOR': return 'Coordenador';
+      case 'ROLE_USER': return 'Colaborador';
+      default: return 'Desconhecido';
+    }
   }
 
   cadastrarColaborador(): void {

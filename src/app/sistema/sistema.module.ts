@@ -20,6 +20,8 @@ import { SharedModule } from '../shared/shared.module';
 import { ForumDeNoticiaComponent } from './gerenciamento/forum-de-noticia/forum-de-noticia.component';
 import { ProcessosComponent } from './gerenciamento/processos/processos.component';
 import { CadastroDeProcessosComponent } from './gerenciamento/cadastro-de-processos/cadastro-de-processos.component';
+import { PerifericosComponent } from './administrativo/perifericos/perifericos.component';
+import { CadastroPerifericosComponent } from './administrativo/cadastro-perifericos/cadastro-perifericos.component';
 
 
 @NgModule({
@@ -39,6 +41,8 @@ import { CadastroDeProcessosComponent } from './gerenciamento/cadastro-de-proces
     ForumDeNoticiaComponent,
     ProcessosComponent,
     CadastroDeProcessosComponent,
+    PerifericosComponent,
+    CadastroPerifericosComponent,
   ],
   imports:[
     CommonModule, 

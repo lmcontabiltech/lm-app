@@ -45,7 +45,7 @@
           <div class="sidebar-list">
             <a routerLink="/usuario/painel-principal" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/painel-principal')}">
               <img src="assets/icones/home-icon.svg" alt="home icon" />
-              <span>Inicio</span>
+              <span>InÍcio</span>
             </a>
 
             <a routerLink="/usuario/notificacoes" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/notificacoes')}">
@@ -55,21 +55,23 @@
           </div>
         </div>
 
-        <div>
+        <div *ngIf="permissaoUsuario === 'Administrador' || permissaoUsuario === 'Coordenador'">
           <h3 class="sidebar-title">ADMINISTRATIVO</h3>
-
           <div class="sidebar-list">
             <a routerLink="/usuario/colaboradores" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/colaboradores')}">
-                <img src="assets/icones/People-icon.svg" alt="image" />
+              <img src="assets/icones/People-icon.svg" alt="image" />
               <span>Colaboradores</span>
             </a>
-
             <a routerLink="/usuario/empresas" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/empresas')}">
               <img src="assets/icones/empresas-icon.svg" alt="home icon" />
               <span>Empresas</span>
             </a>
+            <a routerLink="/usuario/perifericos" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/perifericos')}">
+              <img src="assets/icones/empresas-icon.svg" alt="home icon" />
+              <span>Periféricos</span>
+            </a>
           </div>
-        </div>
+        </div>        
 
         <div>
             <h3 class="sidebar-title">GERENCIAMENTO</h3>

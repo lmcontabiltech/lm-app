@@ -29,6 +29,7 @@ export class PainelPrincipalComponent implements OnInit {
   usuario: Usuario | null = null;
   cotacoes: any = {};
   selic: string = '';
+  permissaoUsuario: string = '';
 
   constructor(
     private exchangeService: ExchangeService,
@@ -40,10 +41,26 @@ export class PainelPrincipalComponent implements OnInit {
     this.renderBarChart();
     this.renderPieChart();
     this.loadTaxas();
+  
     this.colaboradorService.getUsuarioByToken().subscribe(
       (usuario) => {
         this.usuario = usuario;
         console.log('Perfil do usuário:', usuario);
+  
+        // 🔹 Mapeamento da permissão
+        switch (usuario.permissao) {
+          case 'ROLE_ADMIN':
+            this.permissaoUsuario = 'Administrador';
+            break;
+          case 'ROLE_COORDENADOR':
+            this.permissaoUsuario = 'Coordenador';
+            break;
+          case 'ROLE_USER':
+            this.permissaoUsuario = 'Colaborador';
+            break;
+          default:
+            this.permissaoUsuario = 'Desconhecido';
+        }
       },
       (error) => {
         console.error('Erro ao obter perfil do usuário:', error);

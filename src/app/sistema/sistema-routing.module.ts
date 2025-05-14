@@ -17,6 +17,8 @@ import { CadastroDeNoticiaComponent } from './gerenciamento/cadastro-de-noticia/
 import { ProcessosComponent } from './gerenciamento/processos/processos.component';
 import { CadastroDeProcessosComponent } from './gerenciamento/cadastro-de-processos/cadastro-de-processos.component';
 import { AuthGuard } from '../services/auth.guard';
+import { PerifericosComponent } from './administrativo/perifericos/perifericos.component';
+import { CadastroPerifericosComponent } from './administrativo/cadastro-perifericos/cadastro-perifericos.component';
 
 const routes: Routes = [
   {  path: 'usuario', 
@@ -29,6 +31,9 @@ const routes: Routes = [
 
       { path: 'colaboradores', component: ColaboradoresComponent},
       { path: 'empresas', component: EmpresasComponent},
+      { path: 'perifericos', component:PerifericosComponent},
+      { path: 'cadastro-de-perifericos', component: CadastroPerifericosComponent},
+      { path: 'cadastro-de-perifericos/:id', component: CadastroPerifericosComponent},
       { path: 'cadastro-de-colaborador', component: CadastroDeColaboradorComponent},
       { path: 'cadastro-de-colaborador/:id', component: CadastroDeColaboradorComponent},
       { path: 'cadastro-de-empresa', component: CadastroDeEmpresaComponent},

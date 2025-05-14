@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Empresa } from './empresa';
 import { EmpresasService } from '../../../services/empresas.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-empresas',
@@ -10,19 +11,40 @@ import { EmpresasService } from '../../../services/empresas.service';
 })
 export class EmpresasComponent implements OnInit {
   empresas: Empresa[] = [];
+  empresasPaginados: Empresa[] = [];
   itensPorPagina = 5;
   paginaAtual = 1;
-  totalPaginas = Math.ceil(this.empresas.length / this.itensPorPagina);
-  empresasPaginados: Empresa[] = [];
+  totalPaginas = 0;
+
+  permissaoUsuario: string = ''; // 🔸 Adicionado
 
   constructor(
     private router: Router,
-    private empresasService: EmpresasService
+    private empresasService: EmpresasService,
+    private authService: AuthService // 🔸 Adicionado
   ) {}
 
   ngOnInit(): void {
     this.fetchEmpresas();
     this.atualizarPaginacao();
+
+    // 🔸 Obter permissão do usuário autenticado
+    const usuario = this.authService.getUsuarioAutenticado();
+    if (usuario && usuario.permissao) {
+      switch (usuario.permissao) {
+        case 'ROLE_ADMIN':
+          this.permissaoUsuario = 'Administrador';
+          break;
+        case 'ROLE_COORDENADOR':
+          this.permissaoUsuario = 'Coordenador';
+          break;
+        case 'ROLE_USER':
+          this.permissaoUsuario = 'Colaborador';
+          break;
+        default:
+          this.permissaoUsuario = 'Desconhecido';
+      }
+    }
   }
 
   cadastrarEmpresa(): void {
@@ -37,9 +59,7 @@ export class EmpresasComponent implements OnInit {
     this.empresasService.getEmpresas().subscribe(
       (empresas: Empresa[]) => {
         this.empresas = empresas;
-        this.totalPaginas = Math.ceil(
-          this.empresas.length / this.itensPorPagina
-        );
+        this.totalPaginas = Math.ceil(this.empresas.length / this.itensPorPagina);
         this.atualizarPaginacao();
       },
       (error) => {
@@ -78,11 +98,8 @@ export class EmpresasComponent implements OnInit {
       this.empresasService.deletarEmpresa(id).subscribe(
         () => {
           this.empresas = this.empresas.filter((empresa) => empresa.id !== id);
-          this.totalPaginas = Math.ceil(
-            this.empresas.length / this.itensPorPagina
-          );
+          this.totalPaginas = Math.ceil(this.empresas.length / this.itensPorPagina);
           this.atualizarPaginacao();
-          console.log('Empresa excluída com sucesso');
         },
         (error: any) => {
           console.error('Erro ao excluir empresa:', error);

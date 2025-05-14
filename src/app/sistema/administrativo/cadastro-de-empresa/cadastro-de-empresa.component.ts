@@ -5,6 +5,7 @@ import { Empresa } from '../empresas/empresa';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmpresasService } from '../../../services/empresas.service';
 import { ColaboradoresService } from 'src/app/services/colaboradores.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-cadastro-de-empresa',
@@ -16,6 +17,7 @@ export class CadastroDeEmpresaComponent implements OnInit {
   isLoading = false;
   successMessage: string | null = null;
   errorMessage: string | null = null;
+  permissaoUsuario: string = '';
   isEditMode = false;
   empresaId: string | null = null;
   funcionariosFiscal: { value: string; description: string }[] = [];
@@ -34,6 +36,7 @@ export class CadastroDeEmpresaComponent implements OnInit {
     private formBuilder: FormBuilder,
     private empresasService: EmpresasService,
     private route: ActivatedRoute,
+    private authService: AuthService,
     private router: Router,
     private colaboradorService: ColaboradoresService
   ) {
@@ -54,6 +57,20 @@ export class CadastroDeEmpresaComponent implements OnInit {
   ngOnInit(): void {
     this.verificarModoEdicao();
     this.carregarFuncionarios();
+
+    const usuario = this.authService.getUsuarioAutenticado();
+    if (usuario?.permissao) {
+      this.permissaoUsuario = this.mapPermissao(usuario.permissao);
+    }
+  }
+
+  private mapPermissao(permissao: string): string {
+    switch (permissao) {
+      case 'ROLE_ADMIN': return 'Administrador';
+      case 'ROLE_COORDENADOR': return 'Coordenador';
+      case 'ROLE_USER': return 'Colaborador';
+      default: return 'Desconhecido';
+    }
   }
 
   goBack() {
