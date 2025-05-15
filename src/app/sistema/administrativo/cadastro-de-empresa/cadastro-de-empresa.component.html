@@ -1,113 +1,113 @@
 <div  *ngIf="permissaoUsuario === 'Administrador' || permissaoUsuario === 'Coordenador'">
-<div class="main-container">
-    <div class="back-title">
-        <img src="assets/icones/back-left.svg" alt="Back" class="back-icon" (click)="goBack()">
-        <span>{{ isEditMode ? 'Editar empresa' : 'Cadastrar empresa' }}</span>
-    </div>
+    <div class="main-container">
+        <div class="back-title">
+            <img src="assets/icones/back-left.svg" alt="Back" class="back-icon" (click)="goBack()">
+            <span>{{ isEditMode ? 'Editar empresa' : 'Cadastrar empresa' }}</span>
+        </div>
 
-  
-  
-    <div class="forms-container">
-        <form (ngSubmit)="onSubmit()" [formGroup]="empresaForm">
-            <div class="form-group">
-                <label for="razaoSocial">Razão social</label>
-                <input type="text" id="razaoSocial" name="razaoSocial" formControlName="razaoSocial" class="form-control" placeholder="Digite" required>
-            </div>
-
-            <div class="form-group">
-                <label for="cnpj">CNPJ</label>
-                <input type="text" id="cnpj" name="cnpj" formControlName="cnpj" class="form-control" placeholder="Digite" mask="00.000.000/0000-00" [dropSpecialCharacters]="false" required>
-            </div>
-
-            <div class="input-duo">
-                <div class="form-group">
-                    <label for="codEmpresa">Código da empresa no Questor</label>
-                    <input type="text" id="codEmpresa" name="codEmpresa" formControlName="codQuestor" class="form-control" placeholder="Digite" required>
-                </div>
     
+    
+        <div class="forms-container">
+            <form (ngSubmit)="onSubmit()" [formGroup]="empresaForm">
                 <div class="form-group">
-                    <label for="codEmpDominio">Código da empresa no Domínio</label>
-                    <input type="text" id="codEmpDominio" name="codEmpDominio" formControlName="codEmpDominio" class="form-control" placeholder="Digite" required>
+                    <label for="razaoSocial">Razão social</label>
+                    <input type="text" id="razaoSocial" name="razaoSocial" formControlName="razaoSocial" class="form-control" placeholder="Digite" required>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label for="regimeEmpresa">Regime da empresa</label>
-                <input type="text" id="regimeEmpresa" name="regimeEmpresa" formControlName="regimeEmpresa" class="form-control" placeholder="Digite" required>
-            </div>
+                <div class="form-group">
+                    <label for="cnpj">CNPJ</label>
+                    <input type="text" id="cnpj" name="cnpj" formControlName="cnpj" class="form-control" placeholder="Digite" mask="00.000.000/0000-00" [dropSpecialCharacters]="false" required>
+                </div>
 
-            <div class="divisao">
-                <p>Funcionários responsáveis</p>
-                <hr class="line">
-            </div>
+                <div class="input-duo">
+                    <div class="form-group">
+                        <label for="codEmpresa">Código da empresa no Questor</label>
+                        <input type="text" id="codEmpresa" name="codEmpresa" formControlName="codQuestor" class="form-control" placeholder="Digite" required>
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="codEmpDominio">Código da empresa no Domínio</label>
+                        <input type="text" id="codEmpDominio" name="codEmpDominio" formControlName="codEmpDominio" class="form-control" placeholder="Digite" required>
+                    </div>
+                </div>
 
-            <div class="form-group">
-                <label for="contabil">Setor Contábil</label>
-                <app-select-padrao
-                  label="Selecionar funcionário"
-                  [options]="funcionariosContabil"
-                  [(selectedValue)]="selectedContabil"                
-                  formControlName="identificadorContabil">
-                </app-select-padrao>
-            </div>
+                <div class="form-group">
+                    <label for="regimeEmpresa">Regime da empresa</label>
+                    <input type="text" id="regimeEmpresa" name="regimeEmpresa" formControlName="regimeEmpresa" class="form-control" placeholder="Digite" required>
+                </div>
 
-            <div class="form-group">
-                <label for="fiscal">Setor Fiscal</label>
-                <app-select-padrao
-                  label="Selecionar funcionário"
-                  [options]="funcionariosFiscal"
-                  [(selectedValue)]="selectedFiscal"
-                  formControlName="identificadorFiscal">
-                </app-select-padrao>
-            </div>
+                <div class="divisao">
+                    <p>Funcionários responsáveis</p>
+                    <hr class="line">
+                </div>
 
-            <div class="form-group">
-                <label for="pessoal">Setor Pessoal</label>
-                <app-select-padrao
-                  label="Selecionar funcionário"
-                  [options]="funcionariosPessoal"
-                  [(selectedValue)]="selectedPessoal"
-                  formControlName="identificadorPessoal">
-                </app-select-padrao>
-            </div>
+                <div class="form-group">
+                    <label for="contabil">Setor Contábil</label>
+                    <app-select-padrao
+                    label="Selecionar funcionário"
+                    [options]="funcionariosContabil"
+                    [(selectedValue)]="selectedContabil"                
+                    formControlName="identificadorContabil">
+                    </app-select-padrao>
+                </div>
 
-            <div class="form-group">
-                <label for="paralegal">Setor Paralegal</label>
-                <app-select-padrao
-                  label="Selecionar funcionário"
-                  [options]="funcionariosParalegal"
-                  [(selectedValue)]="selectedParalegal"
-                  formControlName="identificadorParalegal">
-                </app-select-padrao>
-            </div>
+                <div class="form-group">
+                    <label for="fiscal">Setor Fiscal</label>
+                    <app-select-padrao
+                    label="Selecionar funcionário"
+                    [options]="funcionariosFiscal"
+                    [(selectedValue)]="selectedFiscal"
+                    formControlName="identificadorFiscal">
+                    </app-select-padrao>
+                </div>
 
-            <div class="form-group">
-                <label for="financeiro">Setor Financeiro</label>
-                <app-select-padrao
-                  label="Selecionar funcionário"
-                  [options]="funcionariosFinanceiro"
-                  [(selectedValue)]="selectedFinanceiro"
-                  formControlName="identificadorFinanceiro">
-                </app-select-padrao>
-            </div>
+                <div class="form-group">
+                    <label for="pessoal">Setor Pessoal</label>
+                    <app-select-padrao
+                    label="Selecionar funcionário"
+                    [options]="funcionariosPessoal"
+                    [(selectedValue)]="selectedPessoal"
+                    formControlName="identificadorPessoal">
+                    </app-select-padrao>
+                </div>
 
-            <div class="container-btn">
-                <button type="submit" class="btn-cadastrar">
-                    {{ isEditMode ? 'Atualizar empresa' : 'Cadastrar empresa' }}
-                </button>
-            </div>
-        </form>
-    </div>
+                <div class="form-group">
+                    <label for="paralegal">Setor Paralegal</label>
+                    <app-select-padrao
+                    label="Selecionar funcionário"
+                    [options]="funcionariosParalegal"
+                    [(selectedValue)]="selectedParalegal"
+                    formControlName="identificadorParalegal">
+                    </app-select-padrao>
+                </div>
 
-    <div class="alerts">
-        <div class="alerts-container alert-success" *ngIf="successMessage">
-          {{ successMessage }}
+                <div class="form-group">
+                    <label for="financeiro">Setor Financeiro</label>
+                    <app-select-padrao
+                    label="Selecionar funcionário"
+                    [options]="funcionariosFinanceiro"
+                    [(selectedValue)]="selectedFinanceiro"
+                    formControlName="identificadorFinanceiro">
+                    </app-select-padrao>
+                </div>
+
+                <div class="container-btn">
+                    <button type="submit" class="btn-cadastrar">
+                        {{ isEditMode ? 'Atualizar empresa' : 'Cadastrar empresa' }}
+                    </button>
+                </div>
+            </form>
         </div>
-        <div class=" alerts-container alert-danger" *ngIf="errorMessage">
-            {{ errorMessage }}
-        </div>
-    </div>
 
-    <div *ngIf="isLoading">Carregando...</div>
-</div>
+        <div class="alerts">
+            <div class="alerts-container alert-success" *ngIf="successMessage">
+            {{ successMessage }}
+            </div>
+            <div class=" alerts-container alert-danger" *ngIf="errorMessage">
+                {{ errorMessage }}
+            </div>
+        </div>
+
+        <div *ngIf="isLoading">Carregando...</div>
+    </div>
 </div>
