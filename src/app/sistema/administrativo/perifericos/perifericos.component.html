@@ -1,1 +1,82 @@
-<p>perifericos works!</p>
+<div  *ngIf="permissaoUsuario === 'Administrador' || permissaoUsuario === 'Coordenador'">
+    <div class="main-container">
+        <div class="header-container">
+            <h2>Perifericos</h2>
+            <button class="btn btn-primary" (click)="cadastrarPeriferico()">Cadastrar perifericos +</button>
+        </div>
+
+        <div class="table-container">
+            <div class="filtro-container">
+                <app-select-padrao
+                    label="Todos os perifericos">
+                </app-select-padrao>
+
+                <div class="search-container">
+                    <app-search (searchChange)="onSearch($event)"></app-search>
+                </div>
+            </div>
+
+            <div [ngClass]="{'tabela-container': true, 'no-data': perifericosPaginados.length === 0}">
+                <table *ngIf="perifericosPaginados.length > 0; else noDataTemplate">
+                    <thead>
+                        <tr>
+                            <th>Razão social</th>
+                            <th>CNPJ</th>
+                            <th>Código do Questor</th>
+                            <th>Regime da Empresa</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let periferico of perifericosPaginados">
+                            <td>
+                                <div class="perfil">
+                                    <div class="avatar"></div>
+                                    <span>
+                                        <a (click)="cadastrarPeriferico()" >
+                                            {{ periferico.nome }}
+                                        </a>
+                                    </span>
+                                </div>
+                            </td>
+                            <td>{{ periferico.colaborador }}</td>
+                            <td>
+                                <div class="container-acoes">
+                                    <button class="btn-acao edit" (click)="editarPeriferico(periferico.id)">
+                                        <img src="assets/icones/edit.svg" alt="Editar">
+                                        Editar
+                                    </button>
+                                    <button class="btn-acao delete" (click)="deletarPeriferico(periferico.id)">
+                                        <img src="assets/icones/delete.svg" alt="Excluir">
+                                        Excluir
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <ng-template #noDataTemplate>
+                    <div class="no-data-message">
+                        <img src="assets/imagens/no-data.svg" alt="Sem dados">
+                        <p>Não há perifericos cadastrados.</p>
+                    </div>
+                </ng-template>
+            </div>
+
+            <div class="paginacao">
+                <button (click)="paginaAnterior()" [disabled]="paginaAtual === 1">
+                    <img src="assets/icones/carret-left.svg" alt="Esquerda">
+                </button>
+                    <span *ngFor="let pagina of [].constructor(totalPaginas); let i = index">
+
+                    <button (click)="mudarPagina(i + 1)" [class.ativo]="paginaAtual === i + 1">
+                        {{ i + 1 }}
+                    </button>
+                </span>
+                <button (click)="proximaPagina()" [disabled]="paginaAtual === totalPaginas">
+                    <img src="assets/icones/carret-right.svg" alt="Direita">
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
