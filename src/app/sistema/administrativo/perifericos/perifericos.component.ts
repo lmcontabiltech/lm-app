@@ -47,7 +47,7 @@ export class PerifericosComponent implements OnInit {
   }
 
   cadastrarPeriferico(): void {
-    this.router.navigate(['/usuario/cadastro-de-empresa']);
+    this.router.navigate(['/usuario/cadastro-de-perifericos']);
   }
 
   onSearch(searchTerm: string) {
