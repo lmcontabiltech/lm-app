@@ -1,5 +1,5 @@
 export enum Status {
-  BACKLOG = 'BACKLOG',
+  A_FAZER = 'A_FAZER',
   EM_PROGRESSO = 'EM_PROGRESSO',
   REVISAO = 'REVISAO',
   CONCLUIDO = 'CONCLUIDO',

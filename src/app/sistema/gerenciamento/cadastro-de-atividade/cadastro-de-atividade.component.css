@@ -113,6 +113,105 @@ form {
   margin-top: 24px;
 }
 
+/* listas */
+.divisao {
+  width: 100%;
+  margin-top: 24px;
+}
+
+.divisao p {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--lm-text);
+}
+
+.lista-header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.btn {
+  padding: 8px 16px;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-adicionar-lista {
+  background: #273E74;
+}
+
+.btn-adicionar-lista:hover {
+  background-color: #19284a;
+}
+
+.btn-cancelar {
+  background: #d32f2f;
+}
+
+.btn-cancelar:hover {
+  background-color: #b71c1c;
+}
+
+.input-nome-lista {
+  flex: 1;
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.lista-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-bottom: 32px;
+}
+
+.header-lista {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  background: #f0f0f0;
+  padding: 16px;
+  padding-left: 24px;
+}
+
+.header-lista span {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--lm-text);
+}
+
+.modal-actions {
+  display: flex;
+  align-items: center;
+  margin-top: 16px;
+  gap: 16px;
+}
+
+.btn-remover-lista {
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  padding: 0;
+  width: 25px;
+  height: 25px;
+  background: #d32f2f;
+  font-size: 24px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.btn-remover-lista:hover {
+  background: #b71c1c;
+}
+
 /* Breakpoints */
 @media (min-width: 1200px) {
   .main-container {

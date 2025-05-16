@@ -1,6 +1,9 @@
 export class Periferico {
   id!: string;
   nome!: string;
-  descricao!: string;
+  descricaoProduto!: string;
+  dataEntregada!: string;
+  dataDevolucao!: string;
   colaborador!: string;
+  anotacao!: string;
 }
