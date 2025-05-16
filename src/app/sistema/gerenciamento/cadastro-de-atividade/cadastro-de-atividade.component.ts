@@ -163,6 +163,7 @@ export class CadastroDeAtividadeComponent implements OnInit {
     console.log('Listas de tarefas:', this.listasDeTarefas);
 
     this.atividadeForm.get('novoNomeLista')?.setValue('');
+    this.fecharModalLista();
   }
 
   removerLista(index: number) {
