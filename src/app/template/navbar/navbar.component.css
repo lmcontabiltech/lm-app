@@ -295,6 +295,7 @@ mat-drawer-content {
   transition: margin-left 0.3s ease-in-out;
   margin-left: 280px !important;
   background: var(--lm-background);
+  width: 100%;
 }
 
 mat-drawer-content.shifted {
@@ -302,7 +303,7 @@ mat-drawer-content.shifted {
 }
 
 /* BREAKPOINTS */
-@media screen and (max-width: 720px) {
+@media screen and (max-width: 899px) {
   .header {
     margin: 0;
     padding-left: 0;
@@ -408,8 +409,11 @@ mat-drawer-content.shifted {
   }
 
   mat-drawer-content {
-    margin-left: 0 !important;
-    width: 100%;
+    margin-left: 0px !important;
+  }
+
+  mat-drawer-content.shifted {
+    margin-left: 0px !important;
   }
 }
 
@@ -486,5 +490,13 @@ mat-drawer-content.shifted {
   .drawer-content {
     width: 100%;
     margin-left: 0;
+  }
+
+  mat-drawer-content {
+    margin-left: 280px !important;
+  }
+
+  mat-drawer-content.shifted {
+    margin-left: 90px !important;
   }
 }

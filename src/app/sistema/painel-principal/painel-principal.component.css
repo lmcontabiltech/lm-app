@@ -138,3 +138,10 @@
     flex-direction: column;
   }
 }
+
+@media screen and (max-width: 1024px) {
+  .cards-setores {
+    display: flex;
+    flex-direction: column;
+  }
+}

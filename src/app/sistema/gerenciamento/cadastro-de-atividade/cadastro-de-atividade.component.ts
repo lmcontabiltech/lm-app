@@ -12,6 +12,8 @@ import { StatusDescricao } from '../atividades/enums/status-descricao';
 import { ColaboradoresService } from 'src/app/services/colaboradores.service';
 import { EmpresasService } from 'src/app/services/empresas.service';
 import { ProcessoService } from 'src/app/services/gerenciamento/processo.service';
+import { Tarefa } from '../processos/tarefas';
+import { Lista } from '../atividades/listas';
 
 @Component({
   selector: 'app-cadastro-de-atividade',
@@ -41,6 +43,10 @@ export class CadastroDeAtividadeComponent implements OnInit {
   errorMessage: string | null = null;
   isEditMode = false;
   atividadeId: string | null = null;
+  lista: Tarefa[] = [];
+  listasDeTarefas: Lista[] = [];
+  novoNomeLista: string = '';
+  modalAberto = false;
 
   selectedSetor: string = '';
   selectedStatus: string = '';
@@ -73,6 +79,8 @@ export class CadastroDeAtividadeComponent implements OnInit {
       prioridade: ['', Validators.required],
       status: ['', Validators.required],
       membros: [[]],
+      listas: [[]],
+      novoNomeLista: [''],
     });
   }
 
@@ -134,7 +142,40 @@ export class CadastroDeAtividadeComponent implements OnInit {
   }
 
   onSubmit(): void {
+    const atividadeParaEnvio = {
+      ...this.atividadeForm.value,
+      listas: this.listasDeTarefas,
+    };
+    console.log('Listas a ser enviado:', atividadeParaEnvio);
     console.log('Membros selecionados:', this.selectedMembro);
     console.log('Atividade Form:', this.atividadeForm.value);
+  }
+
+  adicionarLista() {
+    const nome = this.atividadeForm.get('novoNomeLista')?.value?.trim();
+    if (!nome) return;
+
+    const novaLista: Lista = {
+      nome,
+      itens: [],
+    };
+    this.listasDeTarefas.push(novaLista);
+    console.log('Listas de tarefas:', this.listasDeTarefas);
+
+    this.atividadeForm.get('novoNomeLista')?.setValue('');
+    this.fecharModalLista();
+  }
+
+  removerLista(index: number) {
+    this.listasDeTarefas.splice(index, 1);
+  }
+
+  abrirModalLista() {
+    this.modalAberto = true;
+    this.novoNomeLista = '';
+  }
+
+  fecharModalLista() {
+    this.modalAberto = false;
   }
 }
