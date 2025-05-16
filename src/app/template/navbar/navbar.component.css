@@ -295,6 +295,7 @@ mat-drawer-content {
   transition: margin-left 0.3s ease-in-out;
   margin-left: 280px !important;
   background: var(--lm-background);
+  width: 100%;
 }
 
 mat-drawer-content.shifted {
