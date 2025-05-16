@@ -175,3 +175,18 @@ tr:hover {
 .paginacao button:not(:disabled):hover {
   background: rgba(0, 123, 255, 0.2);
 }
+
+/* em breve */
+.container-aviso {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: #f0f7fd;
+  border-radius: 8px;
+  height: 80vh;
+}
+
+.emBreve {
+  width: 50%;
+}
