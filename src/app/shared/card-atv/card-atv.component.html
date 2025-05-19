@@ -1,6 +1,31 @@
 <div class="card">
   <h3>{{ title }}</h3>
   <p>{{ description }}</p>
+
+   <div class="usuarios-fotos" *ngIf="membros?.length">
+    <ng-container *ngFor="let usuario of membros">
+      <ng-container *ngIf="usuario.fotoUrl; else inicial">
+        <img
+          [src]="usuario.fotoUrl"
+          [alt]="usuario.nome"
+          class="usuario-foto"
+          title="{{ usuario.nome }}"
+        />
+      </ng-container>
+      <ng-template #inicial>
+        <span
+          class="usuario-inicial"
+          [ngStyle]="{
+            'background-color': getRandomColor(usuario.nome)
+          }"
+          [title]="usuario.nome"
+        >
+          {{ getInitial(usuario.nome) }}
+        </span>
+      </ng-template>
+    </ng-container>
+  </div>
+
   <span class="date">
     <img src="assets/icones/calendar-orange.svg" alt="data" />
     {{ date | date: 'dd/MM/yyyy' }}

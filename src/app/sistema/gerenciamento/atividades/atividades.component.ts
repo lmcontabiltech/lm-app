@@ -97,6 +97,7 @@ export class AtividadesComponent implements OnInit {
   carregarAtividades(): void {
     this.atividadeService.getAtividades().subscribe(
       (atividades: Atividade[]) => {
+        console.log('Lista de atividades retornada pelo backend:', atividades);
         this.statuses.forEach((status) => (this.atividades[status] = []));
         atividades.forEach((atividade) => {
           const statusColuna = this.mapStatusToColuna(

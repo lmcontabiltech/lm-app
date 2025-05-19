@@ -15,6 +15,8 @@ export class CardAtvComponent {
   @Input() priority!: Prioridade;
   @Input() sector!: Setor;
 
+  @Input() membros: { nome: string; fotoUrl: string }[] = [];
+
   constructor() {}
 
   ngOnInit(): void {}
@@ -30,5 +32,21 @@ export class CardAtvComponent {
       default:
         return '';
     }
+  }
+
+  getInitial(name: string): string {
+    return name ? name.charAt(0).toUpperCase() : '?';
+  }
+
+  getRandomColor(seed: string): string {
+    const colors = [
+      '#FFB3BA', // Rosa pastel
+      '#FFDFBA', // Laranja pastel
+      '#BAFFC9', // Verde pastel
+      '#BAE1FF', // Azul pastel
+      '#D5BAFF', // Roxo pastel
+    ];
+    const index = seed ? seed.charCodeAt(0) % colors.length : 0;
+    return colors[index];
   }
 }

@@ -3,7 +3,7 @@ import { Prioridade } from './enums/prioridade';
 import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
 import { Lista } from './listas';
 
-export class  Atividade {
+export class Atividade {
   id?: string;
   nome!: string;
   descricao!: string;
@@ -16,7 +16,7 @@ export class  Atividade {
   dateDaEntrega!: string;
   prioridade!: Prioridade;
   status?: string;
-  membros?: [];
+  usuarios?: { nome: string; fotoUrl: string }[];
   idsUsuario?: [];
   tarefas?: Lista[];
 }
