@@ -31,6 +31,14 @@ export class PainelPrincipalComponent implements OnInit {
   selic: string = '';
   permissaoUsuario: string = '';
 
+  progressoAtividades = {
+    contabil: { porcentagem: 75 },
+    fiscal: { porcentagem: 60 },
+    pessoal: { porcentagem: 50 },
+    paralegal: { porcentagem: 40 },
+    financeiro: { porcentagem: 30 },
+  };
+
   constructor(
     private exchangeService: ExchangeService,
     private colaboradorService: ColaboradoresService
@@ -41,12 +49,12 @@ export class PainelPrincipalComponent implements OnInit {
     this.renderBarChart();
     this.renderPieChart();
     this.loadTaxas();
-  
+
     this.colaboradorService.getUsuarioByToken().subscribe(
       (usuario) => {
         this.usuario = usuario;
         console.log('Perfil do usuário:', usuario);
-  
+
         // 🔹 Mapeamento da permissão
         switch (usuario.permissao) {
           case 'ROLE_ADMIN':
