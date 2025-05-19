@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Colaborador } from './colaborador';
 import { Setor } from '../cadastro-de-colaborador/setor';
@@ -29,7 +29,6 @@ export class ColaboradoresComponent implements OnInit {
   selectedSetor: string = '';
   showModalDeletar: boolean = false;
   selectedColaborador: any = null;
-  @ViewChild('bodyDeletarTemplate') bodyDeletarTemplate!: TemplateRef<any>;
 
   constructor(
     private router: Router,
@@ -142,11 +141,6 @@ export class ColaboradoresComponent implements OnInit {
         this.deleteColaborador(colaborador.id);
       }
     );
-  }
-
-  closeModalDeletar() {
-    this.showModalDeletar = false;
-    this.selectedColaborador = null;
   }
 
   editarColaborador(id: string): void {
