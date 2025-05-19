@@ -12,9 +12,8 @@ export class  Atividade {
   setor!: Setor;
   processo?: string;
   idProcesso?: string;
-  dataInicio?: string;
-  dataFim?: string;
-  date!: string;
+  dataDeInicio?: string;
+  dateDaEntrega!: string;
   prioridade!: Prioridade;
   status?: string;
   membros?: [];
