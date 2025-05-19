@@ -5,6 +5,13 @@
   margin-bottom: 8px;
   background: #ffffff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12), 0 1.5px 6px rgba(0, 0, 0, 0.1);
+  border-color: #8fa7ff;
+  transform: translateY(-2px) scale(1.02);
 }
 
 .card h3 {
