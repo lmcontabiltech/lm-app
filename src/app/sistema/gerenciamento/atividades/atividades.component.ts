@@ -31,29 +31,29 @@ export class AtividadesComponent implements OnInit {
   atividades: Tasks = {
     backlog: [
       {
-        title: 'Tarefa 1',
-        description: 'Descrição da tarefa 1',
+        nome: 'Tarefa 1',
+        descricao: 'Descrição da tarefa 1',
         date: '2025-04-08',
         prioridade: Prioridade.ALTA,
         setor: Setor.FINANCEIRO,
       },
       {
-        title: 'Tarefa 2',
-        description: 'Descrição da tarefa 2',
+        nome: 'Tarefa 2',
+        descricao: 'Descrição da tarefa 2',
         date: '2025-04-09',
         prioridade: Prioridade.MEDIA,
         setor: Setor.FISCAL,
       },
       {
-        title: 'Tarefa 3',
-        description: 'Descrição da tarefa 3',
+        nome: 'Tarefa 3',
+        descricao: 'Descrição da tarefa 3',
         date: '2025-04-09',
         prioridade: Prioridade.BAIXA,
         setor: Setor.PESSOAL,
       },
       {
-        title: 'Tarefa 4',
-        description: 'Descrição da tarefa 4',
+        nome: 'Tarefa 4',
+        descricao: 'Descrição da tarefa 4',
         date: '2025-04-09',
         prioridade: Prioridade.MEDIA,
         setor: Setor.PARALEGAL,
@@ -61,8 +61,8 @@ export class AtividadesComponent implements OnInit {
     ],
     emProgresso: [
       {
-        title: 'Nome da atividade',
-        description: 'J. Erivaldo e Cia LTDA',
+        nome: 'Nome da atividade',
+        descricao: 'J. Erivaldo e Cia LTDA',
         date: '2025-05-24',
         prioridade: Prioridade.BAIXA,
         setor: Setor.CONTABIL,

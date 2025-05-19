@@ -3,18 +3,21 @@ import { Prioridade } from './enums/prioridade';
 import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
 import { Lista } from './listas';
 
-export interface Atividade {
+export class  Atividade {
   id?: string;
-  title: string;
-  description: string;
+  nome!: string;
+  descricao!: string;
   empresa?: Empresa;
-  setor: Setor;
+  idEmpresa?: string;
+  setor!: Setor;
   processo?: string;
+  idProcesso?: string;
   dataInicio?: string;
   dataFim?: string;
-  date: string;
-  prioridade: Prioridade;
+  date!: string;
+  prioridade!: Prioridade;
   status?: string;
   membros?: [];
-  listas?: Lista[];
+  idsUsuario?: [];
+  tarefas?: Lista[];
 }
