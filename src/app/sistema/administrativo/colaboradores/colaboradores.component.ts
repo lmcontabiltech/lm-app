@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Colaborador } from './colaborador';
 import { Setor } from '../cadastro-de-colaborador/setor';
 import { SetorDescricao } from '../cadastro-de-colaborador/setor-descricao';
 import { ColaboradoresService } from '../../../services/colaboradores.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { ModalService } from 'src/app/services/modalDeletar.service';
 
 @Component({
   selector: 'app-colaboradores',
@@ -12,10 +13,10 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./colaboradores.component.css'],
 })
 export class ColaboradoresComponent implements OnInit {
-  setores = Object.keys(Setor).map(key => ({
-      value: Setor[key as keyof typeof Setor],
-      description: SetorDescricao[Setor[key as keyof typeof Setor]]
-   }));
+  setores = Object.keys(Setor).map((key) => ({
+    value: Setor[key as keyof typeof Setor],
+    description: SetorDescricao[Setor[key as keyof typeof Setor]],
+  }));
 
   colaboradores: Colaborador[] = [];
   itensPorPagina = 5;
@@ -23,15 +24,18 @@ export class ColaboradoresComponent implements OnInit {
   totalPaginas = Math.ceil(this.colaboradores.length / this.itensPorPagina);
   colaboradoresPaginados: Colaborador[] = [];
 
-  permissaoUsuario: string = ''; 
+  permissaoUsuario: string = '';
 
   selectedSetor: string = '';
   showModalDeletar: boolean = false;
+  selectedColaborador: any = null;
+  @ViewChild('bodyDeletarTemplate') bodyDeletarTemplate!: TemplateRef<any>;
 
   constructor(
     private router: Router,
     private colaboradoresService: ColaboradoresService,
-    private authService: AuthService 
+    private authService: AuthService,
+    private modalService: ModalService
   ) {}
 
   ngOnInit(): void {
@@ -46,10 +50,14 @@ export class ColaboradoresComponent implements OnInit {
 
   private mapPermissao(permissao: string): string {
     switch (permissao) {
-      case 'ROLE_ADMIN': return 'Administrador';
-      case 'ROLE_COORDENADOR': return 'Coordenador';
-      case 'ROLE_USER': return 'Colaborador';
-      default: return 'Desconhecido';
+      case 'ROLE_ADMIN':
+        return 'Administrador';
+      case 'ROLE_COORDENADOR':
+        return 'Coordenador';
+      case 'ROLE_USER':
+        return 'Colaborador';
+      default:
+        return 'Desconhecido';
     }
   }
 
@@ -90,7 +98,9 @@ export class ColaboradoresComponent implements OnInit {
     this.colaboradoresService.getUsuariosNonAdmin().subscribe(
       (response: Colaborador[]) => {
         this.colaboradores = response;
-        this.totalPaginas = Math.ceil(this.colaboradores.length / this.itensPorPagina);
+        this.totalPaginas = Math.ceil(
+          this.colaboradores.length / this.itensPorPagina
+        );
         this.atualizarPaginacao();
       },
       (error) => {
@@ -100,27 +110,43 @@ export class ColaboradoresComponent implements OnInit {
   }
 
   deleteColaborador(id: string): void {
-    if (confirm('Tem certeza que deseja excluir este colaborador?')) {
-      this.colaboradoresService.deleteUsuarioById(id).subscribe(
-        () => {
-          this.colaboradores = this.colaboradores.filter(colaborador => colaborador.id !== id);
-          this.totalPaginas = Math.ceil(this.colaboradores.length / this.itensPorPagina);
-          this.atualizarPaginacao();
-          console.log('Colaborador excluído com sucesso');
-        },
-        (error: any) => {
-          console.error('Erro ao excluir colaborador:', error);
-        }
-      );
-    }
+    this.colaboradoresService.deleteUsuarioById(id).subscribe(
+      () => {
+        this.colaboradores = this.colaboradores.filter(
+          (colaborador) => colaborador.id !== id
+        );
+        this.totalPaginas = Math.ceil(
+          this.colaboradores.length / this.itensPorPagina
+        );
+        this.atualizarPaginacao();
+        console.log('Colaborador excluído com sucesso');
+      },
+      (error: any) => {
+        console.error('Erro ao excluir colaborador:', error);
+      }
+    );
   }
 
-  openModalDeletar() {
-    this.showModalDeletar  = true;
+  openModalDeletar(colaborador: any): void {
+    this.selectedColaborador = colaborador;
+
+    this.modalService.openModal(
+      {
+        title: 'Remoção de Usuário',
+        description: `Tem certeza que deseja excluir o colaborador <strong>${colaborador.nome}</strong> cadastrado?`,
+        item: colaborador,
+        deletarTextoBotao: 'Remover',
+        size: 'md',
+      },
+      () => {
+        this.deleteColaborador(colaborador.id);
+      }
+    );
   }
 
   closeModalDeletar() {
     this.showModalDeletar = false;
+    this.selectedColaborador = null;
   }
 
   editarColaborador(id: string): void {

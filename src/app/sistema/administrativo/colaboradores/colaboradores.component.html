@@ -34,7 +34,7 @@
                             <div class="perfil">
                                 <div class="avatar"></div>
                                 <span>
-                                    <a (click)="openModalDeletar()" >
+                                    <a>
                                         {{ colaborador.nome }}
                                     </a>
                                 </span>
@@ -50,7 +50,7 @@
                                     <img src="assets/icones/edit.svg" alt="Editar">
                                     Editar
                                 </button>
-                                <button class="btn-acao delete" (click)="deleteColaborador(colaborador.id)">
+                                <button class="btn-acao delete" (click)="openModalDeletar(colaborador)">
                                     <img src="assets/icones/delete.svg" alt="Excluir">
                                      Excluir
                                 </button>
@@ -86,4 +86,21 @@
 </div>
 
 <!-- modal delete -->
-<!-- <app-modal-geral [show]="showModalDeletar" (closeModal)="closeModalDeletar()" size="max-w-7xl" [footer]="false"></app-modal-geral> -->
+<!-- <app-modal-geral [show]="showModalDeletar" (closeModal)="closeModalDeletar()" size="max-w-7xl" [footer]="false">
+    <div class="modal-conteudo">
+        <button class="modal-close-btn" (click)="closeModalDeletar()" aria-label="Fechar">
+            &times;
+        </button>
+        <h2>Excluir colaborador</h2>
+        <p>Tem certeza que deseja excluir o colaborador abaixo?</p>
+        <div class="dados-colaborador" *ngIf="selectedColaborador">
+            <p><strong>Nome:</strong> {{ selectedColaborador.nome }}</p>
+            <p><strong>E-mail:</strong> {{ selectedColaborador.email }}</p>
+            <p><strong>Setor:</strong> {{ selectedColaborador.setor }}</p>
+        </div>
+        <button class="btn-acao delete" (click)="deleteColaborador(selectedColaborador?.id)">
+            <img src="assets/icones/delete.svg" alt="Excluir">
+            Excluir
+        </button>  
+    </div>
+</app-modal-geral> -->

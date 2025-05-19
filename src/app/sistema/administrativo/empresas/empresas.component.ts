@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Empresa } from './empresa';
 import { EmpresasService } from '../../../services/empresas.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { ModalService } from 'src/app/services/modalDeletar.service';
 
 @Component({
   selector: 'app-empresas',
@@ -15,13 +16,15 @@ export class EmpresasComponent implements OnInit {
   itensPorPagina = 5;
   paginaAtual = 1;
   totalPaginas = 0;
+  selectedEmpresa: any = null;
 
-  permissaoUsuario: string = ''; // 🔸 Adicionado
+  permissaoUsuario: string = '';
 
   constructor(
     private router: Router,
     private empresasService: EmpresasService,
-    private authService: AuthService // 🔸 Adicionado
+    private authService: AuthService,
+    private modalService: ModalService
   ) {}
 
   ngOnInit(): void {
@@ -59,7 +62,9 @@ export class EmpresasComponent implements OnInit {
     this.empresasService.getEmpresas().subscribe(
       (empresas: Empresa[]) => {
         this.empresas = empresas;
-        this.totalPaginas = Math.ceil(this.empresas.length / this.itensPorPagina);
+        this.totalPaginas = Math.ceil(
+          this.empresas.length / this.itensPorPagina
+        );
         this.atualizarPaginacao();
       },
       (error) => {
@@ -94,21 +99,38 @@ export class EmpresasComponent implements OnInit {
   }
 
   deletarEmpresa(id: string): void {
-    if (confirm('Tem certeza que deseja excluir esta empresa?')) {
-      this.empresasService.deletarEmpresa(id).subscribe(
-        () => {
-          this.empresas = this.empresas.filter((empresa) => empresa.id !== id);
-          this.totalPaginas = Math.ceil(this.empresas.length / this.itensPorPagina);
-          this.atualizarPaginacao();
-        },
-        (error: any) => {
-          console.error('Erro ao excluir empresa:', error);
-        }
-      );
-    }
+    this.empresasService.deletarEmpresa(id).subscribe(
+      () => {
+        this.empresas = this.empresas.filter((empresa) => empresa.id !== id);
+        this.totalPaginas = Math.ceil(
+          this.empresas.length / this.itensPorPagina
+        );
+        this.atualizarPaginacao();
+      },
+      (error: any) => {
+        console.error('Erro ao excluir empresa:', error);
+      }
+    );
   }
 
   editarEmpresa(id: string): void {
     this.router.navigate(['/usuario/cadastro-de-empresa', id]);
+  }
+
+  openModalDeletar(empresa: any): void {
+    this.selectedEmpresa = empresa;
+
+    this.modalService.openModal(
+      {
+        title: 'Remoção de Empresa',
+        description: `Tem certeza que deseja excluir a empresa <strong>${empresa.razaoSocial}</strong> cadastrada?`,
+        item: empresa,
+        deletarTextoBotao: 'Remover',
+        size: 'md',
+      },
+      () => {
+        this.deletarEmpresa(empresa.id);
+      }
+    );
   }
 }
