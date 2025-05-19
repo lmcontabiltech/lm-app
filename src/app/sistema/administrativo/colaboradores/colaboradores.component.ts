@@ -132,7 +132,7 @@ export class ColaboradoresComponent implements OnInit {
     this.modalService.openModal(
       {
         title: 'Remoção de Usuário',
-        description: `Tem certeza que deseja excluir o colaborador <strong>${colaborador.nome}</strong> cadastrado?`,
+        description: `Tem certeza que deseja excluir o(a) colaborador(a) <strong>${colaborador.nome}</strong>?`,
         item: colaborador,
         deletarTextoBotao: 'Remover',
         size: 'md',
