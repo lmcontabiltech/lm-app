@@ -10,6 +10,7 @@ import { Prioridade } from './enums/prioridade';
 import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
 import { AtividadeService } from 'src/app/services/gerenciamento/atividade.service';
 import { ModalAtividadeService } from 'src/app/services/modal/modalAtividade.service';
+import { ModalService } from 'src/app/services/modal/modalDeletar.service';
 
 interface Tasks {
   [key: string]: Atividade[];
@@ -41,7 +42,8 @@ export class AtividadesComponent implements OnInit {
   constructor(
     private router: Router,
     private atividadeService: AtividadeService,
-    private modalAtividadeService: ModalAtividadeService
+    private modalAtividadeService: ModalAtividadeService,
+    private modalDeleteService: ModalService
   ) {}
 
   ngOnInit(): void {
@@ -93,24 +95,23 @@ export class AtividadesComponent implements OnInit {
   }
 
   onDragMoved(event: any, dropList: HTMLElement) {
-  if (window.innerWidth <= 900) {
-    const container = dropList.parentElement?.parentElement?.parentElement;
-    if (!container) return;
+    if (window.innerWidth <= 900) {
+      const container = dropList.parentElement?.parentElement?.parentElement;
+      if (!container) return;
 
-    const pointerX = event.pointerPosition.x;
-    const containerRect = container.getBoundingClientRect();
+      const pointerX = event.pointerPosition.x;
+      const containerRect = container.getBoundingClientRect();
 
-    const scrollMargin = 60;
-    const scrollSpeed = 20;
+      const scrollMargin = 60;
+      const scrollSpeed = 20;
 
-    if (pointerX > containerRect.right - scrollMargin) {
-      container.scrollLeft += scrollSpeed;
-    }
-    else if (pointerX < containerRect.left + scrollMargin) {
-      container.scrollLeft -= scrollSpeed;
+      if (pointerX > containerRect.right - scrollMargin) {
+        container.scrollLeft += scrollSpeed;
+      } else if (pointerX < containerRect.left + scrollMargin) {
+        container.scrollLeft -= scrollSpeed;
+      }
     }
   }
-}
 
   cadastrarAtividade(): void {
     this.router.navigate(['/usuario/cadastro-de-atividade']);
@@ -170,6 +171,9 @@ export class AtividadesComponent implements OnInit {
         },
         (atividadeId: string) => {
           this.editarAtividade(atividadeId);
+        },
+        () => {
+          this.abrirModalConfirmacaoDeletar(atividade);
         }
       );
     });
@@ -178,5 +182,32 @@ export class AtividadesComponent implements OnInit {
   editarAtividade(id: string) {
     this.modalAtividadeService.closeModal();
     this.router.navigate(['/usuario/cadastro-de-atividade', id]);
+  }
+
+  deletarAtividade(id: string) {
+    this.atividadeService.deletarAtividade(id).subscribe({
+      next: () => {
+        this.modalAtividadeService.closeModal();
+        this.carregarAtividades();
+      },
+      error: (err) => {
+        alert(err.message || 'Erro ao deletar atividade.');
+      },
+    });
+  }
+
+  abrirModalConfirmacaoDeletar(atividade: Atividade): void {
+    this.modalDeleteService.openModal(
+      {
+        title: 'Remover Atividade',
+        description: `Tem certeza que deseja excluir a atividade <strong>${atividade.nome}</strong>?`,
+        item: atividade,
+        deletarTextoBotao: 'Remover',
+        size: 'md',
+      },
+      () => {
+        this.deletarAtividade(atividade.id!);
+      }
+    );
   }
 }

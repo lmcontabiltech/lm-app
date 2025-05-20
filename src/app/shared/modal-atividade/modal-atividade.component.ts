@@ -15,6 +15,7 @@ export class ModalAtividadeComponent {
 
   @Output() closeModal = new EventEmitter<void>();
   @Output() editarAtividade = new EventEmitter<string>();
+  @Output() deletarAtividade = new EventEmitter<string>();
 
   onModalClose() {
     this.closeModal.emit();
@@ -51,6 +52,10 @@ export class ModalAtividadeComponent {
 
   EditarAtividade(id: string) {
     this.editarAtividade.emit(id);
+  }
+
+  DeletarAtividade(id: string) {
+    this.deletarAtividade.emit(id);
   }
 
   getDescricaoStatus(status: string): string {
