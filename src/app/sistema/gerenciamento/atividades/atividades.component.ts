@@ -9,6 +9,7 @@ import { Atividade } from './atividades';
 import { Prioridade } from './enums/prioridade';
 import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
 import { AtividadeService } from 'src/app/services/gerenciamento/atividade.service';
+import { ModalAtividadeService } from 'src/app/services/modal/modalAtividade.service';
 
 interface Tasks {
   [key: string]: Atividade[];
@@ -39,7 +40,8 @@ export class AtividadesComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private atividadeService: AtividadeService
+    private atividadeService: AtividadeService,
+    private modalAtividadeService: ModalAtividadeService
   ) {}
 
   ngOnInit(): void {
@@ -136,5 +138,12 @@ export class AtividadesComponent implements OnInit {
 
   private mapColunaToStatus(coluna: string): string {
     return this.colunaToStatusMap[coluna] || 'A_FAZER';
+  }
+
+  abrirModalAtividade(id: string | undefined) {
+    if (!id) return;
+    this.atividadeService.getAtividadeById(id).subscribe((atividade) => {
+      this.modalAtividadeService.openModal({ atividade });
+    });
   }
 }

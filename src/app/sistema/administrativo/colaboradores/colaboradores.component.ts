@@ -5,7 +5,7 @@ import { Setor } from '../cadastro-de-colaborador/setor';
 import { SetorDescricao } from '../cadastro-de-colaborador/setor-descricao';
 import { ColaboradoresService } from '../../../services/colaboradores.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { ModalService } from 'src/app/services/modalDeletar.service';
+import { ModalService } from 'src/app/services/modal/modalDeletar.service';
 
 @Component({
   selector: 'app-colaboradores',

@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Processo } from './processo';
 import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
 import { ProcessoService } from 'src/app/services/gerenciamento/processo.service';
-import { ModalService } from 'src/app/services/modalDeletar.service';
+import { ModalService } from 'src/app/services/modal/modalDeletar.service';
 
 @Component({
   selector: 'app-processos',

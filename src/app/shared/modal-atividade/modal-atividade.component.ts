@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-modal-atividade',
   templateUrl: './modal-atividade.component.html',
-  styleUrls: ['./modal-atividade.component.css']
+  styleUrls: ['./modal-atividade.component.css'],
 })
-export class ModalAtividadeComponent implements OnInit {
+export class ModalAtividadeComponent {
+  @Input() atividade: any;
+  @Input() size: string = 'xl:max-w-7xl';
 
-  constructor() { }
+  @Output() closeModal = new EventEmitter<void>();
 
-  ngOnInit(): void {
+  onModalClose() {
+    this.closeModal.emit();
   }
-
 }

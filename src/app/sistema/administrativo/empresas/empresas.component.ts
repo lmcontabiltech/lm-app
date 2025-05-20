@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Empresa } from './empresa';
 import { EmpresasService } from '../../../services/empresas.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { ModalService } from 'src/app/services/modalDeletar.service';
+import { ModalService } from 'src/app/services/modal/modalDeletar.service';
 
 @Component({
   selector: 'app-empresas',

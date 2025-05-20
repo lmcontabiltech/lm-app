@@ -23,6 +23,7 @@
         [priority]="atividade.prioridade"
         [sector]="atividade.setor"
         [membros]="atividade.usuarios || []"
+        (click)="abrirModalAtividade(atividade.id)"
         cdkDrag
       ></app-card-atv>
       </div>
