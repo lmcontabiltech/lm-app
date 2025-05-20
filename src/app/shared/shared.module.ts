@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { SetorTagComponent } from './setor-tag/setor-tag.component';
 import { InputPlusComponent } from './input-plus/input-plus.component';
 import { CardAtvComponent } from './card-atv/card-atv.component';
+import { ModalAtividadeComponent } from './modal-atividade/modal-atividade.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { CardAtvComponent } from './card-atv/card-atv.component';
     SetorTagComponent,
     InputPlusComponent,
     CardAtvComponent,
+    ModalAtividadeComponent,
   ],
   imports: [CommonModule, FormsModule],
   exports: [
@@ -34,6 +36,7 @@ import { CardAtvComponent } from './card-atv/card-atv.component';
     SetorTagComponent,
     InputPlusComponent,
     CardAtvComponent,
+    ModalAtividadeComponent,
   ],
 })
 export class SharedModule {}
