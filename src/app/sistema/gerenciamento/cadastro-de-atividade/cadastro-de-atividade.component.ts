@@ -147,9 +147,9 @@ export class CadastroDeAtividadeComponent implements OnInit {
     // Remover novoNomeLista do envio
     const { novoNomeLista, tarefas, ...formValues } = this.atividadeForm.value;
 
-    const atividade = {
+    const atividade: Atividade = {
       ...this.atividadeForm.value,
-       idsUsuario: this.atividadeForm.value.idsUsuario,
+      idsUsuario: this.atividadeForm.value.idsUsuario,
       tarefas: this.listasDeTarefas,
     };
     console.log('Listas a ser enviado:', atividade);
