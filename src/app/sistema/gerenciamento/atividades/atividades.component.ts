@@ -140,10 +140,23 @@ export class AtividadesComponent implements OnInit {
     return this.colunaToStatusMap[coluna] || 'A_FAZER';
   }
 
-  abrirModalAtividade(id: string | undefined) {
+  abrirModalAtividade(id: string | undefined): void {
     if (!id) return;
     this.atividadeService.getAtividadeById(id).subscribe((atividade) => {
-      this.modalAtividadeService.openModal({ atividade, size: 'lg' });
+      this.modalAtividadeService.openModal(
+        {
+          atividade,
+          size: 'lg',
+        },
+        (atividadeId: string) => {
+          this.editarAtividade(atividadeId);
+        }
+      );
     });
+  }
+
+  editarAtividade(id: string) {
+    this.modalAtividadeService.closeModal();
+    this.router.navigate(['/usuario/cadastro-de-atividade', id]);
   }
 }

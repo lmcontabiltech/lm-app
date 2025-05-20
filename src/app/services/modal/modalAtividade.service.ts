@@ -10,7 +10,10 @@ export class ModalAtividadeService {
     this.outlet = outlet;
   }
 
-  openModal(config?: Partial<ModalAtividadeComponent>): void {
+  openModal(
+    config?: Partial<ModalAtividadeComponent>,
+    editarAtividade?: (id: string) => void
+  ): void {
     if (!this.outlet) throw new Error('Outlet não registrado!');
     this.outlet.clear();
 
@@ -18,6 +21,10 @@ export class ModalAtividadeService {
 
     if (config) {
       Object.assign(this.modalRef.instance, config);
+    }
+
+    if (editarAtividade) {
+      this.modalRef.instance.editarAtividade.subscribe(editarAtividade);
     }
 
     this.modalRef.instance.closeModal.subscribe(() => {
