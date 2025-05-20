@@ -92,6 +92,26 @@ export class AtividadesComponent implements OnInit {
     }
   }
 
+  onDragMoved(event: any, dropList: HTMLElement) {
+  if (window.innerWidth <= 900) {
+    const container = dropList.parentElement?.parentElement?.parentElement;
+    if (!container) return;
+
+    const pointerX = event.pointerPosition.x;
+    const containerRect = container.getBoundingClientRect();
+
+    const scrollMargin = 60;
+    const scrollSpeed = 20;
+
+    if (pointerX > containerRect.right - scrollMargin) {
+      container.scrollLeft += scrollSpeed;
+    }
+    else if (pointerX < containerRect.left + scrollMargin) {
+      container.scrollLeft -= scrollSpeed;
+    }
+  }
+}
+
   cadastrarAtividade(): void {
     this.router.navigate(['/usuario/cadastro-de-atividade']);
   }

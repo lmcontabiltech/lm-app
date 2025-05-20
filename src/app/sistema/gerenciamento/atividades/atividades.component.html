@@ -9,11 +9,13 @@
 
       <div
         cdkDropList
+        #dropList
         [id]="status"
         [cdkDropListData]="atividades[status]"
         [cdkDropListConnectedTo]="statuses"
         class="task-list"
         (cdkDropListDropped)="drop($event)"
+        (cdkDragMoved)="onDragMoved($event, dropList)"
       >
       <app-card-atv
         *ngFor="let atividade of atividades[status]"
