@@ -13,6 +13,7 @@ export class ModalAtividadeComponent {
   @Input() membros: { nome: string; fotoUrl: string }[] = [];
 
   @Output() closeModal = new EventEmitter<void>();
+  @Output() editarAtividade = new EventEmitter<string>();
 
   onModalClose() {
     this.closeModal.emit();
@@ -45,5 +46,9 @@ export class ModalAtividadeComponent {
     ];
     const index = seed ? seed.charCodeAt(0) % colors.length : 0;
     return colors[index];
+  }
+
+  EditarAtividade(id: string) {
+    this.editarAtividade.emit(id);
   }
 }

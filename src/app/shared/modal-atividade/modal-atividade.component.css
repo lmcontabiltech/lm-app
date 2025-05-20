@@ -121,10 +121,19 @@
   border-top: 1.5px solid #eee;
 }
 
+.modal-body-grid {
+  display: grid;
+  grid-template-columns: 80% 20%;
+  justify-items: start;
+  width: 100%;
+  gap: 24px;
+}
+
 .modal-detalhes {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  width: 100%;
 }
 
 .item-modal {
@@ -250,4 +259,53 @@
 }
 .usuarios-fotos .usuario-inicial:first-child {
   margin-left: 0;
+}
+
+.menu-acao {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.btn-edit {
+  background: #2563eb;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 20px;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-edit:hover,
+.btn-edit:focus {
+  background: #174ea6;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.15);
+  outline: none;
+}
+
+/* responsividade */
+@media (max-width: 768px) {
+  .modal-conteudo {
+    padding: 16px;
+    overflow-y: auto;
+  }
+
+  .modal-header h2 {
+    font-size: 20px;
+  }
+
+  .modal-body-grid {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 16px;
+  }
+
+  .menu-acao {
+    justify-content: flex-end;
+  }
 }
