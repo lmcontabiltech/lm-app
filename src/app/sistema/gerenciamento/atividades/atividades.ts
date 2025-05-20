@@ -2,6 +2,7 @@ import { Empresa } from '../../administrativo/empresas/empresa';
 import { Prioridade } from './enums/prioridade';
 import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
 import { Lista } from './listas';
+import { Processo } from '../processos/processo';
 
 export class Atividade {
   id?: string;
@@ -10,7 +11,7 @@ export class Atividade {
   empresa?: Empresa;
   idEmpresa?: string;
   setor!: Setor;
-  processo?: string;
+  processo?: Processo;
   idProcesso?: string;
   dataDeInicio?: string;
   dateDaEntrega!: string;

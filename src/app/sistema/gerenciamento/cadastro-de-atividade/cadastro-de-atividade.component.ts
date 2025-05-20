@@ -90,6 +90,7 @@ export class CadastroDeAtividadeComponent implements OnInit {
     this.carregarEmpresas();
     this.carregarUsuarios();
     this.carregarProcessos();
+    this.verificarModoEdicao();
   }
 
   goBack() {
@@ -223,5 +224,66 @@ export class CadastroDeAtividadeComponent implements OnInit {
       : [];
     this.atividadeForm.get('idsUsuario')?.setValue(ids);
     console.log('Membros selecionados (ids):', ids);
+  }
+
+  private verificarModoEdicao(): void {
+    this.atividadeId = this.route.snapshot.paramMap.get('id');
+    if (this.atividadeId) {
+      this.isEditMode = true;
+      this.carregarDadosAtividade(this.atividadeId);
+    }
+  }
+
+  private carregarDadosAtividade(atividadeId: string): void {
+    this.atividadeService.getAtividadeById(atividadeId).subscribe(
+      (atividade: Atividade) => {
+        console.log('Dados da atividade recebidos:', atividade);
+
+        this.atividadeForm.patchValue({
+          ...atividade,
+        });
+
+        this.tratarDadosAtividade(atividade);
+
+        // Se tiver listas de tarefas
+        if (atividade.tarefas) {
+          this.listasDeTarefas = atividade.tarefas;
+        }
+      },
+      (error) => {
+        console.error('Erro ao carregar os dados da atividade:', error);
+      }
+    );
+  }
+
+  private tratarDadosAtividade(atividade: Atividade): void {
+    // Empresa
+    if (atividade.empresa) {
+      this.selectedEmpresa = atividade.empresa.id;
+      this.empresas = [
+        {
+          value: atividade.empresa.id,
+          description: atividade.empresa.razaoSocial,
+        },
+      ];
+    }
+
+    // Processo
+    if (atividade.processo) {
+      this.selectedProcesso = atividade.processo.id;
+      this.processos = [
+        {
+          value: atividade.processo.id,
+          description: atividade.processo.nome,
+        },
+      ];
+    }
+    
+    // Status
+    this.selectedStatus = atividade.status || '';
+    // Setor
+    this.selectedSetor = atividade.setor || '';
+    // Prioridade
+    this.selectedPrioridade = atividade.prioridade || '';
   }
 }
