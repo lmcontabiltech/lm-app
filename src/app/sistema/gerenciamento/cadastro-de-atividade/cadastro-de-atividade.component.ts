@@ -82,7 +82,7 @@ export class CadastroDeAtividadeComponent implements OnInit {
       status: ['', Validators.required],
       idsUsuario: [[]],
       tarefas: [[]],
-      // novoNomeLista: [''],
+      novoNomeLista: [''],
     });
   }
 
@@ -195,7 +195,7 @@ export class CadastroDeAtividadeComponent implements OnInit {
 
     const novaLista: Lista = {
       nome,
-      itens: [],
+      subtarefas: [],
     };
     this.listasDeTarefas.push(novaLista);
     console.log('Listas de tarefas:', this.listasDeTarefas);
