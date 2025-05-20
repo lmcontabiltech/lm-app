@@ -16,8 +16,8 @@
     <div class="forms-container">
         <form (ngSubmit)="onSubmit()" [formGroup]="atividadeForm">
             <div class="form-group">
-                <label for="titulo">Nome</label>
-                <input type="text" id="titulo" name="titulo" formControlName="titulo" class="form-control" placeholder="Digite o nome da atividade" required>
+                <label for="nome">Nome</label>
+                <input type="text" id="nome" name="nome" formControlName="nome" class="form-control" placeholder="Digite o nome da atividade" required>
             </div>
 
             <div class="form-group">
@@ -27,11 +27,12 @@
     
             <div class="input-duo">
                 <div class="form-group">
-                    <label for="setor">Empresa</label>
+                    <label for="idEmpresa">Empresa</label>
                     <app-select-padrao
                       label="Selecionar a empresa"
                       [options]="empresas"
-                      [(selectedValue)]="selectedEmpresa">
+                      [(selectedValue)]="selectedEmpresa"
+                      formControlName="idEmpresa">
                     </app-select-padrao>
                 </div>
                 <div class="form-group">
@@ -39,29 +40,31 @@
                     <app-select-padrao
                       label="Selecionar o setor"
                       [options]="setores"
-                      [(selectedValue)]="selectedSetor">
+                      [(selectedValue)]="selectedSetor"
+                      formControlName="setor">
                     </app-select-padrao>
                 </div>
             </div>
     
             <div class="form-group">
-                <label for="processo">Processo</label>
+                <label for="idProcesso">Processo</label>
                 <app-select-padrao
                   label="Selecionar o processo"
                   [options]="processos"
-                  [(selectedValue)]="selectedProcesso">
+                  [(selectedValue)]="selectedProcesso"
+                  formControlName="idProcesso">
                 </app-select-padrao>
             </div>
 
             <div class="input-duo">
                 <div class="form-group">
-                  <label for="dataInicio">Data de início</label>
-                  <input type="date" id="dataInicio" name="dataInicio" formControlName="dataInicio" class="form-control">
+                  <label for="dataDeInicio">Data de início</label>
+                  <input type="date" id="dataDeInicio" name="dataDeInicio" formControlName="dataDeInicio" class="form-control">
                 </div>
 
                 <div class="form-group">
-                  <label for="dataFim">Data da entrega</label>
-                  <input type="date" id="dataFim" name="dataFim" formControlName="dataFim" class="form-control">
+                  <label for="dateDaEntrega">Data da entrega</label>
+                  <input type="date" id="dateDaEntrega" name="dateDaEntrega" formControlName="dateDaEntrega" class="form-control">
                 </div>
             </div>
 
@@ -71,7 +74,8 @@
                     <app-select-padrao
                       label="Selecionar a prioridade"
                       [options]="prioridades"
-                      [(selectedValue)]="selectedPrioridade">
+                      [(selectedValue)]="selectedPrioridade"
+                      formControlName="prioridade">
                     </app-select-padrao>
                 </div>
                 <div class="form-group">
@@ -79,19 +83,21 @@
                     <app-select-padrao
                       label="Selecionar o status"
                       [options]="status"
-                      [(selectedValue)]="selectedStatus">
+                      [(selectedValue)]="selectedStatus"
+                      formControlName="status">
                     </app-select-padrao>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="membros">Membros</label>
+                <label for="idsUsuario">Membros</label>
                 <app-multiplo-select
                   label="Selecionar membro"
                   [options]="membros"
                   [(selectedValue)]="selectedMembro"
                   [multiple]="true"
-                  formControlName="membros">
+                  formControlName="idsUsuario"
+                  (selectedValueChange)="onMembrosChange($event)">
                 </app-multiplo-select>
             </div>
 
@@ -120,7 +126,7 @@
                         <span>{{ lista.nome }}</span>
                         <button type="button" class="btn-remover-lista" (click)="removerLista(i)" title="Remover lista">×</button>
                     </div>
-                    <app-input-plus [(items)]="lista.itens" [initialCount]="1"></app-input-plus>
+                    <app-input-plus [(items)]="lista.subtarefas" [initialCount]="1"></app-input-plus>
                 </div>
             </div>
 

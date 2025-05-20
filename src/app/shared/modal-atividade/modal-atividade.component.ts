@@ -1,28 +1,27 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Atividade } from 'src/app/sistema/gerenciamento/atividades/atividades';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Prioridade } from 'src/app/sistema/gerenciamento/atividades/enums/prioridade';
 import { Setor } from 'src/app/sistema/administrativo/cadastro-de-colaborador/setor';
+import { StatusDescricao } from 'src/app/sistema/gerenciamento/atividades/enums/status-descricao';
 
 @Component({
-  selector: 'app-card-atv',
-  templateUrl: './card-atv.component.html',
-  styleUrls: ['./card-atv.component.css'],
+  selector: 'app-modal-atividade',
+  templateUrl: './modal-atividade.component.html',
+  styleUrls: ['./modal-atividade.component.css'],
 })
-export class CardAtvComponent {
-  @Input() title!: string;
-  @Input() description!: string;
-  @Input() date!: string;
-  @Input() priority!: Prioridade;
-  @Input() sector!: Setor;
-
+export class ModalAtividadeComponent {
+  @Input() atividade: any;
+  @Input() size: string = 'xl:max-w-7xl';
   @Input() membros: { nome: string; fotoUrl: string }[] = [];
 
-  constructor() {}
+  @Output() closeModal = new EventEmitter<void>();
+  @Output() editarAtividade = new EventEmitter<string>();
 
-  ngOnInit(): void {}
+  onModalClose() {
+    this.closeModal.emit();
+  }
 
   getPriorityClass(): string {
-    switch (this.priority) {
+    switch (this.atividade?.prioridade) {
       case Prioridade.ALTA:
         return 'priority-high';
       case Prioridade.MEDIA:
@@ -48,5 +47,17 @@ export class CardAtvComponent {
     ];
     const index = seed ? seed.charCodeAt(0) % colors.length : 0;
     return colors[index];
+  }
+
+  EditarAtividade(id: string) {
+    this.editarAtividade.emit(id);
+  }
+
+  getDescricaoStatus(status: string): string {
+    return (
+      StatusDescricao[status as keyof typeof StatusDescricao] ||
+      status ||
+      'Status desconhecido'
+    );
   }
 }

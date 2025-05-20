@@ -5,6 +5,13 @@
   margin-bottom: 8px;
   background: #ffffff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12), 0 1.5px 6px rgba(0, 0, 0, 0.1);
+  border-color: #8fa7ff;
+  transform: translateY(-2px) scale(1.02);
 }
 
 .card h3 {
@@ -21,7 +28,7 @@
 }
 
 .date {
-  color: #B44727;
+  color: #b44727;
   font-size: 0.875rem;
   font-weight: 500;
   display: flex;
@@ -64,4 +71,40 @@
 .priority-low {
   background: #4dd703a8;
   color: #028606;
+}
+
+/* foto dos usuarios */
+.usuarios-fotos {
+  display: flex;
+  gap: -8px;
+  margin: 8px 0;
+  padding: 0;
+}
+.usuario-foto {
+  width: 28px;
+  height: 28px;
+  border-radius: 100%;
+  border: 2px solid #ffffff;
+  object-fit: cover;
+  margin-left: -8px;
+}
+.usuarios-fotos .usuario-foto:first-child {
+  margin-left: 0;
+}
+
+.usuario-inicial {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 100%;
+  color: #0c0c0c;
+  font-weight: 500;
+  font-size: 1rem;
+  margin-left: -8px;
+  border: 2px solid #ffffff;
+}
+.usuarios-fotos .usuario-inicial:first-child {
+  margin-left: 0;
 }

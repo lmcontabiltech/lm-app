@@ -2,19 +2,22 @@ import { Empresa } from '../../administrativo/empresas/empresa';
 import { Prioridade } from './enums/prioridade';
 import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
 import { Lista } from './listas';
+import { Processo } from '../processos/processo';
 
-export interface Atividade {
+export class Atividade {
   id?: string;
-  title: string;
-  description: string;
+  nome!: string;
+  descricao!: string;
   empresa?: Empresa;
-  setor: Setor;
-  processo?: string;
-  dataInicio?: string;
-  dataFim?: string;
-  date: string;
-  prioridade: Prioridade;
+  idEmpresa?: string;
+  setor!: Setor;
+  processo?: Processo;
+  idProcesso?: string;
+  dataDeInicio?: string;
+  dateDaEntrega!: string;
+  prioridade!: Prioridade;
   status?: string;
-  membros?: [];
-  listas?: Lista[];
+  usuarios?: { nome: string; fotoUrl: string }[];
+  idsUsuario?: [];
+  tarefas?: Lista[];
 }

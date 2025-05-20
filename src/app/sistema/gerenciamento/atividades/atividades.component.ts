@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 import { Atividade } from './atividades';
 import { Prioridade } from './enums/prioridade';
 import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
+import { AtividadeService } from 'src/app/services/gerenciamento/atividade.service';
+import { ModalAtividadeService } from 'src/app/services/modal/modalAtividade.service';
 
 interface Tasks {
   [key: string]: Atividade[];
@@ -20,7 +22,6 @@ interface Tasks {
 })
 export class AtividadesComponent implements OnInit {
   statuses: string[] = ['backlog', 'emProgresso', 'revisao', 'concluido'];
-  // Mapeamento de IDs para títulos exibidos no frontend
   statusLabels: { [key: string]: string } = {
     backlog: 'Backlog',
     emProgresso: 'Em andamento',
@@ -29,55 +30,23 @@ export class AtividadesComponent implements OnInit {
   };
 
   atividades: Tasks = {
-    backlog: [
-      {
-        title: 'Tarefa 1',
-        description: 'Descrição da tarefa 1',
-        date: '2025-04-08',
-        prioridade: Prioridade.ALTA,
-        setor: Setor.FINANCEIRO,
-      },
-      {
-        title: 'Tarefa 2',
-        description: 'Descrição da tarefa 2',
-        date: '2025-04-09',
-        prioridade: Prioridade.MEDIA,
-        setor: Setor.FISCAL,
-      },
-      {
-        title: 'Tarefa 3',
-        description: 'Descrição da tarefa 3',
-        date: '2025-04-09',
-        prioridade: Prioridade.BAIXA,
-        setor: Setor.PESSOAL,
-      },
-      {
-        title: 'Tarefa 4',
-        description: 'Descrição da tarefa 4',
-        date: '2025-04-09',
-        prioridade: Prioridade.MEDIA,
-        setor: Setor.PARALEGAL,
-      },
-    ],
-    emProgresso: [
-      {
-        title: 'Nome da atividade',
-        description: 'J. Erivaldo e Cia LTDA',
-        date: '2025-05-24',
-        prioridade: Prioridade.BAIXA,
-        setor: Setor.CONTABIL,
-      },
-    ],
+    backlog: [],
+    emProgresso: [],
     revisao: [],
     concluido: [],
   };
 
   dropListIds: string[] = [];
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private atividadeService: AtividadeService,
+    private modalAtividadeService: ModalAtividadeService
+  ) {}
 
   ngOnInit(): void {
     this.dropListIds = this.statuses.map((status) => status);
+    this.carregarAtividades();
   }
 
   drop(event: CdkDragDrop<Atividade[]>) {
@@ -88,17 +57,106 @@ export class AtividadesComponent implements OnInit {
         event.currentIndex
       );
     } else {
+      const atividadeMovida = event.previousContainer.data[event.previousIndex];
+      const novoStatus = event.container.id;
+      const statusBackend = this.mapColunaToStatus(novoStatus);
+
+      // Move o card imediatamente
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
         event.previousIndex,
         event.currentIndex
       );
+      atividadeMovida.status = statusBackend;
+
+      this.atividadeService
+        .atualizarStatusAtividade(atividadeMovida.id as string, statusBackend)
+        .subscribe(
+          (res) => {
+            console.log('Status atualizado no backend:', res);
+          },
+          (error) => {
+            transferArrayItem(
+              event.container.data,
+              event.previousContainer.data,
+              event.currentIndex,
+              event.previousIndex
+            );
+            atividadeMovida.status = this.mapColunaToStatus(
+              event.previousContainer.id
+            );
+            console.error('Erro ao atualizar status:', error);
+          }
+        );
     }
-    console.log('Tasks after drop:', this.atividades);
   }
 
   cadastrarAtividade(): void {
     this.router.navigate(['/usuario/cadastro-de-atividade']);
+  }
+
+  carregarAtividades(): void {
+    this.atividadeService.getAtividades().subscribe(
+      (atividades: Atividade[]) => {
+        console.log('Lista de atividades retornada pelo backend:', atividades);
+        this.statuses.forEach((status) => (this.atividades[status] = []));
+        atividades.forEach((atividade) => {
+          const statusColuna = this.mapStatusToColuna(
+            atividade.status ?? 'A_FAZER'
+          );
+          if (this.atividades[statusColuna]) {
+            this.atividades[statusColuna].push(atividade);
+          } else {
+            this.atividades['backlog'].push(atividade);
+          }
+        });
+      },
+      (error) => {
+        console.error('Erro ao carregar atividades:', error);
+      }
+    );
+  }
+
+  private statusToColunaMap: { [key: string]: string } = {
+    A_FAZER: 'backlog',
+    EM_PROGRESSO: 'emProgresso',
+    REVISAO: 'revisao',
+    CONCLUIDO: 'concluido',
+  };
+
+  private colunaToStatusMap: { [key: string]: string } = {
+    backlog: 'A_FAZER',
+    emProgresso: 'EM_PROGRESSO',
+    revisao: 'REVISAO',
+    concluido: 'CONCLUIDO',
+  };
+
+  private mapStatusToColuna(status: string): string {
+    return this.statusToColunaMap[status] || 'backlog';
+  }
+
+  private mapColunaToStatus(coluna: string): string {
+    return this.colunaToStatusMap[coluna] || 'A_FAZER';
+  }
+
+  abrirModalAtividade(id: string | undefined): void {
+    if (!id) return;
+    this.atividadeService.getAtividadeById(id).subscribe((atividade) => {
+      this.modalAtividadeService.openModal(
+        {
+          atividade,
+          size: 'lg',
+        },
+        (atividadeId: string) => {
+          this.editarAtividade(atividadeId);
+        }
+      );
+    });
+  }
+
+  editarAtividade(id: string) {
+    this.modalAtividadeService.closeModal();
+    this.router.navigate(['/usuario/cadastro-de-atividade', id]);
   }
 }

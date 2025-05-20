@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Processo } from './processo';
 import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
 import { ProcessoService } from 'src/app/services/gerenciamento/processo.service';
+import { ModalService } from 'src/app/services/modal/modalDeletar.service';
 
 @Component({
   selector: 'app-processos',
@@ -15,10 +16,12 @@ export class ProcessosComponent implements OnInit {
   paginaAtual = 1;
   totalPaginas = Math.ceil(this.processos.length / this.itensPorPagina);
   processosPaginados: Processo[] = [];
+  selectedProcesso: any = null;
 
   constructor(
     private router: Router,
-    private processoService: ProcessoService
+    private processoService: ProcessoService,
+    private modalService: ModalService
   ) {}
 
   ngOnInit(): void {
@@ -80,20 +83,37 @@ export class ProcessosComponent implements OnInit {
   }
 
   deletarProcesso(id: string): void {
-    if (confirm('Tem certeza que deseja excluir este processo?')) {
-      this.processoService.deletarProcesso(id).subscribe(
-        () => {
-          this.processos = this.processos.filter((processo) => processo.id !== id);
-          this.totalPaginas = Math.ceil(
-            this.processos.length / this.itensPorPagina
-          );
-          this.atualizarPaginacao();
-          console.log('Processo excluída com sucesso');
-        },
-        (error: any) => {
-          console.error('Erro ao excluir processo:', error);
-        }
-      );
-    }
+    this.processoService.deletarProcesso(id).subscribe(
+      () => {
+        this.processos = this.processos.filter(
+          (processo) => processo.id !== id
+        );
+        this.totalPaginas = Math.ceil(
+          this.processos.length / this.itensPorPagina
+        );
+        this.atualizarPaginacao();
+        console.log('Processo excluída com sucesso');
+      },
+      (error: any) => {
+        console.error('Erro ao excluir processo:', error);
+      }
+    );
+  }
+
+  openModalDeletar(processo: any): void {
+    this.selectedProcesso = processo;
+
+    this.modalService.openModal(
+      {
+        title: 'Remoção de Processo',
+        description: `Tem certeza que deseja excluir o processo <strong>${processo.nome}</strong> cadastrado?`,
+        item: processo,
+        deletarTextoBotao: 'Remover',
+        size: 'md',
+      },
+      () => {
+        this.deletarProcesso(processo.id);
+      }
+    );
   }
 }

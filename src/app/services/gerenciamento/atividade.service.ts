@@ -99,4 +99,28 @@ export class AtividadeService {
       })
     );
   }
+
+  atualizarStatusAtividade(
+    id: number | string,
+    status: string
+  ): Observable<any> {
+    const url = `${this.apiURL}/${id}/status`;
+    return this.http
+      .put(url, JSON.stringify(status), {
+        headers: { 'Content-Type': 'application/json' },
+      })
+      .pipe(
+        map((response) => response),
+        catchError((error) => {
+          let errorMessage = 'Erro ao atualizar o status da atividade.';
+          if (error.error instanceof ErrorEvent) {
+            errorMessage = `Erro: ${error.error.message}`;
+          } else if (error.status) {
+            errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+          }
+          console.error(errorMessage);
+          return throwError(() => new Error(errorMessage));
+        })
+      );
+  }
 }

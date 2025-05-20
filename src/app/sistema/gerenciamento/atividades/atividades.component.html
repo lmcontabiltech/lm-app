@@ -17,11 +17,13 @@
       >
       <app-card-atv
         *ngFor="let atividade of atividades[status]"
-        [title]="atividade.title"
-        [description]="atividade.description"
-        [date]="atividade.date"
+        [title]="atividade.nome"
+        [description]="atividade.empresa?.razaoSocial || ''"
+        [date]="atividade.dateDaEntrega"
         [priority]="atividade.prioridade"
         [sector]="atividade.setor"
+        [membros]="atividade.usuarios || []"
+        (click)="abrirModalAtividade(atividade.id)"
         cdkDrag
       ></app-card-atv>
       </div>

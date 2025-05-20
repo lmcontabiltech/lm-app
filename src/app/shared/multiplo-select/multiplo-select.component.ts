@@ -1,4 +1,13 @@
-import { Component, OnInit, Input, HostListener, Output, EventEmitter, ElementRef, forwardRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  HostListener,
+  Output,
+  EventEmitter,
+  ElementRef,
+  forwardRef,
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -15,7 +24,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 })
 export class MultiploSelectComponent {
   @Input() label: string = '';
-  @Input() options: { value: string; description: string } [] = [];
+  @Input() options: { value: string; description: string }[] = [];
   @Input() selectedValue: any[] | any;
   @Output() selectedValueChange: EventEmitter<any> = new EventEmitter<any>();
   @Input() customStyles: { [key: string]: string } = {};
@@ -50,31 +59,32 @@ export class MultiploSelectComponent {
 
   onSelect(value: any) {
     if (this.multiple) {
-      if (Array.isArray(this.selectedValue)) {
-        if (this.selectedValue.includes(value)) {
-          this.selectedValue = this.selectedValue.filter(
-            (item: any) => item !== value
-          );
-        } else {
-          this.selectedValue.push(value);
-        }
+      if (!Array.isArray(this.selectedValue)) {
+        this.selectedValue = [];
       }
-      console.log('Valores selecionados:', this.selectedValue);
-      this.selectedValueChange.emit(this.selectedValue);
+      const idx = this.selectedValue.findIndex(
+        (item: any) => item.value === value.value
+      );
+      if (idx > -1) {
+        this.selectedValue.splice(idx, 1);
+      } else {
+        this.selectedValue.push(value);
+      }
+      this.selectedValueChange.emit([...this.selectedValue]);
     } else {
       this.selectedValue = value;
       this.selectedValueChange.emit(value);
+      this.isOpen = false;
     }
-    console.log('Valor selecionado:', this.selectedValue);
     this.isOpen = false;
   }
 
   removeValue(value: any) {
     if (this.multiple && Array.isArray(this.selectedValue)) {
       this.selectedValue = this.selectedValue.filter(
-        (item: any) => item !== value
+        (item: any) => item.value !== value.value
       );
-      this.selectedValueChange.emit(this.selectedValue);
+      this.selectedValueChange.emit([...this.selectedValue]);
     }
   }
 

@@ -14,6 +14,7 @@ import { EmpresasService } from 'src/app/services/empresas.service';
 import { ProcessoService } from 'src/app/services/gerenciamento/processo.service';
 import { Tarefa } from '../processos/tarefas';
 import { Lista } from '../atividades/listas';
+import { AtividadeService } from 'src/app/services/gerenciamento/atividade.service';
 
 @Component({
   selector: 'app-cadastro-de-atividade',
@@ -66,20 +67,21 @@ export class CadastroDeAtividadeComponent implements OnInit {
     private router: Router,
     private colaboradoresService: ColaboradoresService,
     private empresasService: EmpresasService,
-    private processoService: ProcessoService
+    private processoService: ProcessoService,
+    private atividadeService: AtividadeService
   ) {
     this.atividadeForm = this.formBuilder.group({
-      titulo: ['', Validators.required],
+      nome: ['', Validators.required],
       descricao: [''],
-      empresa: ['', Validators.required],
-      setor: ['', Validators.required],
-      processo: [''],
-      dataInicio: [''],
-      dataFim: [''],
+      idEmpresa: [''],
+      setor: [''],
+      idProcesso: [''],
+      dataDeInicio: [''],
+      dateDaEntrega: [''],
       prioridade: ['', Validators.required],
       status: ['', Validators.required],
-      membros: [[]],
-      listas: [[]],
+      idsUsuario: [[]],
+      tarefas: [[]],
       novoNomeLista: [''],
     });
   }
@@ -88,6 +90,7 @@ export class CadastroDeAtividadeComponent implements OnInit {
     this.carregarEmpresas();
     this.carregarUsuarios();
     this.carregarProcessos();
+    this.verificarModoEdicao();
   }
 
   goBack() {
@@ -109,7 +112,7 @@ export class CadastroDeAtividadeComponent implements OnInit {
   }
 
   atualizarEmpresas(): void {
-    console.log('Atualizando lista de lojas...');
+    console.log('Atualizando lista de empresas...');
     this.carregarEmpresas();
   }
 
@@ -142,13 +145,49 @@ export class CadastroDeAtividadeComponent implements OnInit {
   }
 
   onSubmit(): void {
-    const atividadeParaEnvio = {
+    // Remover novoNomeLista do envio
+    const { novoNomeLista, tarefas, ...formValues } = this.atividadeForm.value;
+
+    const atividade: Atividade = {
       ...this.atividadeForm.value,
-      listas: this.listasDeTarefas,
+      idsUsuario: this.atividadeForm.value.idsUsuario,
+      tarefas: this.listasDeTarefas,
     };
-    console.log('Listas a ser enviado:', atividadeParaEnvio);
-    console.log('Membros selecionados:', this.selectedMembro);
+    console.log('Listas a ser enviado:', atividade);
     console.log('Atividade Form:', this.atividadeForm.value);
+
+    if (this.isEditMode && this.atividadeId) {
+      this.atividadeService
+        .atualizarAtividade(this.atividadeId, atividade)
+        .subscribe(
+          (response) => {
+            this.isLoading = false;
+            this.successMessage = 'Atividade atualizado com sucesso!';
+            this.errorMessage = null;
+            this.router.navigate(['/usuario/atividades']);
+          },
+          (error) => {
+            this.isLoading = false;
+            this.errorMessage =
+              error.message || 'Erro ao atualizar a atividade.';
+            this.successMessage = null;
+          }
+        );
+    } else {
+      this.atividadeService.cadastrarAtividade(atividade).subscribe(
+        (response) => {
+          this.isLoading = false;
+          this.successMessage = 'Atividade cadastrado com sucesso!';
+          this.errorMessage = null;
+          this.atividadeForm.reset();
+        },
+        (error) => {
+          this.isLoading = false;
+          this.errorMessage = error.message || 'Erro ao cadastrar a atividade.';
+          this.successMessage = null;
+        }
+      );
+    }
   }
 
   adicionarLista() {
@@ -157,7 +196,7 @@ export class CadastroDeAtividadeComponent implements OnInit {
 
     const novaLista: Lista = {
       nome,
-      itens: [],
+      subtarefas: [],
     };
     this.listasDeTarefas.push(novaLista);
     console.log('Listas de tarefas:', this.listasDeTarefas);
@@ -177,5 +216,74 @@ export class CadastroDeAtividadeComponent implements OnInit {
 
   fecharModalLista() {
     this.modalAberto = false;
+  }
+
+  onMembrosChange(event: any) {
+    const ids = Array.isArray(event)
+      ? event.map((item: any) => item.value)
+      : [];
+    this.atividadeForm.get('idsUsuario')?.setValue(ids);
+    console.log('Membros selecionados (ids):', ids);
+  }
+
+  private verificarModoEdicao(): void {
+    this.atividadeId = this.route.snapshot.paramMap.get('id');
+    if (this.atividadeId) {
+      this.isEditMode = true;
+      this.carregarDadosAtividade(this.atividadeId);
+    }
+  }
+
+  private carregarDadosAtividade(atividadeId: string): void {
+    this.atividadeService.getAtividadeById(atividadeId).subscribe(
+      (atividade: Atividade) => {
+        console.log('Dados da atividade recebidos:', atividade);
+
+        this.atividadeForm.patchValue({
+          ...atividade,
+        });
+
+        this.tratarDadosAtividade(atividade);
+
+        // Se tiver listas de tarefas
+        if (atividade.tarefas) {
+          this.listasDeTarefas = atividade.tarefas;
+        }
+      },
+      (error) => {
+        console.error('Erro ao carregar os dados da atividade:', error);
+      }
+    );
+  }
+
+  private tratarDadosAtividade(atividade: Atividade): void {
+    // Empresa
+    if (atividade.empresa) {
+      this.selectedEmpresa = atividade.empresa.id;
+      this.empresas = [
+        {
+          value: atividade.empresa.id,
+          description: atividade.empresa.razaoSocial,
+        },
+      ];
+    }
+
+    // Processo
+    if (atividade.processo) {
+      this.selectedProcesso = atividade.processo.id;
+      this.processos = [
+        {
+          value: atividade.processo.id,
+          description: atividade.processo.nome,
+        },
+      ];
+    }
+    
+    // Status
+    this.selectedStatus = atividade.status || '';
+    // Setor
+    this.selectedSetor = atividade.setor || '';
+    // Prioridade
+    this.selectedPrioridade = atividade.prioridade || '';
   }
 }
