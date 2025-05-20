@@ -143,7 +143,7 @@ export class AtividadesComponent implements OnInit {
   abrirModalAtividade(id: string | undefined) {
     if (!id) return;
     this.atividadeService.getAtividadeById(id).subscribe((atividade) => {
-      this.modalAtividadeService.openModal({ atividade });
+      this.modalAtividadeService.openModal({ atividade, size: 'lg' });
     });
   }
 }

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Prioridade } from 'src/app/sistema/gerenciamento/atividades/enums/prioridade';
+import { Setor } from 'src/app/sistema/administrativo/cadastro-de-colaborador/setor';
 
 @Component({
   selector: 'app-modal-atividade',
@@ -9,6 +10,7 @@ import { Prioridade } from 'src/app/sistema/gerenciamento/atividades/enums/prior
 export class ModalAtividadeComponent {
   @Input() atividade: any;
   @Input() size: string = 'xl:max-w-7xl';
+  @Input() membros: { nome: string; fotoUrl: string }[] = [];
 
   @Output() closeModal = new EventEmitter<void>();
 

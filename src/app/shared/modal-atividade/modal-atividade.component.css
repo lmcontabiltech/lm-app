@@ -108,7 +108,7 @@
 
 .modal-header h2 {
   font-size: 24px;
-  color: var(--lm-text);
+  color: var(--lm-primary);
   margin: 0;
   font-weight: 500;
   flex: 1;
@@ -134,9 +134,11 @@
 }
 
 .item-modal-duo {
-  display: flex;
-  flex-direction: row;
-  gap: 16px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  justify-items: start;
+  width: 100%;
+  gap: 24px;
 }
 
 .item-modal label {
@@ -172,7 +174,7 @@
 }
 
 .modal-close-btn:hover {
-  background: #d7d7d7;
+  background: #efefef;
   border-radius: 50%;
 }
 
@@ -211,4 +213,40 @@
 .priority-low {
   background: #4dd703a8;
   color: #028606;
+}
+
+/* foto dos usuarios */
+.usuarios-fotos {
+  display: flex;
+  gap: -8px;
+  margin: 8px 0;
+  padding: 0;
+}
+.usuario-foto {
+  width: 32px;
+  height: 32px;
+  border-radius: 100%;
+  border: 2px solid #ffffff;
+  object-fit: cover;
+  margin-left: -8px;
+}
+.usuarios-fotos .usuario-foto:first-child {
+  margin-left: 0;
+}
+
+.usuario-inicial {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 100%;
+  color: #0c0c0c;
+  font-weight: 500;
+  font-size: 1rem;
+  margin-left: -8px;
+  border: 2px solid #ffffff;
+}
+.usuarios-fotos .usuario-inicial:first-child {
+  margin-left: 0;
 }
