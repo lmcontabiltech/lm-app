@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Prioridade } from 'src/app/sistema/gerenciamento/atividades/enums/prioridade';
 import { Setor } from 'src/app/sistema/administrativo/cadastro-de-colaborador/setor';
+import { StatusDescricao } from 'src/app/sistema/gerenciamento/atividades/enums/status-descricao';
 
 @Component({
   selector: 'app-modal-atividade',
@@ -50,5 +51,13 @@ export class ModalAtividadeComponent {
 
   EditarAtividade(id: string) {
     this.editarAtividade.emit(id);
+  }
+
+  getDescricaoStatus(status: string): string {
+    return (
+      StatusDescricao[status as keyof typeof StatusDescricao] ||
+      status ||
+      'Status desconhecido'
+    );
   }
 }
