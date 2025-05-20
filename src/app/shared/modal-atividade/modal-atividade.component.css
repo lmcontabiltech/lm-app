@@ -152,6 +152,7 @@
   font-weight: 500;
   color: var(--lm-text);
   margin: 0;
+  text-align: start;
 }
 
 .modal-descricao {

@@ -18,7 +18,7 @@
       <app-card-atv
         *ngFor="let atividade of atividades[status]"
         [title]="atividade.nome"
-        [description]="atividade.descricao"
+        [description]="atividade.empresa?.razaoSocial || ''"
         [date]="atividade.dateDaEntrega"
         [priority]="atividade.prioridade"
         [sector]="atividade.setor"
