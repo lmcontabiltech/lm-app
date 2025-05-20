@@ -1,8 +1,4 @@
-<div
-  class="modal-geral"
-  role="dialog"
-  [attr.aria-labelledby]="atividade?.nome"
->
+<div class="modal-geral" role="dialog" [attr.aria-labelledby]="atividade?.nome">
   <div class="modal-bg" (click)="onModalClose()"></div>
   <div class="modal-wrapper">
     <div class="modal-container">
@@ -10,43 +6,71 @@
         <div class="bg-white pb-4 sm:p-6 sm:pb-4 custom-pad">
           <ng-container>
             <div class="modal-conteudo">
-              <!-- Botão X para fechar -->
-              <button
-                class="modal-close-btn"
-                (click)="onModalClose()"
-                aria-label="Fechar"
-              >
-                &times;
-              </button>
-
-              <h2>{{ atividade?.nome }}</h2>
+              <div class="modal-header">
+                <h2>{{ atividade?.nome }}</h2>
+                <button
+                  class="modal-close-btn"
+                  (click)="onModalClose()"
+                  aria-label="Fechar"
+                >
+                  &times;
+                </button>
+              </div>
               <hr class="modal-divider" />
 
               <div class="modal-detalhes">
-                <p><strong>Descrição:</strong> {{ atividade?.descricao }}</p>
-                <p><strong>Empresa:</strong> {{ atividade?.empresa?.razaoSocial }}</p>
-                <p><strong>Setor:</strong> {{ atividade?.setor }}</p>
-                <p><strong>Processo:</strong> {{ atividade?.processo?.nome || atividade?.idProcesso }}</p>
-                <p><strong>Data de início:</strong> {{ atividade?.dataDeInicio | date:'dd/MM/yyyy' }}</p>
-                <p><strong>Data de entrega:</strong> {{ atividade?.dateDaEntrega | date:'dd/MM/yyyy' }}</p>
-                <p><strong>Status:</strong> {{ atividade?.status }}</p>
-                <p><strong>Prioridade:</strong> {{ atividade?.prioridade }}</p>
-                <p><strong>Membros:</strong>
-                  <ng-container *ngIf="atividade?.usuarios?.length; else semMembros">
-                    <span *ngFor="let membro of atividade.usuarios; let last = last">
+                <div class="item-modal">
+                  <label>Descrição</label>
+                  <p>{{ atividade?.descricao }}</p>
+                </div>
+                <div class="item-modal">
+                  <label>Empresa</label>
+                  <p>{{ atividade?.empresa?.razaoSocial }}</p>
+                </div>
+
+                <div class="item-modal">
+                  <label>Setor</label>
+                  <p>{{ atividade?.setor }}</p>
+                </div>
+
+                <div class="item-modal">
+                  <label>Processo</label>
+                  <p>{{ atividade?.processo?.nome || atividade?.idProcesso }}</p>
+                </div>
+
+                <div class="item-modal">
+                    <div class="item-modal-duo">
+                        <div class="item-modal">
+                            <label>Data de início</label>
+                            <p>{{ atividade?.dataDeInicio | date : "dd/MM/yyyy" }}</p>
+                        </div>
+                        <div class="item-modal">
+                            <label>Data de entrega</label>
+                            <p>{{ atividade?.dateDaEntrega | date : "dd/MM/yyyy" }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="item-modal">
+                    <label>Status</label>
+                    <p>{{ atividade?.status }}</p>
+                </div>
+                <div class="item-modal tags">
+                    <label>Prioridade</label>
+                    <span class="priority-tag" [ngClass]="getPriorityClass()" >{{ atividade?.prioridade }}</span>
+                </div>
+                <p>
+                  <strong>Membros:</strong>
+                  <ng-container
+                    *ngIf="atividade?.usuarios?.length; else semMembros"
+                  >
+                    <span
+                      *ngFor="let membro of atividade.usuarios; let last = last"
+                    >
                       {{ membro.nome }}<span *ngIf="!last">, </span>
                     </span>
                   </ng-container>
-                  <ng-template #semMembros>
-                    Nenhum membro
-                  </ng-template>
+                  <ng-template #semMembros> Nenhum membro </ng-template>
                 </p>
-              </div>
-
-              <div class="modal-botoes">
-                <button class="btn-acao cancelar" (click)="onModalClose()">
-                  Fechar
-                </button>
               </div>
             </div>
           </ng-container>

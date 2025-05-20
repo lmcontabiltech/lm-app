@@ -98,27 +98,21 @@
   flex-direction: column;
 }
 
-.modal-conteudo h2 {
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0;
+  gap: 16px;
+}
+
+.modal-header h2 {
   font-size: 24px;
   color: var(--lm-text);
   margin: 0;
-}
-
-.modal-conteudo span {
-  font-size: 16px;
-  margin: 16px;
-}
-
-.modal-icone {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.modal-icone img {
-  width: 48px;
-  height: 48px;
+  font-weight: 500;
+  flex: 1;
+  text-align: left;
 }
 
 .modal-divider {
@@ -127,15 +121,43 @@
   border-top: 1.5px solid #eee;
 }
 
+.modal-detalhes {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.item-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.item-modal-duo {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
+.item-modal label {
+  font-size: 16px;
+  color: var(--lm-text);
+  margin: 0;
+}
+
+.item-modal p {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--lm-text);
+  margin: 0;
+}
+
 .modal-descricao {
   margin-bottom: 24px;
   font-size: 1.1rem;
 }
 
 .modal-close-btn {
-  position: absolute;
-  top: 18px;
-  right: 24px;
   background: transparent;
   border: none;
   font-size: 2rem;
@@ -162,37 +184,31 @@
   margin-top: 24px;
 }
 
-.btn-acao.delete {
-  border: none;
-  background: none;
-  cursor: pointer;
-  border-radius: 10px;
+/* prioridade */
+.priority-tag {
   display: flex;
   align-items: center;
+  flex-direction: row;
   justify-content: center;
-  gap: 5px;
-  padding: 10px 18px;
-  background: var(--danger);
+  padding: 4px 8px;
+  margin: 0;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #ffffff;
 }
 
-.btn-acao.delete:hover {
-  background: var(--danger-hover);
+.priority-high {
+  background: #ea0808a0;
+  color: #670d04;
 }
 
-.btn-acao.cancelar {
-  border: none;
-  background: none;
-  cursor: pointer;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  padding: 10px 18px;
-  border: #7f7f7f solid 1px;
-  color: #7f7f7f;
+.priority-medium {
+  background: #edf10fc8;
+  color: #8e7202;
 }
 
-.btn-acao.cancelar:hover {
-  background: #d5d5d5;
+.priority-low {
+  background: #4dd703a8;
+  color: #028606;
 }

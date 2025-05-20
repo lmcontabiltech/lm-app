@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Prioridade } from 'src/app/sistema/gerenciamento/atividades/enums/prioridade';
 
 @Component({
   selector: 'app-modal-atividade',
@@ -13,5 +14,34 @@ export class ModalAtividadeComponent {
 
   onModalClose() {
     this.closeModal.emit();
+  }
+
+  getPriorityClass(): string {
+    switch (this.atividade?.prioridade) {
+      case Prioridade.ALTA:
+        return 'priority-high';
+      case Prioridade.MEDIA:
+        return 'priority-medium';
+      case Prioridade.BAIXA:
+        return 'priority-low';
+      default:
+        return '';
+    }
+  }
+
+  getInitial(name: string): string {
+    return name ? name.charAt(0).toUpperCase() : '?';
+  }
+
+  getRandomColor(seed: string): string {
+    const colors = [
+      '#FFB3BA', // Rosa pastel
+      '#FFDFBA', // Laranja pastel
+      '#BAFFC9', // Verde pastel
+      '#BAE1FF', // Azul pastel
+      '#D5BAFF', // Roxo pastel
+    ];
+    const index = seed ? seed.charCodeAt(0) % colors.length : 0;
+    return colors[index];
   }
 }
