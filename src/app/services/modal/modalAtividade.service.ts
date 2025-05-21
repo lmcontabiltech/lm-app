@@ -12,7 +12,8 @@ export class ModalAtividadeService {
 
   openModal(
     config?: Partial<ModalAtividadeComponent>,
-    editarAtividade?: (id: string) => void
+    editarAtividade?: (id: string) => void,
+    deletarAtividade?: (id: string) => void
   ): void {
     if (!this.outlet) throw new Error('Outlet não registrado!');
     this.outlet.clear();
@@ -25,6 +26,10 @@ export class ModalAtividadeService {
 
     if (editarAtividade) {
       this.modalRef.instance.editarAtividade.subscribe(editarAtividade);
+    }
+
+    if (deletarAtividade) {
+      this.modalRef.instance.deletarAtividade.subscribe(deletarAtividade);
     }
 
     this.modalRef.instance.closeModal.subscribe(() => {

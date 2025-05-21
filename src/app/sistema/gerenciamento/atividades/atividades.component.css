@@ -29,6 +29,7 @@
   scrollbar-width: none;
   flex-direction: row;
   align-items: start;
+  -webkit-overflow-scrolling: touch;
 }
 
 .kanban-column {
