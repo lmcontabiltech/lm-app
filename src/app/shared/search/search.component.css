@@ -23,7 +23,6 @@
   background: var(--lm-border);
   border: none;
   cursor: pointer;
-  width: 20px;
   height: auto;
   border-top-right-radius: 40px;
   border-bottom-right-radius: 40px;
