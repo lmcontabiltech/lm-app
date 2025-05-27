@@ -175,3 +175,54 @@ tr:hover {
 .paginacao button:not(:disabled):hover {
   background: rgba(0, 123, 255, 0.2);
 }
+
+/* Breakpoints */
+@media (min-width: 1200px) {
+  .main-container {
+    margin: 90px 20px 20px;
+    padding: 40px 16px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+  .main-container {
+    margin: 90px 20px 20px;
+    padding: 40px 16px;
+  }
+}
+
+@media (max-width: 767px) {
+  .main-container {
+    margin: 90px 20px 20px;
+    padding: 20px 0;
+  }
+
+  .filtro-container {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    width: 100%;
+    gap: 16px;
+  }
+
+  .select-box {
+    display: flex;
+    width: 100%;
+  }
+
+  .search-container {
+    width: 100%;
+  }
+
+  .header-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  button {
+    width: 100%;
+  }
+}

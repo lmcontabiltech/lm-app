@@ -191,7 +191,7 @@ tr:hover {
 @media (min-width: 1200px) {
   .main-container {
     margin: 90px 20px 20px;
-    padding: 40px 24px;
+    padding: 40px 16px;
   }
 }
 
