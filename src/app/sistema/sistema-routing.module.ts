@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { LayoutComponent } from '../layout/layout.component';
 import { MeuPerfilComponent } from './meu-perfil/meu-perfil.component';
-import { PainelPrincipalComponent } from './painel-principal/painel-principal.component';
 import { NotificacoesComponent } from './notificacoes/notificacoes.component';
 import { ColaboradoresComponent } from './administrativo/colaboradores/colaboradores.component';
 import { EmpresasComponent } from './administrativo/empresas/empresas.component';
@@ -19,16 +18,24 @@ import { CadastroDeProcessosComponent } from './gerenciamento/cadastro-de-proces
 import { AuthGuard } from '../services/auth.guard';
 import { PerifericosComponent } from './administrativo/perifericos/perifericos.component';
 import { CadastroPerifericosComponent } from './administrativo/cadastro-perifericos/cadastro-perifericos.component';
+import { DashboardAdminComponent } from './dashboards/dashboard-admin/dashboard-admin.component';
+import { DashboardColaboradorComponent } from './dashboards/dashboard-colaborador/dashboard-colaborador.component';
+import { DashboardCoordenadorComponent } from './dashboards/dashboard-coordenador/dashboard-coordenador.component';
 
 const routes: Routes = [
   {  path: 'usuario', 
     component: LayoutComponent,
     canActivate: [AuthGuard],  
     children: [
-      { path: 'painel-principal', component: PainelPrincipalComponent},
-      { path: 'meu-perfil', component:MeuPerfilComponent},
-      { path: 'notificacoes', component: NotificacoesComponent},
+      
+    { path: 'meu-perfil', component:MeuPerfilComponent},
+    { path: 'notificacoes', component: NotificacoesComponent},
 
+    {path:'dashboard-admin', component: DashboardAdminComponent}, // admin
+    {path:'dashboard-colaborador', component: DashboardColaboradorComponent}, //colaborador
+    {path:'dashboard-coordenador', component: DashboardCoordenadorComponent}, //coordenador
+
+      // apenas admin e coordenador
       { path: 'colaboradores', component: ColaboradoresComponent},
       { path: 'empresas', component: EmpresasComponent},
       { path: 'perifericos', component:PerifericosComponent},

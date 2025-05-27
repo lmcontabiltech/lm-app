@@ -4,7 +4,6 @@ import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { SistemaRoutingModule } from './sistema-routing.module';
-import { PainelPrincipalComponent } from './painel-principal/painel-principal.component';
 import { MeuPerfilComponent } from './meu-perfil/meu-perfil.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NotificacoesComponent } from './notificacoes/notificacoes.component';
@@ -22,11 +21,13 @@ import { ProcessosComponent } from './gerenciamento/processos/processos.componen
 import { CadastroDeProcessosComponent } from './gerenciamento/cadastro-de-processos/cadastro-de-processos.component';
 import { PerifericosComponent } from './administrativo/perifericos/perifericos.component';
 import { CadastroPerifericosComponent } from './administrativo/cadastro-perifericos/cadastro-perifericos.component';
+import { DashboardAdminComponent } from './dashboards/dashboard-admin/dashboard-admin.component';
+import { DashboardColaboradorComponent } from './dashboards/dashboard-colaborador/dashboard-colaborador.component';
+import { DashboardCoordenadorComponent } from './dashboards/dashboard-coordenador/dashboard-coordenador.component';
 
 
 @NgModule({
   declarations: [
-    PainelPrincipalComponent,
     MeuPerfilComponent,
     NotificacoesComponent,
     EmpresasComponent,
@@ -43,6 +44,9 @@ import { CadastroPerifericosComponent } from './administrativo/cadastro-periferi
     CadastroDeProcessosComponent,
     PerifericosComponent,
     CadastroPerifericosComponent,
+    DashboardAdminComponent,
+    DashboardColaboradorComponent,
+    DashboardCoordenadorComponent,
   ],
   imports:[
     CommonModule, 

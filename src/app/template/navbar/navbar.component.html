@@ -43,13 +43,41 @@
           <h3 class="sidebar-title">HOME</h3>
 
           <div class="sidebar-list">
-            <a routerLink="/usuario/painel-principal" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/painel-principal')}">
+            <a
+              *ngIf="permissaoUsuario === 'Administrador'"
+              routerLink="/usuario/dashboard-admin"
+              class="sidebar-link"
+              [ngClass]="{ 'active-link': isActive('/usuario/dashboard-admin') }"
+            >
               <img src="assets/icones/home-icon.svg" alt="home icon" />
-              <span>InÍcio</span>
+              <span>Início</span>
             </a>
-
-            <a routerLink="/usuario/notificacoes" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/notificacoes')}">
-              <img src="assets/icones/notificacao.svg" alt="home icon" />
+      
+            <a
+              *ngIf="permissaoUsuario === 'Coordenador'"
+              routerLink="/usuario/dashboard-coordenador"
+              class="sidebar-link"
+              [ngClass]="{ 'active-link': isActive('/usuario/dashboard-coordenador') }"
+            >
+              <img src="assets/icones/home-icon.svg" alt="home icon" />
+              <span>Início</span>
+            </a>
+      
+            <a
+              *ngIf="permissaoUsuario === 'Colaborador'"
+              routerLink="/usuario/dashboard-colaborador"
+              class="sidebar-link"
+              [ngClass]="{ 'active-link': isActive('/usuario/dashboard-colaborador') }"
+            >
+              <img src="assets/icones/home-icon.svg" alt="home icon" />
+              <span>Início</span>
+            </a>
+      
+            <a
+              routerLink="/usuario/notificacoes"
+              class="sidebar-link"
+              [ngClass]="{ 'active-link': isActive('/usuario/notificacoes') }">
+              <img src="assets/icones/notificacao.svg" alt="notificação icon" />
               <span>Notificações</span>
             </a>
           </div>
@@ -66,10 +94,12 @@
               <img src="assets/icones/empresas-icon.svg" alt="home icon" />
               <span>Empresas</span>
             </a>
+
             <a routerLink="/usuario/perifericos" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/perifericos')}">
               <img src="assets/icones/box.svg" alt="home icon" />
               <span>Periféricos</span>
             </a>
+            
           </div>
         </div>        
 

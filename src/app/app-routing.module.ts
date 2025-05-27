@@ -5,16 +5,23 @@ import { LoginComponent } from './login/login.component';
 
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { AuthGuard } from './services/auth.guard';
-import { PainelPrincipalComponent } from './sistema/painel-principal/painel-principal.component';
+import { DashboardAdminComponent } from './sistema/dashboards/dashboard-admin/dashboard-admin.component';
+import { DashboardColaboradorComponent } from './sistema/dashboards/dashboard-colaborador/dashboard-colaborador.component';
+import { DashboardCoordenadorComponent } from './sistema/dashboards/dashboard-coordenador/dashboard-coordenador.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'recuperacao-de-senha', component: ResetPasswordComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: '', component: LayoutComponent, children: [
-    { path : 'usuario/painel-principal', component: PainelPrincipalComponent, canActivate: [AuthGuard] },
-    { path: '', redirectTo: 'usuario/painel-principal', pathMatch: 'full' }
-  ]}
+  { 
+    path: '', 
+    component: LayoutComponent, 
+    children: [
+      { path: 'dashboard-admin', component: DashboardAdminComponent, canActivate: [AuthGuard] },
+      { path: 'dashboard-coordenador', component: DashboardCoordenadorComponent, canActivate: [AuthGuard] },
+      { path: 'dashboard-colaborador', component: DashboardColaboradorComponent, canActivate: [AuthGuard] },
+    ] 
+  }
 ];
 
 @NgModule({

@@ -54,10 +54,10 @@ export class LoginComponent {
       (response: any) => {
         const access_token = response.access_token;
         localStorage.setItem('access_token', access_token);
-
+  
         const userId = this.authService.getUserIdFromToken() ?? '';
         localStorage.setItem('user_id', userId || '');
-
+  
         const usuario: Usuario = {
           id: userId,
           fotoUrl: null,
@@ -67,31 +67,34 @@ export class LoginComponent {
           nome: response.nome || '',
           confirmPassword: '',
           tipoUsuario: '',
-          permissao:
-            response.authorities.length > 0 ? response.authorities[0] : null,
+          permissao: response.authorities.length > 0 ? response.authorities[0] : null,
           setor: response.setor || null,
           darkMode: response.darkMode || false,
         };
         localStorage.setItem('usuario', JSON.stringify(usuario));
-
-        // Chama o ThemeService para carregar e aplicar o tema
+  
         this.themeService.loadDarkModeFromServer();
-
-        if (
-          usuario.permissao === Permissao.ADMIN ||
-          usuario.permissao === Permissao.COORDENADOR ||
-          usuario.permissao === Permissao.USER
-        ) {
-          this.router.navigate(['/usuario/painel-principal']);
-        } else {
-          this.router.navigate(['/forbidden']);
+  
+        switch (usuario.permissao) {
+          case Permissao.ADMIN:
+            this.router.navigate(['/usuario/dashboard-admin']);
+            break;
+          case Permissao.COORDENADOR:
+            this.router.navigate(['/usuario/dashboard-coordenador']);
+            break;
+          case Permissao.USER: 
+            this.router.navigate(['/usuario/dashboard-colaborador']);
+            break;
+          default:
+            this.router.navigate(['/login']);
+            break;
         }
       },
       (errorResponse) => {
         this.errors = ['Usuário e/ou senha incorreto(s).'];
       }
     );
-  }
+  }  
 
   preparaCadastrar(event: Event) {
     event.preventDefault();
