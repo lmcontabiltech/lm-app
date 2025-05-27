@@ -102,7 +102,7 @@ p {
 }
 
 button {
-  all: unset;
+  all: none;
   display: inline-block;
   padding: 12px 24px;
   font-size: 16px;

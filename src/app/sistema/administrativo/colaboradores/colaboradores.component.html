@@ -7,11 +7,13 @@
 
     <div class="table-container">
         <div class="filtro-container">
-            <app-select-padrao
+            <div class="select-box">
+                <app-select-padrao
                   label="Todos os setores"
                   [options]="setores"
                   [(selectedValue)]="selectedSetor">
-            </app-select-padrao>
+                </app-select-padrao>
+            </div>
 
             <div class="search-container">
                 <app-search (searchChange)="onSearch($event)"></app-search>
