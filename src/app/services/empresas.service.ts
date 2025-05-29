@@ -53,7 +53,7 @@ export class EmpresasService {
       map((response) => response),
       catchError((error) => {
         let errorMessage = 'Erro ao buscar a empresa.';
-  
+
         if (error.error instanceof ErrorEvent) {
           errorMessage = `Erro: ${error.error.message}`;
         } else if (error.status) {
@@ -89,6 +89,25 @@ export class EmpresasService {
       catchError((error) => {
         let errorMessage = 'Erro ao atualizar a empresa.';
 
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
+  buscarEmpresasPorNome(razaoSocial: string): Observable<Empresa[]> {
+    const url = `${this.apiURL}/search?search=${encodeURIComponent(
+      razaoSocial
+    )}`;
+    return this.http.get<Empresa[]>(url).pipe(
+      map((response) => response),
+      catchError((error) => {
+        let errorMessage = 'Erro ao buscar empresas por razão social.';
         if (error.error instanceof ErrorEvent) {
           errorMessage = `Erro: ${error.error.message}`;
         } else if (error.status) {

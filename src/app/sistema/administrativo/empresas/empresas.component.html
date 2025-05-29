@@ -16,6 +16,10 @@
             </div>
         </div>
 
+        <div class="progress-bar-container" *ngIf="isLoading">
+            <div class="progress-bar"></div>
+        </div>
+
         <div [ngClass]="{'tabela-container': true, 'no-data': empresasPaginados.length === 0}">
             <table *ngIf="empresasPaginados.length > 0; else noDataTemplate">
                 <thead>
@@ -59,8 +63,13 @@
             </table>
             <ng-template #noDataTemplate>
                 <div class="no-data-message">
-                    <img src="assets/imagens/no-data.svg" alt="Sem dados">
-                    <p>Não há empresas cadastradas.</p>
+                    <div *ngIf="mensagemBusca; else semEmpresas" class="alert-warning alert">
+                        {{ mensagemBusca }}
+                    </div>
+                    <ng-template #semEmpresas>
+                        <img src="assets/imagens/no-data.svg" alt="Sem dados">
+                        <p>Não há empresas cadastradas.</p>
+                    </ng-template>
                 </div>
             </ng-template>
         </div>
