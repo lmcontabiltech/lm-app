@@ -145,6 +145,7 @@ export class CadastroDeAtividadeComponent implements OnInit {
   }
 
   onSubmit(): void {
+    console.log('Listas de tarefas antes do submit:', this.listasDeTarefas);
     // Remover novoNomeLista do envio
     const { novoNomeLista, tarefas, ...formValues } = this.atividadeForm.value;
 
@@ -162,7 +163,7 @@ export class CadastroDeAtividadeComponent implements OnInit {
         .subscribe(
           (response) => {
             this.isLoading = false;
-            this.successMessage = 'Atividade atualizado com sucesso!';
+            this.successMessage = 'Atividade atualizada com sucesso!';
             this.errorMessage = null;
             this.router.navigate(['/usuario/atividades']);
           },
@@ -278,7 +279,7 @@ export class CadastroDeAtividadeComponent implements OnInit {
         },
       ];
     }
-    
+
     // Status
     this.selectedStatus = atividade.status || '';
     // Setor
