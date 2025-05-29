@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
 import { LoginComponent } from './login/login.component';
 
-import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { ResetPasswordComponent } from './recuperar-senha/reset-password/reset-password.component';
 import { AuthGuard } from './services/auth.guard';
 import { DashboardAdminComponent } from './sistema/dashboards/dashboard-admin/dashboard-admin.component';
 import { DashboardColaboradorComponent } from './sistema/dashboards/dashboard-colaborador/dashboard-colaborador.component';
@@ -13,19 +13,31 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'recuperacao-de-senha', component: ResetPasswordComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { 
-    path: '', 
-    component: LayoutComponent, 
+  {
+    path: '',
+    component: LayoutComponent,
     children: [
-      { path: 'dashboard-admin', component: DashboardAdminComponent, canActivate: [AuthGuard] },
-      { path: 'dashboard-coordenador', component: DashboardCoordenadorComponent, canActivate: [AuthGuard] },
-      { path: 'dashboard-colaborador', component: DashboardColaboradorComponent, canActivate: [AuthGuard] },
-    ] 
-  }
+      {
+        path: 'dashboard-admin',
+        component: DashboardAdminComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'dashboard-coordenador',
+        component: DashboardCoordenadorComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'dashboard-colaborador',
+        component: DashboardColaboradorComponent,
+        canActivate: [AuthGuard],
+      },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

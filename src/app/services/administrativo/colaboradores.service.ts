@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Observable, throwError } from 'rxjs';
@@ -160,6 +160,25 @@ export class ColaboradoresService {
       map((response) => response),
       catchError((error) => {
         let errorMessage = 'Erro ao buscar usuários por nome.';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
+  enviarRecuperacaoSenha(email: string): Observable<any> {
+    const url = `${this.apiURL}/recover-password?email=${encodeURIComponent(
+      email
+    )}`;
+    return this.http.post(url, null).pipe(
+      map((response) => response),
+      catchError((error: HttpErrorResponse) => {
+        let errorMessage = 'Erro ao enviar e-mail de recuperação de senha.';
         if (error.error instanceof ErrorEvent) {
           errorMessage = `Erro: ${error.error.message}`;
         } else if (error.status) {
