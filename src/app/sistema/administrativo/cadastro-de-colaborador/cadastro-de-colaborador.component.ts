@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Setor } from './setor';
 import { SetorDescricao } from './setor-descricao';
-import { ColaboradoresService } from '../../../services/colaboradores.service';
+import { ColaboradoresService } from '../../../services/administrativo/colaboradores.service';
 import { Usuario } from '../../../login/usuario';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -78,10 +78,14 @@ export class CadastroDeColaboradorComponent implements OnInit {
 
   private mapPermissao(permissao: string): string {
     switch (permissao) {
-      case 'ROLE_ADMIN': return 'Administrador';
-      case 'ROLE_COORDENADOR': return 'Coordenador';
-      case 'ROLE_USER': return 'Colaborador';
-      default: return 'Desconhecido';
+      case 'ROLE_ADMIN':
+        return 'Administrador';
+      case 'ROLE_COORDENADOR':
+        return 'Coordenador';
+      case 'ROLE_USER':
+        return 'Colaborador';
+      default:
+        return 'Desconhecido';
     }
   }
 

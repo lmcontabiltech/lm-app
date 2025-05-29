@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Colaborador } from './colaborador';
 import { Setor } from '../cadastro-de-colaborador/setor';
 import { SetorDescricao } from '../cadastro-de-colaborador/setor-descricao';
-import { ColaboradoresService } from '../../../services/colaboradores.service';
+import { ColaboradoresService } from '../../../services/administrativo/colaboradores.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ModalService } from 'src/app/services/modal/modalDeletar.service';
 

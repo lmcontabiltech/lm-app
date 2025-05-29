@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Empresa } from './empresa';
-import { EmpresasService } from '../../../services/empresas.service';
+import { EmpresasService } from '../../../services/administrativo/empresas.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ModalService } from 'src/app/services/modal/modalDeletar.service';
 

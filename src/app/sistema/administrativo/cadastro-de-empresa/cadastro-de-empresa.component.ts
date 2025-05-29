@@ -3,8 +3,8 @@ import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Empresa } from '../empresas/empresa';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EmpresasService } from '../../../services/empresas.service';
-import { ColaboradoresService } from 'src/app/services/colaboradores.service';
+import { EmpresasService } from '../../../services/administrativo/empresas.service';
+import { ColaboradoresService } from 'src/app/services/administrativo/colaboradores.service';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -66,10 +66,14 @@ export class CadastroDeEmpresaComponent implements OnInit {
 
   private mapPermissao(permissao: string): string {
     switch (permissao) {
-      case 'ROLE_ADMIN': return 'Administrador';
-      case 'ROLE_COORDENADOR': return 'Coordenador';
-      case 'ROLE_USER': return 'Colaborador';
-      default: return 'Desconhecido';
+      case 'ROLE_ADMIN':
+        return 'Administrador';
+      case 'ROLE_COORDENADOR':
+        return 'Coordenador';
+      case 'ROLE_USER':
+        return 'Colaborador';
+      default:
+        return 'Desconhecido';
     }
   }
 
