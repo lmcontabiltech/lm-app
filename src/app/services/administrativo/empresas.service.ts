@@ -1,23 +1,23 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { Empresa } from '../../sistema/administrativo/empresas/empresa';
 import { Observable, throwError } from 'rxjs';
-import { Usuario } from '../login/usuario';
 import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ColaboradoresService {
-  apiURL: string = environment.apiURLBase + '/api/usuarios';
+export class EmpresasService {
+  apiURL: string = environment.apiURLBase + '/api/empresa';
 
   constructor(private http: HttpClient) {}
 
-  cadastrarUsuario(usuario: Usuario): Observable<Usuario> {
-    return this.http.post<Usuario>(this.apiURL, usuario).pipe(
+  cadastrarEmpresa(empresa: Empresa): Observable<Empresa> {
+    return this.http.post<Empresa>(this.apiURL, empresa).pipe(
       map((response) => response),
       catchError((error) => {
-        let errorMessage = 'Erro ao salvar a aula.';
+        let errorMessage = 'Erro ao cadastrar a empresa.';
 
         if (error.error instanceof ErrorEvent) {
           errorMessage = `Erro: ${error.error.message}`;
@@ -30,12 +30,29 @@ export class ColaboradoresService {
     );
   }
 
-  getUsuarioById(id: string): Observable<Usuario> {
+  getEmpresas(): Observable<Empresa[]> {
+    return this.http.get<Empresa[]>(this.apiURL).pipe(
+      map((response) => response),
+      catchError((error) => {
+        let errorMessage = 'Erro ao buscar as empresas.';
+
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
+  getEmpresaById(id: string): Observable<Empresa> {
     const url = `${this.apiURL}/${id}`;
-    return this.http.get<Usuario>(url).pipe(
+    return this.http.get<Empresa>(url).pipe(
       map((response) => response),
       catchError((error) => {
-        let errorMessage = 'Erro ao buscar o usuário.';
+        let errorMessage = 'Erro ao buscar a empresa.';
 
         if (error.error instanceof ErrorEvent) {
           errorMessage = `Erro: ${error.error.message}`;
@@ -48,46 +65,11 @@ export class ColaboradoresService {
     );
   }
 
-  getUsuarios(): Observable<Usuario[]> {
-    return this.http.get<Usuario[]>(this.apiURL).pipe(
-      map((response) => response),
-      catchError((error) => {
-        let errorMessage = 'Erro ao buscar os usuários.';
-
-        if (error.error instanceof ErrorEvent) {
-          errorMessage = `Erro: ${error.error.message}`;
-        } else if (error.status) {
-          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
-        }
-        console.error(errorMessage);
-        return throwError(() => new Error(errorMessage));
-      })
-    );
-  }
-
-  getUsuariosNonAdmin(): Observable<Usuario[]> {
-    const url = `${this.apiURL}/usuarios-non-admin`;
-    return this.http.get<Usuario[]>(url).pipe(
-      map((response) => response),
-      catchError((error) => {
-        let errorMessage = 'Erro ao buscar os usuários não administradores.';
-
-        if (error.error instanceof ErrorEvent) {
-          errorMessage = `Erro: ${error.error.message}`;
-        } else if (error.status) {
-          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
-        }
-        console.error(errorMessage);
-        return throwError(() => new Error(errorMessage));
-      })
-    );
-  }
-
-  deleteUsuarioById(id: string): Observable<void> {
+  deletarEmpresa(id: string): Observable<void> {
     const url = `${this.apiURL}/${id}`;
     return this.http.delete<void>(url).pipe(
       catchError((error) => {
-        let errorMessage = 'Erro ao deletar o usuário.';
+        let errorMessage = 'Erro ao deletar a empresa.';
 
         if (error.error instanceof ErrorEvent) {
           errorMessage = `Erro: ${error.error.message}`;
@@ -100,12 +82,12 @@ export class ColaboradoresService {
     );
   }
 
-  atualizarUsuario(id: string, usuario: Usuario): Observable<Usuario> {
+  atualizarEmpresa(id: string, empresa: Empresa): Observable<Empresa> {
     const url = `${this.apiURL}/${id}`;
-    return this.http.put<Usuario>(url, usuario).pipe(
+    return this.http.put<Empresa>(url, empresa).pipe(
       map((response) => response),
       catchError((error) => {
-        let errorMessage = 'Erro ao atualizar o usuário.';
+        let errorMessage = 'Erro ao atualizar a empresa.';
 
         if (error.error instanceof ErrorEvent) {
           errorMessage = `Erro: ${error.error.message}`;
@@ -118,31 +100,14 @@ export class ColaboradoresService {
     );
   }
 
-  getUsuarioByToken(): Observable<Usuario> {
-    const url = `${this.apiURL}/token`;
-    return this.http.get<Usuario>(url).pipe(
+  buscarEmpresasPorNome(razaoSocial: string): Observable<Empresa[]> {
+    const url = `${this.apiURL}/search?search=${encodeURIComponent(
+      razaoSocial
+    )}`;
+    return this.http.get<Empresa[]>(url).pipe(
       map((response) => response),
       catchError((error) => {
-        let errorMessage = 'Erro ao buscar o usuário pelo token.';
-
-        if (error.error instanceof ErrorEvent) {
-          errorMessage = `Erro: ${error.error.message}`;
-        } else if (error.status) {
-          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
-        }
-        console.error(errorMessage);
-        return throwError(() => new Error(errorMessage));
-      })
-    );
-  }
-
-  getUsuariosBySetor(setor: string): Observable<Usuario[]> {
-    const url = `${this.apiURL}/setor/${setor}`;
-    return this.http.get<Usuario[]>(url).pipe(
-      map((response) => response),
-      catchError((error) => {
-        let errorMessage = 'Erro ao buscar os usuários pelo setor.';
-
+        let errorMessage = 'Erro ao buscar empresas por razão social.';
         if (error.error instanceof ErrorEvent) {
           errorMessage = `Erro: ${error.error.message}`;
         } else if (error.status) {

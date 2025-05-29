@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Colaborador } from './colaborador';
 import { Setor } from '../cadastro-de-colaborador/setor';
 import { SetorDescricao } from '../cadastro-de-colaborador/setor-descricao';
-import { ColaboradoresService } from '../../../services/colaboradores.service';
+import { ColaboradoresService } from '../../../services/administrativo/colaboradores.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ModalService } from 'src/app/services/modal/modalDeletar.service';
 
@@ -29,6 +29,10 @@ export class ColaboradoresComponent implements OnInit {
   selectedSetor: string = '';
   showModalDeletar: boolean = false;
   selectedColaborador: any = null;
+
+  termoBusca: string = '';
+  mensagemBusca: string = '';
+  isLoading = false;
 
   constructor(
     private router: Router,
@@ -65,7 +69,37 @@ export class ColaboradoresComponent implements OnInit {
   }
 
   onSearch(searchTerm: string) {
-    console.log('Search term:', searchTerm);
+    if (!searchTerm || searchTerm.trim() === '') {
+      this.mensagemBusca = '';
+      this.fetchColaboradores();
+      return;
+    }
+    this.isLoading = true;
+    this.colaboradoresService.buscarUsuariosPorNome(searchTerm).subscribe(
+      (colaboradores: Colaborador[]) => {
+        this.colaboradores = colaboradores;
+        this.paginaAtual = 1;
+        this.totalPaginas = Math.ceil(
+          this.colaboradores.length / this.itensPorPagina
+        );
+        this.atualizarPaginacao();
+        this.isLoading = false;
+        if (!colaboradores || colaboradores.length === 0) {
+          this.mensagemBusca = 'Busca não encontrada';
+        } else {
+          this.mensagemBusca = '';
+        }
+      },
+      (error) => {
+        console.error('Erro ao buscar colaboradores:', error);
+        this.isLoading = false;
+        if (error.message && error.message.includes('404')) {
+          this.colaboradores = [];
+          this.atualizarPaginacao();
+          this.mensagemBusca = 'Busca não encontrada';
+        }
+      }
+    );
   }
 
   atualizarPaginacao(): void {

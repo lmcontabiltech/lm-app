@@ -1,7 +1,8 @@
 /* select.component.css */
 .select-container {
   position: relative;
-  display: inline-block;
+  box-sizing: border-box;
+  display: block;
   width: 100%;
   min-width: 250px;
   height: 50px;
@@ -91,6 +92,11 @@ label.active {
 .select-dropdown.active .arrow-down,
 .select-dropdown:hover .arrow-down {
   border-top-color: var(--lm-primary);
+}
+
+.select-dropdown.disabled {
+  cursor: not-allowed;
+  opacity: 0.8;
 }
 
 @media (max-width: 768px) {

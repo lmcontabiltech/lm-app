@@ -7,11 +7,13 @@
 
     <div class="table-container">
         <div class="filtro-container">
-            <app-select-padrao
+            <div class="select-box">
+                <app-select-padrao
                   label="Todos os setores"
                   [options]="setores"
                   [(selectedValue)]="selectedSetor">
-            </app-select-padrao>
+                </app-select-padrao>
+            </div>
 
             <div class="search-container">
                 <app-search (searchChange)="onSearch($event)"></app-search>
@@ -61,8 +63,13 @@
             </table>
             <ng-template #noDataTemplate>
                 <div class="no-data-message">
-                    <img src="assets/imagens/no-data.svg" alt="Sem dados">
-                    <p>Não há colaboradores cadastrados.</p>
+                    <div *ngIf="mensagemBusca; else semColaboradores" class="alert-warning alert">
+                        {{ mensagemBusca }}
+                    </div>
+                    <ng-template #semColaboradores>
+                        <img src="assets/imagens/no-data.svg" alt="Sem dados">
+                        <p>Não há colaboradores cadastrados.</p>
+                    </ng-template>
                 </div>
             </ng-template>
         </div>
@@ -84,23 +91,3 @@
     </div>
 </div>
 </div>
-
-<!-- modal delete -->
-<!-- <app-modal-geral [show]="showModalDeletar" (closeModal)="closeModalDeletar()" size="max-w-7xl" [footer]="false">
-    <div class="modal-conteudo">
-        <button class="modal-close-btn" (click)="closeModalDeletar()" aria-label="Fechar">
-            &times;
-        </button>
-        <h2>Excluir colaborador</h2>
-        <p>Tem certeza que deseja excluir o colaborador abaixo?</p>
-        <div class="dados-colaborador" *ngIf="selectedColaborador">
-            <p><strong>Nome:</strong> {{ selectedColaborador.nome }}</p>
-            <p><strong>E-mail:</strong> {{ selectedColaborador.email }}</p>
-            <p><strong>Setor:</strong> {{ selectedColaborador.setor }}</p>
-        </div>
-        <button class="btn-acao delete" (click)="deleteColaborador(selectedColaborador?.id)">
-            <img src="assets/icones/delete.svg" alt="Excluir">
-            Excluir
-        </button>  
-    </div>
-</app-modal-geral> -->

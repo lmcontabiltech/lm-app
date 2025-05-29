@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Empresa } from './empresa';
-import { EmpresasService } from '../../../services/empresas.service';
+import { EmpresasService } from '../../../services/administrativo/empresas.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ModalService } from 'src/app/services/modal/modalDeletar.service';
 
@@ -19,6 +19,10 @@ export class EmpresasComponent implements OnInit {
   selectedEmpresa: any = null;
 
   permissaoUsuario: string = '';
+
+  termoBusca: string = '';
+  mensagemBusca: string = '';
+  isLoading = false;
 
   constructor(
     private router: Router,
@@ -55,7 +59,37 @@ export class EmpresasComponent implements OnInit {
   }
 
   onSearch(searchTerm: string) {
-    console.log('Search term:', searchTerm);
+    if (!searchTerm || searchTerm.trim() === '') {
+      this.mensagemBusca = '';
+      this.fetchEmpresas();
+      return;
+    }
+    this.isLoading = true;
+    this.empresasService.buscarEmpresasPorNome(searchTerm).subscribe(
+      (empresas: Empresa[]) => {
+        this.empresas = empresas;
+        this.paginaAtual = 1;
+        this.totalPaginas = Math.ceil(
+          this.empresas.length / this.itensPorPagina
+        );
+        this.atualizarPaginacao();
+        this.isLoading = false;
+        if (!empresas || empresas.length === 0) {
+          this.mensagemBusca = 'Busca não encontrada';
+        } else {
+          this.mensagemBusca = '';
+        }
+      },
+      (error) => {
+        console.error('Erro ao buscar empresas:', error);
+        this.isLoading = false;
+        if (error.message && error.message.includes('404')) {
+          this.empresas = [];
+          this.atualizarPaginacao();
+          this.mensagemBusca = 'Busca não encontrada';
+        }
+      }
+    );
   }
 
   fetchEmpresas(): void {

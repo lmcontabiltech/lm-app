@@ -37,9 +37,9 @@
                     <label>Atividades concluídas</label>
                     <div class="progresso-atividade-container">
                         <div class="progresso-atividade-bar">
-                            <div class="progresso-atividade-fill" [style.width.%]="progressoAtividades.contabil.porcentagem"></div>
+                            <div class="progresso-atividade-fill" [style.width.%]="progressoAtividades['contabil'].porcentagem"></div>
                         </div>
-                        <p class="progresso-atividade-porcentagem">{{ progressoAtividades.contabil.porcentagem || 0 }}%</p>
+                        <p class="progresso-atividade-porcentagem">{{ progressoAtividades['contabil'].porcentagem || 0 }}%</p>
                     </div>
                 </div>
             </div>
@@ -52,9 +52,9 @@
                     <label>Atividades concluídas</label>
                     <div class="progresso-atividade-container">
                         <div class="progresso-atividade-bar">
-                            <div class="progresso-atividade-fill" [style.width.%]="progressoAtividades.fiscal.porcentagem"></div>
+                            <div class="progresso-atividade-fill" [style.width.%]="progressoAtividades['fiscal'].porcentagem"></div>
                         </div>
-                        <p class="progresso-atividade-porcentagem">{{ progressoAtividades.fiscal.porcentagem || 0 }}%</p>
+                        <p class="progresso-atividade-porcentagem">{{ progressoAtividades['fiscal'].porcentagem || 0 }}%</p>
                     </div>
                 </div>
             </div>
@@ -67,9 +67,9 @@
                     <label>Atividades concluídas</label>
                     <div class="progresso-atividade-container">
                         <div class="progresso-atividade-bar">
-                            <div class="progresso-atividade-fill" [style.width.%]="progressoAtividades.pessoal.porcentagem"></div>
+                            <div class="progresso-atividade-fill" [style.width.%]="progressoAtividades['pessoal'].porcentagem"></div>
                         </div>
-                        <p class="progresso-atividade-porcentagem">{{ progressoAtividades.pessoal.porcentagem || 0 }}%</p>
+                        <p class="progresso-atividade-porcentagem">{{ progressoAtividades['pessoal'].porcentagem || 0 }}%</p>
                     </div>
                 </div>
             </div>
@@ -84,9 +84,9 @@
                     <label>Atividades concluídas</label>
                     <div class="progresso-atividade-container">
                         <div class="progresso-atividade-bar">
-                            <div class="progresso-atividade-fill" [style.width.%]="progressoAtividades.paralegal.porcentagem"></div>
+                            <div class="progresso-atividade-fill" [style.width.%]="progressoAtividades['paralegal'].porcentagem"></div>
                         </div>
-                        <p class="progresso-atividade-porcentagem">{{ progressoAtividades.paralegal.porcentagem || 0 }}%</p>
+                        <p class="progresso-atividade-porcentagem">{{ progressoAtividades['paralegal'].porcentagem || 0 }}%</p>
                     </div>
                 </div>
             </div>
@@ -99,9 +99,9 @@
                     <label>Atividades concluídas</label>
                     <div class="progresso-atividade-container">
                         <div class="progresso-atividade-bar">
-                            <div class="progresso-atividade-fill" [style.width.%]="progressoAtividades.financeiro.porcentagem"></div>
+                            <div class="progresso-atividade-fill" [style.width.%]="progressoAtividades['financeiro'].porcentagem"></div>
                         </div>
-                        <p class="progresso-atividade-porcentagem">{{ progressoAtividades.financeiro.porcentagem || 0 }}%</p>
+                        <p class="progresso-atividade-porcentagem">{{ progressoAtividades['financeiro'].porcentagem || 0 }}%</p>
                     </div>
                 </div>
             </div>

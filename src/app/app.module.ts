@@ -13,14 +13,16 @@ import { FormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthService } from './services/auth.service';
 import { TokenInterceptor } from './services/token.interceptor';
-import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { ResetPasswordComponent } from './recuperar-senha/reset-password/reset-password.component';
+import { EsqueciSenhaComponent } from './recuperar-senha/esqueci-senha/esqueci-senha.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     LayoutComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    EsqueciSenhaComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,7 +32,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     TemplateModule,
     SistemaModule,
     SharedModule,
-    FormsModule
+    FormsModule,
   ],
   providers: [
     AuthService,

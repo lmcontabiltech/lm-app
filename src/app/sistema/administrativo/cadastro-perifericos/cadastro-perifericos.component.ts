@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ColaboradoresService } from 'src/app/services/colaboradores.service';
+import { ColaboradoresService } from 'src/app/services/administrativo/colaboradores.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { Periferico } from '../perifericos/periferico';
 import { PerifericoService } from 'src/app/services/administrativo/periferico.service';
@@ -32,7 +32,7 @@ export class CadastroPerifericosComponent implements OnInit {
   ) {
     this.perifericoForm = this.formBuilder.group({
       nome: ['', Validators.required],
-      descricao : ['', Validators.required],
+      descricao: ['', Validators.required],
       colaborador: ['', Validators.required],
     });
   }

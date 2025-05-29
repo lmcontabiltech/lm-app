@@ -9,8 +9,8 @@ import { Prioridade } from '../atividades/enums/prioridade';
 import { PrioridadeDescricao } from '../atividades/enums/prioridade-descricao';
 import { Status } from '../atividades/enums/status';
 import { StatusDescricao } from '../atividades/enums/status-descricao';
-import { ColaboradoresService } from 'src/app/services/colaboradores.service';
-import { EmpresasService } from 'src/app/services/empresas.service';
+import { ColaboradoresService } from 'src/app/services/administrativo/colaboradores.service';
+import { EmpresasService } from 'src/app/services/administrativo/empresas.service';
 import { ProcessoService } from 'src/app/services/gerenciamento/processo.service';
 import { Tarefa } from '../processos/tarefas';
 import { Lista } from '../atividades/listas';
@@ -145,6 +145,7 @@ export class CadastroDeAtividadeComponent implements OnInit {
   }
 
   onSubmit(): void {
+    console.log('Listas de tarefas antes do submit:', this.listasDeTarefas);
     // Remover novoNomeLista do envio
     const { novoNomeLista, tarefas, ...formValues } = this.atividadeForm.value;
 
@@ -162,7 +163,7 @@ export class CadastroDeAtividadeComponent implements OnInit {
         .subscribe(
           (response) => {
             this.isLoading = false;
-            this.successMessage = 'Atividade atualizado com sucesso!';
+            this.successMessage = 'Atividade atualizada com sucesso!';
             this.errorMessage = null;
             this.router.navigate(['/usuario/atividades']);
           },
@@ -278,7 +279,7 @@ export class CadastroDeAtividadeComponent implements OnInit {
         },
       ];
     }
-    
+
     // Status
     this.selectedStatus = atividade.status || '';
     // Setor
