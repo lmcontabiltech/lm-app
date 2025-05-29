@@ -11,6 +11,7 @@ import {
   ApexXAxis,
   ApexPlotOptions,
 } from 'ng-apexcharts';
+import { DashboardAdminService, GraficoSetor } from 'src/app/services/graficos/dashboard-admin.service';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -31,17 +32,20 @@ export class DashboardAdminComponent implements OnInit {
   selic: string = '';
   permissaoUsuario: string = '';
 
-  progressoAtividades = {
-    contabil: { porcentagem: 75 },
-    fiscal: { porcentagem: 60 },
-    pessoal: { porcentagem: 50 },
-    paralegal: { porcentagem: 40 },
-    financeiro: { porcentagem: 30 },
+  progressoAtividades: {
+    [key: string]: { porcentagem: number };
+  } = {
+    contabil: { porcentagem: 0 },
+    fiscal: { porcentagem: 0 },
+    pessoal: { porcentagem: 0 },
+    paralegal: { porcentagem: 0 },
+    financeiro: { porcentagem: 0 },
   };
 
   constructor(
     private exchangeService: ExchangeService,
-    private colaboradorService: ColaboradoresService
+    private colaboradorService: ColaboradoresService,
+    private dashboardAdminService: DashboardAdminService
   ) {}
 
   ngOnInit(): void {
@@ -49,6 +53,7 @@ export class DashboardAdminComponent implements OnInit {
     this.renderBarChart();
     this.renderPieChart();
     this.loadTaxas();
+    this.carregarProgressoSetores();
 
     this.colaboradorService.getUsuarioByToken().subscribe(
       (usuario) => {
@@ -91,6 +96,33 @@ export class DashboardAdminComponent implements OnInit {
         console.log('Taxa Selic:', this.selic);
       },
       error: (err) => console.error('Erro ao buscar taxa Selic:', err),
+    });
+  }
+
+  carregarProgressoSetores() {
+    const setores = [
+      { key: 'contabil', nome: 'CONTABIL' },
+      { key: 'fiscal', nome: 'FISCAL' },
+      { key: 'pessoal', nome: 'PESSOAL' },
+      { key: 'paralegal', nome: 'PARALEGAL' },
+      { key: 'financeiro', nome: 'FINANCEIRO' },
+    ];
+
+    setores.forEach((setor) => {
+      this.dashboardAdminService
+        .getAtividadesConcluidasPorSetor(setor.nome)
+        .subscribe({
+          next: (data: GraficoSetor) => {
+            const porcentagem =
+              data.total > 0
+                ? Math.round((data.concluidas / data.total) * 100)
+                : 0;
+            this.progressoAtividades[setor.key].porcentagem = porcentagem;
+          },
+          error: () => {
+            this.progressoAtividades[setor.key].porcentagem = 0;
+          },
+        });
     });
   }
 
