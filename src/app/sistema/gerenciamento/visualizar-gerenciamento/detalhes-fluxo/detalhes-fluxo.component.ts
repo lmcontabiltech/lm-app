@@ -6,8 +6,8 @@ import type { Node } from 'apextree/lib/models/Graph';
 
 type TreeDirection = 'left' | 'top' | 'right' | 'bottom';
 type TreeOptions = {
-  width: string;
-  height: string;
+  width: number;
+  height: number;
   direction: TreeDirection;
   contentKey: string;
   siblingSpacing: number;
@@ -75,8 +75,8 @@ export class DetalhesFluxoComponent implements OnInit {
 
     const options: TreeOptions = {
       // CommonOptions
-      width: '100%',
-      height: '100%',
+      width: 1000,
+      height: 1000,
       direction: 'top',
       contentKey: 'name',
       siblingSpacing: 30,
