@@ -21,6 +21,9 @@ import { CadastroPerifericosComponent } from './administrativo/cadastro-periferi
 import { DashboardAdminComponent } from './dashboards/dashboard-admin/dashboard-admin.component';
 import { DashboardColaboradorComponent } from './dashboards/dashboard-colaborador/dashboard-colaborador.component';
 import { DashboardCoordenadorComponent } from './dashboards/dashboard-coordenador/dashboard-coordenador.component';
+import { FluxosComponent } from './gerenciamento/fluxos/fluxos.component';
+import { DetalhesFluxoComponent } from './gerenciamento/visualizar-gerenciamento/detalhes-fluxo/detalhes-fluxo.component';
+import { HistoricoAtividadesComponent } from './gerenciamento/historico-atividades/historico-atividades.component';
 
 const routes: Routes = [
   {  path: 'usuario', 
@@ -51,11 +54,14 @@ const routes: Routes = [
       { path: 'forum-de-noticias', component: ForumDeNoticiaComponent},
       { path: 'cadastro-de-atividade', component: CadastroDeAtividadeComponent},
       { path: 'cadastro-de-atividade/:id', component: CadastroDeAtividadeComponent},
+      { path: 'historico-atividades', component: HistoricoAtividadesComponent},
       { path: 'cadastro-de-noticia', component: CadastroDeNoticiaComponent},
       { path: 'cadastro-de-noticia/:id', component: CadastroDeNoticiaComponent},
       { path: 'processos', component: ProcessosComponent},
       { path: 'cadastro-de-processos', component: CadastroDeProcessosComponent},
       { path: 'cadastro-de-processos/:id', component: CadastroDeProcessosComponent},
+      { path: 'fluxos', component: FluxosComponent},
+      { path: 'detalhes-fluxo/:id', component: DetalhesFluxoComponent},	
     ] 
   }
 ];

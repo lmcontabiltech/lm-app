@@ -24,6 +24,9 @@ import { CadastroPerifericosComponent } from './administrativo/cadastro-periferi
 import { DashboardAdminComponent } from './dashboards/dashboard-admin/dashboard-admin.component';
 import { DashboardColaboradorComponent } from './dashboards/dashboard-colaborador/dashboard-colaborador.component';
 import { DashboardCoordenadorComponent } from './dashboards/dashboard-coordenador/dashboard-coordenador.component';
+import { HistoricoAtividadesComponent } from './gerenciamento/historico-atividades/historico-atividades.component';
+import { FluxosComponent } from './gerenciamento/fluxos/fluxos.component';
+import { DetalhesFluxoComponent } from './gerenciamento/visualizar-gerenciamento/detalhes-fluxo/detalhes-fluxo.component';
 
 
 @NgModule({
@@ -47,6 +50,9 @@ import { DashboardCoordenadorComponent } from './dashboards/dashboard-coordenado
     DashboardAdminComponent,
     DashboardColaboradorComponent,
     DashboardCoordenadorComponent,
+    HistoricoAtividadesComponent,
+    FluxosComponent,
+    DetalhesFluxoComponent,
   ],
   imports:[
     CommonModule, 
