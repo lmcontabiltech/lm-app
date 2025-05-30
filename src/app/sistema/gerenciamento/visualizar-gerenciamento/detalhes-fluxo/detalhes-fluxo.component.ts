@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ProcessoService } from 'src/app/services/gerenciamento/processo.service';
 import ApexTree from 'apextree';
 import type { Node } from 'apextree/lib/models/Graph';
 
@@ -53,7 +54,8 @@ export class DetalhesFluxoComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private location: Location
+    private location: Location,
+    private processoService: ProcessoService
   ) {}
 
   ngOnInit(): void {}
@@ -68,25 +70,10 @@ export class DetalhesFluxoComponent implements OnInit {
       const width = wrapper.clientWidth;
       const height = wrapper.clientHeight;
 
-      const data: Node = {
-        id: '1',
-        name: 'Diretor(a)',
-        expanded: true,
-        children: [
-          { id: '2', name: 'Gerente A', expanded: true, children: [] },
-          {
-            id: '3',
-            name: 'Gerente B',
-            expanded: true,
-            children: [
-              { id: '4', name: 'Supervisor A', expanded: true, children: [] },
-            ],
-          },
-        ],
-      };
+      const id = this.route.snapshot.paramMap.get('id');
+      if (!id) return;
 
       const options: TreeOptions = {
-        // CommonOptions
         width,
         height,
         direction: 'top',
@@ -97,50 +84,56 @@ export class DetalhesFluxoComponent implements OnInit {
         containerClassName: 'apex-tree-container',
         canvasStyle: 'background: #f6f6f6;',
         enableToolbar: true,
-
-        // NodeOptions
         nodeWidth: 180,
         nodeHeight: 50,
         nodeBGColor: '#ffffff',
         nodeBGColorHover: '#d7d7d7',
-        nodeStyle: '', // string vazia, pode ser CSS inline se quiser
+        nodeStyle: '',
         nodeClassName: '',
         nodeTemplate: (name: string) => {
           console.log('nodeTemplate name:', name);
           return `<div style="text-align: center;">${name}</div>`;
         },
-        borderRadius: '8px', // precisa ser string!
+        borderRadius: '8px',
         borderWidth: 2,
         borderColor: '#388ac4',
         borderStyle: 'solid',
         borderColorHover: '#388ac4',
         enableExpandCollapse: true,
-
-        // TooltipOptions
         enableTooltip: true,
         tooltipId: 'apex-tree-tooltip',
         tooltipTemplate: undefined,
         tooltipMaxWidth: 300,
         tooltipBorderColor: '#388ac4',
         tooltipBGColor: '#fff',
-
-        // FontOptions
         fontSize: '20px',
         fontFamily: 'Quicksand, sans-serif',
         fontWeight: 600,
         fontColor: '#388ac4',
-
-        // EdgeOptions
         edgeWidth: 2,
         edgeColor: '#bdbdbd',
         edgeColorHover: '#388ac4',
       };
 
-      const container = document.getElementById('svg-tree');
-      if (container) {
-        const tree = new ApexTree(container, options);
-        tree.render(data);
-      }
+      this.processoService.getProcessoById(id).subscribe((processo) => {
+        const data: Node = {
+          id: String(processo.id),
+          name: processo.nome,
+          expanded: true,
+          children: (processo.subprocessos || []).map((sub) => ({
+            id: String(sub.id),
+            name: sub.tarefa,
+            expanded: true,
+            children: [],
+          })),
+        };
+
+        const container = document.getElementById('svg-tree');
+        if (container) {
+          const tree = new ApexTree(container, options);
+          tree.render(data);
+        }
+      });
     }
   }
 }
