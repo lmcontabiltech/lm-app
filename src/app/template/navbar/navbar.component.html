@@ -99,7 +99,6 @@
               <img src="assets/icones/box.svg" alt="home icon" />
               <span>Periféricos</span>
             </a>
-            
           </div>
         </div>        
 
@@ -107,14 +106,24 @@
             <h3 class="sidebar-title">GERENCIAMENTO</h3>
   
             <div class="sidebar-list">
+              <a routerLink="/usuario/atividades" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/atividades')}">
+                <img src="assets/icones/kanban-icon.svg" alt="home icon" />
+                <span>Atividades</span>
+              </a>
+
+              <a routerLink="/usuario/historico-atividades" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/historico-atividades')}">
+                <img src="assets/icones/historico-icon.svg" alt="home icon" />
+                <span>Histórico de Atividades</span>
+              </a>
+
               <a routerLink="/usuario/processos" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/processos')}">
                 <img src="assets/icones/processo-icon.svg" alt="home icon" />
                 <span>Processos</span>
               </a>
-  
-              <a routerLink="/usuario/atividades" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/atividades')}">
-                <img src="assets/icones/kanban-icon.svg" alt="home icon" />
-                <span>Atividades</span>
+
+              <a routerLink="/usuario/fluxos" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/fluxos')}">
+                <img src="assets/icones/fluxo-icon.svg" alt="home icon" />
+                <span>Fluxos</span>
               </a>
 
               <a routerLink="/usuario/chat" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/chat')}">
