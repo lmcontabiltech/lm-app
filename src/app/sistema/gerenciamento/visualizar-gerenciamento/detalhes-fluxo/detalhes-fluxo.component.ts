@@ -63,71 +63,84 @@ export class DetalhesFluxoComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    const data: Node = {
-      id: '1',
-      name: 'Diretor(a)',
-      expanded: true,
-      children: [
-        { id: '2', name: 'Gerente A', expanded: true, children: [] },
-        { id: '3', name: 'Gerente B', expanded: true, children: [{ id: '4', name: 'Supervisor A', expanded: true, children: [] }] },
-      ],
-    };
+    const wrapper = document.querySelector('.tree-wrapper') as HTMLElement;
+    if (wrapper) {
+      const width = wrapper.clientWidth;
+      const height = wrapper.clientHeight;
 
-    const options: TreeOptions = {
-      // CommonOptions
-      width: 1000,
-      height: 1000,
-      direction: 'top',
-      contentKey: 'name',
-      siblingSpacing: 30,
-      childrenSpacing: 180,
-      highlightOnHover: true,
-      containerClassName: 'apex-tree-container',
-      canvasStyle: 'background: #f6f6f6;',
-      enableToolbar: true,
+      const data: Node = {
+        id: '1',
+        name: 'Diretor(a)',
+        expanded: true,
+        children: [
+          { id: '2', name: 'Gerente A', expanded: true, children: [] },
+          {
+            id: '3',
+            name: 'Gerente B',
+            expanded: true,
+            children: [
+              { id: '4', name: 'Supervisor A', expanded: true, children: [] },
+            ],
+          },
+        ],
+      };
 
-      // NodeOptions
-      nodeWidth: 180,
-      nodeHeight: 50,
-      nodeBGColor: '#ffffff',
-      nodeBGColorHover: '#d7d7d7',
-      nodeStyle: '', // string vazia, pode ser CSS inline se quiser
-      nodeClassName: '',
-      nodeTemplate: (name: string) => {
-        console.log('nodeTemplate name:', name);
-        return `<div style="text-align: center;">${name}</div>`;
-      },
-      borderRadius: '8px', // precisa ser string!
-      borderWidth: 2,
-      borderColor: '#388ac4',
-      borderStyle: 'solid',
-      borderColorHover: '#388ac4',
-      enableExpandCollapse: true,
+      const options: TreeOptions = {
+        // CommonOptions
+        width,
+        height,
+        direction: 'top',
+        contentKey: 'name',
+        siblingSpacing: 30,
+        childrenSpacing: 180,
+        highlightOnHover: true,
+        containerClassName: 'apex-tree-container',
+        canvasStyle: 'background: #f6f6f6;',
+        enableToolbar: true,
 
-      // TooltipOptions
-      enableTooltip: true,
-      tooltipId: 'apex-tree-tooltip',
-      tooltipTemplate: undefined,
-      tooltipMaxWidth: 300,
-      tooltipBorderColor: '#388ac4',
-      tooltipBGColor: '#fff',
+        // NodeOptions
+        nodeWidth: 180,
+        nodeHeight: 50,
+        nodeBGColor: '#ffffff',
+        nodeBGColorHover: '#d7d7d7',
+        nodeStyle: '', // string vazia, pode ser CSS inline se quiser
+        nodeClassName: '',
+        nodeTemplate: (name: string) => {
+          console.log('nodeTemplate name:', name);
+          return `<div style="text-align: center;">${name}</div>`;
+        },
+        borderRadius: '8px', // precisa ser string!
+        borderWidth: 2,
+        borderColor: '#388ac4',
+        borderStyle: 'solid',
+        borderColorHover: '#388ac4',
+        enableExpandCollapse: true,
 
-      // FontOptions
-      fontSize: '20px',
-      fontFamily: 'Quicksand, sans-serif',
-      fontWeight: 600,
-      fontColor: '#388ac4',
+        // TooltipOptions
+        enableTooltip: true,
+        tooltipId: 'apex-tree-tooltip',
+        tooltipTemplate: undefined,
+        tooltipMaxWidth: 300,
+        tooltipBorderColor: '#388ac4',
+        tooltipBGColor: '#fff',
 
-      // EdgeOptions
-      edgeWidth: 2,
-      edgeColor: '#bdbdbd',
-      edgeColorHover: '#388ac4',
-    };
+        // FontOptions
+        fontSize: '20px',
+        fontFamily: 'Quicksand, sans-serif',
+        fontWeight: 600,
+        fontColor: '#388ac4',
 
-    const container = document.getElementById('svg-tree');
-    if (container) {
-      const tree = new ApexTree(container, options);
-      tree.render(data);
+        // EdgeOptions
+        edgeWidth: 2,
+        edgeColor: '#bdbdbd',
+        edgeColorHover: '#388ac4',
+      };
+
+      const container = document.getElementById('svg-tree');
+      if (container) {
+        const tree = new ApexTree(container, options);
+        tree.render(data);
+      }
     }
   }
 }
