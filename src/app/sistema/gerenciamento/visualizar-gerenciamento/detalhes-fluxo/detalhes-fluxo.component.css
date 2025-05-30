@@ -1,0 +1,35 @@
+.main-container {
+  margin: 120px 32px 24px;
+  max-width: 100%;
+  background: var(--form-background);
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.back-title {
+  display: flex;
+  align-items: center;
+}
+
+.back-title span {
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--lm-text);
+  margin-left: 12px;
+}
+
+.back-title img {
+  width: 30px;
+  height: auto;
+  color: #1a1918;
+  margin: 0;
+  padding: 4px;
+  cursor: pointer;
+}
+
+.back-title img:hover {
+  background: #dfdfdf;
+  border-radius: 50%;
+}
