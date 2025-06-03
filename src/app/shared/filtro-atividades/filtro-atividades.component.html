@@ -1,0 +1,66 @@
+<div class="filtro-container">
+  <!-- Botões de ação -->
+  <div class="filtro-barra">
+    <button class="filtro-btn" (click)="toggleMenu()">
+        <img src="assets/icones/filter.svg" alt="Ícone de filtro" />
+      Filtros 
+      <span *ngIf="filtrosAtivos()" class="filtro-count-badge">
+        <span class="filtro-bolinha"></span>
+        {{ contarFiltros() }}
+    </span>
+    </button>
+    <button *ngIf="filtrosAtivos()" class="limpar-btn" (click)="limparFiltro()">
+        Limpar tudo
+    </button>
+  </div>
+
+  <!-- Menu suspenso -->
+  <div class="filtro-menu" *ngIf="menuAberto">
+    <div class="filtro-menu-header">
+      <h3>Filtro</h3>
+      <button class="fechar-btn" (click)="toggleMenu()" aria-label="Fechar filtro">&times;</button>
+    </div>
+    <hr class="filtro-menu-divider" />
+
+    <!-- Filtro de membros -->
+    <div class="filtro-grupo">
+      <label class="grupo-titulo">Membros</label>
+      <label>
+        <input type="checkbox" [(ngModel)]="filtro['semMembros']" />
+        Sem membros
+      </label>
+      <label>
+        <input type="checkbox" [(ngModel)]="filtro['atribuidoAMim']" />
+        Atribuídas a mim
+      </label>
+    </div>
+
+    <!-- Filtro de setores -->
+    <div class="filtro-grupo">
+      <label class="grupo-titulo">Setor</label>
+      <label>
+        <input type="checkbox" [(ngModel)]="filtro['todosSetores']" />
+        Todos os setores
+      </label>
+      <ng-container *ngFor="let setor of setores">
+        <label>
+          <input type="checkbox" [(ngModel)]="filtro['setor_' + setor]" />
+          {{ setor }}
+        </label>
+      </ng-container>
+    </div>
+
+    <!-- Filtro de status -->
+    <div class="filtro-grupo">
+      <label class="grupo-titulo">Status</label>
+      <label>
+        <input type="checkbox" [(ngModel)]="filtro['marcado']" />
+        Marcado como concluído
+      </label>
+      <label>
+        <input type="checkbox" [(ngModel)]="filtro['naoMarcado']" />
+        Não marcado como concluído
+      </label>
+    </div>
+  </div>
+</div>

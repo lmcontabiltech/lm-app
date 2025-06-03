@@ -1,33 +1,53 @@
 <div class="main-container">
   <div class="header-container">
     <h2>Atividades</h2>
-    <button class="btn btn-primary" (click)="cadastrarAtividade()">Cadastrar atividade +</button>
+      <div class="header-actions">
+        <app-filtro-atividades
+          [menuAberto]="filtroAberto"
+          (fechar)="filtroAberto = false"
+          (filtroAplicado)="aplicarFiltro($event)">
+        </app-filtro-atividades>
+        <button class="btn btn-primary" (click)="cadastrarAtividade()">
+          Cadastrar atividade +
+        </button>
+      </div>
   </div>
-  <div class="kanban-board">
-    <div class="kanban-column" *ngFor="let status of statuses">
-        <h3>{{ statusLabels[status] }}</h3>
+  <div class="subMain-container">
+    <div class="kanban-board">
+      <div class="kanban-column" *ngFor="let status of statuses">
+        <h3 class="kanban-column-title"
+          [ngStyle]="{
+            'color': statusColors[status],
+            'background': statusColors[status] + '15',
+            'border': '2px solid ' + statusColors[status] + '33'
+          }">
+          <span class="kanban-dot" [ngStyle]="{'background': statusColors[status]}"></span>
+          {{ statusLabels[status] }}
+          <span class="kanban-count">({{ atividades[status].length || 0 }})</span>
+        </h3>
 
-      <div
-        cdkDropList
-        #dropList
-        [id]="status"
-        [cdkDropListData]="atividades[status]"
-        [cdkDropListConnectedTo]="statuses"
-        class="task-list"
-        (cdkDropListDropped)="drop($event)"
-        (cdkDragMoved)="onDragMoved($event, dropList)"
-      >
-      <app-card-atv
-        *ngFor="let atividade of atividades[status]"
-        [title]="atividade.nome"
-        [description]="atividade.empresa?.razaoSocial || ''"
-        [date]="atividade.dateDaEntrega"
-        [priority]="atividade.prioridade"
-        [sector]="atividade.setor"
-        [membros]="atividade.usuarios || []"
-        (click)="abrirModalAtividade(atividade.id)"
-        cdkDrag
-      ></app-card-atv>
+        <div
+          cdkDropList
+          #dropList
+          [id]="status"
+          [cdkDropListData]="atividades[status]"
+          [cdkDropListConnectedTo]="statuses"
+          class="task-list"
+          (cdkDropListDropped)="drop($event)"
+          (cdkDragMoved)="onDragMoved($event, dropList)"
+        >
+        <app-card-atv
+          *ngFor="let atividade of atividades[status]"
+          [title]="atividade.nome"
+          [description]="atividade.empresa?.razaoSocial || ''"
+          [date]="atividade.dateDaEntrega"
+          [priority]="atividade.prioridade"
+          [sector]="atividade.setor"
+          [membros]="atividade.usuarios || []"
+          (click)="abrirModalAtividade(atividade.id)"
+          cdkDrag
+        ></app-card-atv>
+        </div>
       </div>
     </div>
   </div>

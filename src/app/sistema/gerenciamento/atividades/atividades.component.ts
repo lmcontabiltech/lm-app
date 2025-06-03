@@ -24,7 +24,7 @@ interface Tasks {
 export class AtividadesComponent implements OnInit {
   statuses: string[] = ['backlog', 'emProgresso', 'revisao', 'concluido'];
   statusLabels: { [key: string]: string } = {
-    backlog: 'Backlog',
+    backlog: 'A fazer',
     emProgresso: 'Em andamento',
     revisao: 'Revisão',
     concluido: 'Concluído',
@@ -38,6 +38,15 @@ export class AtividadesComponent implements OnInit {
   };
 
   dropListIds: string[] = [];
+
+  statusColors: { [key: string]: string } = {
+    backlog: '#a22bc6',
+    emProgresso: '#3498db',
+    revisao: '#f39c12',
+    concluido: '#1D7206',
+  };
+
+  filtroAberto = false;
 
   constructor(
     private router: Router,
@@ -209,5 +218,9 @@ export class AtividadesComponent implements OnInit {
         this.deletarAtividade(atividade.id!);
       }
     );
+  }
+
+  aplicarFiltro(filtro: any) {
+    // Lógica para aplicar o filtro nas atividades
   }
 }

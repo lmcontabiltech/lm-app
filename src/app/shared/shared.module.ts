@@ -11,6 +11,7 @@ import { SetorTagComponent } from './setor-tag/setor-tag.component';
 import { InputPlusComponent } from './input-plus/input-plus.component';
 import { CardAtvComponent } from './card-atv/card-atv.component';
 import { ModalAtividadeComponent } from './modal-atividade/modal-atividade.component';
+import { FiltroAtividadesComponent } from './filtro-atividades/filtro-atividades.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { ModalAtividadeComponent } from './modal-atividade/modal-atividade.compo
     InputPlusComponent,
     CardAtvComponent,
     ModalAtividadeComponent,
+    FiltroAtividadesComponent,
   ],
   imports: [CommonModule, FormsModule],
   exports: [
@@ -37,6 +39,7 @@ import { ModalAtividadeComponent } from './modal-atividade/modal-atividade.compo
     InputPlusComponent,
     CardAtvComponent,
     ModalAtividadeComponent,
+    FiltroAtividadesComponent,
   ],
 })
 export class SharedModule {}
