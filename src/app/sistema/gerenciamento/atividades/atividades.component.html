@@ -23,6 +23,7 @@
           }">
           <span class="kanban-dot" [ngStyle]="{'background': statusColors[status]}"></span>
           {{ statusLabels[status] }}
+          <span class="kanban-count">({{ atividades[status].length || 0 }})</span>
         </h3>
 
         <div
