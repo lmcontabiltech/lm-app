@@ -6,6 +6,9 @@
   background: #ffffff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   cursor: pointer;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  max-width: 290px;
 }
 
 .card:hover {
@@ -19,12 +22,14 @@
   font-weight: 500;
   font-size: 1.25rem;
   color: #160968;
+  white-space: normal;
 }
 
 .card p {
   margin: 4px 0;
   font-size: 0.875rem;
   color: #333;
+  white-space: normal;
 }
 
 .date {
