@@ -15,7 +15,12 @@
   <div class="subMain-container">
     <div class="kanban-board">
       <div class="kanban-column" *ngFor="let status of statuses">
-        <h3 class="kanban-column-title">
+        <h3 class="kanban-column-title"
+          [ngStyle]="{
+            'color': statusColors[status],
+            'background': statusColors[status] + '15',
+            'border': '2px solid ' + statusColors[status] + '33'
+          }">
           <span class="kanban-dot" [ngStyle]="{'background': statusColors[status]}"></span>
           {{ statusLabels[status] }}
         </h3>

@@ -43,7 +43,7 @@ export class AtividadesComponent implements OnInit {
     backlog: '#a22bc6',
     emProgresso: '#3498db',
     revisao: '#f39c12',
-    concluido: '#27ae60',
+    concluido: '#1D7206',
   };
 
   filtroAberto = false;
