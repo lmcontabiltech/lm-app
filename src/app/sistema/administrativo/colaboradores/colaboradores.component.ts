@@ -44,6 +44,7 @@ export class ColaboradoresComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.exibirMensagemDeSucesso();
     this.fetchColaboradores();
     this.atualizarPaginacao();
 
