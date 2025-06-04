@@ -21,6 +21,9 @@ export class CadastroPerifericosComponent implements OnInit {
   isEditMode = false;
   perifericoId: string | null = null;
 
+  usuarios: { value: string; description: string }[] = [];
+  selectedUsuario: string = '';
+
   constructor(
     private location: Location,
     private formBuilder: FormBuilder,
@@ -38,6 +41,7 @@ export class CadastroPerifericosComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.carregarUsuarios();
     this.verificarModoEdicao();
 
     const usuario = this.authService.getUsuarioAutenticado();
@@ -135,6 +139,20 @@ export class CadastroPerifericosComponent implements OnInit {
       },
       (error) => {
         console.error('Erro ao carregar os dados da empresa:', error);
+      }
+    );
+  }
+
+  carregarUsuarios(): void {
+    this.colaboradorService.getUsuariosNonAdmin().subscribe(
+      (usuarios) => {
+        this.usuarios = usuarios.map((usuario) => ({
+          value: usuario.id,
+          description: usuario.nome,
+        }));
+      },
+      (error) => {
+        console.error('Erro ao carregar os usuários:', error);
       }
     );
   }

@@ -488,16 +488,19 @@ select:focus {
   width: 100%;
 }
 
+.feedback-container {
+  width: 100%;
+}
+
 .alert-success {
   background-color: var(--success);
   color: var(--lm-branco);
 }
 
 .alert-warning {
-  background-color: var(--warning);
-  color: var(--lm-branco);
-  text-align: center;
-  font-weight: 500;
+  color: #856404;
+  background-color: #fff3cd;
+  border-color: #ffeeba;
 }
 
 .alert-danger {
@@ -512,6 +515,7 @@ select:focus {
   align-items: center;
   gap: 24px;
   height: 100%;
+  width: 100%;
   padding: 0;
   margin-top: 32px;
 }

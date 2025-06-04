@@ -55,21 +55,7 @@ export class CadastroDeColaboradorComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.cadastroForm.get('setor')?.setValue(this.selectedSetor);
-    this.colaboradorId = this.route.snapshot.paramMap.get('id');
-    if (this.colaboradorId) {
-      this.isEditMode = true;
-      this.colaboradoresService.getUsuarioById(this.colaboradorId).subscribe(
-        (usuario: Usuario) => {
-          console.log('Dados do colaborador recebidos:', usuario);
-          this.cadastroForm.patchValue(usuario);
-          this.selectedSetor = usuario.setor || '';
-        },
-        (error) => {
-          console.error('Erro ao carregar os dados do colaborador:', error);
-        }
-      );
-    }
+    this.carregarModoEdicao();
     const usuario = this.authService.getUsuarioAutenticado();
     if (usuario?.permissao) {
       this.permissaoUsuario = this.mapPermissao(usuario.permissao);
@@ -116,6 +102,9 @@ export class CadastroDeColaboradorComponent implements OnInit {
             this.successMessage = 'Usuário atualizado com sucesso!';
             this.errorMessage = null;
             this.router.navigate(['/usuario/colaboradores']);
+            this.router.navigate(['/usuario/colaboradores'], {
+              state: { successMessage: 'Usuário atualizado com sucesso!' },
+            });
             console.debug('Usuário atualizado com sucesso:', response);
           },
           (error) => {
@@ -151,6 +140,24 @@ export class CadastroDeColaboradorComponent implements OnInit {
       passwordInput.setAttribute(
         'type',
         this.passwordVisible[field] ? 'text' : 'password'
+      );
+    }
+  }
+
+  private carregarModoEdicao(): void {
+    this.cadastroForm.get('setor')?.setValue(this.selectedSetor);
+    this.colaboradorId = this.route.snapshot.paramMap.get('id');
+    if (this.colaboradorId) {
+      this.isEditMode = true;
+      this.colaboradoresService.getUsuarioById(this.colaboradorId).subscribe(
+        (usuario: Usuario) => {
+          console.log('Dados do colaborador recebidos:', usuario);
+          this.cadastroForm.patchValue(usuario);
+          this.selectedSetor = usuario.setor || '';
+        },
+        (error) => {
+          console.error('Erro ao carregar os dados do colaborador:', error);
+        }
       );
     }
   }

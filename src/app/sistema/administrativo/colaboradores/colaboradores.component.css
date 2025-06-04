@@ -187,6 +187,71 @@ tr:hover {
   background: rgba(0, 123, 255, 0.2);
 }
 
+/* Alert styles */
+.mensg-repostas {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 40px;
+}
+
+.alert {
+  position: relative;
+  padding: 12px 40px 12px 16px;
+  border-radius: 4px;
+  margin: 0;
+  font-size: 15px;
+  box-shadow: 0 2px 8px #0001;
+  overflow: hidden;
+}
+
+.alert-success {
+  background: #c8f8c2;
+  color: #40812d;
+  border: 1px solid #bae2b6;
+  font-weight: 500;
+}
+.alert-danger {
+  background: #f2c6c6;
+  color: #a12c2a;
+  border: 1px solid #f8b5bc;
+  font-weight: 500;
+}
+
+.close-btn {
+  position: absolute;
+  top: 0;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: inherit;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.progress-bar-sucess {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 100%;
+  background: #40812d;
+  opacity: 0.5;
+  pointer-events: none;
+}
+.alert-danger .progress-bar-sucess {
+  background: #a12c2a;
+}
+@keyframes progressBarAnim {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0;
+  }
+}
+
 /* Breakpoints */
 @media (min-width: 1200px) {
   .main-container {

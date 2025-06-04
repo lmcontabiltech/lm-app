@@ -15,6 +15,7 @@ export class FluxosComponent implements OnInit {
   totalPaginas = Math.ceil(this.processos.length / this.itensPorPagina);
   processosPaginados: Processo[] = [];
   selectedProcesso: any = null;
+  isLoading = false;
 
   constructor(
     private router: Router,
@@ -35,6 +36,7 @@ export class FluxosComponent implements OnInit {
   }
 
   fetchProcessos(): void {
+    this.isLoading = true;
     this.processoService.getProcessos().subscribe(
       (processos: Processo[]) => {
         console.log('Processos retornados pelo backend:', processos);
@@ -43,9 +45,11 @@ export class FluxosComponent implements OnInit {
           this.processos.length / this.itensPorPagina
         );
         this.atualizarPaginacao();
+        this.isLoading = false;
       },
       (error) => {
         console.error('Erro ao carregar processos:', error);
+        this.isLoading = false;
       }
     );
   }

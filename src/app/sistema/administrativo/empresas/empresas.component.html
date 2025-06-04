@@ -16,12 +16,18 @@
             </div>
         </div>
 
+        <div *ngIf="successMessage" class="alert alert-success">
+            <span>{{ successMessage }}</span>
+            <button class="close-btn" (click)="clearMessage()" aria-label="Fechar">&times;</button>
+            <div class="progress-bar-sucess" [style.animation]="successMessage ? 'progressBarAnim 3s linear' : 'none'"></div>
+        </div>
+
         <div class="progress-bar-container" *ngIf="isLoading">
             <div class="progress-bar"></div>
         </div>
 
         <div [ngClass]="{'tabela-container': true, 'no-data': empresasPaginados.length === 0}">
-            <table *ngIf="empresasPaginados.length > 0; else noDataTemplate">
+            <table>
                 <thead>
                     <tr>
                         <th>Razão social</th>
@@ -31,7 +37,7 @@
                         <th>Ações</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody *ngIf="empresasPaginados.length > 0">
                     <tr *ngFor="let empresa of empresasPaginados">
                         <td>
                             <div class="perfil">
@@ -61,15 +67,20 @@
                     </tr>
                 </tbody>
             </table>
-            <ng-template #noDataTemplate>
+        </div>
+
+        <div *ngIf="empresasPaginados.length === 0" class="feedback-container">
+            <ng-container *ngIf="mensagemBusca; else semEmpresas">
+                <div>
+                <div class="alert alert-warning text-center">
+                    {{ mensagemBusca }}
+                </div>
+                </div>
+            </ng-container>
+            <ng-template #semEmpresas>
                 <div class="no-data-message">
-                    <div *ngIf="mensagemBusca; else semEmpresas" class="alert-warning alert">
-                        {{ mensagemBusca }}
-                    </div>
-                    <ng-template #semEmpresas>
-                        <img src="assets/imagens/no-data.svg" alt="Sem dados">
-                        <p>Não há empresas cadastradas.</p>
-                    </ng-template>
+                <img src="assets/imagens/no-data.svg" alt="Sem dados">
+                <p>Não há usuários cadastrados.</p>
                 </div>
             </ng-template>
         </div>
