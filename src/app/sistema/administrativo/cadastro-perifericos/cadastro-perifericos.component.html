@@ -1,66 +1,114 @@
-<div  *ngIf="permissaoUsuario === 'Administrador' || permissaoUsuario === 'Coordenador'">
-    <div class="main-container">
-        <div class="back-title">
-            <img src="assets/icones/back-left.svg" alt="Back" class="back-icon" (click)="goBack()">
-            <span>{{ isEditMode ? 'Editar periferico' : 'Cadastrar periferico' }}</span>
-        </div>
-
-    
-    
-        <div class="forms-container">
-            <form (ngSubmit)="onSubmit()" [formGroup]="perifericoForm">
-                <div class="form-group">
-                    <label for="nome">Nome</label>
-                    <input type="text" id="nome" name="nome" formControlName="nome" class="form-control" placeholder="Digite" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="descricaoProduto">Descrição do produto</label>
-                    <textarea type="text" id="descricaoProduto" name="descricaoProduto" formControlName="descricaoProduto" class="form-control" placeholder="Digite" rows="6"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="colaborador">Colaborador</label>
-                    <app-select-padrao
-                      label="Selecionar o colaborador"
-                      formControlName="colaborador">
-                    </app-select-padrao>
-                </div>
-
-                <div class="input-duo">
-                    <div class="form-group">
-                        <label for="dataEntregada">Data da entrega</label>
-                        <input type="date" id="dataEntregada" name="dataEntregada" formControlName="dataEntregada" class="form-control">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="dataDevolucao">Data da devolução</label>
-                        <input type="date" id="dataDevolucao" name="dataDevolucao" formControlName="dataDevolucao" class="form-control">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="anotacao">Anotações</label>
-                    <textarea type="text" id="anotacao" name="anotacao" formControlName="anotacao" class="form-control" placeholder="Digite" rows="6"></textarea>
-                </div>
-
-                <div class="container-btn">
-                    <button type="submit" class="btn-cadastrar">
-                        {{ isEditMode ? 'Atualizar periferico' : 'Cadastrar periferico' }}
-                    </button>
-                </div>
-            </form>
-        </div>
-
-        <div class="alerts">
-            <div class="alerts-container alert-success" *ngIf="successMessage">
-            {{ successMessage }}
-            </div>
-            <div class=" alerts-container alert-danger" *ngIf="errorMessage">
-                {{ errorMessage }}
-            </div>
-        </div>
-
-        <div *ngIf="isLoading">Carregando...</div>
+<div
+  *ngIf="
+    permissaoUsuario === 'Administrador' || permissaoUsuario === 'Coordenador'
+  "
+>
+  <div class="main-container">
+    <div class="back-title">
+      <img
+        src="assets/icones/back-left.svg"
+        alt="Back"
+        class="back-icon"
+        (click)="goBack()"
+      />
+      <span>{{
+        isEditMode ? "Editar periferico" : "Cadastrar periferico"
+      }}</span>
     </div>
+
+    <div class="forms-container">
+      <form (ngSubmit)="onSubmit()" [formGroup]="perifericoForm">
+        <div class="form-group">
+          <label for="nome">Nome</label>
+          <input
+            type="text"
+            id="nome"
+            name="nome"
+            formControlName="nome"
+            class="form-control"
+            placeholder="Digite"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="descricaoProduto">Descrição do produto</label>
+          <textarea
+            type="text"
+            id="descricaoProduto"
+            name="descricaoProduto"
+            formControlName="descricaoProduto"
+            class="form-control"
+            placeholder="Digite"
+            rows="6"
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="colaborador">Colaborador</label>
+          <app-select-padrao
+            label="Selecionar o colaborador"
+            [options]="usuarios"
+            [(selectedValue)]="selectedUsuario"
+            formControlName="colaborador"
+          >
+          </app-select-padrao>
+        </div>
+
+        <div class="input-duo">
+          <div class="form-group">
+            <label for="dataEntregada">Data da entrega</label>
+            <input
+              type="date"
+              id="dataEntregada"
+              name="dataEntregada"
+              formControlName="dataEntregada"
+              class="form-control"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="dataDevolucao">Data da devolução</label>
+            <input
+              type="date"
+              id="dataDevolucao"
+              name="dataDevolucao"
+              formControlName="dataDevolucao"
+              class="form-control"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="anotacao">Anotações</label>
+          <textarea
+            type="text"
+            id="anotacao"
+            name="anotacao"
+            formControlName="anotacao"
+            class="form-control"
+            placeholder="Digite"
+            rows="6"
+          ></textarea>
+        </div>
+
+        <div class="container-btn">
+          <button type="submit" class="btn-cadastrar">
+            {{ isEditMode ? "Atualizar periferico" : "Cadastrar periferico" }}
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="alerts">
+      <div class="alerts-container alert-success" *ngIf="successMessage">
+        {{ successMessage }}
+      </div>
+      <div class="alerts-container alert-danger" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+    </div>
+
+    <div *ngIf="isLoading">Carregando...</div>
+  </div>
 </div>
