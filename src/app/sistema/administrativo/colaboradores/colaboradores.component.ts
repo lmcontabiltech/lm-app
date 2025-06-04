@@ -33,6 +33,8 @@ export class ColaboradoresComponent implements OnInit {
   termoBusca: string = '';
   mensagemBusca: string = '';
   isLoading = false;
+  successMessage: string = '';
+  messageTimeout: any;
 
   constructor(
     private router: Router,
@@ -179,5 +181,25 @@ export class ColaboradoresComponent implements OnInit {
 
   editarColaborador(id: string): void {
     this.router.navigate(['/usuario/cadastro-de-colaborador', id]);
+  }
+
+  exibirMensagemDeSucesso(): void {
+    const state = window.history.state as { successMessage?: string };
+    if (state?.successMessage) {
+      this.successMessage = state.successMessage;
+      setTimeout(() => (this.successMessage = ''), 3000);
+      window.history.replaceState({}, document.title);
+    }
+  }
+
+  showMessage(type: 'success' | 'error', msg: string) {
+    this.clearMessage();
+    if (type === 'success') this.successMessage = msg;
+    this.messageTimeout = setTimeout(() => this.clearMessage(), 3000);
+  }
+
+  clearMessage() {
+    this.successMessage = '';
+    if (this.messageTimeout) clearTimeout(this.messageTimeout);
   }
 }

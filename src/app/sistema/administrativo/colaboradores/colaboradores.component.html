@@ -20,8 +20,18 @@
             </div>
         </div>
 
+        <div *ngIf="successMessage" class="alert alert-success">
+            <span>{{ successMessage }}</span>
+            <button class="close-btn" (click)="clearMessage()" aria-label="Fechar">&times;</button>
+            <div class="progress-bar-sucess" [style.animation]="successMessage ? 'progressBarAnim 3s linear' : 'none'"></div>
+        </div>
+
+        <div class="progress-bar-container" *ngIf="isLoading">
+            <div class="progress-bar"></div>
+        </div>
+
         <div [ngClass]="{'tabela-container': true, 'no-data': colaboradoresPaginados.length === 0}">
-            <table *ngIf="colaboradoresPaginados.length > 0; else noDataTemplate">
+            <table>
                 <thead>
                     <tr>
                         <th>Nome</th>
@@ -30,7 +40,7 @@
                         <th>Ações</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody *ngIf="colaboradoresPaginados.length > 0">
                     <tr *ngFor="let colaborador of colaboradoresPaginados">
                         <td>
                             <div class="perfil">
@@ -61,15 +71,19 @@
                     </tr>
                 </tbody>
             </table>
-            <ng-template #noDataTemplate>
+        </div>
+        <div *ngIf="colaboradoresPaginados.length === 0" class="feedback-container">
+            <ng-container *ngIf="mensagemBusca; else semUsuarios">
+                <div>
+                <div class="alert alert-warning text-center">
+                    {{ mensagemBusca }}
+                </div>
+                </div>
+            </ng-container>
+            <ng-template #semUsuarios>
                 <div class="no-data-message">
-                    <div *ngIf="mensagemBusca; else semColaboradores" class="alert-warning alert">
-                        {{ mensagemBusca }}
-                    </div>
-                    <ng-template #semColaboradores>
-                        <img src="assets/imagens/no-data.svg" alt="Sem dados">
-                        <p>Não há colaboradores cadastrados.</p>
-                    </ng-template>
+                <img src="assets/imagens/no-data.svg" alt="Sem dados">
+                <p>Não há usuários cadastrados.</p>
                 </div>
             </ng-template>
         </div>
