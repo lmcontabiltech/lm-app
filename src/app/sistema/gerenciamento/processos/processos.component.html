@@ -15,7 +15,17 @@
             </div>
         </div>
 
-        <div class="tabela-container">
+        <div *ngIf="successMessage" class="alert alert-success">
+            <span>{{ successMessage }}</span>
+            <button class="close-btn" (click)="clearMessage()" aria-label="Fechar">&times;</button>
+            <div class="progress-bar-sucess" [style.animation]="successMessage ? 'progressBarAnim 3s linear' : 'none'"></div>
+        </div>
+
+        <div class="progress-bar-container" *ngIf="isLoading">
+            <div class="progress-bar"></div>
+        </div>
+
+        <div [ngClass]="{'tabela-container': true, 'no-data': processosPaginados.length === 0}">
             <table>
                 <thead>
                     <tr>
@@ -26,7 +36,7 @@
                         <th>Ações</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody *ngIf="processosPaginados.length > 0">
                     <tr *ngFor="let processo of processosPaginados">
                         <td>
                             <div class="perfil">
@@ -57,6 +67,22 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+
+        <div *ngIf="processosPaginados.length === 0" class="feedback-container">
+            <ng-container *ngIf="mensagemBusca; else semProcessos">
+                <div>
+                <div class="alert alert-warning text-center">
+                    {{ mensagemBusca }}
+                </div>
+                </div>
+            </ng-container>
+            <ng-template #semProcessos>
+                <div class="no-data-message">
+                <img src="assets/imagens/no-data.svg" alt="Sem dados">
+                <p>Não há processos cadastrados.</p>
+                </div>
+            </ng-template>
         </div>
 
         <div class="paginacao">

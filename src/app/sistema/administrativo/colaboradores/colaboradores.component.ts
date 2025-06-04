@@ -131,6 +131,7 @@ export class ColaboradoresComponent implements OnInit {
   }
 
   fetchColaboradores(): void {
+    this.isLoading = true;
     this.colaboradoresService.getUsuariosNonAdmin().subscribe(
       (response: Colaborador[]) => {
         this.colaboradores = response;
@@ -138,9 +139,11 @@ export class ColaboradoresComponent implements OnInit {
           this.colaboradores.length / this.itensPorPagina
         );
         this.atualizarPaginacao();
+        this.isLoading = false;
       },
       (error) => {
         console.error('Erro ao buscar colaboradores:', error);
+        this.isLoading = false;
       }
     );
   }

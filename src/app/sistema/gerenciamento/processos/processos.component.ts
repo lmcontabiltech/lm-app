@@ -17,6 +17,11 @@ export class ProcessosComponent implements OnInit {
   totalPaginas = Math.ceil(this.processos.length / this.itensPorPagina);
   processosPaginados: Processo[] = [];
   selectedProcesso: any = null;
+  termoBusca: string = '';
+  mensagemBusca: string = '';
+  isLoading = false;
+  successMessage: string = '';
+  messageTimeout: any;
 
   constructor(
     private router: Router,
@@ -38,6 +43,7 @@ export class ProcessosComponent implements OnInit {
   }
 
   fetchProcessos(): void {
+    this.isLoading = true;
     this.processoService.getProcessos().subscribe(
       (processos: Processo[]) => {
         console.log('Processos retornados pelo backend:', processos);
@@ -46,9 +52,11 @@ export class ProcessosComponent implements OnInit {
           this.processos.length / this.itensPorPagina
         );
         this.atualizarPaginacao();
+        this.isLoading = false;
       },
       (error) => {
         console.error('Erro ao carregar processos:', error);
+        this.isLoading = false;
       }
     );
   }
@@ -115,5 +123,25 @@ export class ProcessosComponent implements OnInit {
         this.deletarProcesso(processo.id);
       }
     );
+  }
+
+  exibirMensagemDeSucesso(): void {
+    const state = window.history.state as { successMessage?: string };
+    if (state?.successMessage) {
+      this.successMessage = state.successMessage;
+      setTimeout(() => (this.successMessage = ''), 3000);
+      window.history.replaceState({}, document.title);
+    }
+  }
+
+  showMessage(type: 'success' | 'error', msg: string) {
+    this.clearMessage();
+    if (type === 'success') this.successMessage = msg;
+    this.messageTimeout = setTimeout(() => this.clearMessage(), 3000);
+  }
+
+  clearMessage() {
+    this.successMessage = '';
+    if (this.messageTimeout) clearTimeout(this.messageTimeout);
   }
 }

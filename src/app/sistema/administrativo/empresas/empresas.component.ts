@@ -96,6 +96,7 @@ export class EmpresasComponent implements OnInit {
   }
 
   fetchEmpresas(): void {
+    this.isLoading = true;
     this.empresasService.getEmpresas().subscribe(
       (empresas: Empresa[]) => {
         this.empresas = empresas;
@@ -103,9 +104,11 @@ export class EmpresasComponent implements OnInit {
           this.empresas.length / this.itensPorPagina
         );
         this.atualizarPaginacao();
+        this.isLoading = false;
       },
       (error) => {
         console.error('Erro ao carregar empresas:', error);
+        this.isLoading = false;
       }
     );
   }
