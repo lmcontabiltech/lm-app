@@ -87,7 +87,9 @@ export class CadastroDeProcessosComponent implements OnInit {
             this.isLoading = false;
             this.successMessage = 'Processo atualizado com sucesso!';
             this.errorMessage = null;
-            this.router.navigate(['/usuario/processos']);
+            this.router.navigate(['/usuario/processos'], {
+              state: { successMessage: 'Processo atualizado com sucesso!' },
+            });
           },
           (error) => {
             this.isLoading = false;
@@ -103,6 +105,9 @@ export class CadastroDeProcessosComponent implements OnInit {
           this.successMessage = 'Processo cadastrado com sucesso!';
           this.errorMessage = null;
           this.processoForm.reset();
+          this.router.navigate(['/usuario/processos'], {
+              state: { successMessage: 'Processo cadastrado com sucesso!' },
+            });
         },
         (error) => {
           this.isLoading = false;

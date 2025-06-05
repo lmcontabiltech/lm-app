@@ -139,9 +139,20 @@ export class ColaboradoresComponent implements OnInit {
   }
 
   deleteColaborador(id: string): void {
+    const colaboradorRemovido = this.colaboradores.find((e) => e.id === id);
     this.colaboradoresService.deleteUsuarioById(id).subscribe(
       () => {
-        this.fetchColaboradores();
+        this.colaboradores = this.colaboradores.filter((colaborador) => colaborador.id !== id);
+        this.totalPaginas = Math.ceil(
+          this.colaboradores.length / this.itensPorPagina
+        );
+        this.atualizarPaginacao();
+        this.showMessage(
+          'success',
+          `Usuário "${
+            colaboradorRemovido?.nome || ''
+          }" deletado com sucesso!`
+        );
       },
       (error: any) => {
         this.showMessage('error', 'Erro ao excluir colaborador.');

@@ -129,6 +129,7 @@ export class EmpresasComponent implements OnInit {
   }
 
   deletarEmpresa(id: string): void {
+    const empresaRemovida = this.empresas.find((e) => e.id === id);
     this.empresasService.deletarEmpresa(id).subscribe(
       () => {
         this.empresas = this.empresas.filter((empresa) => empresa.id !== id);
@@ -136,6 +137,12 @@ export class EmpresasComponent implements OnInit {
           this.empresas.length / this.itensPorPagina
         );
         this.atualizarPaginacao();
+        this.showMessage(
+          'success',
+          `Empresa "${
+            empresaRemovida?.razaoSocial || ''
+          }" deletada com sucesso!`
+        );
       },
       (error: any) => {
         console.error('Erro ao excluir empresa:', error);
