@@ -26,12 +26,13 @@ export class NavbarComponent implements OnInit {
 
   nomeUsuario: string = '';
   permissaoUsuario: string = '';
+  fotoUsuario: string = '';
 
-   // Mapeamento das permissões para suas descrições
-   private permissaoDescricao: { [key: string]: string } = {
-    'ADMIN': 'Administrador',
-    'COORDENADOR': 'Coordenador',
-    'USER': 'Colaborador'
+  // Mapeamento das permissões para suas descrições
+  private permissaoDescricao: { [key: string]: string } = {
+    ADMIN: 'Administrador',
+    COORDENADOR: 'Coordenador',
+    USER: 'Colaborador',
   };
 
   constructor(
@@ -45,7 +46,8 @@ export class NavbarComponent implements OnInit {
       (response: { nome: string; permissao: string }) => {
         this.nomeUsuario = response.nome;
         const permissao = response.permissao;
-        this.permissaoUsuario = this.permissaoDescricao[permissao] || 'Permissão desconhecida';
+        this.permissaoUsuario =
+          this.permissaoDescricao[permissao] || 'Permissão desconhecida';
       },
       (err: any) => console.error('Erro ao buscar perfil do usuário', err)
     );
@@ -114,5 +116,21 @@ export class NavbarComponent implements OnInit {
   logout() {
     this.authService.encerrarSessao();
     this.router.navigate(['/login']);
+  }
+
+  getInitial(name: string): string {
+    return name ? name.charAt(0).toUpperCase() : '?';
+  }
+
+  getRandomColor(seed: string): string {
+    const colors = [
+      '#FFB3BA', // Rosa pastel
+      '#FFDFBA', // Laranja pastel
+      '#BAFFC9', // Verde pastel
+      '#BAE1FF', // Azul pastel
+      '#D5BAFF', // Roxo pastel
+    ];
+    const index = seed ? seed.charCodeAt(0) % colors.length : 0;
+    return colors[index];
   }
 }
