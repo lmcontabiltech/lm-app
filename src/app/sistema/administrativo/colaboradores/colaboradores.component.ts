@@ -149,6 +149,7 @@ export class ColaboradoresComponent implements OnInit {
   }
 
   deleteColaborador(id: string): void {
+    this.isLoading = true;
     this.colaboradoresService.deleteUsuarioById(id).subscribe(
       () => {
         this.colaboradores = this.colaboradores.filter(
@@ -158,10 +159,9 @@ export class ColaboradoresComponent implements OnInit {
           this.colaboradores.length / this.itensPorPagina
         );
         this.atualizarPaginacao();
-        console.log('Colaborador excluído com sucesso');
       },
       (error: any) => {
-        console.error('Erro ao excluir colaborador:', error);
+        this.isLoading = false;
       }
     );
   }
