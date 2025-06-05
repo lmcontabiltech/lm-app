@@ -85,13 +85,6 @@ export class ProcessosComponent implements OnInit {
     this.atualizarPaginacao();
   }
 
-  proximaPagina(): void {
-    if (this.paginaAtual < this.totalPaginas) {
-      this.paginaAtual++;
-      this.atualizarPaginacao();
-    }
-  }
-
   editarProcesso(id: string): void {
     this.router.navigate(['/usuario/cadastro-de-processos', id]);
   }

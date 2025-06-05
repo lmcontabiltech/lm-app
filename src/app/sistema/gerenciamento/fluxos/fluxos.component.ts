@@ -71,23 +71,13 @@ export class FluxosComponent implements OnInit {
     this.processosPaginados = this.processos.slice(inicio, fim);
   }
 
-  mudarPagina(pagina: number): void {
-    this.paginaAtual = pagina;
+  get totalItens() {
+    return this.processos.length;
+  }
+
+  onPaginaMudou(novaPagina: number) {
+    this.paginaAtual = novaPagina;
     this.atualizarPaginacao();
-  }
-
-  paginaAnterior(): void {
-    if (this.paginaAtual > 1) {
-      this.paginaAtual--;
-      this.atualizarPaginacao();
-    }
-  }
-
-  proximaPagina(): void {
-    if (this.paginaAtual < this.totalPaginas) {
-      this.paginaAtual++;
-      this.atualizarPaginacao();
-    }
   }
 
   visualizarFluxo(id: string): void {
