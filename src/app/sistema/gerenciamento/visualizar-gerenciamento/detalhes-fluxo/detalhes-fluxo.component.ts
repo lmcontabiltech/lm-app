@@ -51,6 +51,8 @@ type TreeOptions = {
   styleUrls: ['./detalhes-fluxo.component.css'],
 })
 export class DetalhesFluxoComponent implements OnInit {
+  nomeProcesso: string = '';
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -116,6 +118,7 @@ export class DetalhesFluxoComponent implements OnInit {
       };
 
       this.processoService.getProcessoById(id).subscribe((processo) => {
+        this.nomeProcesso = processo.nome;
         const data: Node = {
           id: String(processo.id),
           name: processo.nome,
