@@ -29,7 +29,8 @@
             "scripts": [],
             "allowedCommonJsDependencies": [
               "@auth0/angular-jwt",
-              "apexcharts"
+              "apexcharts",
+              "lottie-web"
             ]
           },
           "configurations": {

@@ -544,7 +544,7 @@ select:focus {
 .progress-bar {
   width: 0;
   height: 100%;
-  background-color: var(--primary-btnHover);
+  background-color: var(--primary-button);
   animation: progress-animation 2s infinite linear;
 }
 
