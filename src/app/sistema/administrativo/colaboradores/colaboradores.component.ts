@@ -142,16 +142,16 @@ export class ColaboradoresComponent implements OnInit {
     const colaboradorRemovido = this.colaboradores.find((e) => e.id === id);
     this.colaboradoresService.deleteUsuarioById(id).subscribe(
       () => {
-        this.colaboradores = this.colaboradores.filter((colaborador) => colaborador.id !== id);
+        this.colaboradores = this.colaboradores.filter(
+          (colaborador) => colaborador.id !== id
+        );
         this.totalPaginas = Math.ceil(
           this.colaboradores.length / this.itensPorPagina
         );
         this.atualizarPaginacao();
         this.showMessage(
           'success',
-          `Usuário "${
-            colaboradorRemovido?.nome || ''
-          }" deletado com sucesso!`
+          `Usuário "${colaboradorRemovido?.nome || ''}" deletado com sucesso!`
         );
       },
       (error: any) => {
@@ -179,6 +179,22 @@ export class ColaboradoresComponent implements OnInit {
 
   editarColaborador(id: string): void {
     this.router.navigate(['/usuario/cadastro-de-colaborador', id]);
+  }
+
+  getInitial(name: string): string {
+    return name ? name.charAt(0).toUpperCase() : '?';
+  }
+
+  getRandomColor(seed: string): string {
+    const colors = [
+      '#FFB3BA', // Rosa pastel
+      '#FFDFBA', // Laranja pastel
+      '#BAFFC9', // Verde pastel
+      '#BAE1FF', // Azul pastel
+      '#D5BAFF', // Roxo pastel
+    ];
+    const index = seed ? seed.charCodeAt(0) % colors.length : 0;
+    return colors[index];
   }
 
   exibirMensagemDeSucesso(): void {

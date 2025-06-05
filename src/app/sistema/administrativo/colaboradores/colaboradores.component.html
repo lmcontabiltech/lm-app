@@ -44,11 +44,14 @@
                     <tr *ngFor="let colaborador of colaboradoresPaginados">
                         <td>
                             <div class="perfil">
-                                <div class="avatar"></div>
+                                <div class="avatar" [ngStyle]="{'background-color': getRandomColor(colaborador.nome)}">
+                                    <img [src]="colaborador.foto?.documentoUrl" alt="Foto do Colaborador" *ngIf="colaborador.foto?.documentoUrl; else defaultAvatar" />
+                                    <ng-template #defaultAvatar>
+                                        <span>{{ getInitial(colaborador.nome) }}</span>
+                                    </ng-template>
+                                </div>
                                 <span>
-                                    <a>
-                                        {{ colaborador.nome }}
-                                    </a>
+                                    {{ colaborador.nome }}
                                 </span>
                             </div>
                         </td>

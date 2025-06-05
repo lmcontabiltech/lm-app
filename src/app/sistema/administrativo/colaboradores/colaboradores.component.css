@@ -150,6 +150,23 @@ tr:hover {
   height: 30px;
   background: #ddd;
   border-radius: 50%;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatar span {
+  font-size: 14px;
+  color: #202020;
+  font-weight: 500;
 }
 
 /* paginação */
