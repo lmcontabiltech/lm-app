@@ -3,15 +3,6 @@
         <img src="assets/icones/back-left.svg" alt="Back" class="back-icon" (click)="goBack()">
         <span>{{ isEditMode ? 'Editar atividade' : 'Cadastrar atividade' }}</span>
     </div>
-
-    <div class="alerts">
-        <div class="alerts-container alert-success" *ngIf="successMessage">
-          {{ successMessage }}
-        </div>
-        <div class=" alerts-container alert-danger" *ngIf="errorMessage">
-            {{ errorMessage }}
-        </div>
-    </div>
   
     <div class="forms-container">
         <form (ngSubmit)="onSubmit()" [formGroup]="atividadeForm">
@@ -138,5 +129,14 @@
         </form>
     </div>
 
-    <div *ngIf="isLoading">Carregando...</div>
+    <div class="alerts">
+        <div class="alerts-container alert-success" *ngIf="successMessage">
+          {{ successMessage }}
+        </div>
+        <div class=" alerts-container alert-danger" *ngIf="errorMessage">
+            {{ errorMessage }}
+        </div>
+    </div>
+
+    <app-loading *ngIf="isLoading"></app-loading>
 </div>
