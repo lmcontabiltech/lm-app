@@ -99,4 +99,27 @@ export class ProcessoService {
       })
     );
   }
+
+  getProcessosBySetores(setores: string[]): Observable<Processo[]> {
+    if (!setores || setores.length === 0) {
+      return this.getProcessos();
+    }
+    const params = setores
+      .map((s) => `setors=${encodeURIComponent(s)}`)
+      .join('&');
+    const url = `${this.apiURL}/setor?${params}`;
+    return this.http.get<Processo[]>(url).pipe(
+      map((response) => response),
+      catchError((error) => {
+        let errorMessage = 'Erro ao buscar processos pelos setores.';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
 }
