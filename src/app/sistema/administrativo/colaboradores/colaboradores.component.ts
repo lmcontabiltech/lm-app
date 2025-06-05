@@ -19,7 +19,7 @@ export class ColaboradoresComponent implements OnInit {
   }));
 
   colaboradores: Colaborador[] = [];
-  itensPorPagina = 5;
+  itensPorPagina = 6;
   paginaAtual = 1;
   totalPaginas = Math.ceil(this.colaboradores.length / this.itensPorPagina);
   colaboradoresPaginados: Colaborador[] = [];
@@ -105,11 +105,11 @@ export class ColaboradoresComponent implements OnInit {
     );
   }
 
-  atualizarPaginacao(): void {
-    const inicio = (this.paginaAtual - 1) * this.itensPorPagina;
-    const fim = inicio + this.itensPorPagina;
-    this.colaboradoresPaginados = this.colaboradores.slice(inicio, fim);
-  }
+  // atualizarPaginacao(): void {
+  //   const inicio = (this.paginaAtual - 1) * this.itensPorPagina;
+  //   const fim = inicio + this.itensPorPagina;
+  //   this.colaboradoresPaginados = this.colaboradores.slice(inicio, fim);
+  // }
 
   mudarPagina(pagina: number): void {
     this.paginaAtual = pagina;
@@ -149,19 +149,12 @@ export class ColaboradoresComponent implements OnInit {
   }
 
   deleteColaborador(id: string): void {
-    this.isLoading = true;
     this.colaboradoresService.deleteUsuarioById(id).subscribe(
       () => {
-        this.colaboradores = this.colaboradores.filter(
-          (colaborador) => colaborador.id !== id
-        );
-        this.totalPaginas = Math.ceil(
-          this.colaboradores.length / this.itensPorPagina
-        );
-        this.atualizarPaginacao();
+        this.fetchColaboradores();
       },
       (error: any) => {
-        this.isLoading = false;
+        this.showMessage('error', 'Erro ao excluir colaborador.');
       }
     );
   }
@@ -205,5 +198,20 @@ export class ColaboradoresComponent implements OnInit {
   clearMessage() {
     this.successMessage = '';
     if (this.messageTimeout) clearTimeout(this.messageTimeout);
+  }
+
+  atualizarPaginacao(): void {
+    const inicio = (this.paginaAtual - 1) * this.itensPorPagina;
+    const fim = inicio + this.itensPorPagina;
+    this.colaboradoresPaginados = this.colaboradores.slice(inicio, fim);
+  }
+
+  get totalItens() {
+    return this.colaboradores.length;
+  }
+
+  onPaginaMudou(novaPagina: number) {
+    this.paginaAtual = novaPagina;
+    this.atualizarPaginacao();
   }
 }
