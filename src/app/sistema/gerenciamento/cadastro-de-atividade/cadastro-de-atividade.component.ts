@@ -39,15 +39,12 @@ export class CadastroDeAtividadeComponent implements OnInit {
   }));
 
   atividadeForm: FormGroup;
+  tarefas: Tarefa[] = [];
   isLoading = false;
   successMessage: string | null = null;
   errorMessage: string | null = null;
   isEditMode = false;
   atividadeId: string | null = null;
-  lista: Tarefa[] = [];
-  listasDeTarefas: Lista[] = [];
-  novoNomeLista: string = '';
-  modalAberto = false;
 
   selectedSetor: string = '';
   selectedStatus: string = '';
@@ -81,7 +78,7 @@ export class CadastroDeAtividadeComponent implements OnInit {
       prioridade: ['', Validators.required],
       status: ['', Validators.required],
       idsUsuario: [[]],
-      tarefas: [[]],
+      tarefas: [[{ id: 0, tarefa: '', checked: false }]],
     });
   }
 

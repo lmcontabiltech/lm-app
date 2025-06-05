@@ -112,6 +112,18 @@
                 </app-multiplo-select>
             </div>
 
+            <div class="divisao">
+                <p>Lista de tarefas</p>
+                <hr class="line">
+            </div>
+
+            <div class="form-group">
+                <app-input-plus 
+                    [(items)]="tarefas"
+                    [initialCount]="1"
+                    formControlName="tarefas">
+                </app-input-plus>
+            </div>
 
             <div class="container-btn">
                 <button type="submit" class="btn-cadastrar">
