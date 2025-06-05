@@ -69,6 +69,23 @@
 
             <div class="input-duo">
                 <div class="form-group">
+                    <label for="possuiMulta">Possui multa?</label>
+                    <app-select-padrao
+                      label="Selecionar escolha"
+                      formControlName="possuiMulta">
+                    </app-select-padrao>
+                </div>
+                <div class="form-group">
+                    <label for="multa">Multa</label>
+                    <app-select-padrao
+                      label="Selecionar uma multa"
+                      formControlName="multa">
+                    </app-select-padrao>
+                </div>
+            </div>
+
+            <div class="input-duo">
+                <div class="form-group">
                   <label for="dataDeInicio">Data de início</label>
                   <input type="date" id="dataDeInicio" name="dataDeInicio" formControlName="dataDeInicio" class="form-control">
                 </div>
