@@ -86,19 +86,13 @@
         </div>
 
         <div class="paginacao">
-            <button (click)="paginaAnterior()" [disabled]="paginaAtual === 1">
-                <img src="assets/icones/carret-left.svg" alt="Esquerda">
-            </button>
-                <span *ngFor="let pagina of [].constructor(totalPaginas); let i = index">
-
-                <button (click)="mudarPagina(i + 1)" [class.ativo]="paginaAtual === i + 1">
-                    {{ i + 1 }}
-                </button>
-            </span>
-            <button (click)="proximaPagina()" [disabled]="paginaAtual === totalPaginas">
-                <img src="assets/icones/carret-right.svg" alt="Direita">
-            </button>
-        </div>
+            <app-pagination
+            [paginaAtual]="paginaAtual"
+            [totalItens]="totalItens"
+            [itensPorPagina]="itensPorPagina"
+            (paginaMudou)="onPaginaMudou($event)">
+            </app-pagination>
+        </div>  
     </div>
 </div>
 </div>

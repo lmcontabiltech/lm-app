@@ -105,29 +105,19 @@ export class ColaboradoresComponent implements OnInit {
     );
   }
 
-  // atualizarPaginacao(): void {
-  //   const inicio = (this.paginaAtual - 1) * this.itensPorPagina;
-  //   const fim = inicio + this.itensPorPagina;
-  //   this.colaboradoresPaginados = this.colaboradores.slice(inicio, fim);
-  // }
+  atualizarPaginacao(): void {
+    const inicio = (this.paginaAtual - 1) * this.itensPorPagina;
+    const fim = inicio + this.itensPorPagina;
+    this.colaboradoresPaginados = this.colaboradores.slice(inicio, fim);
+  }
 
-  mudarPagina(pagina: number): void {
-    this.paginaAtual = pagina;
+  get totalItens() {
+    return this.colaboradores.length;
+  }
+
+  onPaginaMudou(novaPagina: number) {
+    this.paginaAtual = novaPagina;
     this.atualizarPaginacao();
-  }
-
-  paginaAnterior(): void {
-    if (this.paginaAtual > 1) {
-      this.paginaAtual--;
-      this.atualizarPaginacao();
-    }
-  }
-
-  proximaPagina(): void {
-    if (this.paginaAtual < this.totalPaginas) {
-      this.paginaAtual++;
-      this.atualizarPaginacao();
-    }
   }
 
   fetchColaboradores(): void {
@@ -198,20 +188,5 @@ export class ColaboradoresComponent implements OnInit {
   clearMessage() {
     this.successMessage = '';
     if (this.messageTimeout) clearTimeout(this.messageTimeout);
-  }
-
-  atualizarPaginacao(): void {
-    const inicio = (this.paginaAtual - 1) * this.itensPorPagina;
-    const fim = inicio + this.itensPorPagina;
-    this.colaboradoresPaginados = this.colaboradores.slice(inicio, fim);
-  }
-
-  get totalItens() {
-    return this.colaboradores.length;
-  }
-
-  onPaginaMudou(novaPagina: number) {
-    this.paginaAtual = novaPagina;
-    this.atualizarPaginacao();
   }
 }
