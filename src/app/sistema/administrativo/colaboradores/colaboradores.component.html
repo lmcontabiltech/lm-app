@@ -11,7 +11,8 @@
                 <app-select-padrao
                   label="Todos os setores"
                   [options]="setores"
-                  [(selectedValue)]="selectedSetor">
+                  [(selectedValue)]="selectedSetor"
+                  (selectedValueChange)="onSetorChange()">
                 </app-select-padrao>
             </div>
 

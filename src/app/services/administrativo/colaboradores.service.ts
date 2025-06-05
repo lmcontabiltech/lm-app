@@ -189,4 +189,27 @@ export class ColaboradoresService {
       })
     );
   }
+
+  FiltroUsuariosBySetores(setores: string[]): Observable<Usuario[]> {
+    if (!setores || setores.length === 0) {
+      return this.getUsuarios();
+    }
+    const params = setores
+      .map((s) => `setors=${encodeURIComponent(s)}`)
+      .join('&');
+    const url = `${this.apiURL}/setor?${params}`;
+    return this.http.get<Usuario[]>(url).pipe(
+      map((response) => response),
+      catchError((error) => {
+        let errorMessage = 'Erro ao buscar usuários pelos setores.';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
 }
