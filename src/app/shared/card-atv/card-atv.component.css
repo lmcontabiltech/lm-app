@@ -65,17 +65,17 @@
 
 .priority-high {
   background: #ea0808a0;
-  color: #670d04;
+  color: #560700;
 }
 
 .priority-medium {
   background: #edf10fc8;
-  color: #8e7202;
+  color: #6c5700;
 }
 
 .priority-low {
   background: #4dd703a8;
-  color: #028606;
+  color: #005c03;
 }
 
 /* foto dos usuarios */

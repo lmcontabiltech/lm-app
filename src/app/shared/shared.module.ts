@@ -12,6 +12,14 @@ import { InputPlusComponent } from './input-plus/input-plus.component';
 import { CardAtvComponent } from './card-atv/card-atv.component';
 import { ModalAtividadeComponent } from './modal-atividade/modal-atividade.component';
 import { FiltroAtividadesComponent } from './filtro-atividades/filtro-atividades.component';
+import { PaginationComponent } from './pagination/pagination.component';
+import { LoadingComponent } from './loading/loading.component';
+import { LottieModule } from 'ngx-lottie';
+import player from 'lottie-web';
+
+export function playerFactory() {
+  return player;
+}
 
 @NgModule({
   declarations: [
@@ -26,8 +34,14 @@ import { FiltroAtividadesComponent } from './filtro-atividades/filtro-atividades
     CardAtvComponent,
     ModalAtividadeComponent,
     FiltroAtividadesComponent,
+    PaginationComponent,
+    LoadingComponent,
   ],
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    LottieModule.forRoot({ player: playerFactory }),
+  ],
   exports: [
     InputArquivosComponent,
     InputImagensComponent,
@@ -40,6 +54,8 @@ import { FiltroAtividadesComponent } from './filtro-atividades/filtro-atividades
     CardAtvComponent,
     ModalAtividadeComponent,
     FiltroAtividadesComponent,
+    PaginationComponent,
+    LoadingComponent,
   ],
 })
 export class SharedModule {}

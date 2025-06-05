@@ -19,5 +19,5 @@ export class Atividade {
   status?: string;
   usuarios?: { nome: string; fotoUrl: string }[];
   idsUsuario?: [];
-  tarefas?: Lista[];
+  tarefas!: { tarefa: string; id: number; checked: boolean }[];;
 }

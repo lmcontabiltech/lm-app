@@ -150,6 +150,23 @@ tr:hover {
   height: 30px;
   background: #ddd;
   border-radius: 50%;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatar span {
+  font-size: 14px;
+  color: #202020;
+  font-weight: 500;
 }
 
 /* paginação */
@@ -158,33 +175,6 @@ tr:hover {
   justify-content: flex-end;
   width: 100%;
   gap: 5px;
-}
-
-.paginacao button {
-  border: none;
-  background: transparent;
-  padding: 8px 12px;
-  border-radius: 25%;
-  cursor: pointer;
-  transition: 0.3s;
-  font-size: 16px;
-  font-weight: 500;
-  color: #585a60;
-}
-
-.paginacao button.ativo {
-  background: #e5e8f1;
-  color: #37383c;
-  font-weight: 600;
-}
-
-.paginacao button:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-.paginacao button:not(:disabled):hover {
-  background: rgba(0, 123, 255, 0.2);
 }
 
 /* Alert styles */
@@ -197,12 +187,14 @@ tr:hover {
 
 .alert {
   position: relative;
-  padding: 12px 40px 12px 16px;
+  padding: 12px 16px 12px 16px;
   border-radius: 4px;
   margin: 0;
   font-size: 15px;
   box-shadow: 0 2px 8px #0001;
   overflow: hidden;
+  display: flex;
+  justify-content: space-between;
 }
 
 .alert-success {
@@ -219,9 +211,9 @@ tr:hover {
 }
 
 .close-btn {
-  position: absolute;
-  top: 0;
-  right: 12px;
+  padding: 0;
+  margin: 0;
+  width: 20px;
   background: none;
   border: none;
   font-size: 20px;

@@ -13,7 +13,7 @@ import { ModalService } from 'src/app/services/modal/modalDeletar.service';
 export class EmpresasComponent implements OnInit {
   empresas: Empresa[] = [];
   empresasPaginados: Empresa[] = [];
-  itensPorPagina = 5;
+  itensPorPagina = 6;
   paginaAtual = 1;
   totalPaginas = 0;
   selectedEmpresa: any = null;
@@ -119,26 +119,17 @@ export class EmpresasComponent implements OnInit {
     this.empresasPaginados = this.empresas.slice(inicio, fim);
   }
 
-  mudarPagina(pagina: number): void {
-    this.paginaAtual = pagina;
+  get totalItens() {
+    return this.empresas.length;
+  }
+
+  onPaginaMudou(novaPagina: number) {
+    this.paginaAtual = novaPagina;
     this.atualizarPaginacao();
   }
 
-  paginaAnterior(): void {
-    if (this.paginaAtual > 1) {
-      this.paginaAtual--;
-      this.atualizarPaginacao();
-    }
-  }
-
-  proximaPagina(): void {
-    if (this.paginaAtual < this.totalPaginas) {
-      this.paginaAtual++;
-      this.atualizarPaginacao();
-    }
-  }
-
   deletarEmpresa(id: string): void {
+    const empresaRemovida = this.empresas.find((e) => e.id === id);
     this.empresasService.deletarEmpresa(id).subscribe(
       () => {
         this.empresas = this.empresas.filter((empresa) => empresa.id !== id);
@@ -146,6 +137,12 @@ export class EmpresasComponent implements OnInit {
           this.empresas.length / this.itensPorPagina
         );
         this.atualizarPaginacao();
+        this.showMessage(
+          'success',
+          `Empresa "${
+            empresaRemovida?.razaoSocial || ''
+          }" deletada com sucesso!`
+        );
       },
       (error: any) => {
         console.error('Erro ao excluir empresa:', error);

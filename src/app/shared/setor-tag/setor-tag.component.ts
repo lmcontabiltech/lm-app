@@ -31,11 +31,11 @@ export class SetorTagComponent {
       case Setor.FISCAL:
         return '#1F337F';
       case Setor.PESSOAL:
-        return '#4E5DA1'; 
+        return '#4a59a0'; 
       case Setor.PARALEGAL:
         return '#585A60';
       case Setor.FINANCEIRO:
-        return '#8B8D97';
+        return '#5a5f7b';
       default:
         return '#CCD0DE';
     }

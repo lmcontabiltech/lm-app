@@ -106,13 +106,11 @@ export class CadastroDeEmpresaComponent implements OnInit {
           this.router.navigate(['/usuario/empresas'], {
             state: { successMessage: 'Empresa atualizada com sucesso!' },
           });
-          console.debug('Empresa atualizada com sucesso:', response);
         },
         (error) => {
           this.isLoading = false;
           this.errorMessage = 'Erro ao atualizar empresa.';
           this.successMessage = null;
-          console.error('Erro ao atualizar empresa:', error);
         }
       );
     } else {
@@ -122,7 +120,9 @@ export class CadastroDeEmpresaComponent implements OnInit {
           this.successMessage = 'Empresa cadastrada com sucesso!';
           this.errorMessage = null;
           this.empresaForm.reset();
-          console.debug('Empresa cadastrada com sucesso:', response);
+          this.router.navigate(['/usuario/empresas'], {
+            state: { successMessage: 'Empresa cadastrada com sucesso!' },
+          });
         },
         (error) => {
           this.isLoading = false;

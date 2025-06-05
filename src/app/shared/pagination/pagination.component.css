@@ -1,0 +1,65 @@
+/* paginação */
+.paginacao {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  gap: 5px;
+}
+
+.paginacao button {
+  border: none;
+  background: transparent;
+  border-radius: 25%;
+  cursor: pointer;
+  transition: 0.3s;
+  padding: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #5a6058;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transform: scale(0.95);
+  animation: fadeInScale 0.3s forwards;
+  transition: background 0.2s, color 0.2s, transform 0.2s, opacity 0.2s;
+}
+
+@keyframes fadeInScale {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.paginacao button.ativo {
+  background: #e5e8f1;
+  color: #37383c;
+  font-weight: 600;
+  transform: scale(1.08);
+}
+
+.paginacao button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.paginacao button:not(:disabled):hover:not(.ativo) {
+  background: rgba(0, 123, 255, 0.2);
+  color: #37383c;
+  transform: scale(1.04);
+}
+
+.paginacao .ellipsis {
+  color: #888;
+  padding: 0 8px;
+  font-size: 1.2em;
+  background: transparent;
+  cursor: default;
+  border-radius: 0;
+  width: auto;
+  height: auto;
+  pointer-events: none;
+}

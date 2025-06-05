@@ -1,8 +1,8 @@
 <div  *ngIf="permissaoUsuario === 'Administrador' || permissaoUsuario === 'Coordenador'">
     <div class="main-container">
         <div class="header-container">
-            <h2>Perifericos</h2>
-            <button class="btn btn-primary" (click)="cadastrarPeriferico()">Cadastrar perifericos +</button>
+            <h2>Periféricos</h2>
+            <button class="btn btn-primary" (click)="cadastrarPeriferico()">Cadastrar periféricos +</button>
         </div>
 
         <div class="table-container">
@@ -20,10 +20,10 @@
                 <table *ngIf="perifericosPaginados.length > 0; else noDataTemplate">
                     <thead>
                         <tr>
-                            <th>Razão social</th>
-                            <th>CNPJ</th>
-                            <th>Código do Questor</th>
-                            <th>Regime da Empresa</th>
+                            <th>Nome</th>
+                            <th>Colaborador</th>
+                            <th>Data da Entrega</th>
+                            <th>Data da Devolução</th>
                             <th>Ações</th>
                         </tr>
                     </thead>

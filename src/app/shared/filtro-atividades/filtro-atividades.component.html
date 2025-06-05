@@ -62,5 +62,26 @@
         Não marcado como concluído
       </label>
     </div>
+
+    <!-- Filtro por período -->
+    <div class="filtro-grupo">
+      <label class="grupo-titulo">Período</label>
+      <label>
+        <input type="radio" name="periodo" [(ngModel)]="filtro['periodo']" value="7" />
+        Últimos 7 dias
+      </label>
+      <label>
+        <input type="radio" name="periodo" [(ngModel)]="filtro['periodo']" value="15" />
+        Últimos 15 dias
+      </label>
+      <label>
+        <input type="radio" name="periodo" [(ngModel)]="filtro['periodo']" value="30" />
+        Últimos 30 dias
+      </label>
+      <label>
+        <input type="radio" name="periodo" [(ngModel)]="filtro['periodo']" value="90" />
+        Últimos 90 dias
+      </label>
+    </div>
   </div>
 </div>

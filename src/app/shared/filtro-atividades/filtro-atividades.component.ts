@@ -12,12 +12,13 @@ export class FiltroAtividadesComponent implements OnInit {
   @Output() fechar = new EventEmitter<void>();
   @Output() filtroAplicado = new EventEmitter<any>();
 
-  filtro: { [key: string]: boolean } = {
+  filtro: { [key: string]: boolean | string } = {
     semMembros: false,
     atribuidoAMim: false,
     todosSetores: false,
     marcado: false,
     naoMarcado: false,
+    periodo: '', 
   };
 
   setores: string[] = [];

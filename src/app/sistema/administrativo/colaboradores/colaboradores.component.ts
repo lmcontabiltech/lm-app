@@ -19,7 +19,7 @@ export class ColaboradoresComponent implements OnInit {
   }));
 
   colaboradores: Colaborador[] = [];
-  itensPorPagina = 5;
+  itensPorPagina = 6;
   paginaAtual = 1;
   totalPaginas = Math.ceil(this.colaboradores.length / this.itensPorPagina);
   colaboradoresPaginados: Colaborador[] = [];
@@ -111,23 +111,13 @@ export class ColaboradoresComponent implements OnInit {
     this.colaboradoresPaginados = this.colaboradores.slice(inicio, fim);
   }
 
-  mudarPagina(pagina: number): void {
-    this.paginaAtual = pagina;
+  get totalItens() {
+    return this.colaboradores.length;
+  }
+
+  onPaginaMudou(novaPagina: number) {
+    this.paginaAtual = novaPagina;
     this.atualizarPaginacao();
-  }
-
-  paginaAnterior(): void {
-    if (this.paginaAtual > 1) {
-      this.paginaAtual--;
-      this.atualizarPaginacao();
-    }
-  }
-
-  proximaPagina(): void {
-    if (this.paginaAtual < this.totalPaginas) {
-      this.paginaAtual++;
-      this.atualizarPaginacao();
-    }
   }
 
   fetchColaboradores(): void {
@@ -149,6 +139,7 @@ export class ColaboradoresComponent implements OnInit {
   }
 
   deleteColaborador(id: string): void {
+    const colaboradorRemovido = this.colaboradores.find((e) => e.id === id);
     this.colaboradoresService.deleteUsuarioById(id).subscribe(
       () => {
         this.colaboradores = this.colaboradores.filter(
@@ -158,10 +149,13 @@ export class ColaboradoresComponent implements OnInit {
           this.colaboradores.length / this.itensPorPagina
         );
         this.atualizarPaginacao();
-        console.log('Colaborador excluído com sucesso');
+        this.showMessage(
+          'success',
+          `Usuário "${colaboradorRemovido?.nome || ''}" deletado com sucesso!`
+        );
       },
       (error: any) => {
-        console.error('Erro ao excluir colaborador:', error);
+        this.showMessage('error', 'Erro ao excluir colaborador.');
       }
     );
   }
@@ -185,6 +179,22 @@ export class ColaboradoresComponent implements OnInit {
 
   editarColaborador(id: string): void {
     this.router.navigate(['/usuario/cadastro-de-colaborador', id]);
+  }
+
+  getInitial(name: string): string {
+    return name ? name.charAt(0).toUpperCase() : '?';
+  }
+
+  getRandomColor(seed: string): string {
+    const colors = [
+      '#FFB3BA', // Rosa pastel
+      '#FFDFBA', // Laranja pastel
+      '#BAFFC9', // Verde pastel
+      '#BAE1FF', // Azul pastel
+      '#D5BAFF', // Roxo pastel
+    ];
+    const index = seed ? seed.charCodeAt(0) % colors.length : 0;
+    return colors[index];
   }
 
   exibirMensagemDeSucesso(): void {

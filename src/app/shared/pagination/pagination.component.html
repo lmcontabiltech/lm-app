@@ -1,0 +1,19 @@
+<div class="paginacao">
+    <button (click)="paginaAnterior()" [disabled]="paginaAtual === 1">
+      <img src="assets/icones/carret-left.svg" alt="Esquerda">
+    </button>
+    <span *ngFor="let pagina of paginasParaExibir">
+      <button
+        *ngIf="pagina !== '...'; else ellipsis"
+        (click)="mudarPagina(pagina)"
+        [class.ativo]="paginaAtual === pagina">
+        {{ pagina }}
+      </button>
+      <ng-template #ellipsis>
+        <span class="ellipsis">...</span>
+      </ng-template>
+    </span>
+    <button (click)="proximaPagina()" [disabled]="paginaAtual === totalPaginas">
+      <img src="assets/icones/carret-right.svg" alt="Direita">
+    </button>
+</div>

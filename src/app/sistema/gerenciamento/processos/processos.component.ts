@@ -30,6 +30,7 @@ export class ProcessosComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.exibirMensagemDeSucesso();
     this.fetchProcessos();
     this.atualizarPaginacao();
   }
@@ -67,16 +68,13 @@ export class ProcessosComponent implements OnInit {
     this.processosPaginados = this.processos.slice(inicio, fim);
   }
 
-  mudarPagina(pagina: number): void {
-    this.paginaAtual = pagina;
-    this.atualizarPaginacao();
+  get totalItens() {
+    return this.processos.length;
   }
 
-  paginaAnterior(): void {
-    if (this.paginaAtual > 1) {
-      this.paginaAtual--;
-      this.atualizarPaginacao();
-    }
+  onPaginaMudou(novaPagina: number) {
+    this.paginaAtual = novaPagina;
+    this.atualizarPaginacao();
   }
 
   proximaPagina(): void {
@@ -91,6 +89,7 @@ export class ProcessosComponent implements OnInit {
   }
 
   deletarProcesso(id: string): void {
+    const processoRemovido = this.processos.find((p) => p.id === id);
     this.processoService.deletarProcesso(id).subscribe(
       () => {
         this.processos = this.processos.filter(
@@ -100,7 +99,10 @@ export class ProcessosComponent implements OnInit {
           this.processos.length / this.itensPorPagina
         );
         this.atualizarPaginacao();
-        console.log('Processo excluída com sucesso');
+        this.showMessage(
+          'success',
+          `Processo "${processoRemovido?.nome || ''}" deletado com sucesso!`
+        );
       },
       (error: any) => {
         console.error('Erro ao excluir processo:', error);

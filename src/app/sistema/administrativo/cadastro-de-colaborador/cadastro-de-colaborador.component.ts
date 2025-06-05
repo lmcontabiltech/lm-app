@@ -121,6 +121,9 @@ export class CadastroDeColaboradorComponent implements OnInit {
           this.successMessage = 'Usuário cadastrado com sucesso!';
           this.errorMessage = null;
           this.cadastroForm.reset();
+          this.router.navigate(['/usuario/colaboradores'], {
+              state: { successMessage: 'Usuário cadastrado com sucesso!' },
+            });
           console.debug('Usuário cadastrado com sucesso:', response);
         },
         (error) => {

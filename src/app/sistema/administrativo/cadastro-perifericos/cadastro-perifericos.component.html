@@ -8,7 +8,7 @@
             (click)="goBack()"
         />
         <span>
-            {{ isEditMode ? "Editar periferico" : "Cadastrar periferico" }}
+            {{ isEditMode ? "Editar periférico" : "Cadastrar periférico" }}
         </span>
         </div>
 
@@ -90,7 +90,7 @@
 
             <div class="container-btn">
             <button type="submit" class="btn-cadastrar">
-                {{ isEditMode ? "Atualizar periferico" : "Cadastrar periferico" }}
+                {{ isEditMode ? "Atualizar periférico" : "Cadastrar periférico" }}
             </button>
             </div>
         </form>
@@ -105,6 +105,6 @@
         </div>
         </div>
 
-        <div *ngIf="isLoading">Carregando...</div>
+        <app-loading *ngIf="isLoading"></app-loading>
     </div>
 </div>

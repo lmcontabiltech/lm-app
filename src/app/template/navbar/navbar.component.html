@@ -7,7 +7,17 @@
 
       <div class="header-user">
         <div class="usuario">
-          <img src="assets/imagens/user-photo.png" alt="User Photo" class="user-photo" />
+          <div class="user-photo" *ngIf="fotoUsuario; else fallbackPhoto">
+            <img [src]="fotoUsuario" alt="Foto do usuário" class="user-photo">
+          </div>
+          <ng-template #fallbackPhoto>
+            <div
+              class="user-initial"
+              [style.background-color]="getRandomColor(nomeUsuario)"
+            >
+              {{ getInitial(nomeUsuario) }}
+            </div>
+          </ng-template>
           <div class="user-info">
             <h3 class="user-name">{{ nomeUsuario }}</h3>
             <span class="user-cargo">{{ permissaoUsuario }}</span>
