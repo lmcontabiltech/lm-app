@@ -9,10 +9,13 @@
         <div class="filtro-container">
             <div class="select-box">
                 <app-select-padrao
-                  label="Todos os setores"
+                  label="Setor"
                   [options]="setores"
                   [(selectedValue)]="selectedSetor"
-                  (selectedValueChange)="onSetorChange()">
+                  (selectedValueChange)="onSetorChange()"
+                  [showDefaultOption]="true"
+                  [defaultLabel]="'Todos os setores'"
+                  [defaultValue]="''">
                 </app-select-padrao>
             </div>
 

@@ -49,7 +49,7 @@ label.active {
 
 .options-container {
   position: absolute;
-  top: 50%;
+  top: 110%;
   left: 0;
   width: 100%;
   background: var(--container-modal);
