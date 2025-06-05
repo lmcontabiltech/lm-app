@@ -82,7 +82,6 @@ export class CadastroDeAtividadeComponent implements OnInit {
       status: ['', Validators.required],
       idsUsuario: [[]],
       tarefas: [[]],
-      novoNomeLista: [''],
     });
   }
 
@@ -145,16 +144,10 @@ export class CadastroDeAtividadeComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log('Listas de tarefas antes do submit:', this.listasDeTarefas);
-    // Remover novoNomeLista do envio
-    const { novoNomeLista, tarefas, ...formValues } = this.atividadeForm.value;
-
     const atividade: Atividade = {
       ...this.atividadeForm.value,
       idsUsuario: this.atividadeForm.value.idsUsuario,
-      tarefas: this.listasDeTarefas,
     };
-    console.log('Listas a ser enviado:', atividade);
     console.log('Atividade Form:', this.atividadeForm.value);
 
     if (this.isEditMode && this.atividadeId) {
@@ -191,40 +184,20 @@ export class CadastroDeAtividadeComponent implements OnInit {
     }
   }
 
-  adicionarLista() {
-    const nome = this.atividadeForm.get('novoNomeLista')?.value?.trim();
-    if (!nome) return;
-
-    const novaLista: Lista = {
-      nome,
-      subtarefas: [],
-    };
-    this.listasDeTarefas.push(novaLista);
-    console.log('Listas de tarefas:', this.listasDeTarefas);
-
-    this.atividadeForm.get('novoNomeLista')?.setValue('');
-    this.fecharModalLista();
-  }
-
-  removerLista(index: number) {
-    this.listasDeTarefas.splice(index, 1);
-  }
-
-  abrirModalLista() {
-    this.modalAberto = true;
-    this.novoNomeLista = '';
-  }
-
-  fecharModalLista() {
-    this.modalAberto = false;
-  }
-
   onMembrosChange(event: any) {
     const ids = Array.isArray(event)
       ? event.map((item: any) => item.value)
       : [];
     this.atividadeForm.get('idsUsuario')?.setValue(ids);
     console.log('Membros selecionados (ids):', ids);
+  }
+
+  onEmpresasChange(event: any) {
+    const ids = Array.isArray(event)
+      ? event.map((item: any) => item.value)
+      : [];
+    this.atividadeForm.get('idsEmpresa')?.setValue(ids);
+    console.log('Empresas selecionadas (ids):', ids);
   }
 
   private verificarModoEdicao(): void {
@@ -245,11 +218,6 @@ export class CadastroDeAtividadeComponent implements OnInit {
         });
 
         this.tratarDadosAtividade(atividade);
-
-        // Se tiver listas de tarefas
-        if (atividade.tarefas) {
-          this.listasDeTarefas = atividade.tarefas;
-        }
       },
       (error) => {
         console.error('Erro ao carregar os dados da atividade:', error);

@@ -7,6 +7,35 @@
     <div class="forms-container">
         <form (ngSubmit)="onSubmit()" [formGroup]="atividadeForm">
             <div class="form-group">
+                <label for="setor">Setor</label>
+                <app-select-padrao
+                    label="Selecionar o setor"
+                    [options]="setores"
+                    [(selectedValue)]="selectedSetor"
+                    formControlName="setor">
+                </app-select-padrao>
+            </div>
+
+            <div class="input-duo">
+                <div class="form-group">
+                    <label for="escolha">Possui processo?</label>
+                    <app-select-padrao
+                      label="Selecionar escolha"
+                      formControlName="escolha">
+                    </app-select-padrao>
+                </div>
+                <div class="form-group">
+                    <label for="idProcesso">Processo</label>
+                    <app-select-padrao
+                    label="Selecionar o processo"
+                    [options]="processos"
+                    [(selectedValue)]="selectedProcesso"
+                    formControlName="idProcesso">
+                    </app-select-padrao>
+                </div>
+            </div>
+
+            <div class="form-group">
                 <label for="nome">Nome</label>
                 <input type="text" id="nome" name="nome" formControlName="nome" class="form-control" placeholder="Digite o nome da atividade" required>
             </div>
@@ -16,35 +45,26 @@
                 <textarea type="text" id="descricao" name="descricao" formControlName="descricao" class="form-control" placeholder="Digite a descrição da atividade" rows="6"></textarea>
             </div>
     
-            <div class="input-duo">
-                <div class="form-group">
-                    <label for="idEmpresa">Empresa</label>
-                    <app-select-padrao
-                      label="Selecionar a empresa"
-                      [options]="empresas"
-                      [(selectedValue)]="selectedEmpresa"
-                      formControlName="idEmpresa">
-                    </app-select-padrao>
-                </div>
-                <div class="form-group">
-                    <label for="setor">Setor</label>
-                    <app-select-padrao
-                      label="Selecionar o setor"
-                      [options]="setores"
-                      [(selectedValue)]="selectedSetor"
-                      formControlName="setor">
-                    </app-select-padrao>
-                </div>
-            </div>
-    
-            <div class="form-group">
-                <label for="idProcesso">Processo</label>
+            <!-- <div class="form-group">
+                <label for="idEmpresa">Empresa</label>
                 <app-select-padrao
-                  label="Selecionar o processo"
-                  [options]="processos"
-                  [(selectedValue)]="selectedProcesso"
-                  formControlName="idProcesso">
+                    label="Selecionar empresa"
+                    [options]="empresas"
+                    [(selectedValue)]="selectedEmpresa"
+                    formControlName="idEmpresa">
                 </app-select-padrao>
+            </div> -->
+
+            <div class="form-group">
+                <label for="idEmpresa">Empresa</label>
+                <app-multiplo-select
+                  label="Selecionar empresa"
+                  [options]="empresas"
+                  [(selectedValue)]="selectedEmpresa"
+                  [multiple]="true"
+                  formControlName="idEmpresa"
+                  (selectedValueChange)="onEmpresasChange($event)">
+                </app-multiplo-select>
             </div>
 
             <div class="input-duo">
@@ -92,34 +112,6 @@
                 </app-multiplo-select>
             </div>
 
-             <div class="form-group" formControlName="tarefas">
-                <div class="divisao">
-                    <div class="lista-header-container">
-                        <p>Checklists da Atividade</p>
-                        <button type="button" class="btn-adicionar-lista btn" (click)="abrirModalLista()">Lista +</button>
-                    </div>
-                    <hr class="line">
-                </div>
-
-                <div class="modal-backdrop" *ngIf="modalAberto">
-                    <div class="modal-lista">
-                        <label for="novoNomeLista">Nova Lista</label>
-                        <input type="text" formControlName="novoNomeLista" placeholder="Insira um nome para a lista">
-                        <div class="modal-actions">
-                            <button type="button" class="btn-cancelar btn" (click)="fecharModalLista()">Cancelar</button>
-                            <button type="button" class="btn-salvar btn" (click)="adicionarLista()">Salvar</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div *ngFor="let lista of listasDeTarefas; let i = index" class="lista-container">
-                    <div class="header-lista">
-                        <span>{{ lista.nome }}</span>
-                        <button type="button" class="btn-remover-lista" (click)="removerLista(i)" title="Remover lista">×</button>
-                    </div>
-                    <app-input-plus [(items)]="lista.subtarefas" [initialCount]="1"></app-input-plus>
-                </div>
-            </div>
 
             <div class="container-btn">
                 <button type="submit" class="btn-cadastrar">
