@@ -194,7 +194,7 @@ tr:hover {
   box-shadow: 0 2px 8px #0001;
   overflow: hidden;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 .alert-success {

@@ -488,6 +488,14 @@ select:focus {
   width: 100%;
 }
 
+.search {
+  padding: 12px 24px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  width: 100%;
+  text-align: center;
+}
+
 .feedback-container {
   width: 100%;
 }
