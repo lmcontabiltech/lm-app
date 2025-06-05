@@ -21,27 +21,37 @@
   <div class="container-perfil">
     <div class="profile-attributes">
       <div class="container-photo">
-        <div class="image-container" (click)="isEditing && fileInput.click()">
-          <img [src]="selectedImageUrl || defaultImageUrl" class="profile-photo" alt="Foto de perfil"/>
-          <input #fileInput type="file" accept="image/*" (change)="onImageSelected($event)" style="display: none;"/>
+          <div class="image-container" (click)="isEditing && fileInput.click()">
+            <ng-container *ngIf="selectedImageUrl && selectedImageUrl !== ''; else noPhoto">
+              <img [src]="selectedImageUrl" class="profile-photo" alt="Foto de perfil"/>
+            </ng-container>
+            <ng-template #noPhoto>
+              <div
+                class="profile-photo avatar-fallback"
+                [ngStyle]="{'background-color': getRandomColor(name)}"
+              >
+                <span>{{ getInitial(name) }}</span>
+              </div>
+            </ng-template>
+            <input #fileInput type="file" accept="image/*" (change)="onImageSelected($event)" style="display: none;"/>
+          </div>
+          <div *ngIf="isEditing" class="edit-profile-photo">
+            <button (click)="fileInput.click()">Alterar foto</button>
+          </div>
         </div>
-        <div *ngIf="isEditing" class="edit-profile-photo">
-          <button (click)="fileInput.click()">Alterar foto</button>
-        </div>
-      </div>
     </div>
     <div class="data-profile" *ngIf="!isEditing">
       <div class="data-item">
           <label class="label-item">Nome:</label>
-          <span>{{ name }}</span>
+          <span>{{ name || '-' }}</span>
         </div>
         <div class="data-item">
           <label class="label-item">E-mail:</label>
-          <span>{{ email }}</span>
+          <span>{{ email || '-' }}</span>
         </div>
         <div class="data-item">
           <label class="label-item">Setor:</label>
-          <span>{{ setor }}</span>
+          <span>{{ setor || '-' }}</span>
         </div>
     </div>
     <div class="data-profile-edit">

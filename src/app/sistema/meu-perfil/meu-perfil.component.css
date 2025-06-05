@@ -120,6 +120,19 @@ input:checked + .slider:before {
   cursor: pointer;
 }
 
+.image-container span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 32px;
+  font-weight: 500;
+}
+
 .profile-photo {
   width: 140px;
   height: 140px;
