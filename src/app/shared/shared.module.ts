@@ -12,6 +12,7 @@ import { InputPlusComponent } from './input-plus/input-plus.component';
 import { CardAtvComponent } from './card-atv/card-atv.component';
 import { ModalAtividadeComponent } from './modal-atividade/modal-atividade.component';
 import { FiltroAtividadesComponent } from './filtro-atividades/filtro-atividades.component';
+import { PaginationComponent } from './pagination/pagination.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { FiltroAtividadesComponent } from './filtro-atividades/filtro-atividades
     CardAtvComponent,
     ModalAtividadeComponent,
     FiltroAtividadesComponent,
+    PaginationComponent,
   ],
   imports: [CommonModule, FormsModule],
   exports: [
@@ -40,6 +42,7 @@ import { FiltroAtividadesComponent } from './filtro-atividades/filtro-atividades
     CardAtvComponent,
     ModalAtividadeComponent,
     FiltroAtividadesComponent,
+    PaginationComponent,
   ],
 })
 export class SharedModule {}
