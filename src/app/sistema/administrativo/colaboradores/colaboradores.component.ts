@@ -216,4 +216,29 @@ export class ColaboradoresComponent implements OnInit {
     this.successMessage = '';
     if (this.messageTimeout) clearTimeout(this.messageTimeout);
   }
+
+  onSetorChange() {
+    const setores = this.selectedSetor ? [this.selectedSetor] : [];
+    this.isLoading = true;
+    this.colaboradoresService.FiltroUsuariosBySetores(setores).subscribe(
+      (usuarios) => {
+        this.colaboradores = usuarios;
+        this.paginaAtual = 1;
+        this.totalPaginas = Math.ceil(
+          this.colaboradores.length / this.itensPorPagina
+        );
+        this.atualizarPaginacao();
+        this.isLoading = false;
+        this.mensagemBusca =
+          usuarios.length === 0
+            ? 'Nenhum usuário encontrado para o setor selecionado.'
+            : '';
+      },
+      (error) => {
+        this.isLoading = false;
+        this.mensagemBusca = 'Erro ao buscar usuários por setor.';
+        console.error(error);
+      }
+    );
+  }
 }

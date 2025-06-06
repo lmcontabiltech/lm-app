@@ -7,7 +7,13 @@
     <div class="table-container">
         <div class="filtro-container">
             <app-select-padrao
-                  label="Todos os setores">
+                  label="Setor"
+                  [options]="setores"
+                  [(selectedValue)]="selectedSetor"
+                  (selectedValueChange)="onSetorChange()"
+                  [showDefaultOption]="true"
+                  [defaultLabel]="'Todos os setores'"
+                  [defaultValue]="''">
             </app-select-padrao>
 
             <div class="search-container">
@@ -72,7 +78,7 @@
         <div *ngIf="processosPaginados.length === 0" class="feedback-container">
             <ng-container *ngIf="mensagemBusca; else semProcessos">
                 <div>
-                <div class="alert alert-warning text-center">
+                <div class="search alert-warning text-center">
                     {{ mensagemBusca }}
                 </div>
                 </div>

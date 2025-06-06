@@ -9,9 +9,13 @@
         <div class="filtro-container">
             <div class="select-box">
                 <app-select-padrao
-                  label="Todos os setores"
+                  label="Setor"
                   [options]="setores"
-                  [(selectedValue)]="selectedSetor">
+                  [(selectedValue)]="selectedSetor"
+                  (selectedValueChange)="onSetorChange()"
+                  [showDefaultOption]="true"
+                  [defaultLabel]="'Todos os setores'"
+                  [defaultValue]="''">
                 </app-select-padrao>
             </div>
 
@@ -78,7 +82,7 @@
         <div *ngIf="colaboradoresPaginados.length === 0" class="feedback-container">
             <ng-container *ngIf="mensagemBusca; else semUsuarios">
                 <div>
-                <div class="alert alert-warning text-center">
+                <div class="search alert-warning text-center">
                     {{ mensagemBusca }}
                 </div>
                 </div>

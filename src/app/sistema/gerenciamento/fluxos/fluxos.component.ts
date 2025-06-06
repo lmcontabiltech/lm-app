@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProcessoService } from 'src/app/services/gerenciamento/processo.service';
 import { Processo } from '../processos/processo';
+import { SetorDescricao } from '../../administrativo/cadastro-de-colaborador/setor-descricao';
+import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
 
 @Component({
   selector: 'app-fluxos',
@@ -16,6 +18,15 @@ export class FluxosComponent implements OnInit {
   processosPaginados: Processo[] = [];
   selectedProcesso: any = null;
   isLoading = false;
+  termoBusca: string = '';
+  mensagemBusca: string = '';
+
+  setores = Object.keys(Setor).map((key) => ({
+    value: Setor[key as keyof typeof Setor],
+    description: SetorDescricao[Setor[key as keyof typeof Setor]],
+  }));
+
+  selectedSetor: string = '';
 
   constructor(
     private router: Router,
@@ -60,26 +71,41 @@ export class FluxosComponent implements OnInit {
     this.processosPaginados = this.processos.slice(inicio, fim);
   }
 
-  mudarPagina(pagina: number): void {
-    this.paginaAtual = pagina;
+  get totalItens() {
+    return this.processos.length;
+  }
+
+  onPaginaMudou(novaPagina: number) {
+    this.paginaAtual = novaPagina;
     this.atualizarPaginacao();
-  }
-
-  paginaAnterior(): void {
-    if (this.paginaAtual > 1) {
-      this.paginaAtual--;
-      this.atualizarPaginacao();
-    }
-  }
-
-  proximaPagina(): void {
-    if (this.paginaAtual < this.totalPaginas) {
-      this.paginaAtual++;
-      this.atualizarPaginacao();
-    }
   }
 
   visualizarFluxo(id: string): void {
     this.router.navigate(['/usuario/detalhes-fluxo', id]);
+  }
+
+  onSetorChange() {
+    const setores = this.selectedSetor ? [this.selectedSetor] : [];
+    this.isLoading = true;
+    this.processoService.getProcessosBySetores(setores).subscribe(
+      (processos) => {
+        this.processos = processos;
+        this.paginaAtual = 1;
+        this.totalPaginas = Math.ceil(
+          this.processos.length / this.itensPorPagina
+        );
+        this.atualizarPaginacao();
+        this.isLoading = false;
+        this.mensagemBusca =
+          processos.length === 0
+            ? 'Nenhum processo encontrado para o setor selecionado.'
+            : '';
+      },
+      (error) => {
+        this.isLoading = false;
+        this.mensagemBusca = 'Erro ao buscar processos por setor.';
+        console.error(error);
+      }
+    );
   }
 }

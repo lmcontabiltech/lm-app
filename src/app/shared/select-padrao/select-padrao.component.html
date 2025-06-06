@@ -10,6 +10,12 @@
 
   <div class="options-container" *ngIf="isOpen">
     <div class="option"
+        *ngIf="showDefaultOption"
+        (click)="onSelectDefault()"
+        [class.selected]="selectedValue === defaultValue">
+      {{ defaultLabel }}
+    </div>
+    <div class="option"
          *ngFor="let option of options"
          (click)="onSelect(option)"
          [class.selected]="option.value === selectedValue">

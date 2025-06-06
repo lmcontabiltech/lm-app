@@ -1,4 +1,13 @@
-import { Component, OnInit, Input, HostListener, Output, EventEmitter, ElementRef, forwardRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  HostListener,
+  Output,
+  EventEmitter,
+  ElementRef,
+  forwardRef,
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -14,12 +23,15 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ],
 })
 export class SelectPadraoComponent {
+  @Input() showDefaultOption: boolean = false;
   @Input() label: string = '';
-  @Input() options: { value: string, description: string }[] = [];
+  @Input() options: { value: string; description: string }[] = [];
   @Input() selectedValue: string = '';
   @Output() selectedValueChange = new EventEmitter<string>();
   @Input() customStyles: { [key: string]: string } = {};
   @Input() disabled: boolean = false;
+  @Input() defaultLabel: string = 'Todos';
+  @Input() defaultValue: any = '';
 
   isOpen: boolean = false;
 
@@ -45,7 +57,7 @@ export class SelectPadraoComponent {
     this.disabled = isDisabled;
   }
 
-  onSelect(option: { value: string, description: string }) {
+  onSelect(option: { value: string; description: string }) {
     this.selectedValue = option.value;
     this.value = option.value;
     this.onChange(this.value);
@@ -55,7 +67,9 @@ export class SelectPadraoComponent {
   }
 
   getSelectedDescription(): string {
-    const selectedOption = this.options.find(option => option.value === this.selectedValue);
+    const selectedOption = this.options.find(
+      (option) => option.value === this.selectedValue
+    );
     return selectedOption ? selectedOption.description : '';
   }
 
@@ -64,5 +78,11 @@ export class SelectPadraoComponent {
     if (!this.elementRef.nativeElement.contains(event.target)) {
       this.isOpen = false;
     }
+  }
+
+  onSelectDefault() {
+    this.selectedValue = this.defaultValue;
+    this.selectedValueChange.emit(this.defaultValue);
+    this.isOpen = false;
   }
 }
