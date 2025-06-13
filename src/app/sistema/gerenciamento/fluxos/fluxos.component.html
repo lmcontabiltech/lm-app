@@ -5,7 +5,8 @@
 
     <div class="table-container">
         <div class="filtro-container">
-            <app-select-padrao
+             <div class="select-container">
+                <app-select-padrao
                   label="Setor"
                   [options]="setores"
                   [(selectedValue)]="selectedSetor"
@@ -13,7 +14,8 @@
                   [showDefaultOption]="true"
                   [defaultLabel]="'Todos os setores'"
                   [defaultValue]="''">
-            </app-select-padrao>
+                </app-select-padrao>
+             </div>
 
             <div class="search-container">
                 <app-search (searchChange)="onSearch($event)"></app-search>
