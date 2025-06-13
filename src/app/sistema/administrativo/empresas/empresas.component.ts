@@ -4,6 +4,8 @@ import { Empresa } from './empresa';
 import { EmpresasService } from '../../../services/administrativo/empresas.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ModalService } from 'src/app/services/modal/modalDeletar.service';
+import { RegimeDaEmpresa } from './enums/regime-da-empresa';
+import { RegimeDaEmpresaDescricao } from './enums/regime-da-empresa-descricao';
 
 @Component({
   selector: 'app-empresas',
@@ -25,6 +27,16 @@ export class EmpresasComponent implements OnInit {
   isLoading = false;
   successMessage: string = '';
   messageTimeout: any;
+
+  selectedRegime: string = '';
+
+  regimes = Object.keys(RegimeDaEmpresa).map((key) => ({
+    value: RegimeDaEmpresa[key as keyof typeof RegimeDaEmpresa],
+    description:
+      RegimeDaEmpresaDescricao[
+        RegimeDaEmpresa[key as keyof typeof RegimeDaEmpresa]
+      ],
+  }));
 
   constructor(
     private router: Router,
@@ -190,4 +202,6 @@ export class EmpresasComponent implements OnInit {
     this.successMessage = '';
     if (this.messageTimeout) clearTimeout(this.messageTimeout);
   }
+
+  onRegimeChange() {}
 }

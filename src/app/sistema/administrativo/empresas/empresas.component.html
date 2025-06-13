@@ -9,7 +9,13 @@
         <div class="filtro-container">
              <div class="select-container">
                 <app-select-padrao
-                  label="Todos os regimes">
+                  label="Regimes"
+                  [options]="regimes"
+                  [(selectedValue)]="selectedRegime"
+                  (selectedValueChange)="onRegimeChange()"
+                  [showDefaultOption]="true"
+                  [defaultLabel]="'Todos os regimes'"
+                  [defaultValue]="''">
                 </app-select-padrao>
              </div>
 
@@ -82,7 +88,7 @@
             <ng-template #semEmpresas>
                 <div class="no-data-message">
                 <img src="assets/imagens/no-data.svg" alt="Sem dados">
-                <p>Não há usuários cadastrados.</p>
+                <p>Não há empresas cadastradas.</p>
                 </div>
             </ng-template>
         </div>
