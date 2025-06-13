@@ -243,11 +243,6 @@ tr:hover {
     gap: 16px;
   }
 
-  .select-box {
-    display: flex;
-    width: 100%;
-  }
-
   .select-container {
     width: 100%;
   }
