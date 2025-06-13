@@ -34,10 +34,13 @@ export class SelectPadraoComponent {
   @Input() defaultValue: any = '';
 
   isOpen: boolean = false;
-
   onChange = (value: string) => {};
   onTouched = () => {};
   value: string = '';
+  filteredOptions: { value: string; description: string }[] = [];
+  searchText: string = '';
+  searchTimeout: any;
+  highlightedValue: string = '';
 
   constructor(private elementRef: ElementRef) {}
 
@@ -73,6 +76,12 @@ export class SelectPadraoComponent {
     return selectedOption ? selectedOption.description : '';
   }
 
+  onSelectDefault() {
+    this.selectedValue = this.defaultValue;
+    this.selectedValueChange.emit(this.defaultValue);
+    this.isOpen = false;
+  }
+
   @HostListener('document:click', ['$event'])
   clickout(event: Event) {
     if (!this.elementRef.nativeElement.contains(event.target)) {
@@ -80,9 +89,40 @@ export class SelectPadraoComponent {
     }
   }
 
-  onSelectDefault() {
-    this.selectedValue = this.defaultValue;
-    this.selectedValueChange.emit(this.defaultValue);
-    this.isOpen = false;
+  @HostListener('document:keydown', ['$event'])
+  onKeydown(event: KeyboardEvent): void {
+    if (this.isOpen) {
+      clearTimeout(this.searchTimeout);
+
+      this.searchText += event.key.toLowerCase();
+
+      const matchingOptionIndex = this.options.findIndex((option) =>
+        option.description.toLowerCase().startsWith(this.searchText)
+      );
+
+      if (matchingOptionIndex !== -1) {
+        this.highlightedValue = this.options[matchingOptionIndex].value;
+
+        const dropdownContainer =
+          this.elementRef.nativeElement.querySelector('.options-container');
+
+        const optionElement = dropdownContainer.querySelector(
+          `.option[data-value="${this.highlightedValue}"]`
+        );
+
+        if (dropdownContainer && optionElement) {
+          const optionOffsetTop = optionElement.offsetTop;
+          const optionHeight = optionElement.offsetHeight;
+          const containerHeight = dropdownContainer.offsetHeight;
+
+          dropdownContainer.scrollTop =
+            optionOffsetTop - containerHeight / 2 + optionHeight / 2;
+        }
+      }
+
+      this.searchTimeout = setTimeout(() => {
+        this.searchText = '';
+      }, 1000);
+    }
   }
 }
