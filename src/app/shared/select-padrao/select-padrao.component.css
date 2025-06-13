@@ -4,7 +4,6 @@
   box-sizing: border-box;
   display: block;
   width: 100%;
-  min-width: 250px;
   height: 50px;
   border: 1px solid var(--lm-border02);
   border-radius: 8px;
@@ -33,10 +32,12 @@ label.active {
   background: var(--form-background);
   padding: 10px;
   cursor: pointer;
+  width: 100%;
   height: 100%;
   border-radius: 8px;
   display: flex;
   align-items: center;
+  box-sizing: border-box;
 }
 
 .selected-value {
@@ -100,11 +101,6 @@ label.active {
 }
 
 @media (max-width: 768px) {
-  .select-container {
-    width: 100%;
-    height: 40px;
-  }
-
   .select-dropdown {
     padding: 8px;
   }
