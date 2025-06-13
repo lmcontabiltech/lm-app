@@ -15,6 +15,9 @@ import { ProcessoService } from 'src/app/services/gerenciamento/processo.service
 import { Tarefa } from '../processos/tarefas';
 import { Lista } from '../atividades/listas';
 import { AtividadeService } from 'src/app/services/gerenciamento/atividade.service';
+import { Escolha } from '../processos/enums/escolha';
+import { EscolhaDescricao } from '../processos/enums/escolha-descricao';
+import { MULTAS_TIPO, MultaTipo } from '../atividades/enums/multa-tipo';
 
 @Component({
   selector: 'app-cadastro-de-atividade',
@@ -38,6 +41,14 @@ export class CadastroDeAtividadeComponent implements OnInit {
       PrioridadeDescricao[Prioridade[key as keyof typeof Prioridade]],
   }));
 
+  escolha = Object.keys(Escolha).map((key) => ({
+    value: Escolha[key as keyof typeof Escolha],
+    description: EscolhaDescricao[Escolha[key as keyof typeof Escolha]],
+  }));
+
+  multas: { value: string; description: string }[] = [];
+  selectedMulta: string[] = [];
+
   atividadeForm: FormGroup;
   tarefas: Tarefa[] = [];
   isLoading = false;
@@ -49,6 +60,8 @@ export class CadastroDeAtividadeComponent implements OnInit {
   selectedSetor: string = '';
   selectedStatus: string = '';
   selectedPrioridade: string = '';
+  selectedPossuiProcesso: string = '';
+  selectedPossuiMulta: string = '';
 
   empresas: { value: string; description: string }[] = [];
   selectedEmpresa: string = '';
@@ -72,13 +85,14 @@ export class CadastroDeAtividadeComponent implements OnInit {
       descricao: [''],
       idEmpresa: [''],
       setor: [''],
-      idProcesso: [''],
+      idProcesso: [{ value: '', disabled: true }],
       dataDeInicio: [''],
       dateDaEntrega: [''],
       prioridade: ['', Validators.required],
       status: ['', Validators.required],
       idsUsuario: [[]],
       tarefas: [[{ id: 0, tarefa: '', checked: false }]],
+      multa: [{ value: [], disabled: true }],
     });
   }
 
@@ -87,6 +101,7 @@ export class CadastroDeAtividadeComponent implements OnInit {
     this.carregarUsuarios();
     this.carregarProcessos();
     this.verificarModoEdicao();
+    this.carregarMultasPorSetor();
   }
 
   goBack() {
@@ -126,18 +141,32 @@ export class CadastroDeAtividadeComponent implements OnInit {
     );
   }
 
-  carregarProcessos(): void {
-    this.processoService.getProcessos().subscribe(
-      (processos) => {
-        this.processos = processos.map((processo) => ({
-          value: processo.id,
-          description: processo.nome,
-        }));
-      },
-      (error) => {
-        console.error('Erro ao carregar os processos:', error);
-      }
-    );
+  carregarProcessos(setor?: string): void {
+    if (setor) {
+      this.processoService.getProcessosBySetores([setor]).subscribe(
+        (processos) => {
+          this.processos = processos.map((processo) => ({
+            value: processo.id,
+            description: processo.nome,
+          }));
+        },
+        (error) => {
+          console.error('Erro ao carregar os processos:', error);
+        }
+      );
+    } else {
+      this.processoService.getProcessos().subscribe(
+        (processos) => {
+          this.processos = processos.map((processo) => ({
+            value: processo.id,
+            description: processo.nome,
+          }));
+        },
+        (error) => {
+          console.error('Erro ao carregar os processos:', error);
+        }
+      );
+    }
   }
 
   onSubmit(): void {
@@ -251,5 +280,44 @@ export class CadastroDeAtividadeComponent implements OnInit {
     this.selectedSetor = atividade.setor || '';
     // Prioridade
     this.selectedPrioridade = atividade.prioridade || '';
+  }
+
+  onSetorChange(setor: string) {
+    this.selectedSetor = setor;
+    this.carregarMultasPorSetor(setor);
+    this.carregarProcessos(setor);
+  }
+
+  // Método para carregar as multas (todas ou filtradas por setor)
+  carregarMultasPorSetor(setor?: string): void {
+    let multasFiltradas: MultaTipo[];
+    if (setor) {
+      multasFiltradas = MULTAS_TIPO.filter((multa) => multa.setor === setor);
+    } else {
+      multasFiltradas = MULTAS_TIPO;
+    }
+    this.multas = multasFiltradas.map((multa) => ({
+      value: multa.key,
+      description: multa.descricao,
+    }));
+  }
+
+  onDependenciaChange(
+    controlName: string,
+    dependentControlName: string,
+    value: string | null
+  ): void {
+    const dependentControl = this.atividadeForm.get(dependentControlName);
+
+    if (value === 'Sim') {
+      dependentControl?.enable();
+    } else {
+      dependentControl?.disable();
+      if (Array.isArray(dependentControl?.value)) {
+        dependentControl?.setValue([]);
+      } else {
+        dependentControl?.setValue('');
+      }
+    }
   }
 }
