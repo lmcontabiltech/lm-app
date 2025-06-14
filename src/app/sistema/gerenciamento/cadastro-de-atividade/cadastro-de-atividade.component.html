@@ -35,7 +35,8 @@
                     [options]="processos"
                     [(selectedValue)]="selectedProcesso"
                     formControlName="idProcesso"
-                    [disabled]="atividadeForm.get('idProcesso')?.disabled == true">
+                    [disabled]="atividadeForm.get('idProcesso')?.disabled == true"
+                    (selectedValueChange)="onProcessoSelecionado($event)">
                     </app-select-padrao>
                 </div>
             </div>
@@ -61,13 +62,13 @@
             </div> -->
 
             <div class="form-group">
-                <label for="idEmpresa">Empresa</label>
+                <label for="idEmpresas">Empresa</label>
                 <app-multiplo-select
                   label="Selecionar empresa"
                   [options]="empresas"
                   [(selectedValue)]="selectedEmpresa"
                   [multiple]="true"
-                  formControlName="idEmpresa"
+                  formControlName="idEmpresas"
                   (selectedValueChange)="onEmpresasChange($event)">
                 </app-multiplo-select>
             </div>

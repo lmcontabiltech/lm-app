@@ -82,7 +82,7 @@ export class CadastroDeAtividadeComponent implements OnInit {
     this.atividadeForm = this.formBuilder.group({
       nome: ['', Validators.required],
       descricao: [''],
-      idEmpresa: [''],
+      idEmpresas: [[]],
       setor: [''],
       idProcesso: [{ value: '', disabled: true }],
       dataDeInicio: [''],
@@ -173,8 +173,9 @@ export class CadastroDeAtividadeComponent implements OnInit {
       ...this.atividadeForm.value,
       idsUsuario: this.atividadeForm.value.idsUsuario,
       multa: this.atividadeForm.value.multa,
+      idEmpresas: this.atividadeForm.value.idEmpresas,
     };
-    
+
     console.log('Atividade Form:', this.atividadeForm.value);
 
     if (this.isEditMode && this.atividadeId) {
@@ -227,11 +228,11 @@ export class CadastroDeAtividadeComponent implements OnInit {
   }
 
   onEmpresasChange(event: any) {
-    const ids = Array.isArray(event)
+    const values = Array.isArray(event)
       ? event.map((item: any) => item.value)
       : [];
-    this.atividadeForm.get('idsEmpresa')?.setValue(ids);
-    console.log('Empresas selecionadas (ids):', ids);
+    this.atividadeForm.get('idEmpresas')?.setValue(values);
+    console.log('Empresas selecionadas (values):', values);
   }
 
   private verificarModoEdicao(): void {
@@ -326,5 +327,27 @@ export class CadastroDeAtividadeComponent implements OnInit {
         dependentControl?.setValue('');
       }
     }
+  }
+
+  onProcessoSelecionado(event: any) {
+    // Se o evento for objeto, pegue o value; senão, use o próprio evento
+    const processoId = event?.value ?? event;
+    console.log('ID do processo selecionado:', processoId);
+
+    if (!processoId || processoId === 'Sim' || processoId === 'Não') {
+      this.atividadeForm.get('nome')?.enable();
+      this.atividadeForm.get('subtarefas')?.enable();
+      this.atividadeForm.patchValue({ nome: '', subtarefas: [] });
+      return;
+    }
+
+    this.processoService.getProcessoById(processoId).subscribe((processo) => {
+      this.atividadeForm.patchValue({
+        nome: processo.nome,
+        subtarefas: processo.subprocessos,
+      });
+      this.atividadeForm.get('nome')?.enable();
+      this.atividadeForm.get('subtarefas')?.enable();
+    });
   }
 }

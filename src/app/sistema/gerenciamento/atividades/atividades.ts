@@ -10,6 +10,7 @@ export class Atividade {
   descricao!: string;
   empresa?: Empresa;
   idEmpresa?: string;
+  idEmpresas?: string[];
   setor!: Setor;
   processo?: Processo;
   idProcesso?: string;
