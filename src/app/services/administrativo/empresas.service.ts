@@ -118,4 +118,23 @@ export class EmpresasService {
       })
     );
   }
+
+  getEmpresasPorRegime(regime: string): Observable<Empresa[]> {
+    const url = `${this.apiURL}/regime/${regime}`;
+    console.log('Chamando endpoint:', url);
+
+    return this.http.get<Empresa[]>(url).pipe(
+      map((response) => response),
+      catchError((error) => {
+        let errorMessage = 'Erro ao buscar empresas pelo regime.';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
 }

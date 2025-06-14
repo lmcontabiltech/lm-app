@@ -59,7 +59,7 @@
                         </td>
                         <td>{{ empresa.cnpj }}</td>
                         <td>{{ empresa.codQuestor }}</td>
-                        <td>{{ empresa.regimeEmpresa }}</td>
+                        <td>{{ getDescricaoRegime(empresa.regimeEmpresa) }}</td>
                         <td>
                             <div class="container-acoes">
                                 <button class="btn-acao edit" (click)="editarEmpresa(empresa.id)">

@@ -28,6 +28,7 @@ export class EmpresasComponent implements OnInit {
   successMessage: string = '';
   messageTimeout: any;
 
+  RegimeDaEmpresaDescricao = RegimeDaEmpresaDescricao;
   selectedRegime: string = '';
 
   regimes = Object.keys(RegimeDaEmpresa).map((key) => ({
@@ -125,6 +126,10 @@ export class EmpresasComponent implements OnInit {
     );
   }
 
+  getDescricaoRegime(regime: string): string {
+    return RegimeDaEmpresaDescricao[regime as RegimeDaEmpresa] || regime;
+  }
+
   atualizarPaginacao(): void {
     const inicio = (this.paginaAtual - 1) * this.itensPorPagina;
     const fim = inicio + this.itensPorPagina;
@@ -203,5 +208,33 @@ export class EmpresasComponent implements OnInit {
     if (this.messageTimeout) clearTimeout(this.messageTimeout);
   }
 
-  onRegimeChange() {}
+  onRegimeChange(): void {
+    if (!this.selectedRegime) {
+      this.empresas = [];
+      this.mensagemBusca = 'Selecione um regime para buscar empresas.';
+      return;
+    }
+    console.log('Regime enviado para o filtro:', this.selectedRegime);
+    this.isLoading = true;
+    this.empresasService.getEmpresasPorRegime(this.selectedRegime).subscribe(
+      (empresas) => {
+        console.log('Empresas retornadas pelo backend:', empresas);
+        this.empresas = empresas;
+        this.paginaAtual = 1;
+        this.totalPaginas = Math.ceil(
+          this.empresas.length / this.itensPorPagina
+        );
+        this.isLoading = false;
+        this.mensagemBusca =
+          empresas.length === 0
+            ? 'Nenhuma empresa encontrada para o regime selecionado.'
+            : '';
+      },
+      (error) => {
+        this.isLoading = false;
+        this.mensagemBusca = 'Erro ao buscar empresas por regime.';
+        console.error(error);
+      }
+    );
+  }
 }
