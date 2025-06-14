@@ -124,7 +124,6 @@ export class EmpresasService {
     console.log('Chamando endpoint:', url);
 
     return this.http.get<Empresa[]>(url).pipe(
-      map((response) => response),
       catchError((error) => {
         let errorMessage = 'Erro ao buscar empresas pelo regime.';
         if (error.error instanceof ErrorEvent) {

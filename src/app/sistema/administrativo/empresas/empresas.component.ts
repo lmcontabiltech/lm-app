@@ -209,21 +209,21 @@ export class EmpresasComponent implements OnInit {
   }
 
   onRegimeChange(): void {
-    if (!this.selectedRegime) {
-      this.empresas = [];
-      this.mensagemBusca = 'Selecione um regime para buscar empresas.';
-      return;
-    }
-    console.log('Regime enviado para o filtro:', this.selectedRegime);
+    const regimes = this.selectedRegime ? [this.selectedRegime] : [];
     this.isLoading = true;
-    this.empresasService.getEmpresasPorRegime(this.selectedRegime).subscribe(
+    const obs =
+      regimes.length > 0
+        ? this.empresasService.getEmpresasPorRegime(regimes[0])
+        : this.empresasService.getEmpresas();
+
+    obs.subscribe(
       (empresas) => {
-        console.log('Empresas retornadas pelo backend:', empresas);
         this.empresas = empresas;
         this.paginaAtual = 1;
         this.totalPaginas = Math.ceil(
           this.empresas.length / this.itensPorPagina
         );
+        this.atualizarPaginacao();
         this.isLoading = false;
         this.mensagemBusca =
           empresas.length === 0
