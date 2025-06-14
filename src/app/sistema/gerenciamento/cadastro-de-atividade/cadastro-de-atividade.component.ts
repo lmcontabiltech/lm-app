@@ -46,9 +46,6 @@ export class CadastroDeAtividadeComponent implements OnInit {
     description: EscolhaDescricao[Escolha[key as keyof typeof Escolha]],
   }));
 
-  multas: { value: string; description: string }[] = [];
-  selectedMulta: string[] = [];
-
   atividadeForm: FormGroup;
   tarefas: Tarefa[] = [];
   isLoading = false;
@@ -69,6 +66,8 @@ export class CadastroDeAtividadeComponent implements OnInit {
   selectedMembro: string = '';
   processos: { value: string; description: string }[] = [];
   selectedProcesso: string = '';
+  multas: { value: string; description: string }[] = [];
+  selectedMulta: string[] = [];
 
   constructor(
     private location: Location,
@@ -91,7 +90,7 @@ export class CadastroDeAtividadeComponent implements OnInit {
       prioridade: ['', Validators.required],
       status: ['', Validators.required],
       idsUsuario: [[]],
-      tarefas: [[{ id: 0, tarefa: '', checked: false }]],
+      subtarefas: [[{ id: 0, tarefa: '', checked: false }]],
       multa: [{ value: [], disabled: true }],
     });
   }
@@ -173,7 +172,9 @@ export class CadastroDeAtividadeComponent implements OnInit {
     const atividade: Atividade = {
       ...this.atividadeForm.value,
       idsUsuario: this.atividadeForm.value.idsUsuario,
+      multa: this.atividadeForm.value.multa,
     };
+    
     console.log('Atividade Form:', this.atividadeForm.value);
 
     if (this.isEditMode && this.atividadeId) {
@@ -216,6 +217,13 @@ export class CadastroDeAtividadeComponent implements OnInit {
       : [];
     this.atividadeForm.get('idsUsuario')?.setValue(ids);
     console.log('Membros selecionados (ids):', ids);
+  }
+
+  onMultaChange(val: any[]) {
+    this.selectedMulta = val;
+    const values = Array.isArray(val) ? val.map((item: any) => item.value) : [];
+    this.atividadeForm.get('multa')?.setValue(values);
+    console.log('Multas selecionadas (values):', values);
   }
 
   onEmpresasChange(event: any) {
@@ -288,7 +296,6 @@ export class CadastroDeAtividadeComponent implements OnInit {
     this.carregarProcessos(setor);
   }
 
-  // Método para carregar as multas (todas ou filtradas por setor)
   carregarMultasPorSetor(setor?: string): void {
     let multasFiltradas: MultaTipo[];
     if (setor) {

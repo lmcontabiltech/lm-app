@@ -89,6 +89,7 @@
                       label="Selecionar uma multa"
                       [options]="multas"
                       [(selectedValue)]="selectedMulta"
+                      (selectedValueChange)="onMultaChange($event)"
                       [multiple]="true"
                       formControlName="multa"
                       [disabled]="atividadeForm.get('multa')?.disabled == true">
@@ -150,7 +151,7 @@
                 <app-input-plus 
                     [(items)]="tarefas"
                     [initialCount]="1"
-                    formControlName="tarefas">
+                    formControlName="subtarefas">
                 </app-input-plus>
             </div>
 
