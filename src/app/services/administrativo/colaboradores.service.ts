@@ -192,7 +192,7 @@ export class ColaboradoresService {
 
   FiltroUsuariosBySetores(setores: string[]): Observable<Usuario[]> {
     if (!setores || setores.length === 0) {
-      return this.getUsuarios();
+      return this.getUsuariosNonAdmin();
     }
     const params = setores
       .map((s) => `setors=${encodeURIComponent(s)}`)
