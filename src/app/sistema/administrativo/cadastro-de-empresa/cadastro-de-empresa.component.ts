@@ -152,6 +152,8 @@ export class CadastroDeEmpresaComponent implements OnInit {
       this.isEditMode = true;
       this.carregarDadosEmpresa(this.empresaId);
     }
+
+
   }
 
   private carregarDadosEmpresa(empresaId: string): void {
@@ -164,6 +166,7 @@ export class CadastroDeEmpresaComponent implements OnInit {
         });
 
         this.tratarColaboradores(empresa);
+        this.selectedRegime = empresa.regimeEmpresa || '';
       },
       (error) => {
         console.error('Erro ao carregar os dados da empresa:', error);
