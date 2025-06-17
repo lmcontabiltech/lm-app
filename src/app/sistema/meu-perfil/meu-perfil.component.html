@@ -10,67 +10,191 @@
       <span>Meu Perfil</span>
     </div>
     <div class="toggle-container">
-      <span>{{ themeService.isDarkMode() ? "Modo Escuro" : "Modo Claro" }}</span>
+      <span>{{
+        themeService.isDarkMode() ? "Modo Escuro" : "Modo Claro"
+      }}</span>
       <label class="switch">
-        <input type="checkbox" [checked]="themeService.isDarkMode()" (change)="toggleDarkMode()"/>
+        <input
+          type="checkbox"
+          [checked]="themeService.isDarkMode()"
+          (change)="toggleDarkMode()"
+        />
         <span class="slider round"></span>
       </label>
     </div>
   </div>
 
-  <div class="container-perfil">
+  <div *ngIf="!showChangePassword" class="container-perfil">
     <div class="profile-attributes">
       <div class="container-photo">
-          <div class="image-container" (click)="isEditing && fileInput.click()">
-            <ng-container *ngIf="selectedImageUrl && selectedImageUrl !== ''; else noPhoto">
-              <img [src]="selectedImageUrl" class="profile-photo" alt="Foto de perfil"/>
-            </ng-container>
-            <ng-template #noPhoto>
-              <div
-                class="profile-photo avatar-fallback"
-                [ngStyle]="{'background-color': getRandomColor(name)}"
-              >
-                <span>{{ getInitial(name) }}</span>
-              </div>
-            </ng-template>
-            <input #fileInput type="file" accept="image/*" (change)="onImageSelected($event)" style="display: none;"/>
-          </div>
-          <div *ngIf="isEditing" class="edit-profile-photo">
-            <button (click)="fileInput.click()">Alterar foto</button>
-          </div>
+        <div class="image-container" (click)="isEditing && fileInput.click()">
+          <ng-container
+            *ngIf="selectedImageUrl && selectedImageUrl !== ''; else noPhoto"
+          >
+            <img
+              [src]="selectedImageUrl"
+              class="profile-photo"
+              alt="Foto de perfil"
+            />
+          </ng-container>
+          <ng-template #noPhoto>
+            <div
+              class="profile-photo avatar-fallback"
+              [ngStyle]="{ 'background-color': getRandomColor(nome) }"
+            >
+              <span>{{ getInitial(nome) }}</span>
+            </div>
+          </ng-template>
+          <input
+            #fileInput
+            type="file"
+            accept="image/*"
+            (change)="onImageSelected($event)"
+            style="display: none"
+          />
         </div>
-    </div>
-    <div class="data-profile" *ngIf="!isEditing">
-      <div class="data-item">
-          <label class="label-item">Nome:</label>
-          <span>{{ name || '-' }}</span>
-        </div>
-        <div class="data-item">
-          <label class="label-item">E-mail:</label>
-          <span>{{ email || '-' }}</span>
-        </div>
-        <div class="data-item">
-          <label class="label-item">Setor:</label>
-          <span>{{ setor || '-' }}</span>
-        </div>
-    </div>
-    <div class="data-profile-edit">
-      <div *ngIf="isEditing" class="form-group">
-        <div class="data-edit form-group">
-          <label for="name">Nome:</label>
-          <input [(ngModel)]="name" type="text" id="name" name="name" class="input-perfil">
-        </div>
-        <div class="data-edit form-group">
-          <label for="email">E-mail:</label>
-          <input [(ngModel)]="email" id="email" name="email" type="email" class="input-perfil">
+        <div *ngIf="isEditing" class="edit-profile-photo">
+          <button (click)="fileInput.click()">Alterar foto</button>
         </div>
       </div>
     </div>
+    <div class="data-profile" *ngIf="!isEditing">
+      <div class="data-item">
+        <label class="label-item">Nome:</label>
+        <span>{{ nome || "-" }}</span>
+      </div>
+      <div class="data-item">
+        <label class="label-item">E-mail:</label>
+        <span>{{ email || "-" }}</span>
+      </div>
+      <div class="data-item">
+        <label class="label-item">Setor:</label>
+        <span>{{ setor || "-" }}</span>
+      </div>
+    </div>
+    <form
+      class="data-profile-edit"
+      *ngIf="isEditing"
+      (ngSubmit)="saveChanges()"
+      #perfilForm="ngForm"
+    >
+      <div class="editar-dados">
+        <div class="data-edit form-group">
+          <label for="name">Nome:</label>
+          <input
+            [(ngModel)]="nome"
+            type="text"
+            id="name"
+            name="name"
+            class="input-perfil"
+          />
+        </div>
+        <div class="data-edit form-group">
+          <label for="email">E-mail:</label>
+          <input
+            [(ngModel)]="email"
+            id="email"
+            name="email"
+            type="email"
+            class="input-perfil"
+          />
+        </div>
+      </div>
+      <div class="container-btn">
+        <button *ngIf="isEditing" class="btn btn-line" (click)="cancelEdit()">
+          Cancelar
+        </button>
+        <button *ngIf="isEditing" class="btn" (click)="saveChanges()">
+          Salvar
+        </button>
+      </div>
+    </form>
   </div>
-  <div class="container-btn">
-    <button *ngIf="!isEditing" class="btn btn-edit" (click)="toggleEdit()">Editar Perfil</button>
-    <button *ngIf="!isEditing" class="btn btn-line">Alterar senha</button>
-    <button *ngIf="isEditing" class="btn btn-line" (click)="cancelEdit()">Cancelar</button>
-    <button *ngIf="isEditing" class="btn" (click)="saveChanges()">Salvar</button>
+
+  <div class="container-btn" *ngIf="!isEditing && !showChangePassword">
+    <button *ngIf="!isEditing" class="btn btn-edit" (click)="toggleEdit()">
+      Editar Perfil
+    </button>
+    <button
+      *ngIf="!isEditing"
+      class="btn btn-line"
+      (click)="toggleChangePassword()"
+    >
+      Alterar senha
+    </button>
+  </div>
+
+  <div class="mensg-repostas">
+    <div *ngIf="successMessage" class="alert alert-success">
+      <span>{{ successMessage }}</span>
+      <button class="close-btn" (click)="clearMessage()" aria-label="Fechar">
+        &times;
+      </button>
+      <div
+        class="progress-bar"
+        [style.animation]="
+          successMessage ? 'progressBarAnim 3s linear' : 'none'
+        "
+      ></div>
+    </div>
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      <span>{{ errorMessage }}</span>
+      <button class="close-btn" (click)="clearMessage()" aria-label="Fechar">
+        &times;
+      </button>
+      <div
+        class="progress-bar"
+        [style.animation]="errorMessage ? 'progressBarAnim 3s linear' : 'none'"
+      ></div>
+    </div>
+  </div>
+
+  <!-- Formulário de alteração de senha -->
+  <div *ngIf="showChangePassword">
+    <form (ngSubmit)="changePassword()" #changePasswordForm="ngForm" class="change-password-form">
+      <div class="form-group">
+        <label for="currentPassword">Senha atual</label>
+        <input
+          type="password"
+          id="currentPassword"
+          name="currentPassword"
+          class="input-perfil"
+          placeholder="Insira sua senha atual"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="newPassword">Nova senha</label>
+        <input
+          type="password"
+          id="newPassword"
+          name="newPassword"
+          class="input-perfil"
+          placeholder="Insira sua nova senha"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="confirmPassword">Confirmar nova senha</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          name="confirmPassword"
+          class="input-perfil"
+          placeholder="Confirme sua nova senha"
+          required
+        />
+      </div>
+      <div class="container-btn">
+        <button
+          type="button"
+          class="btn btn-line"
+          (click)="toggleChangePassword()"
+        >
+          Cancelar
+        </button>
+        <button type="submit" class="btn btn-edit">Salvar nova senha</button>
+      </div>
+    </form>
   </div>
 </div>
