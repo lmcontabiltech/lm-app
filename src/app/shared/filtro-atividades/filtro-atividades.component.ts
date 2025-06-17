@@ -12,27 +12,22 @@ export class FiltroAtividadesComponent implements OnInit {
   @Output() fechar = new EventEmitter<void>();
   @Output() filtroAplicado = new EventEmitter<any>();
 
-  filtro: { [key: string]: boolean | string } = {
+  filtro: { [key: string]: boolean | string | string[] } = {
     semMembros: false,
     atribuidoAMim: false,
-    todosSetores: false,
     marcado: false,
     naoMarcado: false,
-    periodo: '', 
+    periodo: '',
+    setoresSelecionados: [],
   };
 
+  SetorDescricao = SetorDescricao;
   setores: string[] = [];
 
   constructor() {}
 
   ngOnInit(): void {
-    // Se SetorDescricao for um enum de string:
-    this.setores = Object.values(SetorDescricao);
-
-    // Inicializa os filtros dos setores dinamicamente
-    this.setores.forEach((setor) => {
-      this.filtro['setor_' + setor] = false;
-    });
+    this.setores = Object.keys(SetorDescricao);
   }
 
   toggleMenu() {
@@ -44,10 +39,64 @@ export class FiltroAtividadesComponent implements OnInit {
   }
 
   contarFiltros(): number {
-    return Object.values(this.filtro).filter((v) => v).length;
+    let count = 0;
+    if (this.filtro['semMembros']) count++;
+    if (this.filtro['atribuidoAMim']) count++;
+    if (this.filtro['marcado']) count++;
+    if (this.filtro['naoMarcado']) count++;
+    if (this.filtro['periodo'] && this.filtro['periodo'] !== '') count++;
+    if (
+      Array.isArray(this.filtro['setoresSelecionados'])
+    ) {
+      count += this.filtro['setoresSelecionados'].length;
+    }
+    return count;
   }
 
   limparFiltro() {
-    Object.keys(this.filtro).forEach((k) => (this.filtro[k] = false));
+    this.filtro['semMembros'] = false;
+    this.filtro['atribuidoAMim'] = false;
+    this.filtro['marcado'] = false;
+    this.filtro['naoMarcado'] = false;
+    this.filtro['periodo'] = '';
+    this.filtro['setoresSelecionados'] = [];
+    this.emitirFiltro();
+  }
+
+  emitirFiltro() {
+    console.log('Emitindo filtro:', this.filtro);
+    const filtroParaEmitir = {
+      semMembros: this.filtro['semMembros'],
+      atribuidoAMim: this.filtro['atribuidoAMim'],
+      marcado: this.filtro['marcado'],
+      naoMarcado: this.filtro['naoMarcado'],
+      periodo: this.filtro['periodo'],
+      setores: this.filtro['setoresSelecionados'],
+    };
+    this.filtroAplicado.emit(filtroParaEmitir);
+  }
+
+  onSetorCheckboxChange(event: Event, value: string) {
+    const checked = (event.target as HTMLInputElement).checked;
+    let setores = this.filtro['setoresSelecionados'] as string[];
+    if (!Array.isArray(setores)) setores = [];
+    if (checked) {
+      if (!setores.includes(value)) setores.push(value);
+    } else {
+      setores = setores.filter((v) => v !== value);
+    }
+    this.filtro['setoresSelecionados'] = setores;
+    this.emitirFiltro();
+  }
+
+  isSetorSelecionado(value: string): boolean {
+    return (
+      Array.isArray(this.filtro['setoresSelecionados']) &&
+      this.filtro['setoresSelecionados'].includes(value)
+    );
+  }
+
+  getSetorDescricao(setor: string): string {
+    return this.SetorDescricao[setor as Setor] ?? setor;
   }
 }

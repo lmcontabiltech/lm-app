@@ -123,4 +123,44 @@ export class AtividadeService {
         })
       );
   }
+
+  getAtividadesPorFiltro(filtro: {
+    atribuidas_a_mim?: boolean;
+    concluido?: boolean;
+    sem_membros?: boolean;
+    setores?: string[];
+    startDate?: string;
+    user_ids?: number[];
+  }): Observable<Atividade[]> {
+    const params: any = {};
+
+    if (filtro.atribuidas_a_mim !== undefined)
+      params.atribuidas_a_mim = filtro.atribuidas_a_mim;
+    if (filtro.concluido !== undefined) params.concluido = filtro.concluido;
+    if (filtro.sem_membros !== undefined)
+      params.sem_membros = filtro.sem_membros;
+    if (filtro.setores && filtro.setores.length > 0)
+      params.setores = filtro.setores.join(',');
+    if (filtro.startDate) params.startDate = filtro.startDate;
+    if (filtro.user_ids && filtro.user_ids.length > 0)
+      params.user_ids = filtro.user_ids;
+
+    console.log('Requisição GET /filtro:', {
+      url: `${this.apiURL}/filtro`,
+      params,
+    });
+
+    return this.http.get<Atividade[]>(`${this.apiURL}/filtro`, { params }).pipe(
+      catchError((error) => {
+        let errorMessage = 'Erro ao buscar atividades por filtro.';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
 }

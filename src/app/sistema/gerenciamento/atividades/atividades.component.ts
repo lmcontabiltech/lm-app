@@ -221,6 +221,64 @@ export class AtividadesComponent implements OnInit {
   }
 
   aplicarFiltro(filtro: any) {
-    // Lógica para aplicar o filtro nas atividades
+    console.log('Filtro recebido em aplicarFiltro:', filtro);
+    const filtroRequest: any = {};
+
+    if (filtro.atribuidoAMim) filtroRequest.atribuidas_a_mim = true;
+    if (filtro.semMembros) filtroRequest.sem_membros = true;
+    if (filtro.marcado) filtroRequest.concluido = true;
+    if (filtro.naoMarcado) filtroRequest.concluido = false;
+
+    if (
+      Array.isArray(filtro.setores) &&
+      filtro.setores.length > 0
+    ) {
+      filtroRequest.setores = filtro.setores;
+    }
+
+    if (filtro.periodo) {
+      const dias = Number(filtro.periodo);
+      const data = new Date();
+      data.setHours(0, 0, 0, 0); 
+      data.setDate(data.getDate() - dias);
+      filtroRequest.startDate = data.toISOString().split('T')[0];
+    }
+
+    const semFiltros =
+      !filtro.atribuidoAMim &&
+      !filtro.semMembros &&
+      !filtro.marcado &&
+      !filtro.naoMarcado &&
+      (!Array.isArray(filtro.setores) ||
+        filtro.setores.length === 0 ||
+        filtro.todosSetores) &&
+      (!filtro.periodo || filtro.periodo === '');
+
+    if (semFiltros) {
+      console.log('Nenhum filtro ativo, buscando todas as atividades...');
+      this.carregarAtividades();
+      return;
+    }
+
+    console.log('Filtro enviado ao backend:', filtroRequest);
+    this.atividadeService.getAtividadesPorFiltro(filtroRequest).subscribe(
+      (atividades: Atividade[]) => {
+        console.log('Retorno do backend:', atividades);
+        this.statuses.forEach((status) => (this.atividades[status] = []));
+        atividades.forEach((atividade) => {
+          const statusColuna = this.mapStatusToColuna(
+            atividade.status ?? 'A_FAZER'
+          );
+          if (this.atividades[statusColuna]) {
+            this.atividades[statusColuna].push(atividade);
+          } else {
+            this.atividades['A_FAZER'].push(atividade);
+          }
+        });
+      },
+      (error) => {
+        console.error('Erro ao aplicar filtro:', error);
+      }
+    );
   }
 }
