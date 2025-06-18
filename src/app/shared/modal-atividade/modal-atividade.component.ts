@@ -20,6 +20,7 @@ export class ModalAtividadeComponent {
   @Output() closeModal = new EventEmitter<void>();
   @Output() editarAtividade = new EventEmitter<string>();
   @Output() deletarAtividade = new EventEmitter<string>();
+  @Output() atualizarSubtarefas = new EventEmitter<any[]>();
 
   onModalClose() {
     this.closeModal.emit();
@@ -83,5 +84,19 @@ export class ModalAtividadeComponent {
         return `${descricao}${valor}`;
       })
       .join(', ');
+  }
+
+  onSubtarefaToggle(index: number, event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input && this.atividade?.subtarefas) {
+      this.atividade.subtarefas[index].checked = input.checked;
+      this.atualizarSubtarefas.emit(this.atividade.subtarefas);
+    }
+  }
+
+  getChecklistPercent(subtarefas: any[]): number {
+    if (!subtarefas?.length) return 0;
+    const marcadas = subtarefas.filter((s) => s.checked).length;
+    return Math.round((marcadas / subtarefas.length) * 100);
   }
 }

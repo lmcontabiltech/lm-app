@@ -18,6 +18,7 @@ import { AtividadeService } from 'src/app/services/gerenciamento/atividade.servi
 import { Escolha } from '../processos/enums/escolha';
 import { EscolhaDescricao } from '../processos/enums/escolha-descricao';
 import { MULTAS_TIPO, MultaTipo } from '../atividades/enums/multa-tipo';
+import { multaAplicada } from '../atividades/multaAplicada';
 
 @Component({
   selector: 'app-cadastro-de-atividade',
@@ -61,13 +62,13 @@ export class CadastroDeAtividadeComponent implements OnInit {
   selectedPossuiMulta: string = '';
 
   empresas: { value: string; description: string }[] = [];
-  selectedEmpresa: string = '';
+  selectedEmpresa: string[] = [];
   membros: { value: string; description: string }[] = [];
-  selectedMembro: string = '';
+  selectedMembro: string[] = [];
   processos: { value: string; description: string }[] = [];
   selectedProcesso: string = '';
   multas: { value: string; description: string }[] = [];
-  selectedMulta: string[] = [];
+  selectedMulta: multaAplicada[] = [];
 
   constructor(
     private location: Location,
@@ -91,7 +92,7 @@ export class CadastroDeAtividadeComponent implements OnInit {
       status: ['', Validators.required],
       idsUsuario: [[]],
       subtarefas: [[{ id: 0, tarefa: '', checked: false }]],
-      multa: [{ value: [], disabled: true }],
+      multas: [{ value: [], disabled: true }],
     });
   }
 
@@ -107,16 +108,18 @@ export class CadastroDeAtividadeComponent implements OnInit {
     this.location.back();
   }
 
-  carregarEmpresas(): void {
+  carregarEmpresas(callback?: () => void): void {
     this.empresasService.getEmpresas().subscribe(
       (empresas) => {
         this.empresas = empresas.map((empresa) => ({
           value: empresa.id,
           description: empresa.razaoSocial,
         }));
+        if (callback) callback();
       },
       (error) => {
         console.error('Erro ao carregar as empresas:', error);
+        if (callback) callback();
       }
     );
   }
@@ -126,16 +129,18 @@ export class CadastroDeAtividadeComponent implements OnInit {
     this.carregarEmpresas();
   }
 
-  carregarUsuarios(): void {
+  carregarUsuarios(callback?: () => void): void {
     this.colaboradoresService.getUsuariosNonAdmin().subscribe(
       (usuarios) => {
         this.membros = usuarios.map((usuario) => ({
           value: usuario.id,
           description: usuario.nome,
         }));
+        if (callback) callback();
       },
       (error) => {
         console.error('Erro ao carregar os usuários:', error);
+        if (callback) callback();
       }
     );
   }
@@ -169,11 +174,19 @@ export class CadastroDeAtividadeComponent implements OnInit {
   }
 
   onSubmit(): void {
+    const multasSelecionadas = this.atividadeForm.value.multas;
+    const multasParaEnviar = Array.isArray(multasSelecionadas)
+      ? multasSelecionadas.map((tipo: string, idx: number) => ({
+          id: idx,
+          tipo,
+        }))
+      : [];
+
     const atividade: Atividade = {
       ...this.atividadeForm.value,
       idsUsuario: this.atividadeForm.value.idsUsuario,
-      multa: this.atividadeForm.value.multa,
       idEmpresas: this.atividadeForm.value.idEmpresas,
+      multas: multasParaEnviar,
     };
 
     console.log('Atividade Form:', this.atividadeForm.value);
@@ -223,7 +236,7 @@ export class CadastroDeAtividadeComponent implements OnInit {
   onMultaChange(val: any[]) {
     this.selectedMulta = val;
     const values = Array.isArray(val) ? val.map((item: any) => item.value) : [];
-    this.atividadeForm.get('multa')?.setValue(values);
+    this.atividadeForm.get('multas')?.setValue(values);
     console.log('Multas selecionadas (values):', values);
   }
 
@@ -239,7 +252,42 @@ export class CadastroDeAtividadeComponent implements OnInit {
     this.atividadeId = this.route.snapshot.paramMap.get('id');
     if (this.atividadeId) {
       this.isEditMode = true;
-      this.carregarDadosAtividade(this.atividadeId);
+      this.carregarEmpresas(() => {
+        this.carregarUsuarios(() => {
+          this.atividadeService
+            .getAtividadeById(String(this.atividadeId))
+            .subscribe(
+              (atividade: Atividade) => {
+                // Seleciona empresas já cadastradas
+                const idEmpresas = Array.isArray(atividade.idEmpresas)
+                  ? atividade.idEmpresas
+                  : atividade.empresa
+                  ? [atividade.empresa.id]
+                  : [];
+
+                const idsUsuario = Array.isArray(atividade.idsUsuario)
+                  ? atividade.idsUsuario
+                  : atividade.usuarios
+                  ? atividade.usuarios.map((u: any) => u.id)
+                  : [];
+
+                this.atividadeForm.patchValue({
+                  ...atividade,
+                  idEmpresas,
+                  idsUsuario,
+                });
+
+                // Atualize os selects múltiplos
+                this.selectedEmpresa = idEmpresas;
+                this.selectedMembro = idsUsuario;
+                this.tratarDadosAtividade(atividade);
+              },
+              (error) => {
+                console.error('Erro ao carregar os dados da atividade:', error);
+              }
+            );
+        });
+      });
     }
   }
 
@@ -261,17 +309,6 @@ export class CadastroDeAtividadeComponent implements OnInit {
   }
 
   private tratarDadosAtividade(atividade: Atividade): void {
-    // Empresa
-    if (atividade.empresa) {
-      this.selectedEmpresa = atividade.empresa.id;
-      this.empresas = [
-        {
-          value: atividade.empresa.id,
-          description: atividade.empresa.razaoSocial,
-        },
-      ];
-    }
-
     // Processo
     if (atividade.processo) {
       this.selectedProcesso = atividade.processo.id;
@@ -289,6 +326,15 @@ export class CadastroDeAtividadeComponent implements OnInit {
     this.selectedSetor = atividade.setor || '';
     // Prioridade
     this.selectedPrioridade = atividade.prioridade || '';
+    // Possui Processo
+    this.selectedPossuiProcesso =
+      atividade.processo && atividade.processo.id ? 'Sim' : 'Não';
+    // Possui Multa
+    this.selectedPossuiMulta =
+      atividade.multas && atividade.multas.length > 0 ? 'Sim' : 'Não';
+    // Multa
+    this.selectedMulta = atividade.multas || [];
+    this.atividadeForm.get('multas')?.setValue(this.selectedMulta);
   }
 
   onSetorChange(setor: string) {

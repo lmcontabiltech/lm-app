@@ -3,6 +3,7 @@ import { Prioridade } from './enums/prioridade';
 import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
 import { Lista } from './listas';
 import { Processo } from '../processos/processo';
+import { multaAplicada } from './multaAplicada';
 
 export class Atividade {
   id?: string;
@@ -21,5 +22,5 @@ export class Atividade {
   usuarios?: { nome: string; fotoUrl: string }[];
   idsUsuario?: [];
   subtarefas!: { tarefa: string; id: number; checked: boolean }[];;
-  multa?: []
+  multas?: multaAplicada[]
 }

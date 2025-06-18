@@ -50,16 +50,6 @@
                 <label for="descricao">Descrição</label>
                 <textarea type="text" id="descricao" name="descricao" formControlName="descricao" class="form-control" placeholder="Digite a descrição da atividade" rows="6"></textarea>
             </div>
-    
-            <!-- <div class="form-group">
-                <label for="idEmpresa">Empresa</label>
-                <app-select-padrao
-                    label="Selecionar empresa"
-                    [options]="empresas"
-                    [(selectedValue)]="selectedEmpresa"
-                    formControlName="idEmpresa">
-                </app-select-padrao>
-            </div> -->
 
             <div class="form-group">
                 <label for="idEmpresas">Empresa</label>
@@ -81,18 +71,18 @@
                       [options]="escolha"
                       [(selectedValue)]="selectedPossuiMulta"
                       formControlName="possuiMulta"
-                      (selectedValueChange)="onDependenciaChange('possuiMulta', 'multa', $event)">
+                      (selectedValueChange)="onDependenciaChange('possuiMulta', 'multas', $event)">
                     </app-select-padrao>
                 </div>
                 <div class="form-group">
-                    <label for="multa">Multa</label>
+                    <label for="multas">Multa</label>
                     <app-multiplo-select
                       label="Selecionar uma multa"
                       [options]="multas"
                       [(selectedValue)]="selectedMulta"
                       (selectedValueChange)="onMultaChange($event)"
                       [multiple]="true"
-                      formControlName="multa"
+                      formControlName="multas"
                       [disabled]="atividadeForm.get('multa')?.disabled == true">
                     </app-multiplo-select>
                 </div>
