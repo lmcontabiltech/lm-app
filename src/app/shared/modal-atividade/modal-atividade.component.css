@@ -319,6 +319,28 @@
   outline: none;
 }
 
+.multa-tag {
+  background: #eee;
+  color: #333;
+  border-radius: 8px;
+  padding: 4px 8px;
+  margin-bottom: 6px;
+  font-size: 0.95em;
+  display: inline-block;
+}
+
+.multa-tag-vazia {
+  background: #fff;
+  color: #aaa;
+  border: 1px dashed #ccc;
+}
+
+.multas-tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 8px; /* gap vertical e horizontal */
+}
+
 /* responsividade */
 @media (max-width: 768px) {
   .modal-conteudo {

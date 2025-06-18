@@ -20,83 +20,120 @@
 
               <div class="modal-body-grid">
                 <div class="modal-detalhes">
-                    <div class="item-modal">
+                  <div class="item-modal">
                     <label>Descrição</label>
                     <p>{{ atividade?.descricao }}</p>
-                    </div>
-                    <div class="item-modal">
+                  </div>
+                  <div class="item-modal">
                     <label>Empresa</label>
                     <p>{{ atividade?.empresa?.razaoSocial }}</p>
-                    </div>
-                    <div class="item-modal">
+                  </div>
+                  <div class="item-modal">
                     <label>Setor</label>
                     <app-setor-tag [setor]="atividade?.setor"></app-setor-tag>
-                    </div>
-                    <div class="item-modal">
+                  </div>
+                  <div class="item-modal">
                     <label>Processo</label>
-                    <p>{{ atividade?.processo?.nome || atividade?.idProcesso }}</p>
-                    </div>
+                    <p>
+                      {{ atividade?.processo?.nome || atividade?.idProcesso }}
+                    </p>
+                  </div>
 
-                    <div class="item-modal">
-                        <div class="item-modal-duo">
-                            <div class="item-modal">
-                                <label>Data de início</label>
-                                <p>{{ atividade?.dataDeInicio | date : "dd/MM/yyyy" }}</p>
-                            </div>
-                            <div class="item-modal">
-                                <label>Data de entrega</label>
-                                <p>{{ atividade?.dateDaEntrega | date : "dd/MM/yyyy" }}</p>
-                            </div>
-                        </div>
+                  <div class="item-modal">
+                    <div class="item-modal-duo">
+                      <div class="item-modal">
+                        <label>Data de início</label>
+                        <p>
+                          {{ atividade?.dataDeInicio | date : "dd/MM/yyyy" }}
+                        </p>
+                      </div>
+                      <div class="item-modal">
+                        <label>Data de entrega</label>
+                        <p>
+                          {{ atividade?.dateDaEntrega | date : "dd/MM/yyyy" }}
+                        </p>
+                      </div>
                     </div>
-                    <div class="item-modal">
-                        <div class="item-modal-duo">
-                            <div class="item-modal">
-                                <label>Status</label>
-                                <p>{{ getDescricaoStatus(atividade?.status) }}</p>
-                            </div>
-                            <div class="item-modal tags">
-                                <label>Prioridade</label>
-                                <span class="priority-tag" [ngClass]="getPriorityClass()" >{{ atividade?.prioridade }}</span>
-                            </div>
-                        </div>
+                  </div>
+                  <div class="item-modal">
+                    <div class="item-modal-duo">
+                      <div class="item-modal">
+                        <label>Status</label>
+                        <p>{{ getDescricaoStatus(atividade?.status) }}</p>
+                      </div>
+                      <div class="item-modal tags">
+                        <label>Prioridade</label>
+                        <span
+                          class="priority-tag"
+                          [ngClass]="getPriorityClass()"
+                          >{{ atividade?.prioridade }}</span
+                        >
+                      </div>
                     </div>
+                  </div>
 
-                    <div class="item-modal">
-                        <label>Membros</label>
-                        <div class="usuarios-fotos" *ngIf="atividade?.usuarios?.length">
-                            <ng-container *ngFor="let usuario of atividade.usuarios">
-                                <ng-container *ngIf="usuario.fotoUrl; else inicial">
-                                    <img
-                                    [src]="usuario.fotoUrl"
-                                    [alt]="usuario.nome"
-                                    class="usuario-foto"
-                                    title="{{ usuario.nome }}"
-                                    />
-                                </ng-container>
-                                <ng-template #inicial>
-                                    <span
-                                    class="usuario-inicial"
-                                    [ngStyle]="{
-                                        'background-color': getRandomColor(usuario.nome)
-                                    }"
-                                    [title]="usuario.nome"
-                                    >
-                                    {{ getInitial(usuario.nome) }}
-                                    </span>
-                                </ng-template>
-                            </ng-container>
-                        </div>
+                  <div class="item-modal">
+                    <label>Multas</label>
+                    <div class="multas-tags-container">
+                      <span
+                        *ngFor="let multa of atividade?.multas"
+                        class="multa-tag"
+                      >
+                        {{ multa.tipo }}
+                      </span>
+                      <span
+                        *ngIf="!atividade?.multas?.length"
+                        class="multa-tag multa-tag-vazia"
+                      >
+                        Nenhuma multa aplicada
+                      </span>
                     </div>
+                  </div>
+
+                  <div class="item-modal">
+                    <label>Membros</label>
+                    <div
+                      class="usuarios-fotos"
+                      *ngIf="atividade?.usuarios?.length"
+                    >
+                      <ng-container *ngFor="let usuario of atividade.usuarios">
+                        <ng-container *ngIf="usuario.fotoUrl; else inicial">
+                          <img
+                            [src]="usuario.fotoUrl"
+                            [alt]="usuario.nome"
+                            class="usuario-foto"
+                            title="{{ usuario.nome }}"
+                          />
+                        </ng-container>
+                        <ng-template #inicial>
+                          <span
+                            class="usuario-inicial"
+                            [ngStyle]="{
+                              'background-color': getRandomColor(usuario.nome)
+                            }"
+                            [title]="usuario.nome"
+                          >
+                            {{ getInitial(usuario.nome) }}
+                          </span>
+                        </ng-template>
+                      </ng-container>
+                    </div>
+                  </div>
                 </div>
 
                 <div class="menu-acao">
-                  <button class="btn btn-delete" (click)="DeletarAtividade(atividade.id)">
-                        Exluir
-                    </button>
-                    <button class="btn btn-edit" (click)="EditarAtividade(atividade.id)">
-                        Editar
-                    </button>
+                  <button
+                    class="btn btn-delete"
+                    (click)="DeletarAtividade(atividade.id)"
+                  >
+                    Exluir
+                  </button>
+                  <button
+                    class="btn btn-edit"
+                    (click)="EditarAtividade(atividade.id)"
+                  >
+                    Editar
+                  </button>
                 </div>
               </div>
             </div>
