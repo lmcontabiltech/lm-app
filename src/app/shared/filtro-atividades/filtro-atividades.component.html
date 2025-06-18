@@ -4,12 +4,12 @@
     <button class="filtro-btn" (click)="toggleMenu()">
         <img src="assets/icones/filter.svg" alt="Ícone de filtro" />
       Filtros 
-      <span *ngIf="filtrosAtivos()" class="filtro-count-badge">
+      <span *ngIf="filtrosAtivos() && contarFiltros() > 0" class="filtro-count-badge">
         <span class="filtro-bolinha"></span>
         {{ contarFiltros() }}
     </span>
     </button>
-    <button *ngIf="filtrosAtivos()" class="limpar-btn" (click)="limparFiltro()">
+    <button *ngIf="filtrosAtivos() && contarFiltros() > 0" class="limpar-btn" (click)="limparFiltro()">
         Limpar tudo
     </button>
   </div>
@@ -26,11 +26,11 @@
     <div class="filtro-grupo">
       <label class="grupo-titulo">Membros</label>
       <label>
-        <input type="checkbox" [(ngModel)]="filtro['semMembros']" />
+        <input type="checkbox" [(ngModel)]="filtro['semMembros']" (change)="emitirFiltro()" />
         Sem membros
       </label>
       <label>
-        <input type="checkbox" [(ngModel)]="filtro['atribuidoAMim']" />
+        <input type="checkbox" [(ngModel)]="filtro['atribuidoAMim']" (change)="emitirFiltro()" />
         Atribuídas a mim
       </label>
     </div>
@@ -38,14 +38,14 @@
     <!-- Filtro de setores -->
     <div class="filtro-grupo">
       <label class="grupo-titulo">Setor</label>
-      <label>
-        <input type="checkbox" [(ngModel)]="filtro['todosSetores']" />
-        Todos os setores
-      </label>
       <ng-container *ngFor="let setor of setores">
         <label>
-          <input type="checkbox" [(ngModel)]="filtro['setor_' + setor]" />
-          {{ setor }}
+           <input
+            type="checkbox"
+            [checked]="isSetorSelecionado(setor)"
+            (change)="onSetorCheckboxChange($event, setor)"
+          />
+          {{ getSetorDescricao(setor) }}
         </label>
       </ng-container>
     </div>
@@ -54,11 +54,11 @@
     <div class="filtro-grupo">
       <label class="grupo-titulo">Status</label>
       <label>
-        <input type="checkbox" [(ngModel)]="filtro['marcado']" />
+        <input type="checkbox" [(ngModel)]="filtro['marcado']" (change)="emitirFiltro()" />
         Marcado como concluído
       </label>
       <label>
-        <input type="checkbox" [(ngModel)]="filtro['naoMarcado']" />
+        <input type="checkbox" [(ngModel)]="filtro['naoMarcado']" (change)="emitirFiltro()" />
         Não marcado como concluído
       </label>
     </div>
@@ -67,19 +67,19 @@
     <div class="filtro-grupo">
       <label class="grupo-titulo">Período</label>
       <label>
-        <input type="radio" name="periodo" [(ngModel)]="filtro['periodo']" value="7" />
+        <input type="radio" name="periodo" [(ngModel)]="filtro['periodo']" value="7" (change)="emitirFiltro()" />
         Últimos 7 dias
       </label>
       <label>
-        <input type="radio" name="periodo" [(ngModel)]="filtro['periodo']" value="15" />
+        <input type="radio" name="periodo" [(ngModel)]="filtro['periodo']" value="15" (change)="emitirFiltro()" />
         Últimos 15 dias
       </label>
       <label>
-        <input type="radio" name="periodo" [(ngModel)]="filtro['periodo']" value="30" />
+        <input type="radio" name="periodo" [(ngModel)]="filtro['periodo']" value="30" (change)="emitirFiltro()" />
         Últimos 30 dias
       </label>
       <label>
-        <input type="radio" name="periodo" [(ngModel)]="filtro['periodo']" value="90" />
+        <input type="radio" name="periodo" [(ngModel)]="filtro['periodo']" value="90" (change)="emitirFiltro()" />
         Últimos 90 dias
       </label>
     </div>

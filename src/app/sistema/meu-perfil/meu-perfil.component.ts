@@ -10,13 +10,19 @@ import { ColaboradoresService } from 'src/app/services/administrativo/colaborado
 })
 export class MeuPerfilComponent implements OnInit {
   isEditing = false;
-  userId: string = '';
-  name: string = '';
+  userId = 0;
+  nome: string = '';
   email: string = '';
   setor: string = '';
 
-  defaultImageUrl = 'assets/imagens/default-profile.png';
+  defaultImageUrl = '';
+  selectedImageFile: File | null = null;
   selectedImageUrl: string | ArrayBuffer | null = null;
+
+  showChangePassword = false;
+  successMessage: string | null = null;
+  errorMessage: string | null = null;
+  messageTimeout: any;
 
   constructor(
     public themeService: ThemeService,
@@ -25,7 +31,7 @@ export class MeuPerfilComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadUserData();
+    this.carregarPerfilUsuario();
   }
 
   toggleDarkMode() {
@@ -33,7 +39,7 @@ export class MeuPerfilComponent implements OnInit {
       userId: this.userId,
       darkMode: !this.themeService.isDarkMode(),
     });
-    this.themeService.toggleDarkMode(this.userId);
+    this.themeService.toggleDarkMode(String(this.userId));
   }
 
   goBack() {
@@ -45,7 +51,35 @@ export class MeuPerfilComponent implements OnInit {
   }
 
   saveChanges() {
-    this.isEditing = false;
+    this.clearMessage();
+
+    const formData = new FormData();
+    const perfil = {
+      nome: this.nome,
+      email: this.email,
+    };
+
+    formData.append('perfil', JSON.stringify(perfil));
+
+    if (this.selectedImageFile) {
+      formData.append('foto', this.selectedImageFile);
+    }
+
+    this.colaboradoresService
+      .atualizarPerfilUsuario(this.userId, formData)
+      .subscribe({
+        next: (response) => {
+          this.isEditing = false;
+          this.showMessage('success', 'Perfil atualizado com sucesso!');
+        },
+        error: (error) => {
+          this.showMessage(
+            'error',
+            error.message || 'Erro ao atualizar o perfil.'
+          );
+          console.error('Erro ao atualizar perfil:', error);
+        },
+      });
   }
 
   cancelEdit() {
@@ -55,6 +89,7 @@ export class MeuPerfilComponent implements OnInit {
   onImageSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
+      this.selectedImageFile = file;
       const reader = new FileReader();
       reader.onload = (e) => {
         if (e.target?.result) {
@@ -65,24 +100,23 @@ export class MeuPerfilComponent implements OnInit {
     }
   }
 
-  private loadUserData(): void {
-    this.colaboradoresService.getUsuarioByToken().subscribe(
-      (usuario) => {
-        this.userId = usuario.id;
-        this.name = usuario.nome;
-        this.email = usuario.email;
-        this.setor = usuario.setor;
-        console.log('Dados do usuário carregados:', {
-          id: this.userId,
-          nome: this.name,
-          email: this.email,
-          setor: this.setor,
-        });
+  carregarPerfilUsuario(): void {
+    this.colaboradoresService.getUsuarioByToken().subscribe({
+      next: (usuario) => {
+        console.log('Usuário retornado pelo token:', usuario);
+        this.userId = Number(usuario.id);
+        this.nome = usuario.nome || '';
+        this.email = usuario.email || '';
+        this.setor = usuario.setor || '';
+        this.selectedImageUrl =
+          usuario.fotoUrl && usuario.fotoUrl !== ''
+            ? usuario.fotoUrl
+            : this.defaultImageUrl;
       },
-      (error) => {
-        console.error('Erro ao carregar os dados do usuário:', error);
-      }
-    );
+      error: (error) => {
+        console.error('Erro ao carregar perfil do usuário:', error);
+      },
+    });
   }
 
   getInitial(name: string): string {
@@ -99,5 +133,26 @@ export class MeuPerfilComponent implements OnInit {
     ];
     const index = seed ? seed.charCodeAt(0) % colors.length : 0;
     return colors[index];
+  }
+
+  showMessage(type: 'success' | 'error', msg: string) {
+    this.clearMessage();
+    if (type === 'success') this.successMessage = msg;
+    if (type === 'error') this.errorMessage = msg;
+    this.messageTimeout = setTimeout(() => this.clearMessage(), 3000);
+  }
+
+  clearMessage() {
+    this.successMessage = null;
+    this.errorMessage = null;
+    if (this.messageTimeout) clearTimeout(this.messageTimeout);
+  }
+
+  toggleChangePassword() {
+    this.showChangePassword = !this.showChangePassword;
+  }
+
+  changePassword() {
+    this.showChangePassword = false;
   }
 }

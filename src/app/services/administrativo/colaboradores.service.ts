@@ -192,7 +192,7 @@ export class ColaboradoresService {
 
   FiltroUsuariosBySetores(setores: string[]): Observable<Usuario[]> {
     if (!setores || setores.length === 0) {
-      return this.getUsuarios();
+      return this.getUsuariosNonAdmin();
     }
     const params = setores
       .map((s) => `setors=${encodeURIComponent(s)}`)
@@ -208,6 +208,38 @@ export class ColaboradoresService {
           errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
         }
         console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
+  atualizarPerfilUsuario(id: number, formData: FormData): Observable<any> {
+    const url = `${this.apiURL}/perfil/${id}`;
+    console.log('Dados enviados para o backend (atualizar perfil):');
+    formData.forEach((value, key) => {
+      console.log(`${key}:`, value);
+    });
+    return this.http.put<any>(url, formData).pipe(
+      map((response) => response),
+      catchError((error: HttpErrorResponse) => {
+        console.error('Erro bruto recebido do servidor:', error);
+
+        let errorMessage = 'Erro ao atualizar o perfil do usuário.';
+
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else {
+          if (typeof error.error === 'string') {
+            errorMessage = error.error;
+          } else if (error.error?.message) {
+            errorMessage = error.error.message;
+          } else if (error.error?.errors) {
+            const firstErrorKey = Object.keys(error.error.errors)[0];
+            errorMessage = error.error.errors[firstErrorKey];
+          }
+        }
+
+        console.error('Mensagem de erro processada:', errorMessage);
         return throwError(() => new Error(errorMessage));
       })
     );

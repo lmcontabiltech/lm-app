@@ -4,6 +4,8 @@ import { Empresa } from './empresa';
 import { EmpresasService } from '../../../services/administrativo/empresas.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ModalService } from 'src/app/services/modal/modalDeletar.service';
+import { RegimeDaEmpresa } from './enums/regime-da-empresa';
+import { RegimeDaEmpresaDescricao } from './enums/regime-da-empresa-descricao';
 
 @Component({
   selector: 'app-empresas',
@@ -25,6 +27,17 @@ export class EmpresasComponent implements OnInit {
   isLoading = false;
   successMessage: string = '';
   messageTimeout: any;
+
+  RegimeDaEmpresaDescricao = RegimeDaEmpresaDescricao;
+  selectedRegime: string = '';
+
+  regimes = Object.keys(RegimeDaEmpresa).map((key) => ({
+    value: RegimeDaEmpresa[key as keyof typeof RegimeDaEmpresa],
+    description:
+      RegimeDaEmpresaDescricao[
+        RegimeDaEmpresa[key as keyof typeof RegimeDaEmpresa]
+      ],
+  }));
 
   constructor(
     private router: Router,
@@ -113,6 +126,10 @@ export class EmpresasComponent implements OnInit {
     );
   }
 
+  getDescricaoRegime(regime: string): string {
+    return RegimeDaEmpresaDescricao[regime as RegimeDaEmpresa] || regime;
+  }
+
   atualizarPaginacao(): void {
     const inicio = (this.paginaAtual - 1) * this.itensPorPagina;
     const fim = inicio + this.itensPorPagina;
@@ -189,5 +206,35 @@ export class EmpresasComponent implements OnInit {
   clearMessage() {
     this.successMessage = '';
     if (this.messageTimeout) clearTimeout(this.messageTimeout);
+  }
+
+  onRegimeChange(): void {
+    const regimes = this.selectedRegime ? [this.selectedRegime] : [];
+    this.isLoading = true;
+    const obs =
+      regimes.length > 0
+        ? this.empresasService.getEmpresasPorRegime(regimes[0])
+        : this.empresasService.getEmpresas();
+
+    obs.subscribe(
+      (empresas) => {
+        this.empresas = empresas;
+        this.paginaAtual = 1;
+        this.totalPaginas = Math.ceil(
+          this.empresas.length / this.itensPorPagina
+        );
+        this.atualizarPaginacao();
+        this.isLoading = false;
+        this.mensagemBusca =
+          empresas.length === 0
+            ? 'Nenhuma empresa encontrada para o regime selecionado.'
+            : '';
+      },
+      (error) => {
+        this.isLoading = false;
+        this.mensagemBusca = 'Erro ao buscar empresas por regime.';
+        console.error(error);
+      }
+    );
   }
 }

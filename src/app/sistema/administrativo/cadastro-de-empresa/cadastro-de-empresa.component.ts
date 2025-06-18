@@ -5,6 +5,8 @@ import { Empresa } from '../empresas/empresa';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmpresasService } from '../../../services/administrativo/empresas.service';
 import { ColaboradoresService } from 'src/app/services/administrativo/colaboradores.service';
+import { RegimeDaEmpresa } from '../empresas/enums/regime-da-empresa';
+import { RegimeDaEmpresaDescricao } from '../empresas/enums/regime-da-empresa-descricao';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -30,6 +32,16 @@ export class CadastroDeEmpresaComponent implements OnInit {
   selectedPessoal: string = '';
   funcionariosContabil: { value: string; description: string }[] = [];
   selectedContabil: string = '';
+
+  regimes = Object.keys(RegimeDaEmpresa).map((key) => ({
+    value: RegimeDaEmpresa[key as keyof typeof RegimeDaEmpresa],
+    description:
+      RegimeDaEmpresaDescricao[
+        RegimeDaEmpresa[key as keyof typeof RegimeDaEmpresa]
+      ],
+  }));
+
+  selectedRegime: string = '';
 
   constructor(
     private location: Location,
@@ -140,6 +152,8 @@ export class CadastroDeEmpresaComponent implements OnInit {
       this.isEditMode = true;
       this.carregarDadosEmpresa(this.empresaId);
     }
+
+
   }
 
   private carregarDadosEmpresa(empresaId: string): void {
@@ -152,6 +166,7 @@ export class CadastroDeEmpresaComponent implements OnInit {
         });
 
         this.tratarColaboradores(empresa);
+        this.selectedRegime = empresa.regimeEmpresa || '';
       },
       (error) => {
         console.error('Erro ao carregar os dados da empresa:', error);

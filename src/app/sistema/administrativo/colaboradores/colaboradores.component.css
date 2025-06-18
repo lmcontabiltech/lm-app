@@ -40,10 +40,8 @@
   width: 100%;
 }
 
-.select-box {
-  display: flex;
-  align-items: center;
-  display: contents;
+.select-container {
+  width: 250px;
 }
 
 .search-container {
@@ -273,10 +271,9 @@ tr:hover {
     gap: 16px;
   }
 
-  .select-box {
-    display: flex;
-    width: 100%;
-  }
+  .select-container {
+  width: 100%;
+}
 
   .search-container {
     width: 100%;

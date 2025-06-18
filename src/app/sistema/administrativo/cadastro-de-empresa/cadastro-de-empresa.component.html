@@ -33,7 +33,12 @@
 
                 <div class="form-group">
                     <label for="regimeEmpresa">Regime da empresa</label>
-                    <input type="text" id="regimeEmpresa" name="regimeEmpresa" formControlName="regimeEmpresa" class="form-control" placeholder="Digite" required>
+                    <app-select-padrao
+                    label="Selecionar regime da empresa"
+                    [options]="regimes"
+                    [(selectedValue)]="selectedRegime"
+                    formControlName="regimeEmpresa">
+                    </app-select-padrao>
                 </div>
 
                 <div class="divisao">

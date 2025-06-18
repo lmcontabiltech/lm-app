@@ -1,14 +1,14 @@
 <!-- select.component.html -->
 <div class="select-container">
   <label [class.active]="selectedValue">{{ label }}</label>
-  <div [ngStyle]="customStyles" class="select-dropdown" (click)="isOpen = !isOpen">
+  <div [ngStyle]="customStyles" class="select-dropdown" [class.disabled]="disabled" (click)="!disabled && (isOpen = !isOpen)">
     <div class="selected-value">{{ getSelectedDescription() }}</div>
     <div class="arrow-down" [ngClass]="{'icon-rotate': isOpen}">
       <img src="assets/icones/carret.svg" alt="Arrow down">
     </div>
   </div>
 
-  <div class="options-container" *ngIf="isOpen">
+  <div class="options-container" *ngIf="isOpen && !disabled">
     <div class="option"
         *ngIf="showDefaultOption"
         (click)="onSelectDefault()"
@@ -18,7 +18,8 @@
     <div class="option"
          *ngFor="let option of options"
          (click)="onSelect(option)"
-         [class.selected]="option.value === selectedValue">
+         [class.selected]="option.value === selectedValue"
+         [attr.data-value]="option.value">
       {{ option.description }}
     </div>
   </div>

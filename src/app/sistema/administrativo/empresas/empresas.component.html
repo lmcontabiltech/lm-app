@@ -7,9 +7,17 @@
 
     <div class="table-container">
         <div class="filtro-container">
-            <app-select-padrao
-                  label="Todos os regimes">
-            </app-select-padrao>
+             <div class="select-container">
+                <app-select-padrao
+                  label="Regimes"
+                  [options]="regimes"
+                  [(selectedValue)]="selectedRegime"
+                  (selectedValueChange)="onRegimeChange()"
+                  [showDefaultOption]="true"
+                  [defaultLabel]="'Todos os regimes'"
+                  [defaultValue]="''">
+                </app-select-padrao>
+             </div>
 
             <div class="search-container">
                 <app-search (searchChange)="onSearch($event)"></app-search>
@@ -51,7 +59,7 @@
                         </td>
                         <td>{{ empresa.cnpj }}</td>
                         <td>{{ empresa.codQuestor }}</td>
-                        <td>{{ empresa.regimeEmpresa }}</td>
+                        <td>{{ getDescricaoRegime(empresa.regimeEmpresa) }}</td>
                         <td>
                             <div class="container-acoes">
                                 <button class="btn-acao edit" (click)="editarEmpresa(empresa.id)">
@@ -80,7 +88,7 @@
             <ng-template #semEmpresas>
                 <div class="no-data-message">
                 <img src="assets/imagens/no-data.svg" alt="Sem dados">
-                <p>Não há usuários cadastrados.</p>
+                <p>Não há empresas cadastradas.</p>
                 </div>
             </ng-template>
         </div>

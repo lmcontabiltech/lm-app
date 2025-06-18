@@ -219,9 +219,11 @@ export class ColaboradoresComponent implements OnInit {
 
   onSetorChange() {
     const setores = this.selectedSetor ? [this.selectedSetor] : [];
+    console.log('Setor selecionado:', setores);
     this.isLoading = true;
     this.colaboradoresService.FiltroUsuariosBySetores(setores).subscribe(
       (usuarios) => {
+        console.log('Usuários retornados pelo backend:', usuarios);
         this.colaboradores = usuarios;
         this.paginaAtual = 1;
         this.totalPaginas = Math.ceil(

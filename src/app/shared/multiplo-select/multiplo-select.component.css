@@ -32,6 +32,13 @@ label.active {
   flex-wrap: wrap;
   gap: 5px;
   flex-grow: 1;
+  flex-grow: 1;
+  width: 100%;
+  box-sizing: border-box;
+  align-items: flex-start;
+  max-height: 80px;
+  overflow-y: auto;
+  margin-right: 5px;
 }
 
 .selected-value {
@@ -41,6 +48,11 @@ label.active {
   background: #deebe5;
   border-radius: 16px;
   font-size: 14px;
+  max-width: 100%;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  box-sizing: border-box;
 }
 
 .options-container {
@@ -60,8 +72,8 @@ label.active {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 16px;
-  height: 16px;
+  width: 17px;
+  height: 17px;
   margin-left: 5px;
   background: #dc3545;
   color: #ffffff;
@@ -84,6 +96,7 @@ label.active {
 
 .options-container {
   position: absolute;
+  top: 110%;
   width: 100%;
   border: 1px solid #ced4da;
   border-radius: 8px;
@@ -104,6 +117,11 @@ label.active {
 
 .option.selected {
   background-color: #e2e2e2;
+}
+
+.select-dropdown.disabled {
+  cursor: not-allowed;
+  opacity: 0.8;
 }
 
 @media (max-width: 768px) {

@@ -1,5 +1,89 @@
 <div class="main-container">
-   <div class="container-aviso">
-      <img src="assets/imagens/em-breve.png" alt="Em breve" class="emBreve">
-  </div>
+   <div class="header-container">
+        <h2>Histórico de Atividades</h2>
+    </div>
+
+   <div class="table-container">
+        <div class="filtro-container">
+            <div class="select-container">
+                <app-select-padrao
+                    label="Setor"
+                    [options]="setores"
+                    [(selectedValue)]="selectedSetor"
+                    (selectedValueChange)="onSetorChange()"
+                    [showDefaultOption]="true"
+                    [defaultLabel]="'Todos os setores'"
+                    [defaultValue]="''">
+                </app-select-padrao>
+            </div>
+
+            <div class="search-container">
+                <app-search (searchChange)="onSearch($event)"></app-search>
+            </div>
+        </div>
+
+        <div class="progress-bar-container" *ngIf="isLoading">
+            <div class="progress-bar"></div>
+        </div>
+
+        <div class="tabela-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Atividade</th>
+                        <th>Colaborador</th>
+                        <th>Setor</th>
+                        <th>Data/Hora</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let historico of historicoPaginado">
+                        <td>
+                            <div class="perfil">
+                                {{ historico.data }}
+                            </div>
+                        </td>
+                        <td>{{ historico.data }}</td>
+                        <td>
+                            <app-setor-tag [setor]="historico.setor"></app-setor-tag>
+                        </td>
+                        <td>
+                            <div class="container-acoes">
+                                <button class="btn-acao visualizar">
+                                    <img src="assets/icones/eye-open-white.svg" alt="visualizar">
+                                    Visualizar
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div *ngIf="historicoPaginado.length === 0" class="feedback-container">
+            <ng-container *ngIf="mensagemBusca; else semUsuarios">
+                <div>
+                <div class="search alert-warning text-center">
+                    {{ mensagemBusca }}
+                </div>
+                </div>
+            </ng-container>
+            <ng-template #semUsuarios>
+                <div class="no-data-message">
+                <img src="assets/imagens/no-data.svg" alt="Sem dados">
+                <p>Não há atividades arquivadas.</p>
+                </div>
+            </ng-template>
+        </div>
+
+        <div class="paginacao">
+            <app-pagination
+            [paginaAtual]="paginaAtual"
+            [totalItens]="totalItens"
+            [itensPorPagina]="itensPorPagina"
+            (paginaMudou)="onPaginaMudou($event)">
+            </app-pagination>
+        </div>  
+    </div>
 </div>

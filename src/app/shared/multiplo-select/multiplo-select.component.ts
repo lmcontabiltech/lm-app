@@ -29,6 +29,7 @@ export class MultiploSelectComponent {
   @Output() selectedValueChange: EventEmitter<any> = new EventEmitter<any>();
   @Input() customStyles: { [key: string]: string } = {};
   @Input() multiple: boolean = false;
+  @Input() disabled: boolean = false;
 
   isOpen: boolean = false;
 
