@@ -1,9 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Atividade } from 'src/app/sistema/gerenciamento/atividades/atividades';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { HistoricoAtividade } from 'src/app/sistema/gerenciamento/historico-atividades/historico';
 
 @Injectable({
   providedIn: 'root',
@@ -160,6 +161,76 @@ export class AtividadeService {
         }
         console.error(errorMessage);
         return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
+  getHistoricoAtividades(): Observable<HistoricoAtividade[]> {
+    return this.http.get<HistoricoAtividade[]>(`${this.apiURL}/historico`).pipe(
+      map((res) => res || []),
+      catchError((error: HttpErrorResponse) => {
+        let msg = 'Erro ao buscar histórico de atividades.';
+        if (error.error instanceof ErrorEvent) {
+          msg = `Erro de rede: ${error.error.message}`;
+        } else if (error.error?.message) {
+          msg = error.error.message;
+        }
+        return throwError(() => new Error(msg));
+      })
+    );
+  }
+
+  getHistoricoAtividadesPorUsuario(
+    userId: number
+  ): Observable<HistoricoAtividade[]> {
+    return this.http
+      .get<HistoricoAtividade[]>(`${this.apiURL}/historico/user/${userId}`)
+      .pipe(
+        map((res) => res || []),
+        catchError((error: HttpErrorResponse) => {
+          let msg = 'Erro ao buscar histórico do usuário.';
+          if (error.error instanceof ErrorEvent) {
+            msg = `Erro de rede: ${error.error.message}`;
+          } else if (error.error?.message) {
+            msg = error.error.message;
+          }
+          return throwError(() => new Error(msg));
+        })
+      );
+  }
+
+  removerUsuarioDaAtividade(
+    atividadeId: number,
+    usuarioId: number
+  ): Observable<any> {
+    const url = `${this.apiURL}/${atividadeId}/usuario/${usuarioId}`;
+    return this.http.delete(url).pipe(
+      catchError((error: HttpErrorResponse) => {
+        let msg = 'Erro ao remover usuário da atividade.';
+        if (error.error instanceof ErrorEvent) {
+          msg = `Erro de rede: ${error.error.message}`;
+        } else if (error.error?.message) {
+          msg = error.error.message;
+        }
+        return throwError(() => new Error(msg));
+      })
+    );
+  }
+
+  removerTarefaDaAtividade(
+    atividadeId: number,
+    tarefaId: number
+  ): Observable<any> {
+    const url = `${this.apiURL}/${atividadeId}/tarefa/${tarefaId}`;
+    return this.http.delete(url).pipe(
+      catchError((error: HttpErrorResponse) => {
+        let msg = 'Erro ao remover tarefa da atividade.';
+        if (error.error instanceof ErrorEvent) {
+          msg = `Erro de rede: ${error.error.message}`;
+        } else if (error.error?.message) {
+          msg = error.error.message;
+        }
+        return throwError(() => new Error(msg));
       })
     );
   }

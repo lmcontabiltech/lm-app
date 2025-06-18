@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SetorDescricao } from '../../administrativo/cadastro-de-colaborador/setor-descricao';
 import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
-import { Historico } from './historico';
+import { HistoricoAtividade } from './historico';
 
 @Component({
   selector: 'app-historico-atividades',
@@ -10,11 +10,11 @@ import { Historico } from './historico';
   styleUrls: ['./historico-atividades.component.css'],
 })
 export class HistoricoAtividadesComponent implements OnInit {
-  historico: Historico[] = [];
+  historico: HistoricoAtividade[] = [];
   itensPorPagina = 5;
   paginaAtual = 1;
   totalPaginas = Math.ceil(this.historico.length / this.itensPorPagina);
-  historicoPaginado: Historico[] = [];
+  historicoPaginado: HistoricoAtividade[] = [];
   selectedProcesso: any = null;
   isLoading = false;
   termoBusca: string = '';

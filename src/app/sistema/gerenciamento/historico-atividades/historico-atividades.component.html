@@ -41,10 +41,10 @@
                     <tr *ngFor="let historico of historicoPaginado">
                         <td>
                             <div class="perfil">
-                                {{ historico.nome }}
+                                {{ historico.data }}
                             </div>
                         </td>
-                        <td>{{ historico.nome }}</td>
+                        <td>{{ historico.data }}</td>
                         <td>
                             <app-setor-tag [setor]="historico.setor"></app-setor-tag>
                         </td>

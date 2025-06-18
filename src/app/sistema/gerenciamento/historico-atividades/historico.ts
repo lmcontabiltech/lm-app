@@ -1,10 +1,10 @@
 import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
+import { Atividade } from '../atividades/atividades';
 
-export class Historico {
+export class HistoricoAtividade {
   id?: string;
-  nome!: string;
   setor!: Setor;
-  dataDaExclusao?: string;
-  dateDaEntrega!: string;
-  usuarios?: { nome: string; fotoUrl: string }[];
+  data?: string;
+  usuario?: { nome: string; fotoUrl: string }[];
+  atividade!: Atividade;
 }
