@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ThemeService } from '../../services/modo-escuro/theme.service';
 import { Location } from '@angular/common';
 import { ColaboradoresService } from 'src/app/services/administrativo/colaboradores.service';
+import { Setor } from '../administrativo/cadastro-de-colaborador/setor';
+import { SetorDescricao } from '../administrativo/cadastro-de-colaborador/setor-descricao';
 
 @Component({
   selector: 'app-meu-perfil',
@@ -64,6 +66,10 @@ export class MeuPerfilComponent implements OnInit {
     if (this.selectedImageFile) {
       formData.append('foto', this.selectedImageFile);
     }
+    console.log('Enviando para atualizarPerfilUsuario:');
+    formData.forEach((value, key) => {
+      console.log(`${key}:`, value);
+    });
 
     this.colaboradoresService
       .atualizarPerfilUsuario(this.userId, formData)
@@ -154,5 +160,9 @@ export class MeuPerfilComponent implements OnInit {
 
   changePassword() {
     this.showChangePassword = false;
+  }
+
+  getDescricaoSetor(setor: string): string {
+    return SetorDescricao[setor as keyof typeof SetorDescricao] || setor || '-';
   }
 }

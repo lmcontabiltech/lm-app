@@ -49,7 +49,7 @@
                         <td>
                             <div class="perfil">
                                 <div class="avatar" [ngStyle]="{'background-color': getRandomColor(colaborador.nome)}">
-                                    <img [src]="colaborador.foto?.documentoUrl" alt="Foto do Colaborador" *ngIf="colaborador.foto?.documentoUrl; else defaultAvatar" />
+                                    <img [src]="colaborador.fotoUrl" alt="Foto do Colaborador" *ngIf="colaborador.fotoUrl; else defaultAvatar" />
                                     <ng-template #defaultAvatar>
                                         <span>{{ getInitial(colaborador.nome) }}</span>
                                     </ng-template>

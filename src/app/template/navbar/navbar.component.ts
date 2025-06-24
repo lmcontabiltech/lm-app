@@ -8,6 +8,7 @@ import {
 import { Router } from '@angular/router';
 import { Permissao } from 'src/app/login/permissao';
 import { AuthService } from 'src/app/services/auth.service';
+import { Usuario } from 'src/app/login/usuario';
 
 @Component({
   selector: 'app-navbar',
@@ -43,9 +44,11 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.obterPerfilUsuario().subscribe(
-      (response: { nome: string; permissao: string }) => {
+      (response: Usuario) => {
+        console.log('Perfil do usuário:', response);
         this.nomeUsuario = response.nome;
         const permissao = response.permissao;
+        this.fotoUsuario = response.fotoUrl || '';
         this.permissaoUsuario =
           this.permissaoDescricao[permissao] || 'Permissão desconhecida';
       },
