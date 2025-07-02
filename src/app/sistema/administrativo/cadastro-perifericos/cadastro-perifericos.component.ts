@@ -21,8 +21,14 @@ export class CadastroPerifericosComponent implements OnInit {
   isEditMode = false;
   perifericoId: string | null = null;
 
+  Status: string = 'PROPRIO_EMPRESA';
+
   usuarios: { value: string; description: string }[] = [];
   selectedUsuario: string = '';
+
+  foto: File | null = null;
+  selectedFoto: { [key: string]: File | null } = {};
+  fotoPreview: string | ArrayBuffer | null = null;
 
   constructor(
     private location: Location,
@@ -37,6 +43,7 @@ export class CadastroPerifericosComponent implements OnInit {
       nome: ['', Validators.required],
       descricao: ['', Validators.required],
       colaborador: ['', Validators.required],
+      status: ['PROPRIO_EMPRESA', Validators.required],
     });
   }
 
@@ -48,6 +55,12 @@ export class CadastroPerifericosComponent implements OnInit {
     if (usuario?.permissao) {
       this.permissaoUsuario = this.mapPermissao(usuario.permissao);
     }
+  }
+
+  onImageSelected(image: File | null, tipo: string) {
+    this.selectedFoto[tipo] = image;
+    this.perifericoForm.get(tipo)?.setValue(image);
+    console.log(`Imagem de ${tipo} selecionada:`, image);
   }
 
   private mapPermissao(permissao: string): string {

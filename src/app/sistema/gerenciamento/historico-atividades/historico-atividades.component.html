@@ -32,7 +32,7 @@
                     <tr>
                         <th>Atividade</th>
                         <th>Colaborador</th>
-                        <th>Setor</th>
+                        <th>Empresa</th>
                         <th>Data/Hora</th>
                         <th>Ações</th>
                     </tr>
@@ -41,16 +41,15 @@
                     <tr *ngFor="let historico of historicoPaginado">
                         <td>
                             <div class="perfil">
-                                {{ historico.data }}
+                                {{ historico.atividade.nome }}
                             </div>
                         </td>
-                        <td>{{ historico.data }}</td>
-                        <td>
-                            <app-setor-tag [setor]="historico.setor"></app-setor-tag>
-                        </td>
+                        <td>{{ historico.usuario?.nome || '-' }}</td>
+                        <td>{{ historico.atividade.empresa?.razaoSocial || '-' }}</td>
+                        <td>{{ (historico.data | date:'dd/MM/yyyy') + ' às ' + (historico.data | date:'HH:mm') || '-' }}</td>
                         <td>
                             <div class="container-acoes">
-                                <button class="btn-acao visualizar">
+                                <button class="btn-acao visualizar" (click)="abrirModalAtividade(historico.id)">
                                     <img src="assets/icones/eye-open-white.svg" alt="visualizar">
                                     Visualizar
                                 </button>

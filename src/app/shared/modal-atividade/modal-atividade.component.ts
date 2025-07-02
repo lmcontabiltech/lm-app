@@ -6,6 +6,7 @@ import {
   MULTAS_TIPO,
   MultaTipo,
 } from 'src/app/sistema/gerenciamento/atividades/enums/multa-tipo';
+import { AtividadeService } from 'src/app/services/gerenciamento/atividade.service';
 
 @Component({
   selector: 'app-modal-atividade',
@@ -21,6 +22,10 @@ export class ModalAtividadeComponent {
   @Output() editarAtividade = new EventEmitter<string>();
   @Output() deletarAtividade = new EventEmitter<string>();
   @Output() atualizarSubtarefas = new EventEmitter<any[]>();
+
+  loadingSubtarefas: { [key: number]: boolean } = {};
+
+  constructor(private atividadeService: AtividadeService) {}
 
   onModalClose() {
     this.closeModal.emit();
@@ -88,10 +93,37 @@ export class ModalAtividadeComponent {
 
   onSubtarefaToggle(index: number, event: Event) {
     const input = event.target as HTMLInputElement;
-    if (input && this.atividade?.subtarefas) {
-      this.atividade.subtarefas[index].checked = input.checked;
-      this.atualizarSubtarefas.emit(this.atividade.subtarefas);
-    }
+    if (!input || !this.atividade?.subtarefas || !this.atividade?.id) return;
+
+    const subtarefa = this.atividade.subtarefas[index];
+    const novoStatus = input.checked;
+    const atividadeId = Number(this.atividade.id);
+    const subtarefaId = Number(subtarefa.id);
+
+    this.loadingSubtarefas[index] = true;
+
+    this.atividadeService
+      .atualizarStatusCheckedSubprocesso(atividadeId, subtarefaId, novoStatus)
+      .subscribe({
+        next: (response) => {
+          console.log('Status da subtarefa atualizado com sucesso:', response);
+
+          this.atividade.subtarefas[index].checked = novoStatus;
+
+          this.atualizarSubtarefas.emit(this.atividade.subtarefas);
+
+          this.loadingSubtarefas[index] = false;
+        },
+        error: (error) => {
+          input.checked = !novoStatus;
+
+          this.loadingSubtarefas[index] = false;
+        },
+      });
+  }
+
+  isSubtarefaLoading(index: number): boolean {
+    return this.loadingSubtarefas[index] || false;
   }
 
   getChecklistPercent(subtarefas: any[]): number {

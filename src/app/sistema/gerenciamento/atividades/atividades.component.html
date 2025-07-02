@@ -2,6 +2,16 @@
   <div class="header-container">
     <h2>Atividades</h2>
       <div class="header-actions">
+        <app-select-auto-complete
+          placeholder="Buscar empresas..."
+          [options]="empresasOptions"
+          [maxItems]="5"
+          (itemAdded)="onEmpresaSelecionada(empresasSelecionadas)"
+          (itemRemoved)="onEmpresaSelecionada(empresasSelecionadas)"
+          [(ngModel)]="empresasSelecionadas"
+          (ngModelChange)="onEmpresaSelecionada($event)"
+          [multiple]="true">
+        </app-select-auto-complete>
         <app-filtro-atividades
           [menuAberto]="filtroAberto"
           (fechar)="filtroAberto = false"
