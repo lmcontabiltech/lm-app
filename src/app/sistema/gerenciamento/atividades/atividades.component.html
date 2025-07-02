@@ -9,6 +9,7 @@
           (itemAdded)="onEmpresaSelecionada(empresasSelecionadas)"
           (itemRemoved)="onEmpresaSelecionada(empresasSelecionadas)"
           [(ngModel)]="empresasSelecionadas"
+          (ngModelChange)="onEmpresaSelecionada($event)"
           [multiple]="true">
         </app-select-auto-complete>
         <app-filtro-atividades

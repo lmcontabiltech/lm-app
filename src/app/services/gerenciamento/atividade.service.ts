@@ -6,6 +6,10 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { HistoricoAtividade } from 'src/app/sistema/gerenciamento/historico-atividades/historico';
 
+interface UpdateCheckedDto {
+  checked: boolean;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -247,5 +251,59 @@ export class AtividadeService {
         return throwError(() => new Error(msg));
       })
     );
+  }
+
+  atualizarStatusCheckedSubprocesso(
+    atividadeId: number,
+    subprocessoId: number,
+    checked: boolean
+  ): Observable<any> {
+    const url = `${this.apiURL}/${atividadeId}/subprocessos/${subprocessoId}/checked`;
+    const dto: UpdateCheckedDto = { checked };
+
+    return this.http.patch(url, dto).pipe(
+      map((response) => response),
+      catchError((error: HttpErrorResponse) => {
+        let errorMessage = 'Erro ao atualizar status da tarefa.';
+
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro de rede: ${error.error.message}`;
+        } else if (error.error?.message) {
+          errorMessage = error.error.message;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
+  getAtividadesPorEmpresas(idsEmpresas: number[]): Observable<any> {
+    const params: any = {};
+    if (idsEmpresas && idsEmpresas.length > 0) {
+      params.idsEmpresas = idsEmpresas;
+    }
+
+    return this.http
+      .get<any>(`${this.apiURL}/atividades/por-empresas`, { params })
+      .pipe(
+        map((response) => {
+          console.log('Response do backend:', response);
+          return response.atividades ? response.atividades : response;
+        }),
+        catchError((error) => {
+          let errorMessage = 'Erro ao buscar atividades por empresas.';
+
+          if (error.error instanceof ErrorEvent) {
+            errorMessage = `Erro: ${error.error.message}`;
+          } else if (error.status) {
+            errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+          }
+          console.error(errorMessage);
+          return throwError(() => new Error(errorMessage));
+        })
+      );
   }
 }

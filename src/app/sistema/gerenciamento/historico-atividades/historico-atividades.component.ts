@@ -110,32 +110,18 @@ export class HistoricoAtividadesComponent implements OnInit {
     this.carregarHistoricoUsuario();
   }
 
-  // CORRIGIDO: Método para visualizar a atividade específica usando dados do histórico
   abrirModalAtividade(historicoId: string | undefined): void {
     if (!historicoId) return;
 
-    // Busca o item do histórico pelo ID
     const historicoItem = this.historico.find((h) => h.id === historicoId);
 
     if (historicoItem && historicoItem.atividade) {
-      // Usa a atividade que já está no histórico
       this.modalAtividadeService.openModal({
         atividade: historicoItem.atividade,
         size: 'lg',
       });
     } else {
       console.error('Atividade não encontrada no histórico');
-      // Opcional: mostrar uma mensagem de erro ao usuário
-    }
-  }
-
-  // Método alternativo se você quiser passar o objeto histórico completo
-  abrirModalAtividadePorHistorico(historicoItem: HistoricoAtividade): void {
-    if (historicoItem && historicoItem.atividade) {
-      this.modalAtividadeService.openModal({
-        atividade: historicoItem.atividade,
-        size: 'lg',
-      });
     }
   }
 }

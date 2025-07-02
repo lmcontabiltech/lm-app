@@ -301,9 +301,43 @@ export class AtividadesComponent implements OnInit {
     });
   }
 
-  // Adicione este método para tratar quando uma empresa é selecionada
   onEmpresaSelecionada(empresas: string[]): void {
     this.empresasSelecionadas = empresas;
     console.log('Empresas selecionadas:', empresas);
+
+    if (empresas && empresas.length > 0) {
+      const idsEmpresas = empresas.map((id) => Number(id));
+      this.filtrarAtividadesPorEmpresas(idsEmpresas);
+    } else {
+      this.carregarAtividades();
+    }
+  }
+
+  private filtrarAtividadesPorEmpresas(idsEmpresas: number[]): void {
+    console.log('Filtrando atividades por empresas:', idsEmpresas);
+
+    this.atividadeService.getAtividadesPorEmpresas(idsEmpresas).subscribe({
+      next: (response) => {
+        console.log('Atividades filtradas por empresas:', response);
+
+        // CORREÇÃO: Extrair o array de atividades do objeto response
+        const atividades = response.atividades || response;
+
+        this.statuses.forEach((status) => (this.atividades[status] = []));
+        atividades.forEach((atividade: any) => {
+          const statusColuna = this.mapStatusToColuna(
+            atividade.status ?? 'A_FAZER'
+          );
+          if (this.atividades[statusColuna]) {
+            this.atividades[statusColuna].push(atividade);
+          } else {
+            this.atividades['backlog'].push(atividade);
+          }
+        });
+      },
+      error: (error) => {
+        console.error('Erro ao filtrar atividades por empresas:', error);
+      },
+    });
   }
 }
