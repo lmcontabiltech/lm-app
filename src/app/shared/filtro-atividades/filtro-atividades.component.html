@@ -22,6 +22,20 @@
     </div>
     <hr class="filtro-menu-divider" />
 
+    <!-- Filtro de empresa -->
+    <div class="filtro-grupo">
+      <label class="grupo-titulo">Empresa</label>
+      <app-select-auto-complete
+          placeholder="Buscar empresas..."
+          [options]="empresasOptions"
+          [maxItems]="1"
+          (itemAdded)="onEmpresaSelecionada(empresasSelecionadas)"
+          (itemRemoved)="onEmpresaSelecionada(empresasSelecionadas)"
+          [(ngModel)]="empresasSelecionadas"
+          [multiple]="false">
+        </app-select-auto-complete>
+    </div>
+
     <!-- Filtro de membros -->
     <div class="filtro-grupo">
       <label class="grupo-titulo">Membros</label>

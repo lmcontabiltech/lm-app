@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Setor } from 'src/app/sistema/administrativo/cadastro-de-colaborador/setor';
 import { SetorDescricao } from 'src/app/sistema/administrativo/cadastro-de-colaborador/setor-descricao';
+import { EmpresasService } from 'src/app/services/administrativo/empresas.service';
+import { AutoCompleteOption } from 'src/app/shared/select-auto-complete/select-auto-complete.component';
 
 @Component({
   selector: 'app-filtro-atividades',
@@ -24,10 +26,14 @@ export class FiltroAtividadesComponent implements OnInit {
   SetorDescricao = SetorDescricao;
   setores: string[] = [];
 
-  constructor() {}
+  empresasOptions: AutoCompleteOption[] = [];
+  empresasSelecionadas: string[] = [];
+
+  constructor(private empresasService: EmpresasService) {}
 
   ngOnInit(): void {
     this.setores = Object.keys(SetorDescricao);
+    this.carregarEmpresas();
   }
 
   toggleMenu() {
@@ -45,9 +51,7 @@ export class FiltroAtividadesComponent implements OnInit {
     if (this.filtro['marcado']) count++;
     if (this.filtro['naoMarcado']) count++;
     if (this.filtro['periodo'] && this.filtro['periodo'] !== '') count++;
-    if (
-      Array.isArray(this.filtro['setoresSelecionados'])
-    ) {
+    if (Array.isArray(this.filtro['setoresSelecionados'])) {
       count += this.filtro['setoresSelecionados'].length;
     }
     return count;
@@ -98,5 +102,29 @@ export class FiltroAtividadesComponent implements OnInit {
 
   getSetorDescricao(setor: string): string {
     return this.SetorDescricao[setor as Setor] ?? setor;
+  }
+
+  carregarEmpresas(): void {
+    this.empresasService.getEmpresas().subscribe({
+      next: (empresas) => {
+        this.empresasOptions = empresas.map((empresa) => ({
+          value: empresa.id.toString(),
+          description: empresa.razaoSocial,
+        }));
+        console.log('Empresas carregadas para o select:', this.empresasOptions);
+      },
+      error: (error) => {
+        console.error('Erro ao carregar empresas:', error);
+      },
+    });
+  }
+
+  onEmpresaSelecionada(empresas: string[]): void {
+    this.empresasSelecionadas = empresas;
+    console.log('Empresas selecionadas:', empresas);
+
+    if (empresas && empresas.length > 0) {
+      const idsEmpresas = empresas.map((id) => Number(id));
+    }
   }
 }
