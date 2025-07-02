@@ -1,1 +1,20 @@
-<p>input-imagens works!</p>
+<div class="cont-imgs">
+  <div class="image-upload" (drop)="onDrop($event)" (dragover)="onDragOver($event)">
+    <input type="file" [id]="inputId" name="image"
+      (change)="onFileSelected($event)" accept="image/*" />
+    <label [for]="inputId">
+      <div class="foto-preview" id="fotoPreview">
+        <ng-container *ngIf="fotoPreview">
+          <img *ngIf="isPreviewImage(fotoPreview)" [src]="fotoPreview" alt="Image Preview" />
+          <button type="button" class="remove-btn" (click)="removeFile($event)" title="Remover imagem">
+            <span>&times;</span>
+          </button>
+        </ng-container>
+        <span *ngIf="!fotoPreview" class="upload-placeholder">
+          <img src="assets/icones/image.svg" style="width: 40px; opacity: 0.5;" class="upload-icon">
+          {{ label }}
+        </span>
+      </div>
+    </label>
+  </div>
+</div>

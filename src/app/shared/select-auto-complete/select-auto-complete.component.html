@@ -1,0 +1,54 @@
+<div class="select-container">
+  <label [class.active]="selectedItems.length > 0 || searchText">{{ label }}</label>
+  
+  <div class="select-dropdown" [class.disabled]="disabled">
+    <!-- Chips dos itens selecionados -->
+    <div class="chips-container">
+      <div class="chip" *ngFor="let item of selectedItems; let i = index">
+        <span>{{ item.description }}</span>
+        <button class="remove-chip" (click)="removeItem(i)" [disabled]="disabled">
+          x
+        </button>
+      </div>
+      
+      <!-- Input de busca -->
+      <input 
+        #searchInput
+        type="text"
+        class="search-input"
+        [(ngModel)]="searchText"
+        [placeholder]="selectedItems.length === 0 ? placeholder : ''"
+        (input)="onSearch($event)"
+        (focus)="isOpen = true"
+        (keydown)="onKeydown($event)"
+        [disabled]="disabled"
+      />
+    </div>
+  </div>
+
+  <!-- Lista de opções -->
+  <div class="options-container" *ngIf="isOpen && !disabled && filteredOptions.length > 0">
+    <div class="option"
+         *ngFor="let option of filteredOptions; let i = index"
+         (click)="selectItem(option)"
+         [class.highlighted]="i === highlightedIndex"
+         [class.selected]="isSelected(option)">
+      {{ option.description }}
+    </div>
+    
+    <!-- Opção para adicionar novo item -->
+    <div class="option add-new" 
+         *ngIf="allowAddNew && searchText && !exactMatch()"
+         (click)="addNewItem()">
+      <img src="assets/icones/plus.svg" alt="Add">
+      Adicionar "{{ searchText }}"
+    </div>
+  </div>
+
+  <!-- Mensagem quando não há opções -->
+  <div class="options-container no-options" *ngIf="isOpen && !disabled && filteredOptions.length === 0 && searchText">
+    <div class="option disabled">
+      Nenhuma opção encontrada
+    </div>
+  </div>
+</div>

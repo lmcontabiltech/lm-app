@@ -11,6 +11,8 @@ import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
 import { AtividadeService } from 'src/app/services/gerenciamento/atividade.service';
 import { ModalAtividadeService } from 'src/app/services/modal/modalAtividade.service';
 import { ModalService } from 'src/app/services/modal/modalDeletar.service';
+import { EmpresasService } from 'src/app/services/administrativo/empresas.service';
+import { AutoCompleteOption } from 'src/app/shared/select-auto-complete/select-auto-complete.component';
 
 interface Tasks {
   [key: string]: Atividade[];
@@ -48,16 +50,21 @@ export class AtividadesComponent implements OnInit {
 
   filtroAberto = false;
 
+  empresasOptions: AutoCompleteOption[] = [];
+  empresasSelecionadas: string[] = [];
+
   constructor(
     private router: Router,
     private atividadeService: AtividadeService,
     private modalAtividadeService: ModalAtividadeService,
-    private modalDeleteService: ModalService
+    private modalDeleteService: ModalService,
+    private empresasService: EmpresasService
   ) {}
 
   ngOnInit(): void {
     this.dropListIds = this.statuses.map((status) => status);
     this.carregarAtividades();
+    this.carregarEmpresas();
   }
 
   drop(event: CdkDragDrop<Atividade[]>) {
@@ -229,17 +236,14 @@ export class AtividadesComponent implements OnInit {
     if (filtro.marcado) filtroRequest.concluido = true;
     if (filtro.naoMarcado) filtroRequest.concluido = false;
 
-    if (
-      Array.isArray(filtro.setores) &&
-      filtro.setores.length > 0
-    ) {
+    if (Array.isArray(filtro.setores) && filtro.setores.length > 0) {
       filtroRequest.setores = filtro.setores;
     }
 
     if (filtro.periodo) {
       const dias = Number(filtro.periodo);
       const data = new Date();
-      data.setHours(0, 0, 0, 0); 
+      data.setHours(0, 0, 0, 0);
       data.setDate(data.getDate() - dias);
       filtroRequest.startDate = data.toISOString().split('T')[0];
     }
@@ -280,5 +284,26 @@ export class AtividadesComponent implements OnInit {
         console.error('Erro ao aplicar filtro:', error);
       }
     );
+  }
+
+  carregarEmpresas(): void {
+    this.empresasService.getEmpresas().subscribe({
+      next: (empresas) => {
+        this.empresasOptions = empresas.map((empresa) => ({
+          value: empresa.id.toString(),
+          description: empresa.razaoSocial,
+        }));
+        console.log('Empresas carregadas para o select:', this.empresasOptions);
+      },
+      error: (error) => {
+        console.error('Erro ao carregar empresas:', error);
+      },
+    });
+  }
+
+  // Adicione este método para tratar quando uma empresa é selecionada
+  onEmpresaSelecionada(empresas: string[]): void {
+    this.empresasSelecionadas = empresas;
+    console.log('Empresas selecionadas:', empresas);
   }
 }

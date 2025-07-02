@@ -186,7 +186,21 @@ export class AtividadeService {
     return this.http
       .get<HistoricoAtividade[]>(`${this.apiURL}/historico/user/${userId}`)
       .pipe(
-        map((res) => res || []),
+        map((res) => {
+          console.log(
+            'Resposta bruta do backend (histórico por usuário):',
+            res
+          );
+          console.log('Tipo da resposta:', typeof res);
+          console.log('É array?', Array.isArray(res));
+          if (Array.isArray(res)) {
+            console.log('Quantidade de itens:', res.length);
+            if (res.length > 0) {
+              console.log('Primeiro item:', res[0]);
+            }
+          }
+          return res || [];
+        }),
         catchError((error: HttpErrorResponse) => {
           let msg = 'Erro ao buscar histórico do usuário.';
           if (error.error instanceof ErrorEvent) {

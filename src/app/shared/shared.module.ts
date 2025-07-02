@@ -16,6 +16,7 @@ import { PaginationComponent } from './pagination/pagination.component';
 import { LoadingComponent } from './loading/loading.component';
 import { LottieModule } from 'ngx-lottie';
 import player from 'lottie-web';
+import { SelectAutoCompleteComponent } from './select-auto-complete/select-auto-complete.component';
 
 export function playerFactory() {
   return player;
@@ -36,6 +37,7 @@ export function playerFactory() {
     FiltroAtividadesComponent,
     PaginationComponent,
     LoadingComponent,
+    SelectAutoCompleteComponent,
   ],
   imports: [
     CommonModule,
@@ -56,6 +58,7 @@ export function playerFactory() {
     FiltroAtividadesComponent,
     PaginationComponent,
     LoadingComponent,
+    SelectAutoCompleteComponent
   ],
 })
 export class SharedModule {}

@@ -14,6 +14,12 @@
 
         <div class="forms-container">
         <form (ngSubmit)="onSubmit()" [formGroup]="perifericoForm">
+
+            <div class="form-group">
+                <label for="foto">Foto do produto</label>
+                <app-input-imagens label="Clique ou arraste a foto para fazer upload" inputId="foto" (imageSelected)="onImageSelected($event, 'foto')" [fotoPreview]="fotoPreview"></app-input-imagens>
+            </div>
+
             <div class="form-group">
             <label for="nome">Nome</label>
             <input
@@ -41,14 +47,40 @@
             </div>
 
             <div class="form-group">
-            <label for="colaborador">Colaborador</label>
-            <app-select-padrao
-                label="Selecionar o colaborador"
-                [options]="usuarios"
-                [(selectedValue)]="selectedUsuario"
-                formControlName="colaborador"
-            >
-            </app-select-padrao>
+                <label for="estacao">Estação</label>
+                <input
+                type="text"
+                id="estacao"
+                name="estacao"
+                formControlName="estacao"
+                class="form-control"
+                placeholder="Digite"
+                />
+            </div>
+
+            <div class="form-group">
+                <label for="colaborador">Colaborador</label>
+                <app-select-padrao
+                    label="Selecionar o colaborador"
+                    [options]="usuarios"
+                    [(selectedValue)]="selectedUsuario"
+                    formControlName="colaborador"
+                >
+                </app-select-padrao>
+            </div>
+
+            <div class="form-group">
+                <label>Tipo de Posse</label>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="proprioEmpresa" name="status" value="PROPRIO_EMPRESA" formControlName="status" checked>
+                        <label for="proprioEmpresa">Próprio da Empresa</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="alugado" name="status" value="ALUGADO" formControlName="status">
+                        <label for="alugado">Alugado</label>
+                    </div>
+                </div>
             </div>
 
             <div class="input-duo">
