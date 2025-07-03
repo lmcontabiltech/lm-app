@@ -18,6 +18,8 @@ import { LottieModule } from 'ngx-lottie';
 import player from 'lottie-web';
 import { SelectAutoCompleteComponent } from './select-auto-complete/select-auto-complete.component';
 import { GraficoBarraHorizontalComponent } from './graficos/grafico-barra-horizontal/grafico-barra-horizontal.component';
+import { GraficoLinhaComponent } from './graficos/grafico-linha/grafico-linha.component';
+import { GraficoBarraVerticalComponent } from './graficos/grafico-barra-vertical/grafico-barra-vertical.component';
 
 export function playerFactory() {
   return player;
@@ -40,6 +42,8 @@ export function playerFactory() {
     LoadingComponent,
     SelectAutoCompleteComponent,
     GraficoBarraHorizontalComponent,
+    GraficoLinhaComponent,
+    GraficoBarraVerticalComponent,
   ],
   imports: [
     CommonModule,
