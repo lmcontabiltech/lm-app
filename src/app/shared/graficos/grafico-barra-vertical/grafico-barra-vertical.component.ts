@@ -78,7 +78,7 @@ export class GraficoBarraVerticalComponent
     const options = {
       chart: {
         type: 'bar',
-        height: 380,
+        height: 400,
         width: '100%',
         animations: {
           enabled: this.animations,
