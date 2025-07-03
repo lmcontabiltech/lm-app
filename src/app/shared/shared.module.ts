@@ -68,6 +68,7 @@ export function playerFactory() {
     LoadingComponent,
     SelectAutoCompleteComponent,
     GraficoBarraHorizontalComponent,
+    GraficoLinhaComponent,
   ],
 })
 export class SharedModule {}

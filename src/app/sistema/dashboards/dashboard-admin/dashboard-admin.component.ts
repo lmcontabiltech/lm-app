@@ -49,7 +49,6 @@ export class DashboardAdminComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.renderChart();
     this.renderBarChart();
     this.renderPieChart();
     this.loadTaxas();
@@ -126,43 +125,6 @@ export class DashboardAdminComponent implements OnInit {
     });
   }
 
-  renderChart(): void {
-    const options = {
-      chart: {
-        type: 'line',
-        height: 350,
-        width: '100%',
-      },
-      series: [
-        {
-          name: 'Desempenho',
-          data: [30, 40, 35, 50, 49, 60, 70, 91, 125, 15, 200, 20],
-        },
-      ],
-      xaxis: {
-        categories: [
-          'Jan',
-          'Fev',
-          'Mar',
-          'Abr',
-          'Mai',
-          'Jun',
-          'Jul',
-          'Ago',
-          'Set',
-          'out',
-          'nov',
-          'dez',
-        ],
-      },
-      theme: {
-        palette: 'palette3',
-      },
-    };
-
-    const chart = new ApexCharts(document.querySelector('#chart'), options);
-    chart.render();
-  }
 
   renderBarChart(): void {
     const colors = ['#008FFB', '#00E396', '#FEB019', '#FF4560', '#775DD0'];
