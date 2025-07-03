@@ -49,7 +49,6 @@ export class DashboardAdminComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.renderBarChart();
     this.renderPieChart();
     this.loadTaxas();
     this.carregarProgressoSetores();
@@ -123,58 +122,6 @@ export class DashboardAdminComponent implements OnInit {
           },
         });
     });
-  }
-
-
-  renderBarChart(): void {
-    const colors = ['#008FFB', '#00E396', '#FEB019', '#FF4560', '#775DD0'];
-    const options = {
-      chart: {
-        type: 'bar',
-        height: 350,
-        width: '100%',
-        events: {
-          click: function (chart: any, w: any, e: any) {},
-        },
-      },
-      colors: colors,
-      plotOptions: {
-        bar: {
-          columnWidth: '45%',
-          distributed: true,
-        },
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      legend: {
-        show: false,
-      },
-      series: [
-        {
-          name: 'Funcionários',
-          data: [20, 30, 40, 50, 60],
-        },
-      ],
-      xaxis: {
-        categories: [
-          'Setor Contábil',
-          'Setor Pessoal',
-          'Setor Fiscal',
-          'Setor Paralegal',
-          'Setor Financeiro',
-        ],
-      },
-      labels: {
-        style: {
-          colors: colors,
-          fontSize: '12px',
-        },
-      },
-    };
-
-    const chart = new ApexCharts(document.querySelector('#barChart'), options);
-    chart.render();
   }
 
   renderPieChart(): void {

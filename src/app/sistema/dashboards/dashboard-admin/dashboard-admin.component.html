@@ -301,7 +301,12 @@
         </div>
 
         <div class="duo-container">
-            <div class="grafico" id="barChart"></div>
+            <app-grafico-barra-vertical
+                [series]="[{ name: 'Funcionarios', data: [18, 20, 10, 8, 9] }]"
+                [categories]="['Contábil', 'Pessoal', 'Fiscal', 'Paralegal', 'Financeiro']"
+                [colors]="['#08195D', '#1F337F', '#4a59a0', '#585A60', '#5a5f7b']"
+                title="Funcionários por setor">
+            </app-grafico-barra-vertical>
             <div class="grafico" id="pieChart"></div>
         </div>
     </div>
