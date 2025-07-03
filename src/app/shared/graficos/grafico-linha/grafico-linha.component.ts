@@ -48,6 +48,9 @@ export class GraficoLinhaComponent implements OnInit, OnChanges, OnDestroy {
   @Input() subtitle: string = '';
   @Input() responsive: boolean = true;
   @Input() animations: boolean = true;
+  @Input() totalLabel: string = 'Total';
+  @Input() showTotal: boolean = true;
+  @Input() totalColor: string = '#333';
 
   chart!: ApexCharts;
 
@@ -73,6 +76,12 @@ export class GraficoLinhaComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   renderBarChart(): void {
+    let subtitleText = this.subtitle;
+    if (this.showTotal) {
+      const total = this.totalValue;
+      subtitleText = `${this.totalLabel}: ${total.toLocaleString()}`;
+    }
+
     const options = {
       chart: {
         type: 'line',
@@ -107,11 +116,11 @@ export class GraficoLinhaComponent implements OnInit, OnChanges, OnDestroy {
         },
       },
       subtitle: {
-        text: this.subtitle,
-        align: 'center',
+        text: subtitleText,
+        align: 'left',
         style: {
           fontSize: '12px',
-          color: '#666',
+          color: this.showTotal ? this.totalColor : '#666',
         },
       },
       series: this.series,
@@ -156,12 +165,26 @@ export class GraficoLinhaComponent implements OnInit, OnChanges, OnDestroy {
 
   private updateChart(): void {
     if (this.chart) {
+      let subtitleText = this.subtitle;
+      if (this.showTotal) {
+        const total = this.totalValue;
+        subtitleText = `${this.totalLabel}: ${total.toLocaleString()}`;
+      }
+
       this.chart.updateOptions({
         series: this.series,
         xaxis: {
           categories: this.categories,
         },
         colors: this.colors,
+        subtitle: {
+          text: subtitleText,
+          style: {
+            fontSize: '14px',
+            color: this.showTotal ? this.totalColor : '#666',
+            fontWeight: this.showTotal ? '600' : 'normal',
+          },
+        },
       });
     }
   }
@@ -182,6 +205,37 @@ export class GraficoLinhaComponent implements OnInit, OnChanges, OnDestroy {
         link.download = `grafico.${format}`;
         link.click();
       });
+    }
+  }
+
+  get totalValue(): number {
+    if (!this.series || this.series.length === 0) return 0;
+
+    try {
+      return this.series.reduce((total: number, serie: any) => {
+        if (!Array.isArray(serie.data)) return total;
+
+        const serieTotal = serie.data.reduce((sum: number, value: any) => {
+          let numericValue = 0;
+
+          if (typeof value === 'number' && !isNaN(value)) {
+            numericValue = value;
+          } else if (value && typeof value === 'object') {
+            if (typeof value.y === 'number' && !isNaN(value.y)) {
+              numericValue = value.y;
+            } else if (typeof value.value === 'number' && !isNaN(value.value)) {
+              numericValue = value.value;
+            }
+          }
+
+          return sum + numericValue;
+        }, 0);
+
+        return total + serieTotal;
+      }, 0);
+    } catch (error) {
+      console.warn('Erro ao calcular total do gráfico:', error);
+      return 0;
     }
   }
 }
