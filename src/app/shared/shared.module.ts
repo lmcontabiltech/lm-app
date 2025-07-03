@@ -20,6 +20,7 @@ import { SelectAutoCompleteComponent } from './select-auto-complete/select-auto-
 import { GraficoBarraHorizontalComponent } from './graficos/grafico-barra-horizontal/grafico-barra-horizontal.component';
 import { GraficoLinhaComponent } from './graficos/grafico-linha/grafico-linha.component';
 import { GraficoBarraVerticalComponent } from './graficos/grafico-barra-vertical/grafico-barra-vertical.component';
+import { GraficoRosquinhaComponent } from './graficos/grafico-rosquinha/grafico-rosquinha.component';
 
 export function playerFactory() {
   return player;
@@ -44,6 +45,7 @@ export function playerFactory() {
     GraficoBarraHorizontalComponent,
     GraficoLinhaComponent,
     GraficoBarraVerticalComponent,
+    GraficoRosquinhaComponent,
   ],
   imports: [
     CommonModule,
