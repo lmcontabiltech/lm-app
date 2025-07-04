@@ -49,8 +49,6 @@ export class DashboardAdminComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.renderChart();
-    this.renderBarChart();
     this.renderPieChart();
     this.loadTaxas();
     this.carregarProgressoSetores();
@@ -124,95 +122,6 @@ export class DashboardAdminComponent implements OnInit {
           },
         });
     });
-  }
-
-  renderChart(): void {
-    const options = {
-      chart: {
-        type: 'line',
-        height: 350,
-        width: '100%',
-      },
-      series: [
-        {
-          name: 'Desempenho',
-          data: [30, 40, 35, 50, 49, 60, 70, 91, 125, 15, 200, 20],
-        },
-      ],
-      xaxis: {
-        categories: [
-          'Jan',
-          'Fev',
-          'Mar',
-          'Abr',
-          'Mai',
-          'Jun',
-          'Jul',
-          'Ago',
-          'Set',
-          'out',
-          'nov',
-          'dez',
-        ],
-      },
-      theme: {
-        palette: 'palette3',
-      },
-    };
-
-    const chart = new ApexCharts(document.querySelector('#chart'), options);
-    chart.render();
-  }
-
-  renderBarChart(): void {
-    const colors = ['#008FFB', '#00E396', '#FEB019', '#FF4560', '#775DD0'];
-    const options = {
-      chart: {
-        type: 'bar',
-        height: 350,
-        width: '100%',
-        events: {
-          click: function (chart: any, w: any, e: any) {},
-        },
-      },
-      colors: colors,
-      plotOptions: {
-        bar: {
-          columnWidth: '45%',
-          distributed: true,
-        },
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      legend: {
-        show: false,
-      },
-      series: [
-        {
-          name: 'Funcionários',
-          data: [20, 30, 40, 50, 60],
-        },
-      ],
-      xaxis: {
-        categories: [
-          'Setor Contábil',
-          'Setor Pessoal',
-          'Setor Fiscal',
-          'Setor Paralegal',
-          'Setor Financeiro',
-        ],
-      },
-      labels: {
-        style: {
-          colors: colors,
-          fontSize: '12px',
-        },
-      },
-    };
-
-    const chart = new ApexCharts(document.querySelector('#barChart'), options);
-    chart.render();
   }
 
   renderPieChart(): void {

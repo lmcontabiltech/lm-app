@@ -17,6 +17,10 @@ import { LoadingComponent } from './loading/loading.component';
 import { LottieModule } from 'ngx-lottie';
 import player from 'lottie-web';
 import { SelectAutoCompleteComponent } from './select-auto-complete/select-auto-complete.component';
+import { GraficoBarraHorizontalComponent } from './graficos/grafico-barra-horizontal/grafico-barra-horizontal.component';
+import { GraficoLinhaComponent } from './graficos/grafico-linha/grafico-linha.component';
+import { GraficoBarraVerticalComponent } from './graficos/grafico-barra-vertical/grafico-barra-vertical.component';
+import { GraficoRosquinhaComponent } from './graficos/grafico-rosquinha/grafico-rosquinha.component';
 
 export function playerFactory() {
   return player;
@@ -38,6 +42,10 @@ export function playerFactory() {
     PaginationComponent,
     LoadingComponent,
     SelectAutoCompleteComponent,
+    GraficoBarraHorizontalComponent,
+    GraficoLinhaComponent,
+    GraficoBarraVerticalComponent,
+    GraficoRosquinhaComponent,
   ],
   imports: [
     CommonModule,
@@ -58,7 +66,11 @@ export function playerFactory() {
     FiltroAtividadesComponent,
     PaginationComponent,
     LoadingComponent,
-    SelectAutoCompleteComponent
+    SelectAutoCompleteComponent,
+    GraficoBarraHorizontalComponent,
+    GraficoLinhaComponent,
+    GraficoBarraVerticalComponent,
+    GraficoRosquinhaComponent,
   ],
 })
 export class SharedModule {}
