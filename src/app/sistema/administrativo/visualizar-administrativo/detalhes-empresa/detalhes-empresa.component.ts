@@ -19,7 +19,7 @@ export class DetalhesEmpresaComponent implements OnInit {
     setor: Setor;
     username?: string;
     email?: string;
-    foto?: { documentoUrl: string };
+    fotoUrl: string;
   }> = [];
 
   constructor(
@@ -78,6 +78,7 @@ export class DetalhesEmpresaComponent implements OnInit {
         setor: Setor.CONTABIL,
         username: this.empresa.contabil.nome,
         email: this.empresa.contabil.email,
+        fotoUrl: this.empresa.contabil.fotoUrl || '',
       });
     }
 
@@ -88,6 +89,7 @@ export class DetalhesEmpresaComponent implements OnInit {
         setor: Setor.FISCAL,
         username: this.empresa.fiscal.nome,
         email: this.empresa.fiscal.email,
+        fotoUrl: this.empresa.fiscal.fotoUrl || '',
       });
     }
 
@@ -98,6 +100,7 @@ export class DetalhesEmpresaComponent implements OnInit {
         setor: Setor.FINANCEIRO,
         username: this.empresa.financeiro.nome,
         email: this.empresa.financeiro.email,
+        fotoUrl: this.empresa.financeiro.fotoUrl || '',
       });
     }
 
@@ -108,6 +111,7 @@ export class DetalhesEmpresaComponent implements OnInit {
         setor: Setor.PARALEGAL,
         username: this.empresa.paralegal.nome,
         email: this.empresa.paralegal.email,
+        fotoUrl: this.empresa.paralegal.fotoUrl || '',
       });
     }
 
@@ -118,6 +122,7 @@ export class DetalhesEmpresaComponent implements OnInit {
         setor: Setor.PESSOAL,
         username: this.empresa.pessoal.nome,
         email: this.empresa.pessoal.email,
+        fotoUrl: this.empresa.pessoal.fotoUrl || '',
       });
     }
   }

@@ -8,14 +8,14 @@ export class Empresa {
   codEmpDominio!: string;
   regimeEmpresa!: string;
   identificadorContabil!: string;
-  contabil!: { id: string; nome: string; email: string } | null;
+  contabil!: { id: string; nome: string; email: string; fotoUrl: string } | null;
   identificadorFiscal!: string;
-  fiscal!: { id: string; nome: string; email: string } | null;
+  fiscal!: { id: string; nome: string; email: string; fotoUrl: string } | null;
   identificadorFinanceiro!: string;
-  financeiro!: { id: string; nome: string; email: string } | null;
+  financeiro!: { id: string; nome: string; email: string; fotoUrl: string } | null;
   identificadorParalegal!: string;
-  paralegal!: { id: string; nome: string; email: string } | null;
+  paralegal!: { id: string; nome: string; email: string; fotoUrl: string } | null;
   identificadorPessoal!: string;
-  pessoal!: { id: string; nome: string; email: string } | null;
+  pessoal!: { id: string; nome: string; email: string; fotoUrl: string } | null;
   atividades!: Atividade[];
 }
