@@ -6,6 +6,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { GraficoFuncionariosPorSetor } from 'src/app/sistema/dashboards/dashboard-admin/funcionarios-por-setor';
 import { GraficoAtividadesPorMes } from 'src/app/sistema/dashboards/dashboard-admin/atividades-por-mes';
+import { GraficoEmpresasPorRegime } from 'src/app/sistema/dashboards/dashboard-admin/empresa-por-regime';
 
 export interface GraficoSetor {
   concluidas: number;
@@ -119,6 +120,23 @@ export class DashboardAdminService {
       map((response) => response),
       catchError((error) => {
         let errorMessage = 'Erro ao buscar atividades por mês.';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
+  getEmpresasPorRegime(): Observable<GraficoEmpresasPorRegime> {
+    const url = `${this.apiURL}/empresas/regime`;
+    return this.http.get<GraficoEmpresasPorRegime>(url).pipe(
+      map((response) => response),
+      catchError((error) => {
+        let errorMessage = 'Erro ao buscar empresas por regime.';
         if (error.error instanceof ErrorEvent) {
           errorMessage = `Erro: ${error.error.message}`;
         } else if (error.status) {

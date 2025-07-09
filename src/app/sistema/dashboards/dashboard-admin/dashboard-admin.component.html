@@ -308,8 +308,8 @@
                 title="Funcionários por setor">
             </app-grafico-barra-vertical>
             <app-grafico-rosquinha
-                [series]="[30, 25, 20]"
-                [labels]="['Simples Nacional', 'Lucro Presumido', 'Lucro Real']"
+                [series]="graficoEmpresasRegime.series"
+                [labels]="graficoEmpresasRegime.labels"
                 colorPalette="palette2"
                 title="Regimes das empresas"
                 [height]="400"

@@ -2,36 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { Usuario } from 'src/app/login/usuario';
 import { ColaboradoresService } from 'src/app/services/administrativo/colaboradores.service';
 import { ExchangeService } from 'src/app/services/exchange.service';
-import * as ApexCharts from 'apexcharts';
-import {
-  GraficoFuncionariosPorSetor,
-  FuncionarioPorSetor,
-} from 'src/app/sistema/dashboards/dashboard-admin/funcionarios-por-setor';
-import {
-  AtividadePorMes,
-  GraficoAtividadesPorMes,
-} from 'src/app/sistema/dashboards/dashboard-admin/atividades-por-mes';
-import {
-  ApexAxisChartSeries,
-  ApexChart,
-  ChartComponent,
-  ApexDataLabels,
-  ApexXAxis,
-  ApexPlotOptions,
-} from 'ng-apexcharts';
-import {
-  DashboardAdminService,
-  GraficoSetor,
-} from 'src/app/services/graficos/dashboard-admin.service';
+import { RegimeDaEmpresa } from '../../administrativo/empresas/enums/regime-da-empresa';
+import { RegimeDaEmpresaDescricao } from '../../administrativo/empresas/enums/regime-da-empresa-descricao';
+import { GraficoFuncionariosPorSetor, FuncionarioPorSetor } from 'src/app/sistema/dashboards/dashboard-admin/funcionarios-por-setor';
+import { AtividadePorMes, GraficoAtividadesPorMes } from 'src/app/sistema/dashboards/dashboard-admin/atividades-por-mes';
+import { EmpresaPorRegime, GraficoEmpresasPorRegime } from 'src/app/sistema/dashboards/dashboard-admin/empresa-por-regime';
+import { DashboardAdminService, GraficoSetor } from 'src/app/services/graficos/dashboard-admin.service';
 import { forkJoin } from 'rxjs';
-
-export type ChartOptions = {
-  series: ApexAxisChartSeries;
-  chart: ApexChart;
-  dataLabels: ApexDataLabels;
-  plotOptions: ApexPlotOptions;
-  xaxis: ApexXAxis;
-};
 
 @Component({
   selector: 'app-dashboard-admin',
@@ -78,6 +55,14 @@ export class DashboardAdminComponent implements OnInit {
     ],
   };
 
+  empresasPorRegime: EmpresaPorRegime[] = [];
+  totalEmpresasRegime: number = 0;
+  graficoEmpresasRegime = {
+    series: [] as number[],
+    labels: [] as string[],
+    colors: ['#008FFB', '#00E396', '#FEB019', '#FF4560', '#775DD0'],
+  };
+
   progressoAtividades: {
     [key: string]: { porcentagem: number };
   } = {
@@ -99,7 +84,8 @@ export class DashboardAdminComponent implements OnInit {
     this.carregarProgressoSetores();
     this.carregarDadosGeral();
     this.carregarFuncionariosPorSetor();
-     this.carregarAtividadesPorMes();
+    this.carregarAtividadesPorMes();
+    this.carregarEmpresasPorRegime();
 
     this.colaboradorService.getUsuarioByToken().subscribe(
       (usuario) => {
@@ -277,7 +263,6 @@ export class DashboardAdminComponent implements OnInit {
         console.error('Erro ao carregar atividades por mês:', error);
         this.atividadesPorMes = [];
         this.totalAtividadesAno = 0;
-        // Manter gráfico com valores zerados em caso de erro
         this.graficoAtividadesMensais.series = [
           { name: 'Atividades', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
         ];
@@ -285,9 +270,7 @@ export class DashboardAdminComponent implements OnInit {
     });
   }
 
-  // NOVO: Método para atualizar dados do gráfico de atividades
   atualizarGraficoAtividades(): void {
-    // Mapeamento dos meses para garantir ordem correta
     const mesesOrdenados = [
       'JANEIRO',
       'FEVEREIRO',
@@ -325,5 +308,100 @@ export class DashboardAdminComponent implements OnInit {
       'Dados do gráfico de atividades atualizados:',
       this.graficoAtividadesMensais.series
     );
+  }
+
+  carregarEmpresasPorRegime(): void {
+    this.dashboardAdminService.getEmpresasPorRegime().subscribe({
+      next: (data: GraficoEmpresasPorRegime) => {
+        this.empresasPorRegime = data.regimes;
+        this.totalEmpresasRegime = data.total;
+
+        this.atualizarGraficoEmpresasRegime();
+
+        console.log('Empresas por regime:', this.empresasPorRegime);
+        console.log('Total de empresas por regime:', this.totalEmpresasRegime);
+      },
+      error: (error) => {
+        console.error('Erro ao carregar empresas por regime:', error);
+        this.empresasPorRegime = [];
+        this.totalEmpresasRegime = 0;
+        this.graficoEmpresasRegime.series = [0, 0, 0];
+      },
+    });
+  }
+
+  private getDescricaoRegime(regimeEnum: string): string {
+    const regimeKey = Object.keys(RegimeDaEmpresa).find(
+      (key) =>
+        RegimeDaEmpresa[key as keyof typeof RegimeDaEmpresa] === regimeEnum
+    );
+
+    if (
+      regimeKey &&
+      RegimeDaEmpresaDescricao[
+        regimeKey as keyof typeof RegimeDaEmpresaDescricao
+      ]
+    ) {
+      return RegimeDaEmpresaDescricao[
+        regimeKey as keyof typeof RegimeDaEmpresaDescricao
+      ];
+    }
+
+    return this.formatarRegimeParaExibicao(regimeEnum);
+  }
+
+  private formatarRegimeParaExibicao(regime: string): string {
+    return regime
+      .toLowerCase()
+      .replace(/_/g, ' ')
+      .replace(/\b\w/g, (l) => l.toUpperCase());
+  }
+
+  atualizarGraficoEmpresasRegime(): void {
+    const regimesComEmpresas = this.empresasPorRegime.filter(
+      (regime) => regime.qtdEmpresas > 0
+    );
+
+    const regimesParaExibir =
+      regimesComEmpresas.length > 0
+        ? regimesComEmpresas
+        : this.empresasPorRegime;
+
+    const series: number[] = [];
+    const labels: string[] = [];
+
+    regimesParaExibir.forEach((regime) => {
+      series.push(Math.floor(regime.qtdEmpresas));
+      labels.push(this.getDescricaoRegime(regime.regimeEmpresa));
+    });
+
+    this.graficoEmpresasRegime = {
+      ...this.graficoEmpresasRegime,
+      series: series,
+      labels: labels,
+    };
+  }
+
+  getEmpresasPorRegimeEspecifico(regime: RegimeDaEmpresa): number {
+    const regimeEncontrado = this.empresasPorRegime.find(
+      (r) => r.regimeEmpresa === regime
+    );
+    return regimeEncontrado ? Math.floor(regimeEncontrado.qtdEmpresas) : 0;
+  }
+
+  getRegimesDisponiveis(): {
+    regime: RegimeDaEmpresa;
+    descricao: string;
+    quantidade: number;
+  }[] {
+    return this.empresasPorRegime.map((empresaRegime) => ({
+      regime: empresaRegime.regimeEmpresa as RegimeDaEmpresa,
+      descricao: this.getDescricaoRegime(empresaRegime.regimeEmpresa),
+      quantidade: Math.floor(empresaRegime.qtdEmpresas),
+    }));
+  }
+
+  temRegime(regime: RegimeDaEmpresa): boolean {
+    return this.empresasPorRegime.some((r) => r.regimeEmpresa === regime);
   }
 }
