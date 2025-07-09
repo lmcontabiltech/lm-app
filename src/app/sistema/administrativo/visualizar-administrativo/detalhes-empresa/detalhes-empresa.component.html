@@ -43,7 +43,7 @@
 
     <div class="container-scroll" *ngIf="colaboradores.length > 0; else noColaboradores">
         <div class="data-grid-quad" *ngFor="let colaborador of colaboradores">
-            <div class="item-data">
+            <div class="item-data-sub">
                 <div class="perfil">
                     <div class="avatar" [ngStyle]="{'background-color': getRandomColor(colaborador.nome)}">
                         <img [src]="colaborador.fotoUrl" alt="Foto do colaborador" *ngIf="colaborador.fotoUrl; else defaultAvatar" />
@@ -54,10 +54,10 @@
                     <span>{{ colaborador.username || '-' }}</span>
                 </div>
             </div>
-            <div class="item-data">
+            <div class="item-data-sub">
                 <app-setor-tag [setor]="colaborador.setor"></app-setor-tag>
             </div>
-            <div class="item-data">
+            <div class="item-data-sub">
                 <p>{{ colaborador.email || '-' }}</p>
             </div>
         </div>
