@@ -27,8 +27,6 @@ import { DashboardCoordenadorComponent } from './dashboards/dashboard-coordenado
 import { HistoricoAtividadesComponent } from './gerenciamento/historico-atividades/historico-atividades.component';
 import { FluxosComponent } from './gerenciamento/fluxos/fluxos.component';
 import { DetalhesFluxoComponent } from './gerenciamento/visualizar-gerenciamento/detalhes-fluxo/detalhes-fluxo.component';
-import { VisualizarEmpresaComponent } from './administrativo/detalhes-administrativo/visualizar-empresa/visualizar-empresa.component';
-import { VisualizarPerifericoComponent } from './administrativo/detalhes-administrativo/visualizar-periferico/visualizar-periferico.component';
 import { DetalhesEmpresaComponent } from './administrativo/visualizar-administrativo/detalhes-empresa/detalhes-empresa.component';
 
 
@@ -56,8 +54,6 @@ import { DetalhesEmpresaComponent } from './administrativo/visualizar-administra
     HistoricoAtividadesComponent,
     FluxosComponent,
     DetalhesFluxoComponent,
-    VisualizarEmpresaComponent,
-    VisualizarPerifericoComponent,
     DetalhesEmpresaComponent,
   ],
   imports:[
