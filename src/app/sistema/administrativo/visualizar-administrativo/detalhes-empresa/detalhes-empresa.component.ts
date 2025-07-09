@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { EmpresasService } from 'src/app/services/administrativo/empresas.service';
 import { Empresa } from '../../empresas/empresa';
 import { Setor } from '../../cadastro-de-colaborador/setor';
+import { RegimeDaEmpresaDescricao } from '../../empresas/enums/regime-da-empresa-descricao';
 
 @Component({
   selector: 'app-detalhes-empresa',
@@ -66,6 +67,13 @@ export class DetalhesEmpresaComponent implements OnInit {
     ];
     const index = seed ? seed.charCodeAt(0) % colors.length : 0;
     return colors[index];
+  }
+
+  getRegimeDescricao(regime?: string): string {
+    if (!regime) return '-';
+
+    const regimeKey = regime as keyof typeof RegimeDaEmpresaDescricao;
+    return RegimeDaEmpresaDescricao[regimeKey] || regime;
   }
 
   extrairColaboradores(): void {
