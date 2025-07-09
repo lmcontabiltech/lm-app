@@ -11,6 +11,10 @@ export interface GraficoSetor {
   total: number;
 }
 
+export interface GraficoQuantidade {
+  total: number;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -26,6 +30,57 @@ export class DashboardAdminService {
       catchError((error) => {
         let errorMessage =
           'Erro ao buscar dados de atividades concluídas por setor.';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
+  getQuantidadeUsuarios(): Observable<GraficoQuantidade> {
+    const url = `${this.apiURL}/usuarios`;
+    return this.http.get<GraficoQuantidade>(url).pipe(
+      map((response) => response),
+      catchError((error) => {
+        let errorMessage = 'Erro ao buscar quantidade de colaboradores.';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
+  getQuantidadeEmpresasNumero(): Observable<GraficoQuantidade> {
+    const url = `${this.apiURL}/empresas`;
+    return this.http.get<GraficoQuantidade>(url).pipe(
+      map((response) => response),
+      catchError((error) => {
+        let errorMessage = 'Erro ao buscar quantidade de empresas.';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
+   getQuantidadeAtividadesNaoAtribuidas(): Observable<GraficoQuantidade> {
+    const url = `${this.apiURL}/atividades`;
+    return this.http.get<GraficoQuantidade>(url).pipe(
+      map((response) => response),
+      catchError((error) => {
+        let errorMessage = 'Erro ao buscar quantidade de atividades não atribuídas.';
         if (error.error instanceof ErrorEvent) {
           errorMessage = `Erro: ${error.error.message}`;
         } else if (error.status) {

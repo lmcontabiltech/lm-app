@@ -11,7 +11,11 @@ import {
   ApexXAxis,
   ApexPlotOptions,
 } from 'ng-apexcharts';
-import { DashboardAdminService, GraficoSetor } from 'src/app/services/graficos/dashboard-admin.service';
+import {
+  DashboardAdminService,
+  GraficoSetor,
+} from 'src/app/services/graficos/dashboard-admin.service';
+import { forkJoin } from 'rxjs';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -32,6 +36,10 @@ export class DashboardAdminComponent implements OnInit {
   selic: string = '';
   permissaoUsuario: string = '';
 
+  totalColaboradores: number = 0;
+  totalEmpresas: number = 0;
+  totalAtividadesNaoAtribuidas: number = 0;
+
   progressoAtividades: {
     [key: string]: { porcentagem: number };
   } = {
@@ -49,9 +57,9 @@ export class DashboardAdminComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.renderPieChart();
     this.loadTaxas();
     this.carregarProgressoSetores();
+    this.carregarDadosGeral();
 
     this.colaboradorService.getUsuarioByToken().subscribe(
       (usuario) => {
@@ -124,34 +132,33 @@ export class DashboardAdminComponent implements OnInit {
     });
   }
 
-  renderPieChart(): void {
-    const options = {
-      chart: {
-        type: 'donut',
-        height: 350,
-        width: '100%',
-      },
-      series: [44, 55, 13],
-      labels: ['Simples Nacional', 'Lucro Presumido', 'Lucro Real'],
-      theme: {
-        palette: 'palette2',
-      },
-      responsive: [
-        {
-          breakpoint: 980,
-          options: {
-            chart: {
-              width: 250,
-            },
-            legend: {
-              position: 'bottom',
-            },
-          },
-        },
-      ],
+  carregarDadosGeral(): void {
+    const requests = {
+      colaboradores: this.dashboardAdminService.getQuantidadeUsuarios(),
+      empresas: this.dashboardAdminService.getQuantidadeEmpresasNumero(),
+      atividadesNaoAtribuidas:
+        this.dashboardAdminService.getQuantidadeAtividadesNaoAtribuidas(),
     };
 
-    const chart = new ApexCharts(document.querySelector('#pieChart'), options);
-    chart.render();
+    forkJoin(requests).subscribe({
+      next: (data) => {
+        this.totalColaboradores = data.colaboradores.total;
+        this.totalEmpresas = data.empresas.total;
+        this.totalAtividadesNaoAtribuidas = data.atividadesNaoAtribuidas.total;
+
+        console.log('Dados do dashboard carregados:', {
+          colaboradores: this.totalColaboradores,
+          empresas: this.totalEmpresas,
+          atividadesNaoAtribuidas: this.totalAtividadesNaoAtribuidas,
+        });
+      },
+      error: (error) => {
+        console.error('Erro ao carregar dados do dashboard:', error);
+        // Manter valores padrão em caso de erro
+        this.totalColaboradores = 0;
+        this.totalEmpresas = 0;
+        this.totalAtividadesNaoAtribuidas = 0;
+      },
+    });
   }
 }
