@@ -24,6 +24,7 @@ import { DashboardCoordenadorComponent } from './dashboards/dashboard-coordenado
 import { FluxosComponent } from './gerenciamento/fluxos/fluxos.component';
 import { DetalhesFluxoComponent } from './gerenciamento/visualizar-gerenciamento/detalhes-fluxo/detalhes-fluxo.component';
 import { HistoricoAtividadesComponent } from './gerenciamento/historico-atividades/historico-atividades.component';
+import { DetalhesEmpresaComponent } from './administrativo/visualizar-administrativo/detalhes-empresa/detalhes-empresa.component';
 
 const routes: Routes = [
   {  path: 'usuario', 
@@ -48,6 +49,7 @@ const routes: Routes = [
       { path: 'cadastro-de-colaborador/:id', component: CadastroDeColaboradorComponent},
       { path: 'cadastro-de-empresa', component: CadastroDeEmpresaComponent},
       { path: 'cadastro-de-empresa/:id', component: CadastroDeEmpresaComponent},
+      { path: 'detalhes-empresa/:id', component: DetalhesEmpresaComponent},
 
       { path: 'atividades', component: AtividadesComponent},
       { path: 'chat', component: ChatComponent},

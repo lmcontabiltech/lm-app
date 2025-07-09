@@ -1,6 +1,12 @@
 <div class="main-container">
     <div class="title-container">
         <h2>Bem-vindo(a), {{ usuario?.nome }}</h2>
+        <div class="select-container">
+        <app-select-padrao
+            label="Últimos 7 dias"
+            [customStyles]="{ 'background-color': '#f8f9fa' }">
+        </app-select-padrao>
+        </div>
     </div>
     <div class="cards-container">
         <div class="cards-moedas">
@@ -26,5 +32,95 @@
                 <p>Taxa Selic</p>
               </div>              
         </div>
+    </div>
+
+    <div class="cards-setores" *ngIf="setorUsuario.nome">
+        <div class="card">
+            <div class="title">
+                <span>{{ setorUsuario.nome }}</span>
+                <img [src]="'assets/icones/dashboard/' + setorUsuario.icone">
+            </div>
+            <div class="progress">
+                <label>Atividades concluídas</label>
+                <div class="progresso-atividade-container">
+                    <div class="progresso-atividade-bar">
+                        <div class="progresso-atividade-fill" [style.width.%]="setorUsuario.porcentagem"></div>
+                    </div>
+                    <p class="progresso-atividade-porcentagem">{{ setorUsuario.porcentagem }}%</p>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+    <div class="cards-infos">
+            <div class="card">
+            <div class="qtd">
+                <span>12</span>
+                <img src="assets/icones/dashboard/add-user.svg" alt="pessoas" />
+            </div>
+            <p>Tarefas atribuídas</p>
+            </div>
+            <div class="card">
+            <div class="qtd">
+                <span>12</span>
+                <img src="assets/icones/dashboard/calendario.svg" alt="predios" />
+            </div>
+            <p>Em progresso</p>
+            </div>
+            <div class="card">
+            <div class="qtd">
+                <span>12</span>
+                <img src="assets/icones/dashboard/check.svg" alt="pessoa" />
+            </div>
+            <p>Concluídas</p>
+        </div>
+    </div>
+
+    <div class="graficos-container">
+        <div id="contabil">
+             <div class="title-grafico">
+                <h3>
+                    Atividades do Setor Contábil
+                </h3>
+                <div class="select-container">
+                    <app-select-padrao
+                    label="Últimos 7 dias"
+                    [customStyles]="{ 'background-color': '#f8f9fa' }">
+                    </app-select-padrao>
+                </div>
+            </div>
+            <div class="duo-container">
+                <app-grafico-barra-horizontal
+                    [series]="[{ name: 'Abertas', data: [10, 25, 40] }]"
+                    [categories]="['No prazo', 'Em atraso', 'Com multas']"
+                    [colors]="['#FEB019']"
+                    title="Abertas">
+                </app-grafico-barra-horizontal>
+                <app-grafico-barra-horizontal
+                    [series]="[{ name: 'Concluidas', data: [18, 20, 10] }]"
+                    [categories]="['No prazo', 'Em atraso', 'Com multas']"
+                    [colors]="['#1fde82']"
+                    title="Concluidas">
+                </app-grafico-barra-horizontal>
+            </div>
+        </div>
+    </div>
+
+     <div id="geral">
+        <div class="title-grafico">
+            <h3> 
+                Desempenho das atividades
+            </h3>
+        </div>
+
+        <app-grafico-linha
+            [series]="[{ name: 'Desempenho', data: [30, 40, 35, 50, 48, 60, 70, 91, 125, 15, 200, 20] }]"
+            [categories]="['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'out', 'nov', 'dez',]"
+            [colors]="['#5EA828']"
+            title="Atividades concluidas por mês"
+            totalLabel="Total"
+            [showTotal]="true"
+            subtitle="Total: 0">
+        </app-grafico-linha>
     </div>
 </div>

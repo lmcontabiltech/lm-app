@@ -1,0 +1,65 @@
+<div class="main-container">
+    <div class="breadcrumb-container">
+        <div class="back-title">
+            <img src="assets/icones/back-left.svg" alt="Back" class="back-icon" (click)="goBack()">
+            <span>Detalhes da empresa</span>
+        </div>
+    </div>
+    <div class="actions">
+        <h1>{{ empresa.razaoSocial }}</h1>
+        <p>{{ empresa.cnpj }}</p>
+    </div>
+</div>
+<div class="subMain-container">
+    <div class="divisao">
+        <p>Geral</p>
+        <hr class="line">
+    </div>
+    <div class="data-itens">
+        <div class="data-grid">
+            <div class="item-data">
+                <label>Código do Questor</label>
+                <p>{{ empresa.codQuestor || '-' }}</p>
+            </div>
+            <div class="item-data">
+                <label>Código do Dominio</label>
+                <p>{{ empresa.codEmpDominio || '-' }}</p>
+            </div>
+        </div>
+        <div class="data-grid">
+            <div class="item-data">
+                <label>Regime da Empresa</label>
+                <p>{{ empresa.regimeEmpresa || '-' }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="subMain-container">
+    <div class="divisao">
+        <p>Colaboradores</p>
+        <hr class="line">
+    </div>
+
+    <div class="container-scroll">
+        <div class="data-grid-quad" *ngFor="let colaborador of colaboradoresPaginados">
+            <div class="item-data">
+                <div class="perfil">
+                    <div class="avatar" [ngStyle]="{'background-color': getRandomColor(colaborador.username)}">
+                        <img [src]="colaborador.foto?.documentoUrl" alt="Foto do colaborador" *ngIf="colaborador.foto?.documentoUrl; else defaultAvatar" />
+                        <ng-template #defaultAvatar>
+                            <span>{{ getInitial(colaborador.username) }}</span>
+                        </ng-template>
+                    </div>
+                    <span>{{ colaborador.username || '-' }}</span>
+                </div>
+            </div>
+            <div class="item-data">
+                <p>{{ colaborador.departamento?.nome || '-' }}</p>
+            </div>
+            <div class="item-data">
+                <p>{{ colaborador.telefoneUm || '-' }}</p>
+            </div>
+        </div>
+    </div>
+</div>

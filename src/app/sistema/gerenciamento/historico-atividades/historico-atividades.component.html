@@ -31,7 +31,7 @@
                 <thead>
                     <tr>
                         <th>Atividade</th>
-                        <th>Colaborador</th>
+                        <th>Setor</th>
                         <th>Empresa</th>
                         <th>Data/Hora</th>
                         <th>Ações</th>
@@ -44,7 +44,9 @@
                                 {{ historico.atividade.nome }}
                             </div>
                         </td>
-                        <td>{{ historico.usuario?.nome || '-' }}</td>
+                        <td>
+                            <app-setor-tag [setor]="historico.atividade.setor"></app-setor-tag>
+                        </td>
                         <td>{{ historico.atividade.empresa?.razaoSocial || '-' }}</td>
                         <td>{{ (historico.data | date:'dd/MM/yyyy') + ' às ' + (historico.data | date:'HH:mm') || '-' }}</td>
                         <td>
