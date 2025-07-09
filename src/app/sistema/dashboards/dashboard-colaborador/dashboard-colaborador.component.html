@@ -27,4 +27,46 @@
               </div>              
         </div>
     </div>
+
+    <div class="cards-setores" *ngIf="setorUsuario.nome">
+        <div class="card">
+            <div class="title">
+                <span>{{ setorUsuario.nome }}</span>
+                <img [src]="'assets/icones/dashboard/' + setorUsuario.icone">
+            </div>
+            <div class="progress">
+                <label>Atividades concluídas</label>
+                <div class="progresso-atividade-container">
+                    <div class="progresso-atividade-bar">
+                        <div class="progresso-atividade-fill" [style.width.%]="setorUsuario.porcentagem"></div>
+                    </div>
+                    <p class="progresso-atividade-porcentagem">{{ setorUsuario.porcentagem }}%</p>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+    <div class="cards-infos">
+            <div class="card">
+            <div class="qtd">
+                <span>12</span>
+                <img src="assets/icones/dashboard/trio.svg" alt="pessoas" />
+            </div>
+            <p>Tarefas atribuídas</p>
+            </div>
+            <div class="card">
+            <div class="qtd">
+                <span>12</span>
+                <img src="assets/icones/dashboard/predios.svg" alt="predios" />
+            </div>
+            <p>Em progresso</p>
+            </div>
+            <div class="card">
+            <div class="qtd">
+                <span>12</span>
+                <img src="assets/icones/dashboard/people-minus.svg" alt="pessoa" />
+            </div>
+            <p>Concluídas</p>
+            </div>
+        </div>
 </div>
