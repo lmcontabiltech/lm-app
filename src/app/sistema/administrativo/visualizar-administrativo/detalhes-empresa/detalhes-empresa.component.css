@@ -119,6 +119,7 @@
 .item-data-sub {
   display: flex;
   align-items: center;
+  padding-top: 8px;
 }
 
 .item-data-sub p {
