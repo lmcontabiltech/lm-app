@@ -44,30 +44,6 @@ export class DashboardColaboradorComponent implements OnInit {
   ngOnInit(): void {
     this.loadTaxas();
     this.carregarPerfilUsuario();
-
-    this.colaboradorService.getUsuarioByToken().subscribe(
-      (usuario) => {
-        this.usuario = usuario;
-        console.log('Perfil do usuário:', usuario);
-
-        switch (usuario.permissao) {
-          case 'ROLE_ADMIN':
-            this.permissaoUsuario = 'Administrador';
-            break;
-          case 'ROLE_COORDENADOR':
-            this.permissaoUsuario = 'Coordenador';
-            break;
-          case 'ROLE_USER':
-            this.permissaoUsuario = 'Colaborador';
-            break;
-          default:
-            this.permissaoUsuario = 'Desconhecido';
-        }
-      },
-      (error) => {
-        console.error('Erro ao obter perfil do usuário:', error);
-      }
-    );
   }
 
   loadTaxas(): void {
