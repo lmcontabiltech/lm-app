@@ -1,14 +1,21 @@
 <div class="main-container">
-  <div class="container-aviso">
-      <img src="assets/imagens/em-breve.png" alt="Em breve" class="emBreve">
-  </div>
-  <!-- <div class="header-container">
+  <div class="header-container">
     <h2>Notificações</h2>
   </div>
 
   <div class="table-container">
     <div class="filtro-container">
-      <app-select-padrao label="Todos os setores"> </app-select-padrao>
+      <div class="select-container">
+        <app-select-padrao
+            label="Setor"
+            [options]="setores"
+            [(selectedValue)]="selectedSetor"
+            (selectedValueChange)="onSetorChange()"
+            [showDefaultOption]="true"
+            [defaultLabel]="'Todos os setores'"
+            [defaultValue]="''">
+        </app-select-padrao>
+      </div>
 
       <div class="search-container">
         <app-search (searchChange)="onSearch($event)"></app-search>
@@ -27,18 +34,12 @@
       </div>
     
       <div class="paginacao">
-        <button (click)="paginaAnterior()" [disabled]="paginaAtual === 1">
-            <img src="assets/icones/carret-left.svg" alt="Esquerda">
-        </button>
-            <span *ngFor="let pagina of [].constructor(totalPaginas); let i = index">
-    
-            <button (click)="mudarPagina(i + 1)" [class.ativo]="paginaAtual === i + 1">
-                {{ i + 1 }}
-            </button>
-        </span>
-        <button (click)="proximaPagina()" [disabled]="paginaAtual === totalPaginas">
-            <img src="assets/icones/carret-right.svg" alt="Direita">
-        </button>
-    </div>
-  </div> -->
+            <app-pagination
+            [paginaAtual]="paginaAtual"
+            [totalItens]="totalItens"
+            [itensPorPagina]="itensPorPagina"
+            (paginaMudou)="onPaginaMudou($event)">
+            </app-pagination>
+      </div>  
+  </div>
 </div>
