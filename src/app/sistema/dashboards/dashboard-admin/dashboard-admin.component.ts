@@ -8,6 +8,10 @@ import {
   FuncionarioPorSetor,
 } from 'src/app/sistema/dashboards/dashboard-admin/funcionarios-por-setor';
 import {
+  AtividadePorMes,
+  GraficoAtividadesPorMes,
+} from 'src/app/sistema/dashboards/dashboard-admin/atividades-por-mes';
+import {
   ApexAxisChartSeries,
   ApexChart,
   ChartComponent,
@@ -52,6 +56,28 @@ export class DashboardAdminComponent implements OnInit {
     colors: ['#08195D', '#1F337F', '#4a59a0', '#585A60', '#5a5f7b'],
   };
 
+  atividadesPorMes: AtividadePorMes[] = [];
+  totalAtividadesAno: number = 0;
+  graficoAtividadesMensais = {
+    series: [
+      { name: 'Atividades', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+    ],
+    categories: [
+      'Jan',
+      'Fev',
+      'Mar',
+      'Abr',
+      'Mai',
+      'Jun',
+      'Jul',
+      'Ago',
+      'Set',
+      'Out',
+      'Nov',
+      'Dez',
+    ],
+  };
+
   progressoAtividades: {
     [key: string]: { porcentagem: number };
   } = {
@@ -73,6 +99,7 @@ export class DashboardAdminComponent implements OnInit {
     this.carregarProgressoSetores();
     this.carregarDadosGeral();
     this.carregarFuncionariosPorSetor();
+     this.carregarAtividadesPorMes();
 
     this.colaboradorService.getUsuarioByToken().subscribe(
       (usuario) => {
@@ -167,7 +194,6 @@ export class DashboardAdminComponent implements OnInit {
       },
       error: (error) => {
         console.error('Erro ao carregar dados do dashboard:', error);
-        // Manter valores padrão em caso de erro
         this.totalColaboradores = 0;
         this.totalEmpresas = 0;
         this.totalAtividadesNaoAtribuidas = 0;
@@ -179,7 +205,7 @@ export class DashboardAdminComponent implements OnInit {
     this.dashboardAdminService.getFuncionariosPorSetor().subscribe({
       next: (data: GraficoFuncionariosPorSetor) => {
         this.funcionariosPorSetor = data.setores;
-         this.totalFuncionarios = Math.floor(data.total);
+        this.totalFuncionarios = Math.floor(data.total);
 
         this.atualizarGraficoFuncionarios();
 
@@ -234,5 +260,70 @@ export class DashboardAdminComponent implements OnInit {
       (s) => s.setor === setor
     );
     return setorEncontrado ? Math.floor(setorEncontrado.qtdFuncionarios) : 0;
+  }
+
+  carregarAtividadesPorMes(): void {
+    this.dashboardAdminService.getAtividadesPorMes().subscribe({
+      next: (data: GraficoAtividadesPorMes) => {
+        this.atividadesPorMes = data.valoresPorMes;
+        this.totalAtividadesAno = data.total;
+
+        this.atualizarGraficoAtividades();
+
+        console.log('Atividades por mês:', this.atividadesPorMes);
+        console.log('Total de atividades no ano:', this.totalAtividadesAno);
+      },
+      error: (error) => {
+        console.error('Erro ao carregar atividades por mês:', error);
+        this.atividadesPorMes = [];
+        this.totalAtividadesAno = 0;
+        // Manter gráfico com valores zerados em caso de erro
+        this.graficoAtividadesMensais.series = [
+          { name: 'Atividades', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+        ];
+      },
+    });
+  }
+
+  // NOVO: Método para atualizar dados do gráfico de atividades
+  atualizarGraficoAtividades(): void {
+    // Mapeamento dos meses para garantir ordem correta
+    const mesesOrdenados = [
+      'JANEIRO',
+      'FEVEREIRO',
+      'MARÇO',
+      'ABRIL',
+      'MAIO',
+      'JUNHO',
+      'JULHO',
+      'AGOSTO',
+      'SETEMBRO',
+      'OUTUBRO',
+      'NOVEMBRO',
+      'DEZEMBRO',
+    ];
+
+    const dadosGrafico: number[] = [];
+
+    mesesOrdenados.forEach((mes) => {
+      const mesEncontrado = this.atividadesPorMes.find(
+        (m) => m.mes.toUpperCase() === mes
+      );
+      dadosGrafico.push(
+        mesEncontrado ? Math.floor(mesEncontrado.quantidade) : 0
+      );
+    });
+
+    this.graficoAtividadesMensais.series = [
+      {
+        name: 'Atividades',
+        data: dadosGrafico,
+      },
+    ];
+
+    console.log(
+      'Dados do gráfico de atividades atualizados:',
+      this.graficoAtividadesMensais.series
+    );
   }
 }

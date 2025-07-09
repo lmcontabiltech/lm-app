@@ -5,6 +5,7 @@ import { Processo } from 'src/app/sistema/gerenciamento/processos/processo';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { GraficoFuncionariosPorSetor } from 'src/app/sistema/dashboards/dashboard-admin/funcionarios-por-setor';
+import { GraficoAtividadesPorMes } from 'src/app/sistema/dashboards/dashboard-admin/atividades-por-mes';
 
 export interface GraficoSetor {
   concluidas: number;
@@ -101,6 +102,23 @@ export class DashboardAdminService {
       catchError((error) => {
         let errorMessage =
           'Erro ao buscar quantidade de funcionários por setor.';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
+  getAtividadesPorMes(): Observable<GraficoAtividadesPorMes> {
+    const url = `${this.apiURL}/atividades/por-mes`;
+    return this.http.get<GraficoAtividadesPorMes>(url).pipe(
+      map((response) => response),
+      catchError((error) => {
+        let errorMessage = 'Erro ao buscar atividades por mês.';
         if (error.error instanceof ErrorEvent) {
           errorMessage = `Erro: ${error.error.message}`;
         } else if (error.status) {
