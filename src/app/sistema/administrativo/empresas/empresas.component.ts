@@ -167,6 +167,10 @@ export class EmpresasComponent implements OnInit {
     );
   }
 
+  visualizarEmpresa(id: string): void {
+    this.router.navigate(['/usuario/detalhes-empresa', id]);
+  }
+
   editarEmpresa(id: string): void {
     this.router.navigate(['/usuario/cadastro-de-empresa', id]);
   }
