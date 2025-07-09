@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { Processo } from 'src/app/sistema/gerenciamento/processos/processo';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { GraficoFuncionariosPorSetor } from 'src/app/sistema/dashboards/dashboard-admin/funcionarios-por-setor';
 
 export interface GraficoSetor {
   concluidas: number;
@@ -75,12 +76,31 @@ export class DashboardAdminService {
     );
   }
 
-   getQuantidadeAtividadesNaoAtribuidas(): Observable<GraficoQuantidade> {
+  getQuantidadeAtividadesNaoAtribuidas(): Observable<GraficoQuantidade> {
     const url = `${this.apiURL}/atividades`;
     return this.http.get<GraficoQuantidade>(url).pipe(
       map((response) => response),
       catchError((error) => {
-        let errorMessage = 'Erro ao buscar quantidade de atividades não atribuídas.';
+        let errorMessage =
+          'Erro ao buscar quantidade de atividades não atribuídas.';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
+  getFuncionariosPorSetor(): Observable<GraficoFuncionariosPorSetor> {
+    const url = `${this.apiURL}/funcionarios/setor`;
+    return this.http.get<GraficoFuncionariosPorSetor>(url).pipe(
+      map((response) => response),
+      catchError((error) => {
+        let errorMessage =
+          'Erro ao buscar quantidade de funcionários por setor.';
         if (error.error instanceof ErrorEvent) {
           errorMessage = `Erro: ${error.error.message}`;
         } else if (error.status) {

@@ -302,9 +302,9 @@
 
         <div class="duo-container">
             <app-grafico-barra-vertical
-                [series]="[{ name: 'Funcionarios', data: [18, 20, 10, 8, 9] }]"
-                [categories]="['Contábil', 'Pessoal', 'Fiscal', 'Paralegal', 'Financeiro']"
-                [colors]="['#08195D', '#1F337F', '#4a59a0', '#585A60', '#5a5f7b']"
+                [series]="graficoFuncionarios.series"
+                [categories]="graficoFuncionarios.categories"
+                [colors]="graficoFuncionarios.colors"
                 title="Funcionários por setor">
             </app-grafico-barra-vertical>
             <app-grafico-rosquinha

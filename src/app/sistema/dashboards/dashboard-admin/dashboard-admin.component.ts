@@ -4,6 +4,10 @@ import { ColaboradoresService } from 'src/app/services/administrativo/colaborado
 import { ExchangeService } from 'src/app/services/exchange.service';
 import * as ApexCharts from 'apexcharts';
 import {
+  GraficoFuncionariosPorSetor,
+  FuncionarioPorSetor,
+} from 'src/app/sistema/dashboards/dashboard-admin/funcionarios-por-setor';
+import {
   ApexAxisChartSeries,
   ApexChart,
   ChartComponent,
@@ -40,6 +44,14 @@ export class DashboardAdminComponent implements OnInit {
   totalEmpresas: number = 0;
   totalAtividadesNaoAtribuidas: number = 0;
 
+  funcionariosPorSetor: FuncionarioPorSetor[] = [];
+  totalFuncionarios: number = 0;
+  graficoFuncionarios = {
+    series: [{ name: 'Funcionários', data: [0, 0, 0, 0, 0] }],
+    categories: ['Contábil', 'Fiscal', 'Financeiro', 'Paralegal', 'Pessoal'],
+    colors: ['#08195D', '#1F337F', '#4a59a0', '#585A60', '#5a5f7b'],
+  };
+
   progressoAtividades: {
     [key: string]: { porcentagem: number };
   } = {
@@ -60,6 +72,7 @@ export class DashboardAdminComponent implements OnInit {
     this.loadTaxas();
     this.carregarProgressoSetores();
     this.carregarDadosGeral();
+    this.carregarFuncionariosPorSetor();
 
     this.colaboradorService.getUsuarioByToken().subscribe(
       (usuario) => {
@@ -160,5 +173,66 @@ export class DashboardAdminComponent implements OnInit {
         this.totalAtividadesNaoAtribuidas = 0;
       },
     });
+  }
+
+  carregarFuncionariosPorSetor(): void {
+    this.dashboardAdminService.getFuncionariosPorSetor().subscribe({
+      next: (data: GraficoFuncionariosPorSetor) => {
+        this.funcionariosPorSetor = data.setores;
+         this.totalFuncionarios = Math.floor(data.total);
+
+        this.atualizarGraficoFuncionarios();
+
+        console.log('Funcionários por setor:', this.funcionariosPorSetor);
+        console.log('Total de funcionários:', this.totalFuncionarios);
+      },
+      error: (error) => {
+        console.error('Erro ao carregar funcionários por setor:', error);
+        this.funcionariosPorSetor = [];
+        this.totalFuncionarios = 0;
+        this.graficoFuncionarios.series = [
+          { name: 'Funcionários', data: [0, 0, 0, 0, 0] },
+        ];
+      },
+    });
+  }
+
+  atualizarGraficoFuncionarios(): void {
+    const setoresOrdenados = [
+      'CONTABIL',
+      'FISCAL',
+      'FINANCEIRO',
+      'PARALEGAL',
+      'PESSOAL',
+    ];
+    const dadosGrafico: number[] = [];
+
+    setoresOrdenados.forEach((setor) => {
+      const setorEncontrado = this.funcionariosPorSetor.find(
+        (s) => s.setor === setor
+      );
+      dadosGrafico.push(
+        setorEncontrado ? Math.floor(setorEncontrado.qtdFuncionarios) : 0
+      );
+    });
+
+    this.graficoFuncionarios.series = [
+      {
+        name: 'Funcionários',
+        data: dadosGrafico,
+      },
+    ];
+
+    console.log(
+      'Dados do gráfico atualizados:',
+      this.graficoFuncionarios.series
+    );
+  }
+
+  getFuncionariosPorSetorEspecifico(setor: string): number {
+    const setorEncontrado = this.funcionariosPorSetor.find(
+      (s) => s.setor === setor
+    );
+    return setorEncontrado ? Math.floor(setorEncontrado.qtdFuncionarios) : 0;
   }
 }
