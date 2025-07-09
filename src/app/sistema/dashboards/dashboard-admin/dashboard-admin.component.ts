@@ -4,10 +4,22 @@ import { ColaboradoresService } from 'src/app/services/administrativo/colaborado
 import { ExchangeService } from 'src/app/services/exchange.service';
 import { RegimeDaEmpresa } from '../../administrativo/empresas/enums/regime-da-empresa';
 import { RegimeDaEmpresaDescricao } from '../../administrativo/empresas/enums/regime-da-empresa-descricao';
-import { GraficoFuncionariosPorSetor, FuncionarioPorSetor } from 'src/app/sistema/dashboards/dashboard-admin/funcionarios-por-setor';
-import { AtividadePorMes, GraficoAtividadesPorMes } from 'src/app/sistema/dashboards/dashboard-admin/atividades-por-mes';
-import { EmpresaPorRegime, GraficoEmpresasPorRegime } from 'src/app/sistema/dashboards/dashboard-admin/empresa-por-regime';
-import { DashboardAdminService, GraficoSetor } from 'src/app/services/graficos/dashboard-admin.service';
+import {
+  GraficoFuncionariosPorSetor,
+  FuncionarioPorSetor,
+} from 'src/app/sistema/dashboards/dashboard-admin/funcionarios-por-setor';
+import {
+  AtividadePorMes,
+  GraficoAtividadesPorMes,
+} from 'src/app/sistema/dashboards/dashboard-admin/atividades-por-mes';
+import {
+  EmpresaPorRegime,
+  GraficoEmpresasPorRegime,
+} from 'src/app/sistema/dashboards/dashboard-admin/empresa-por-regime';
+import {
+  DashboardAdminService,
+  GraficoSetor,
+} from 'src/app/services/graficos/dashboard-admin.service';
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -194,9 +206,6 @@ export class DashboardAdminComponent implements OnInit {
         this.totalFuncionarios = Math.floor(data.total);
 
         this.atualizarGraficoFuncionarios();
-
-        console.log('Funcionários por setor:', this.funcionariosPorSetor);
-        console.log('Total de funcionários:', this.totalFuncionarios);
       },
       error: (error) => {
         console.error('Erro ao carregar funcionários por setor:', error);
@@ -234,11 +243,6 @@ export class DashboardAdminComponent implements OnInit {
         data: dadosGrafico,
       },
     ];
-
-    console.log(
-      'Dados do gráfico atualizados:',
-      this.graficoFuncionarios.series
-    );
   }
 
   getFuncionariosPorSetorEspecifico(setor: string): number {
@@ -272,25 +276,25 @@ export class DashboardAdminComponent implements OnInit {
 
   atualizarGraficoAtividades(): void {
     const mesesOrdenados = [
-      'JANEIRO',
-      'FEVEREIRO',
-      'MARÇO',
-      'ABRIL',
-      'MAIO',
-      'JUNHO',
-      'JULHO',
-      'AGOSTO',
-      'SETEMBRO',
-      'OUTUBRO',
-      'NOVEMBRO',
-      'DEZEMBRO',
+      'Jan',
+      'Fev',
+      'Mar',
+      'Abr',
+      'Mai',
+      'Jun',
+      'Jul',
+      'Ago',
+      'Set',
+      'Out',
+      'Nov',
+      'Dez',
     ];
 
     const dadosGrafico: number[] = [];
 
     mesesOrdenados.forEach((mes) => {
       const mesEncontrado = this.atividadesPorMes.find(
-        (m) => m.mes.toUpperCase() === mes
+        (m) => m.mes === mes 
       );
       dadosGrafico.push(
         mesEncontrado ? Math.floor(mesEncontrado.quantidade) : 0
@@ -317,9 +321,6 @@ export class DashboardAdminComponent implements OnInit {
         this.totalEmpresasRegime = data.total;
 
         this.atualizarGraficoEmpresasRegime();
-
-        console.log('Empresas por regime:', this.empresasPorRegime);
-        console.log('Total de empresas por regime:', this.totalEmpresasRegime);
       },
       error: (error) => {
         console.error('Erro ao carregar empresas por regime:', error);
