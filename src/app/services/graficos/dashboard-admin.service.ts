@@ -4,10 +4,17 @@ import { environment } from 'src/environments/environment';
 import { Processo } from 'src/app/sistema/gerenciamento/processos/processo';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { GraficoFuncionariosPorSetor } from 'src/app/sistema/dashboards/dashboard-admin/funcionarios-por-setor';
+import { GraficoAtividadesPorMes } from 'src/app/sistema/dashboards/dashboard-admin/atividades-por-mes';
+import { GraficoEmpresasPorRegime } from 'src/app/sistema/dashboards/dashboard-admin/empresa-por-regime';
 
 export interface GraficoSetor {
   concluidas: number;
   setor: string;
+  total: number;
+}
+
+export interface GraficoQuantidade {
   total: number;
 }
 
@@ -26,6 +33,110 @@ export class DashboardAdminService {
       catchError((error) => {
         let errorMessage =
           'Erro ao buscar dados de atividades concluídas por setor.';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
+  getQuantidadeUsuarios(): Observable<GraficoQuantidade> {
+    const url = `${this.apiURL}/usuarios`;
+    return this.http.get<GraficoQuantidade>(url).pipe(
+      map((response) => response),
+      catchError((error) => {
+        let errorMessage = 'Erro ao buscar quantidade de colaboradores.';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
+  getQuantidadeEmpresasNumero(): Observable<GraficoQuantidade> {
+    const url = `${this.apiURL}/empresas`;
+    return this.http.get<GraficoQuantidade>(url).pipe(
+      map((response) => response),
+      catchError((error) => {
+        let errorMessage = 'Erro ao buscar quantidade de empresas.';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
+  getQuantidadeAtividadesNaoAtribuidas(): Observable<GraficoQuantidade> {
+    const url = `${this.apiURL}/atividades`;
+    return this.http.get<GraficoQuantidade>(url).pipe(
+      map((response) => response),
+      catchError((error) => {
+        let errorMessage =
+          'Erro ao buscar quantidade de atividades não atribuídas.';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
+  getFuncionariosPorSetor(): Observable<GraficoFuncionariosPorSetor> {
+    const url = `${this.apiURL}/funcionarios/setor`;
+    return this.http.get<GraficoFuncionariosPorSetor>(url).pipe(
+      map((response) => response),
+      catchError((error) => {
+        let errorMessage =
+          'Erro ao buscar quantidade de funcionários por setor.';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
+  getAtividadesPorMes(): Observable<GraficoAtividadesPorMes> {
+    const url = `${this.apiURL}/atividades/por-mes`;
+    return this.http.get<GraficoAtividadesPorMes>(url).pipe(
+      map((response) => response),
+      catchError((error) => {
+        let errorMessage = 'Erro ao buscar atividades por mês.';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
+  getEmpresasPorRegime(): Observable<GraficoEmpresasPorRegime> {
+    const url = `${this.apiURL}/empresas/regime`;
+    return this.http.get<GraficoEmpresasPorRegime>(url).pipe(
+      map((response) => response),
+      catchError((error) => {
+        let errorMessage = 'Erro ao buscar empresas por regime.';
         if (error.error instanceof ErrorEvent) {
           errorMessage = `Erro: ${error.error.message}`;
         } else if (error.status) {

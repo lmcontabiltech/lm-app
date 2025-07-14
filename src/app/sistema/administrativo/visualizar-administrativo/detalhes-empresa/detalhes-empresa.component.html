@@ -1,7 +1,7 @@
 <div class="main-container">
     <div class="breadcrumb-container">
         <div class="back-title">
-            <img src="assets/icones/back-left.svg" alt="Back" class="back-icon" (click)="goBack()">
+            <img src="assets/icones/back-left-blue.svg" alt="Back" class="back-icon" (click)="goBack()">
             <span>Detalhes da empresa</span>
         </div>
     </div>
@@ -29,7 +29,7 @@
         <div class="data-grid">
             <div class="item-data">
                 <label>Regime da Empresa</label>
-                <p>{{ empresa.regimeEmpresa || '-' }}</p>
+                <p>{{ getRegimeDescricao(empresa.regimeEmpresa) }}</p>
             </div>
         </div>
     </div>
@@ -41,25 +41,31 @@
         <hr class="line">
     </div>
 
-    <div class="container-scroll">
-        <div class="data-grid-quad" *ngFor="let colaborador of colaboradoresPaginados">
-            <div class="item-data">
+    <div class="container-scroll" *ngIf="colaboradores.length > 0; else noColaboradores">
+        <div class="data-grid-quad" *ngFor="let colaborador of colaboradores">
+            <div class="item-data-sub">
                 <div class="perfil">
-                    <div class="avatar" [ngStyle]="{'background-color': getRandomColor(colaborador.username)}">
-                        <img [src]="colaborador.foto?.documentoUrl" alt="Foto do colaborador" *ngIf="colaborador.foto?.documentoUrl; else defaultAvatar" />
+                    <div class="avatar" [ngStyle]="{'background-color': getRandomColor(colaborador.nome)}">
+                        <img [src]="colaborador.fotoUrl" alt="Foto do colaborador" *ngIf="colaborador.fotoUrl; else defaultAvatar" />
                         <ng-template #defaultAvatar>
-                            <span>{{ getInitial(colaborador.username) }}</span>
+                            <span>{{ getInitial(colaborador.nome) }}</span>
                         </ng-template>
                     </div>
                     <span>{{ colaborador.username || '-' }}</span>
                 </div>
             </div>
-            <div class="item-data">
-                <p>{{ colaborador.departamento?.nome || '-' }}</p>
+            <div class="item-data-sub">
+                <app-setor-tag [setor]="colaborador.setor"></app-setor-tag>
             </div>
-            <div class="item-data">
-                <p>{{ colaborador.telefoneUm || '-' }}</p>
+            <div class="item-data-sub">
+                <p>{{ colaborador.email || '-' }}</p>
             </div>
         </div>
     </div>
+
+     <ng-template #noColaboradores>
+        <div class="no-colaboradores">
+            <p>Nenhum colaborador atribuído a esta empresa.</p>
+        </div>
+    </ng-template>
 </div>

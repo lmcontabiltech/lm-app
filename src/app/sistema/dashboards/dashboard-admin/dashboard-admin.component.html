@@ -117,21 +117,21 @@
         <div class="cards-infos">
             <div class="card">
             <div class="qtd">
-                <span>12</span>
+                <span>{{ totalColaboradores }}</span>
                 <img src="assets/icones/dashboard/trio.svg" alt="pessoas" />
             </div>
             <p>Colaboradores</p>
             </div>
             <div class="card">
             <div class="qtd">
-                <span>12</span>
+                <span>{{ totalEmpresas }}</span>
                 <img src="assets/icones/dashboard/predios.svg" alt="predios" />
             </div>
             <p>Empresas</p>
             </div>
             <div class="card">
             <div class="qtd">
-                <span>12</span>
+                <span>{{ totalAtividadesNaoAtribuidas }}</span>
                 <img src="assets/icones/dashboard/people-minus.svg" alt="pessoa" />
             </div>
             <p>Tarefas não atribuídas</p>
@@ -290,26 +290,26 @@
             </div>
 
             <app-grafico-linha
-                [series]="[{ name: 'Desempenho', data: [30, 40, 35, 50, 48, 60, 70, 91, 125, 15, 200, 20] }]"
-                [categories]="['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'out', 'nov', 'dez',]"
+                [series]="graficoAtividadesMensais.series"
+                [categories]="graficoAtividadesMensais.categories"
                 [colors]="['#5EA828']"
-                title="Atividades concluidas por mês"
+                title="Atividades concluídas por mês"
                 totalLabel="Total"
                 [showTotal]="true"
-                subtitle="Total: 0">
+                [subtitle]="'Total: ' + totalAtividadesAno">
             </app-grafico-linha>
         </div>
 
         <div class="duo-container">
             <app-grafico-barra-vertical
-                [series]="[{ name: 'Funcionarios', data: [18, 20, 10, 8, 9] }]"
-                [categories]="['Contábil', 'Pessoal', 'Fiscal', 'Paralegal', 'Financeiro']"
-                [colors]="['#08195D', '#1F337F', '#4a59a0', '#585A60', '#5a5f7b']"
+                [series]="graficoFuncionarios.series"
+                [categories]="graficoFuncionarios.categories"
+                [colors]="graficoFuncionarios.colors"
                 title="Funcionários por setor">
             </app-grafico-barra-vertical>
             <app-grafico-rosquinha
-                [series]="[30, 25, 20]"
-                [labels]="['Simples Nacional', 'Lucro Presumido', 'Lucro Real']"
+                [series]="graficoEmpresasRegime.series"
+                [labels]="graficoEmpresasRegime.labels"
                 colorPalette="palette2"
                 title="Regimes das empresas"
                 [height]="400"

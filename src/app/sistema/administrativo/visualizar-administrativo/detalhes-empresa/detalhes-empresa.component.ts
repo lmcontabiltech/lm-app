@@ -3,6 +3,8 @@ import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { EmpresasService } from 'src/app/services/administrativo/empresas.service';
 import { Empresa } from '../../empresas/empresa';
+import { Setor } from '../../cadastro-de-colaborador/setor';
+import { RegimeDaEmpresaDescricao } from '../../empresas/enums/regime-da-empresa-descricao';
 
 @Component({
   selector: 'app-detalhes-empresa',
@@ -12,11 +14,14 @@ import { Empresa } from '../../empresas/empresa';
 export class DetalhesEmpresaComponent implements OnInit {
   empresa!: Empresa;
 
-  colaboradores: any[] = [];
-  itensPorPagina = 5;
-  paginaAtual = 1;
-  totalPaginas = Math.ceil(this.colaboradores.length / this.itensPorPagina);
-  colaboradoresPaginados: any[] = [];
+  colaboradores: Array<{
+    id: string;
+    nome: string;
+    setor: Setor;
+    username?: string;
+    email?: string;
+    fotoUrl: string;
+  }> = [];
 
   constructor(
     private location: Location,
@@ -38,6 +43,7 @@ export class DetalhesEmpresaComponent implements OnInit {
       this.empresasService.getEmpresaById(id).subscribe(
         (response) => {
           this.empresa = response;
+          this.extrairColaboradores();
           console.log('Dados da empresa carregados:', this.empresa);
         },
         (error) => {
@@ -61,5 +67,71 @@ export class DetalhesEmpresaComponent implements OnInit {
     ];
     const index = seed ? seed.charCodeAt(0) % colors.length : 0;
     return colors[index];
+  }
+
+  getRegimeDescricao(regime?: string): string {
+    if (!regime) return '-';
+
+    const regimeKey = regime as keyof typeof RegimeDaEmpresaDescricao;
+    return RegimeDaEmpresaDescricao[regimeKey] || regime;
+  }
+
+  extrairColaboradores(): void {
+    this.colaboradores = [];
+
+    if (this.empresa.contabil) {
+      this.colaboradores.push({
+        id: this.empresa.contabil.id,
+        nome: this.empresa.contabil.nome,
+        setor: Setor.CONTABIL,
+        username: this.empresa.contabil.nome,
+        email: this.empresa.contabil.email,
+        fotoUrl: this.empresa.contabil.fotoUrl || '',
+      });
+    }
+
+    if (this.empresa.fiscal) {
+      this.colaboradores.push({
+        id: this.empresa.fiscal.id,
+        nome: this.empresa.fiscal.nome,
+        setor: Setor.FISCAL,
+        username: this.empresa.fiscal.nome,
+        email: this.empresa.fiscal.email,
+        fotoUrl: this.empresa.fiscal.fotoUrl || '',
+      });
+    }
+
+    if (this.empresa.financeiro) {
+      this.colaboradores.push({
+        id: this.empresa.financeiro.id,
+        nome: this.empresa.financeiro.nome,
+        setor: Setor.FINANCEIRO,
+        username: this.empresa.financeiro.nome,
+        email: this.empresa.financeiro.email,
+        fotoUrl: this.empresa.financeiro.fotoUrl || '',
+      });
+    }
+
+    if (this.empresa.paralegal) {
+      this.colaboradores.push({
+        id: this.empresa.paralegal.id,
+        nome: this.empresa.paralegal.nome,
+        setor: Setor.PARALEGAL,
+        username: this.empresa.paralegal.nome,
+        email: this.empresa.paralegal.email,
+        fotoUrl: this.empresa.paralegal.fotoUrl || '',
+      });
+    }
+
+    if (this.empresa.pessoal) {
+      this.colaboradores.push({
+        id: this.empresa.pessoal.id,
+        nome: this.empresa.pessoal.nome,
+        setor: Setor.PESSOAL,
+        username: this.empresa.pessoal.nome,
+        email: this.empresa.pessoal.email,
+        fotoUrl: this.empresa.pessoal.fotoUrl || '',
+      });
+    }
   }
 }

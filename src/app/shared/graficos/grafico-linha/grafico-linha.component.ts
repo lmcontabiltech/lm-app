@@ -127,6 +127,37 @@ export class GraficoLinhaComponent implements OnInit, OnChanges, OnDestroy {
       xaxis: {
         categories: this.categories,
       },
+      tooltip: {
+        x: {
+          formatter: (value: any, { dataPointIndex }: any) => {
+            const mesesCompletos = {
+              Jan: 'Janeiro',
+              Fev: 'Fevereiro',
+              Mar: 'Março',
+              Abr: 'Abril',
+              Mai: 'Maio',
+              Jun: 'Junho',
+              Jul: 'Julho',
+              Ago: 'Agosto',
+              Set: 'Setembro',
+              Out: 'Outubro',
+              Nov: 'Novembro',
+              Dez: 'Dezembro',
+            };
+
+            const mesAbreviado = this.categories[dataPointIndex];
+            return (
+              mesesCompletos[mesAbreviado as keyof typeof mesesCompletos] ||
+              mesAbreviado
+            );
+          },
+        },
+        y: {
+          formatter: (value: number) => {
+            return Math.floor(value).toString();
+          },
+        },
+      },
       responsive: this.responsive
         ? [
             {

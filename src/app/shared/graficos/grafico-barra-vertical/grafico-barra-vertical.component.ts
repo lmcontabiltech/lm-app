@@ -120,6 +120,13 @@ export class GraficoBarraVerticalComponent
       xaxis: {
         categories: this.categories,
       },
+      tooltip: {
+        y: {
+          formatter: function (val: number) {
+            return Math.floor(val).toString();
+          },
+        },
+      },
       responsive: this.responsive
         ? [
             {
