@@ -20,6 +20,11 @@
   margin: 0;
 }
 
+.btn-container {
+  display: flex;
+  gap: 16px;
+}
+
 .table-container {
   display: flex;
   align-items: center;
@@ -233,6 +238,26 @@ tr:hover {
 .alert-danger .progress-bar-sucess {
   background: #a12c2a;
 }
+
+.btn-secondary {
+  all: none;
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--lm-branco);
+  background-color: var(--lm-accent);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.btn-secondary:hover {
+  background-color: var(--lm-primary);
+}
+
 @keyframes progressBarAnim {
   from {
     width: 100%;
@@ -272,8 +297,8 @@ tr:hover {
   }
 
   .select-container {
-  width: 100%;
-}
+    width: 100%;
+  }
 
   .search-container {
     width: 100%;

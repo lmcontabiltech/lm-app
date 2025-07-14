@@ -71,6 +71,10 @@ export class ColaboradoresComponent implements OnInit {
     this.router.navigate(['/usuario/cadastro-de-colaborador']);
   }
 
+  historicoColaborador(): void {
+    this.router.navigate(['/usuario/historico-usuarios-inativos']);
+  }
+
   onSearch(searchTerm: string) {
     if (!searchTerm || searchTerm.trim() === '') {
       this.mensagemBusca = '';

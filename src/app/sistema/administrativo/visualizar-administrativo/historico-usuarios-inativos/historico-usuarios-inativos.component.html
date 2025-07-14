@@ -1,1 +1,108 @@
-<p>historico-usuarios-inativos works!</p>
+<div  *ngIf="permissaoUsuario === 'Administrador' || permissaoUsuario === 'Coordenador'">
+<div class="main-container">
+    <div class="header-container">
+        <div class="back-title">
+            <img src="assets/icones/back-left.svg" alt="Back" class="back-icon" (click)="goBack()">
+            <h2>Histórico de Colaboradores</h2>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <div class="filtro-container">
+            <div class="select-container">
+                <app-select-padrao
+                  label="Setor"
+                  [options]="setores"
+                  [(selectedValue)]="selectedSetor"
+                  (selectedValueChange)="onSetorChange()"
+                  [showDefaultOption]="true"
+                  [defaultLabel]="'Todos os setores'"
+                  [defaultValue]="''">
+                </app-select-padrao>
+            </div>
+
+            <div class="search-container">
+                <app-search (searchChange)="onSearch($event)"></app-search>
+            </div>
+        </div>
+
+        <div *ngIf="successMessage" class="alert alert-success">
+            <span>{{ successMessage }}</span>
+            <button class="close-btn" (click)="clearMessage()" aria-label="Fechar">&times;</button>
+            <div class="progress-bar-sucess" [style.animation]="successMessage ? 'progressBarAnim 3s linear' : 'none'"></div>
+        </div>
+
+        <div class="progress-bar-container" *ngIf="isLoading">
+            <div class="progress-bar"></div>
+        </div>
+
+        <div [ngClass]="{'tabela-container': true, 'no-data': colaboradoresPaginados.length === 0}">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Setor</th>
+                        <th>E-mail coorporativo</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="colaboradoresPaginados.length > 0">
+                    <tr *ngFor="let colaborador of colaboradoresPaginados">
+                        <td>
+                            <div class="perfil">
+                                <div class="avatar" [ngStyle]="{'background-color': getRandomColor(colaborador.nome)}">
+                                    <img [src]="colaborador.fotoUrl" alt="Foto do Colaborador" *ngIf="colaborador.fotoUrl; else defaultAvatar" />
+                                    <ng-template #defaultAvatar>
+                                        <span>{{ getInitial(colaborador.nome) }}</span>
+                                    </ng-template>
+                                </div>
+                                <span>
+                                    {{ colaborador.nome }}
+                                </span>
+                            </div>
+                        </td>
+                        <td>
+                            <app-setor-tag [setor]="colaborador.setor"></app-setor-tag>
+                        </td>
+                        <td>{{ colaborador.email }}</td>
+                        <td>{{ colaborador.status }}</td>
+                        <td>
+                            <div class="container-acoes">
+                                <button class="btn-acao edit" (click)="editarColaborador(colaborador.id)">
+                                    <img src="assets/icones/edit.svg" alt="Editar">
+                                    Editar
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf="colaboradoresPaginados.length === 0" class="feedback-container">
+            <ng-container *ngIf="mensagemBusca; else semUsuarios">
+                <div>
+                <div class="search alert-warning text-center">
+                    {{ mensagemBusca }}
+                </div>
+                </div>
+            </ng-container>
+            <ng-template #semUsuarios>
+                <div class="no-data-message">
+                <img src="assets/imagens/no-data.svg" alt="Sem dados">
+                <p>Não há usuários cadastrados.</p>
+                </div>
+            </ng-template>
+        </div>
+
+        <div class="paginacao">
+            <app-pagination
+            [paginaAtual]="paginaAtual"
+            [totalItens]="totalItens"
+            [itensPorPagina]="itensPorPagina"
+            (paginaMudou)="onPaginaMudou($event)">
+            </app-pagination>
+        </div>  
+    </div>
+</div>
+</div>
