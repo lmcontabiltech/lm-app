@@ -7,4 +7,5 @@ export class Colaborador {
   nome!: string;
   setor!: Setor;
   email!: string;
+  status?: string;
 }
