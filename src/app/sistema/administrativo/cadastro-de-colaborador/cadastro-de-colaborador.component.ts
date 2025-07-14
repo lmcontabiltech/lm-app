@@ -92,6 +92,7 @@ export class CadastroDeColaboradorComponent implements OnInit {
       ...this.cadastroForm.value,
       setor: this.cadastroForm.get('setor')?.value || null,
       permissao: this.cadastroForm.get('permissao')?.value || null,
+      status: this.cadastroForm.get('status')?.value || null,
     };
     console.log('Dados do usuário a serem enviados:', usuario);
 
