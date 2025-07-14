@@ -29,6 +29,7 @@ export class CadastroDeColaboradorComponent implements OnInit {
 
   selectedSetor: string = '';
   permissao: string = 'USER';
+  status: string = 'ATIVO';
   passwordVisible: { [key: string]: boolean } = {
     password: false,
     confirmPassword: false,
@@ -51,6 +52,7 @@ export class CadastroDeColaboradorComponent implements OnInit {
       password: ['', Validators.required],
       permissao: ['USER', Validators.required],
       setor: ['', Validators.required],
+      status: ['ATIVO', Validators.required],
     });
   }
 
@@ -122,8 +124,8 @@ export class CadastroDeColaboradorComponent implements OnInit {
           this.errorMessage = null;
           this.cadastroForm.reset();
           this.router.navigate(['/usuario/colaboradores'], {
-              state: { successMessage: 'Usuário cadastrado com sucesso!' },
-            });
+            state: { successMessage: 'Usuário cadastrado com sucesso!' },
+          });
           console.debug('Usuário cadastrado com sucesso:', response);
         },
         (error) => {
