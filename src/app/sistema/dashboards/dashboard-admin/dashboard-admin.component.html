@@ -113,7 +113,6 @@
             </div>
         </div>
 
-        <!-- Exibir apenas para ADMIN e COORDENADOR -->
         <div class="cards-infos">
             <div class="card">
             <div class="qtd">
@@ -154,14 +153,14 @@
             </div>
             <div class="duo-container">
                 <app-grafico-barra-horizontal
-                [series]="[{ name: 'Abertas', data: [10, 25, 40] }]"
-                [categories]="['No prazo', 'Em atraso', 'Com multas']"
+                [series]="getGraficoAbertas('CONTABIL').series"
+                [categories]="getGraficoAbertas('CONTABIL').categories"
                 [colors]="['#FEB019']"
                 title="Abertas">
                 </app-grafico-barra-horizontal>
                 <app-grafico-barra-horizontal
-                [series]="[{ name: 'Concluidas', data: [18, 20, 10] }]"
-                [categories]="['No prazo', 'Em atraso', 'Com multas']"
+                [series]="getGraficoConcluidas('CONTABIL').series"
+                [categories]="getGraficoConcluidas('CONTABIL').categories"
                 [colors]="['#1fde82']"
                 title="Concluidas">
                 </app-grafico-barra-horizontal>
@@ -181,14 +180,14 @@
             </div>
             <div class="duo-container">
                 <app-grafico-barra-horizontal
-                [series]="[{ name: 'Abertas', data: [10, 25, 40] }]"
-                [categories]="['No prazo', 'Em atraso', 'Com multas']"
+                [series]="getGraficoAbertas('FISCAL').series"
+                [categories]="getGraficoAbertas('FISCAL').categories"
                 [colors]="['#FEB019']"
                 title="Abertas">
                 </app-grafico-barra-horizontal>
                 <app-grafico-barra-horizontal
-                [series]="[{ name: 'Concluidas', data: [18, 20, 10] }]"
-                [categories]="['No prazo', 'Em atraso', 'Com multas']"
+                [series]="getGraficoConcluidas('FISCAL').series"
+                [categories]="getGraficoConcluidas('FISCAL').categories"
                 [colors]="['#1fde82']"
                 title="Concluidas">
                 </app-grafico-barra-horizontal>
@@ -208,14 +207,14 @@
             </div>
             <div class="duo-container">
                 <app-grafico-barra-horizontal
-                [series]="[{ name: 'Abertas', data: [10, 25, 40] }]"
-                [categories]="['No prazo', 'Em atraso', 'Com multas']"
+                [series]="getGraficoAbertas('PESSOAL').series"
+                [categories]="getGraficoAbertas('PESSOAL').categories"
                 [colors]="['#FEB019']"
                 title="Abertas">
                 </app-grafico-barra-horizontal>
                 <app-grafico-barra-horizontal
-                [series]="[{ name: 'Concluidas', data: [18, 20, 10] }]"
-                [categories]="['No prazo', 'Em atraso', 'Com multas']"
+                [series]="getGraficoConcluidas('PESSOAL').series"
+                [categories]="getGraficoConcluidas('PESSOAL').categories"
                 [colors]="['#1fde82']"
                 title="Concluidas">
                 </app-grafico-barra-horizontal>
@@ -235,14 +234,14 @@
             </div>
             <div class="duo-container">
                 <app-grafico-barra-horizontal
-                [series]="[{ name: 'Abertas', data: [10, 25, 40] }]"
-                [categories]="['No prazo', 'Em atraso', 'Com multas']"
+                [series]="getGraficoAbertas('PARALEGAL').series"
+                [categories]="getGraficoAbertas('PARALEGAL').categories"
                 [colors]="['#FEB019']"
                 title="Abertas">
                 </app-grafico-barra-horizontal>
                 <app-grafico-barra-horizontal
-                [series]="[{ name: 'Concluidas', data: [18, 20, 10] }]"
-                [categories]="['No prazo', 'Em atraso', 'Com multas']"
+                [series]="getGraficoConcluidas('PARALEGAL').series"
+                [categories]="getGraficoConcluidas('PARALEGAL').categories"
                 [colors]="['#1fde82']"
                 title="Concluidas">
                 </app-grafico-barra-horizontal>
@@ -262,14 +261,14 @@
             </div>
             <div class="duo-container">
                 <app-grafico-barra-horizontal
-                [series]="[{ name: 'Abertas', data: [10, 25, 40] }]"
-                [categories]="['No prazo', 'Em atraso', 'Com multas']"
+                [series]="getGraficoAbertas('FINANCEIRO').series"
+                [categories]="getGraficoAbertas('FINANCEIRO').categories"
                 [colors]="['#FEB019']"
                 title="Abertas">
                 </app-grafico-barra-horizontal>
                 <app-grafico-barra-horizontal
-                [series]="[{ name: 'Concluidas', data: [18, 20, 10] }]"
-                [categories]="['No prazo', 'Em atraso', 'Com multas']"
+                [series]="getGraficoConcluidas('FINANCEIRO').series"
+                [categories]="getGraficoConcluidas('FINANCEIRO').categories"
                 [colors]="['#1fde82']"
                 title="Concluidas">
                 </app-grafico-barra-horizontal>
