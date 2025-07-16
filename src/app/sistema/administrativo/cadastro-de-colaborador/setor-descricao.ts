@@ -5,5 +5,8 @@ export const SetorDescricao: Record<Setor, string> = {
     [Setor.FISCAL]: 'Fiscal',
     [Setor.PESSOAL]: 'Pessoal',
     [Setor.PARALEGAL]: 'Paralegal',
-    [Setor.FINANCEIRO]: 'Financeiro'
+    [Setor.FINANCEIRO]: 'Financeiro',
+    [Setor.JURIDICO]: 'Jurídico',
+    [Setor.ESTAGIARIO]: 'Estagiário',
+    [Setor.OUTRO]: 'Outro'
 };
