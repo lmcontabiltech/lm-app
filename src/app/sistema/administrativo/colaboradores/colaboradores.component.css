@@ -238,6 +238,14 @@ tr:hover {
 .alert-danger .progress-bar-sucess {
   background: #a12c2a;
 }
+@keyframes progressBarAnim {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0;
+  }
+}
 
 .btn-secondary {
   all: none;
@@ -256,15 +264,6 @@ tr:hover {
 
 .btn-secondary:hover {
   background-color: var(--lm-primary);
-}
-
-@keyframes progressBarAnim {
-  from {
-    width: 100%;
-  }
-  to {
-    width: 0;
-  }
 }
 
 /* Breakpoints */

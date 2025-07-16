@@ -1,0 +1,132 @@
+.feedback-container {
+  position: fixed;
+  top: 6rem;
+  right: 1rem;
+  width: 350px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.feedback-card {
+  display: flex;
+  align-items: flex-start;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  animation: fade-in 0.3s ease-in-out;
+  position: relative;
+  border: 1px solid;
+  background-color: #fff;
+  color: #1e1f1d;
+  gap: 0.75rem;
+  overflow: hidden;
+}
+
+.feedback-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.feedback-content {
+  flex: 1;
+  padding-right: 1rem;
+}
+
+.feedback-title {
+  margin-bottom: 0.25rem;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.feedback-description {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+/* Tipos */
+.success {
+  background-color: #f0fde2;
+  border-color: #abe47f;
+}
+
+.info {
+  background-color: #def1ff;
+  border-color: #83cdfb;
+}
+
+.warning {
+  background-color: #fff9dc;
+  border-color: #ffe385;
+}
+
+.error {
+  background-color: #ffe2dd;
+  border-color: #ff7d71;
+}
+
+.close-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  border: none;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  padding: 0;
+  margin: 0;
+}
+
+.close-button:hover {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+/* Linha de progresso */
+.progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  animation: progressBar 5s linear forwards;
+  opacity: 0.3;
+}
+.success .progress-bar {
+  background-color: #348c1b;
+}
+.info .progress-bar {
+  background-color: #1b618c;
+}
+.warning .progress-bar {
+  background-color: #8c7f1b;
+}
+.error .progress-bar {
+  background-color: #8c1b1b;
+}
+
+@keyframes progressBar {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

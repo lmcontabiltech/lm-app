@@ -1,0 +1,21 @@
+<div class="feedback-container">
+  <div
+    *ngFor="let fb of feedbacks"
+    class="feedback-card"
+    [ngClass]="{
+      'success': fb.type === 'success',
+      'info': fb.type === 'info',
+      'warning': fb.type === 'warning',
+      'error': fb.type === 'error'
+    }"
+  >
+    <div class="feedback-content">
+      <div class="feedback-title">{{ fb.title }}</div>
+      <div class="feedback-description" *ngIf="fb.description">
+        {{ fb.description }}
+      </div>
+    </div>
+    <span class="close-button" (click)="remove(fb.id)">X</span>
+    <div class="progress-bar"></div>
+  </div>
+</div>

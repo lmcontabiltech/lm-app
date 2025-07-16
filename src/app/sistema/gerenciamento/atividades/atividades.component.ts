@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import {
   CdkDragDrop,
   moveItemInArray,
@@ -13,6 +13,7 @@ import { ModalAtividadeService } from 'src/app/services/modal/modalAtividade.ser
 import { ModalService } from 'src/app/services/modal/modalDeletar.service';
 import { EmpresasService } from 'src/app/services/administrativo/empresas.service';
 import { AutoCompleteOption } from 'src/app/shared/select-auto-complete/select-auto-complete.component';
+import { FeedbackComponent } from 'src/app/shared/feedback/feedback.component';
 
 interface Tasks {
   [key: string]: Atividade[];
@@ -23,7 +24,9 @@ interface Tasks {
   templateUrl: './atividades.component.html',
   styleUrls: ['./atividades.component.css'],
 })
-export class AtividadesComponent implements OnInit {
+export class AtividadesComponent implements OnInit, AfterViewInit {
+  @ViewChild(FeedbackComponent) feedbackComponent!: FeedbackComponent;
+
   statuses: string[] = ['backlog', 'emProgresso', 'revisao', 'concluido'];
   statusLabels: { [key: string]: string } = {
     backlog: 'A fazer',
@@ -53,6 +56,8 @@ export class AtividadesComponent implements OnInit {
   empresasOptions: AutoCompleteOption[] = [];
   empresasSelecionadas: string[] = [];
 
+  isLoading = false;
+
   constructor(
     private router: Router,
     private atividadeService: AtividadeService,
@@ -65,6 +70,12 @@ export class AtividadesComponent implements OnInit {
     this.dropListIds = this.statuses.map((status) => status);
     this.carregarAtividades();
     this.carregarEmpresas();
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.exibirMensagemDeSucesso();
+    }, 0);
   }
 
   drop(event: CdkDragDrop<Atividade[]>) {
@@ -205,9 +216,10 @@ export class AtividadesComponent implements OnInit {
       next: () => {
         this.modalAtividadeService.closeModal();
         this.carregarAtividades();
+        this.showFeedback('success', 'Atividade arquivada com sucesso!');
       },
       error: (err) => {
-        alert(err.message || 'Erro ao deletar atividade.');
+        this.showFeedback('error', err.message || 'Erro ao arquivar atividade.');
       },
     });
   }
@@ -339,5 +351,27 @@ export class AtividadesComponent implements OnInit {
         console.error('Erro ao filtrar atividades por empresas:', error);
       },
     });
+  }
+
+  private exibirMensagemDeSucesso(): void {
+    const state = window.history.state as {
+      successMessage?: string;
+      errorMessage?: string;
+    };
+
+    if (state?.successMessage) {
+      this.showFeedback('success', state.successMessage);
+      window.history.replaceState({}, document.title);
+    }
+
+    if (state?.errorMessage) {
+      this.showFeedback('error', state.errorMessage);
+      window.history.replaceState({}, document.title);
+    }
+  }
+
+  private showFeedback(type: 'success' | 'error', message: string): void {
+    const title = type === 'success' ? 'Sucesso' : 'Erro';
+    this.feedbackComponent?.show(type, title, message);
   }
 }
