@@ -6,6 +6,8 @@ import { ColaboradoresService } from 'src/app/services/administrativo/colaborado
 import { AuthService } from 'src/app/services/auth.service';
 import { Periferico } from '../perifericos/periferico';
 import { PerifericoService } from 'src/app/services/administrativo/periferico.service';
+import { Setor } from '../cadastro-de-colaborador/setor';
+import { SetorDescricao } from '../cadastro-de-colaborador/setor-descricao';
 
 @Component({
   selector: 'app-cadastro-perifericos',
@@ -30,6 +32,12 @@ export class CadastroPerifericosComponent implements OnInit {
   selectedFoto: { [key: string]: File | null } = {};
   fotoPreview: string | ArrayBuffer | null = null;
 
+  selectedSetor: string = '';
+  setores = Object.keys(Setor).map((key) => ({
+    value: Setor[key as keyof typeof Setor],
+    description: SetorDescricao[Setor[key as keyof typeof Setor]],
+  }));
+
   constructor(
     private location: Location,
     private formBuilder: FormBuilder,
@@ -48,7 +56,6 @@ export class CadastroPerifericosComponent implements OnInit {
       dataDevolucao: ['', Validators.required],
       anotacao: [''],
       estacao: ['', Validators.required],
-
     });
   }
 

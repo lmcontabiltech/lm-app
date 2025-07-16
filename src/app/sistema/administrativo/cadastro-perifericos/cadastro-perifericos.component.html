@@ -28,7 +28,7 @@
                 name="nome"
                 formControlName="nome"
                 class="form-control"
-                placeholder="Digite"
+                placeholder="Digite o nome do produto"
                 required
             />
             </div>
@@ -41,21 +41,18 @@
                 name="descricaoProduto"
                 formControlName="descricaoProduto"
                 class="form-control"
-                placeholder="Digite"
+                placeholder="Digite uma descrição para o produto"
                 rows="6"
             ></textarea>
             </div>
 
             <div class="form-group">
                 <label for="estacao">Estação</label>
-                <input
-                type="text"
-                id="estacao"
-                name="estacao"
-                formControlName="estacao"
-                class="form-control"
-                placeholder="Digite"
-                />
+                <app-select-padrao
+                  label="Selecionar a estação"
+                  [options]="setores"
+                  [(selectedValue)]="selectedSetor">
+                </app-select-padrao>
             </div>
 
             <div class="form-group">
@@ -115,7 +112,7 @@
                 name="anotacao"
                 formControlName="anotacao"
                 class="form-control"
-                placeholder="Digite"
+                placeholder="Digite as anotações sobre o periférico"
                 rows="6"
             ></textarea>
             </div>
