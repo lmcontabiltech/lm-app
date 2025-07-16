@@ -21,7 +21,7 @@ export class CadastroPerifericosComponent implements OnInit {
   isEditMode = false;
   perifericoId: string | null = null;
 
-  Status: string = 'PROPRIO_EMPRESA';
+  tipoPosse: string = 'PROPRIO_EMPRESA';
 
   usuarios: { value: string; description: string }[] = [];
   selectedUsuario: string = '';
@@ -41,9 +41,14 @@ export class CadastroPerifericosComponent implements OnInit {
   ) {
     this.perifericoForm = this.formBuilder.group({
       nome: ['', Validators.required],
-      descricao: ['', Validators.required],
+      descricao: [''],
       colaborador: ['', Validators.required],
-      status: ['PROPRIO_EMPRESA', Validators.required],
+      tipoPosse: ['PROPRIO_EMPRESA', Validators.required],
+      dataEntrega: ['', Validators.required],
+      dataDevolucao: ['', Validators.required],
+      anotacao: [''],
+      estacao: ['', Validators.required],
+
     });
   }
 
