@@ -6,6 +6,8 @@ import { ColaboradoresService } from 'src/app/services/administrativo/colaborado
 import { AuthService } from 'src/app/services/auth.service';
 import { Periferico } from '../perifericos/periferico';
 import { PerifericoService } from 'src/app/services/administrativo/periferico.service';
+import { Setor } from '../cadastro-de-colaborador/setor';
+import { SetorDescricao } from '../cadastro-de-colaborador/setor-descricao';
 
 @Component({
   selector: 'app-cadastro-perifericos',
@@ -21,7 +23,7 @@ export class CadastroPerifericosComponent implements OnInit {
   isEditMode = false;
   perifericoId: string | null = null;
 
-  Status: string = 'PROPRIO_EMPRESA';
+  tipoPosse: string = 'PROPRIO_EMPRESA';
 
   usuarios: { value: string; description: string }[] = [];
   selectedUsuario: string = '';
@@ -29,6 +31,12 @@ export class CadastroPerifericosComponent implements OnInit {
   foto: File | null = null;
   selectedFoto: { [key: string]: File | null } = {};
   fotoPreview: string | ArrayBuffer | null = null;
+
+  selectedSetor: string = '';
+  setores = Object.keys(Setor).map((key) => ({
+    value: Setor[key as keyof typeof Setor],
+    description: SetorDescricao[Setor[key as keyof typeof Setor]],
+  }));
 
   constructor(
     private location: Location,
@@ -41,9 +49,13 @@ export class CadastroPerifericosComponent implements OnInit {
   ) {
     this.perifericoForm = this.formBuilder.group({
       nome: ['', Validators.required],
-      descricao: ['', Validators.required],
+      descricao: [''],
       colaborador: ['', Validators.required],
-      status: ['PROPRIO_EMPRESA', Validators.required],
+      tipoPosse: ['PROPRIO_EMPRESA', Validators.required],
+      dataEntrega: ['', Validators.required],
+      dataDevolucao: ['', Validators.required],
+      anotacao: [''],
+      estacao: ['', Validators.required],
     });
   }
 

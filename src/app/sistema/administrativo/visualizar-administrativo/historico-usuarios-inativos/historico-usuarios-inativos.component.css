@@ -20,9 +20,24 @@
   margin: 0;
 }
 
-.btn-container {
+.back-title {
   display: flex;
-  gap: 16px;
+  align-items: center;
+  gap: 8px;
+}
+
+.back-title img {
+  width: 30px;
+  height: auto;
+  color: #1a1918;
+  margin: 0;
+  padding: 4px;
+  cursor: pointer;
+}
+
+.back-title img:hover {
+  background: #b6bddd;
+  border-radius: 50%;
 }
 
 .table-container {
@@ -238,14 +253,6 @@ tr:hover {
 .alert-danger .progress-bar-sucess {
   background: #a12c2a;
 }
-@keyframes progressBarAnim {
-  from {
-    width: 100%;
-  }
-  to {
-    width: 0;
-  }
-}
 
 .btn-secondary {
   all: none;
@@ -264,6 +271,15 @@ tr:hover {
 
 .btn-secondary:hover {
   background-color: var(--lm-primary);
+}
+
+@keyframes progressBarAnim {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0;
+  }
 }
 
 /* Breakpoints */

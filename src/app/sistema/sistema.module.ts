@@ -28,6 +28,8 @@ import { HistoricoAtividadesComponent } from './gerenciamento/historico-atividad
 import { FluxosComponent } from './gerenciamento/fluxos/fluxos.component';
 import { DetalhesFluxoComponent } from './gerenciamento/visualizar-gerenciamento/detalhes-fluxo/detalhes-fluxo.component';
 import { DetalhesEmpresaComponent } from './administrativo/visualizar-administrativo/detalhes-empresa/detalhes-empresa.component';
+import { HistoricoUsuariosInativosComponent } from './administrativo/visualizar-administrativo/historico-usuarios-inativos/historico-usuarios-inativos.component';
+import { HistoricoEmpresasInativasComponent } from './administrativo/visualizar-administrativo/historico-empresas-inativas/historico-empresas-inativas.component';
 
 
 @NgModule({
@@ -55,6 +57,8 @@ import { DetalhesEmpresaComponent } from './administrativo/visualizar-administra
     FluxosComponent,
     DetalhesFluxoComponent,
     DetalhesEmpresaComponent,
+    HistoricoUsuariosInativosComponent,
+    HistoricoEmpresasInativasComponent,
   ],
   imports:[
     CommonModule, 

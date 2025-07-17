@@ -74,6 +74,10 @@ export class EmpresasComponent implements OnInit {
     this.router.navigate(['/usuario/cadastro-de-empresa']);
   }
 
+  historicoEmpresa(): void {
+    this.router.navigate(['/usuario/historico-empresas-inativas']);
+  }
+
   onSearch(searchTerm: string) {
     if (!searchTerm || searchTerm.trim() === '') {
       this.mensagemBusca = '';

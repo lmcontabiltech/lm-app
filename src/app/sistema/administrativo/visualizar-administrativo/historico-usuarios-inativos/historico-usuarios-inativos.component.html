@@ -1,10 +1,9 @@
 <div  *ngIf="permissaoUsuario === 'Administrador' || permissaoUsuario === 'Coordenador'">
 <div class="main-container">
     <div class="header-container">
-        <h2>Colaboradores</h2>
-        <div class="btn-container">
-            <button class="btn btn-secondary" (click)="historicoColaborador()">Histórico de usuários</button>
-            <button class="btn btn-primary" (click)="cadastrarColaborador()">Cadastrar colaborador +</button>
+        <div class="back-title">
+            <img src="assets/icones/back-left.svg" alt="Back" class="back-icon" (click)="goBack()">
+            <h2>Histórico de Colaboradores</h2>
         </div>
     </div>
 
@@ -44,6 +43,7 @@
                         <th>Nome</th>
                         <th>Setor</th>
                         <th>E-mail coorporativo</th>
+                        <th>Status</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -66,15 +66,12 @@
                             <app-setor-tag [setor]="colaborador.setor"></app-setor-tag>
                         </td>
                         <td>{{ colaborador.email }}</td>
+                        <td>{{ colaborador.status }}</td>
                         <td>
                             <div class="container-acoes">
                                 <button class="btn-acao edit" (click)="editarColaborador(colaborador.id)">
                                     <img src="assets/icones/edit.svg" alt="Editar">
                                     Editar
-                                </button>
-                                <button class="btn-acao delete" (click)="openModalDeletar(colaborador)">
-                                    <img src="assets/icones/delete.svg" alt="Excluir">
-                                     Excluir
                                 </button>
                             </div>
                         </td>

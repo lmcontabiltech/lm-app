@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Colaborador } from './colaborador';
-import { Setor } from '../cadastro-de-colaborador/setor';
-import { SetorDescricao } from '../cadastro-de-colaborador/setor-descricao';
-import { ColaboradoresService } from '../../../services/administrativo/colaboradores.service';
+import { Location } from '@angular/common';
+import { Colaborador } from '../../colaboradores/colaborador';
+import { Setor } from '../../cadastro-de-colaborador/setor';
+import { SetorDescricao } from '../../cadastro-de-colaborador/setor-descricao';
+import { ColaboradoresService } from '../../../../services/administrativo/colaboradores.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { ModalService } from 'src/app/services/modal/modalDeletar.service';
 
 @Component({
-  selector: 'app-colaboradores',
-  templateUrl: './colaboradores.component.html',
-  styleUrls: ['./colaboradores.component.css'],
+  selector: 'app-historico-usuarios-inativos',
+  templateUrl: './historico-usuarios-inativos.component.html',
+  styleUrls: ['./historico-usuarios-inativos.component.css'],
 })
-export class ColaboradoresComponent implements OnInit {
+export class HistoricoUsuariosInativosComponent implements OnInit {
   setores = Object.keys(Setor).map((key) => ({
     value: Setor[key as keyof typeof Setor],
     description: SetorDescricao[Setor[key as keyof typeof Setor]],
@@ -40,7 +40,7 @@ export class ColaboradoresComponent implements OnInit {
     private router: Router,
     private colaboradoresService: ColaboradoresService,
     private authService: AuthService,
-    private modalService: ModalService
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -65,6 +65,10 @@ export class ColaboradoresComponent implements OnInit {
       default:
         return 'Desconhecido';
     }
+  }
+
+  goBack() {
+    this.location.back();
   }
 
   cadastrarColaborador(): void {
@@ -126,7 +130,7 @@ export class ColaboradoresComponent implements OnInit {
 
   fetchColaboradores(): void {
     this.isLoading = true;
-    this.colaboradoresService.getUsuariosNonAdmin().subscribe(
+    this.colaboradoresService.getUsuariosInativos().subscribe(
       (response: Colaborador[]) => {
         this.colaboradores = response;
         this.totalPaginas = Math.ceil(
@@ -134,49 +138,11 @@ export class ColaboradoresComponent implements OnInit {
         );
         this.atualizarPaginacao();
         this.isLoading = false;
+        console.log('Colaboradores carregados:', this.colaboradores);
       },
       (error) => {
         console.error('Erro ao buscar colaboradores:', error);
         this.isLoading = false;
-      }
-    );
-  }
-
-  deleteColaborador(id: string): void {
-    const colaboradorRemovido = this.colaboradores.find((e) => e.id === id);
-    this.colaboradoresService.deleteUsuarioById(id).subscribe(
-      () => {
-        this.colaboradores = this.colaboradores.filter(
-          (colaborador) => colaborador.id !== id
-        );
-        this.totalPaginas = Math.ceil(
-          this.colaboradores.length / this.itensPorPagina
-        );
-        this.atualizarPaginacao();
-        this.showMessage(
-          'success',
-          `Usuário "${colaboradorRemovido?.nome || ''}" deletado com sucesso!`
-        );
-      },
-      (error: any) => {
-        this.showMessage('error', 'Erro ao excluir colaborador.');
-      }
-    );
-  }
-
-  openModalDeletar(colaborador: any): void {
-    this.selectedColaborador = colaborador;
-
-    this.modalService.openModal(
-      {
-        title: 'Remoção de Usuário',
-        description: `Tem certeza que deseja excluir o(a) colaborador(a) <strong>${colaborador.nome}</strong>?`,
-        item: colaborador,
-        deletarTextoBotao: 'Remover',
-        size: 'md',
-      },
-      () => {
-        this.deleteColaborador(colaborador.id);
       }
     );
   }

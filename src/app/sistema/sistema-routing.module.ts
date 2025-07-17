@@ -25,6 +25,8 @@ import { FluxosComponent } from './gerenciamento/fluxos/fluxos.component';
 import { DetalhesFluxoComponent } from './gerenciamento/visualizar-gerenciamento/detalhes-fluxo/detalhes-fluxo.component';
 import { HistoricoAtividadesComponent } from './gerenciamento/historico-atividades/historico-atividades.component';
 import { DetalhesEmpresaComponent } from './administrativo/visualizar-administrativo/detalhes-empresa/detalhes-empresa.component';
+import { HistoricoUsuariosInativosComponent } from './administrativo/visualizar-administrativo/historico-usuarios-inativos/historico-usuarios-inativos.component';
+import { HistoricoEmpresasInativasComponent } from './administrativo/visualizar-administrativo/historico-empresas-inativas/historico-empresas-inativas.component';
 
 const routes: Routes = [
   {  path: 'usuario', 
@@ -50,6 +52,8 @@ const routes: Routes = [
       { path: 'cadastro-de-empresa', component: CadastroDeEmpresaComponent},
       { path: 'cadastro-de-empresa/:id', component: CadastroDeEmpresaComponent},
       { path: 'detalhes-empresa/:id', component: DetalhesEmpresaComponent},
+      { path: 'historico-usuarios-inativos', component: HistoricoUsuariosInativosComponent},
+      { path: 'historico-empresas-inativas', component: HistoricoEmpresasInativasComponent},
 
       { path: 'atividades', component: AtividadesComponent},
       { path: 'chat', component: ChatComponent},

@@ -4,6 +4,7 @@ import { ColaboradoresService } from 'src/app/services/administrativo/colaborado
 import { ExchangeService } from 'src/app/services/exchange.service';
 import { RegimeDaEmpresa } from '../../administrativo/empresas/enums/regime-da-empresa';
 import { RegimeDaEmpresaDescricao } from '../../administrativo/empresas/enums/regime-da-empresa-descricao';
+import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
 import {
   GraficoFuncionariosPorSetor,
   FuncionarioPorSetor,
@@ -16,6 +17,7 @@ import {
   EmpresaPorRegime,
   GraficoEmpresasPorRegime,
 } from 'src/app/sistema/dashboards/dashboard-admin/empresa-por-regime';
+import { DashboardAtividadesPorSetorResponseDTO } from './atividades-por-setor';
 import {
   DashboardAdminService,
   GraficoSetor,
@@ -85,6 +87,63 @@ export class DashboardAdminComponent implements OnInit {
     financeiro: { porcentagem: 0 },
   };
 
+  resumoAtividadesSetores: {
+    [key: string]: DashboardAtividadesPorSetorResponseDTO;
+  } = {};
+
+  graficosAtividadesPorSetor: { [key: string]: any } = {
+    CONTABIL: {
+      abertas: {
+        series: [{ name: 'Abertas', data: [0, 0, 0] }],
+        categories: ['No prazo', 'Em atraso', 'Com multas'],
+      },
+      concluidas: {
+        series: [{ name: 'Concluídas', data: [0, 0, 0] }],
+        categories: ['No prazo', 'Em atraso', 'Com multas'],
+      },
+    },
+    FISCAL: {
+      abertas: {
+        series: [{ name: 'Abertas', data: [0, 0, 0] }],
+        categories: ['No prazo', 'Em atraso', 'Com multas'],
+      },
+      concluidas: {
+        series: [{ name: 'Concluídas', data: [0, 0, 0] }],
+        categories: ['No prazo', 'Em atraso', 'Com multas'],
+      },
+    },
+    PESSOAL: {
+      abertas: {
+        series: [{ name: 'Abertas', data: [0, 0, 0] }],
+        categories: ['No prazo', 'Em atraso', 'Com multas'],
+      },
+      concluidas: {
+        series: [{ name: 'Concluídas', data: [0, 0, 0] }],
+        categories: ['No prazo', 'Em atraso', 'Com multas'],
+      },
+    },
+    PARALEGAL: {
+      abertas: {
+        series: [{ name: 'Abertas', data: [0, 0, 0] }],
+        categories: ['No prazo', 'Em atraso', 'Com multas'],
+      },
+      concluidas: {
+        series: [{ name: 'Concluídas', data: [0, 0, 0] }],
+        categories: ['No prazo', 'Em atraso', 'Com multas'],
+      },
+    },
+    FINANCEIRO: {
+      abertas: {
+        series: [{ name: 'Abertas', data: [0, 0, 0] }],
+        categories: ['No prazo', 'Em atraso', 'Com multas'],
+      },
+      concluidas: {
+        series: [{ name: 'Concluídas', data: [0, 0, 0] }],
+        categories: ['No prazo', 'Em atraso', 'Com multas'],
+      },
+    },
+  };
+
   constructor(
     private exchangeService: ExchangeService,
     private colaboradorService: ColaboradoresService,
@@ -98,6 +157,7 @@ export class DashboardAdminComponent implements OnInit {
     this.carregarFuncionariosPorSetor();
     this.carregarAtividadesPorMes();
     this.carregarEmpresasPorRegime();
+    this.carregarResumoAtividadesSetores();
 
     this.colaboradorService.getUsuarioByToken().subscribe(
       (usuario) => {
@@ -293,9 +353,7 @@ export class DashboardAdminComponent implements OnInit {
     const dadosGrafico: number[] = [];
 
     mesesOrdenados.forEach((mes) => {
-      const mesEncontrado = this.atividadesPorMes.find(
-        (m) => m.mes === mes 
-      );
+      const mesEncontrado = this.atividadesPorMes.find((m) => m.mes === mes);
       dadosGrafico.push(
         mesEncontrado ? Math.floor(mesEncontrado.quantidade) : 0
       );
@@ -404,5 +462,162 @@ export class DashboardAdminComponent implements OnInit {
 
   temRegime(regime: RegimeDaEmpresa): boolean {
     return this.empresasPorRegime.some((r) => r.regimeEmpresa === regime);
+  }
+
+  carregarResumoAtividadesSetores(): void {
+    const dataInicio = this.getDataInicioAno();
+    const setores = [
+      Setor.CONTABIL,
+      Setor.FISCAL,
+      Setor.PESSOAL,
+      Setor.PARALEGAL,
+      Setor.FINANCEIRO,
+    ];
+
+    console.log('📋 Setores:', setores);
+
+    const requests = setores.map((setor) =>
+      this.dashboardAdminService.getAtividadesResumoSetor(setor, dataInicio)
+    );
+
+    forkJoin(requests).subscribe({
+      next: (resultados) => {
+        setores.forEach((setor, index) => {
+          this.resumoAtividadesSetores[setor] = resultados[index];
+          this.atualizarGraficosSetor(setor, resultados[index]);
+        });
+
+        console.log(
+          'Resumo de atividades por setor carregado:',
+          this.resumoAtividadesSetores
+        );
+        console.log('🎯 Estado final dos dados:');
+        console.log(
+          '   - resumoAtividadesSetores:',
+          this.resumoAtividadesSetores
+        );
+        console.log(
+          '   - graficosAtividadesPorSetor:',
+          this.graficosAtividadesPorSetor
+        );
+      },
+      error: (error) => {
+        console.error(
+          '❌ Erro ao carregar resumo de atividades por setor:',
+          error
+        );
+        this.resetarGraficosSetores();
+      },
+    });
+  }
+
+  private atualizarGraficosSetor(
+    setor: Setor,
+    dados: DashboardAtividadesPorSetorResponseDTO
+  ): void {
+    // Dados para gráfico de atividades ABERTAS
+    const dadosAbertas = [
+      dados.abertas.noPrazo,
+      dados.abertas.emAtraso,
+      dados.abertas.comMultas,
+    ];
+
+    // Dados para gráfico de atividades CONCLUÍDAS
+    const dadosConcluidas = [
+      dados.concluidas.noPrazo,
+      dados.concluidas.emAtraso,
+      dados.concluidas.comMultas,
+    ];
+
+    this.graficosAtividadesPorSetor[setor] = {
+      abertas: {
+        series: [{ name: 'Abertas', data: dadosAbertas }],
+        categories: ['No prazo', 'Em atraso', 'Com multas'],
+      },
+      concluidas: {
+        series: [{ name: 'Concluídas', data: dadosConcluidas }],
+        categories: ['No prazo', 'Em atraso', 'Com multas'],
+      },
+    };
+
+    console.log(
+      `Gráficos do setor ${setor} atualizados:`,
+      this.graficosAtividadesPorSetor[setor]
+    );
+  }
+
+  private getDataInicioAno(): string {
+    const anoAtual = new Date().getFullYear();
+    return `${anoAtual}-01-01`;
+  }
+
+  private resetarGraficosSetores(): void {
+    Object.keys(this.graficosAtividadesPorSetor).forEach((setor) => {
+      this.graficosAtividadesPorSetor[setor] = {
+        abertas: {
+          series: [{ name: 'Abertas', data: [0, 0, 0] }],
+          categories: ['No prazo', 'Em atraso', 'Com multas'],
+        },
+        concluidas: {
+          series: [{ name: 'Concluídas', data: [0, 0, 0] }],
+          categories: ['No prazo', 'Em atraso', 'Com multas'],
+        },
+      };
+    });
+  }
+
+  getTotalAtividadesAbertas(setor: Setor): number {
+    const resumo = this.resumoAtividadesSetores[setor];
+    if (!resumo) return 0;
+    return (
+      resumo.abertas.noPrazo +
+      resumo.abertas.emAtraso +
+      resumo.abertas.comMultas
+    );
+  }
+
+  getTotalAtividadesConcluidas(setor: Setor): number {
+    const resumo = this.resumoAtividadesSetores[setor];
+    if (!resumo) return 0;
+    return (
+      resumo.concluidas.noPrazo +
+      resumo.concluidas.emAtraso +
+      resumo.concluidas.comMultas
+    );
+  }
+
+  getGraficoAbertas(setor: string): any {
+    return (
+      this.graficosAtividadesPorSetor[setor]?.abertas || {
+        series: [{ name: 'Abertas', data: [0, 0, 0] }],
+        categories: ['No prazo', 'Em atraso', 'Com multas'],
+      }
+    );
+  }
+
+  getGraficoConcluidas(setor: string): any {
+    return (
+      this.graficosAtividadesPorSetor[setor]?.concluidas || {
+        series: [{ name: 'Concluídas', data: [0, 0, 0] }],
+        categories: ['No prazo', 'Em atraso', 'Com multas'],
+      }
+    );
+  }
+
+  recarregarDadosSetor(setor: Setor): void {
+    const dataInicio = this.getDataInicioAno();
+
+    this.dashboardAdminService
+      .getAtividadesResumoSetor(setor, dataInicio)
+      .subscribe({
+        next: (dados) => {
+          this.resumoAtividadesSetores[setor] = dados;
+          this.atualizarGraficosSetor(setor, dados);
+          console.log(`Dados do setor ${setor} recarregados:`, dados);
+        },
+        error: (error) => {
+          console.error(`Erro ao recarregar dados do setor ${setor}:`, error);
+        },
+      });
   }
 }

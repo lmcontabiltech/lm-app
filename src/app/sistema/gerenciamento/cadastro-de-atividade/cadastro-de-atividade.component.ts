@@ -189,6 +189,10 @@ export class CadastroDeAtividadeComponent implements OnInit {
       multas: multasParaEnviar,
     };
 
+    this.isLoading = true;
+    this.successMessage = null;
+    this.errorMessage = null;
+
     console.log('Atividade Form:', this.atividadeForm.value);
 
     if (this.isEditMode && this.atividadeId) {
@@ -199,7 +203,9 @@ export class CadastroDeAtividadeComponent implements OnInit {
             this.isLoading = false;
             this.successMessage = 'Atividade atualizada com sucesso!';
             this.errorMessage = null;
-            this.router.navigate(['/usuario/atividades']);
+            this.router.navigate(['/usuario/atividades'], {
+              state: { successMessage: 'Atividade atualizada com sucesso!' },
+            });
           },
           (error) => {
             this.isLoading = false;
@@ -215,6 +221,9 @@ export class CadastroDeAtividadeComponent implements OnInit {
           this.successMessage = 'Atividade cadastrado com sucesso!';
           this.errorMessage = null;
           this.atividadeForm.reset();
+          this.router.navigate(['/usuario/atividades'], {
+            state: { successMessage: 'Atividade cadastrada com sucesso!' },
+          });
         },
         (error) => {
           this.isLoading = false;

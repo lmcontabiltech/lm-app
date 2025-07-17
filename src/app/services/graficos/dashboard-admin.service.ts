@@ -7,6 +7,8 @@ import { catchError, map } from 'rxjs/operators';
 import { GraficoFuncionariosPorSetor } from 'src/app/sistema/dashboards/dashboard-admin/funcionarios-por-setor';
 import { GraficoAtividadesPorMes } from 'src/app/sistema/dashboards/dashboard-admin/atividades-por-mes';
 import { GraficoEmpresasPorRegime } from 'src/app/sistema/dashboards/dashboard-admin/empresa-por-regime';
+import { DashboardAtividadesPorSetorResponseDTO } from 'src/app/sistema/dashboards/dashboard-admin/atividades-por-setor';
+import { Setor } from 'src/app/sistema/administrativo/cadastro-de-colaborador/setor';
 
 export interface GraficoSetor {
   concluidas: number;
@@ -146,5 +148,32 @@ export class DashboardAdminService {
         return throwError(() => new Error(errorMessage));
       })
     );
+  }
+
+  getAtividadesResumoSetor(
+    setor: Setor,
+    dataInicio: string
+  ): Observable<DashboardAtividadesPorSetorResponseDTO> {
+    const url = `${this.apiURL}/atividades/resumo`;
+    const params = {
+      setor: setor,
+      dataInicio: dataInicio,
+    };
+
+    return this.http
+      .get<DashboardAtividadesPorSetorResponseDTO>(url, { params })
+      .pipe(
+        map((response) => response),
+        catchError((error) => {
+          let errorMessage = `Erro ao buscar resumo de atividades para o setor ${setor}.`;
+          if (error.error instanceof ErrorEvent) {
+            errorMessage = `Erro: ${error.error.message}`;
+          } else if (error.status) {
+            errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+          }
+          console.error(errorMessage);
+          return throwError(() => new Error(errorMessage));
+        })
+      );
   }
 }
