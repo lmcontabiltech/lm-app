@@ -19,6 +19,7 @@ import { Escolha } from '../processos/enums/escolha';
 import { EscolhaDescricao } from '../processos/enums/escolha-descricao';
 import { MULTAS_TIPO, MultaTipo } from '../atividades/enums/multa-tipo';
 import { multaAplicada } from '../atividades/multaAplicada';
+import { ErrorMessageService } from 'src/app/services/feedback/error-message.service';
 
 @Component({
   selector: 'app-cadastro-de-atividade',
@@ -78,7 +79,8 @@ export class CadastroDeAtividadeComponent implements OnInit {
     private colaboradoresService: ColaboradoresService,
     private empresasService: EmpresasService,
     private processoService: ProcessoService,
-    private atividadeService: AtividadeService
+    private atividadeService: AtividadeService,
+    private errorMessageService: ErrorMessageService
   ) {
     this.atividadeForm = this.formBuilder.group({
       nome: ['', Validators.required],
@@ -209,8 +211,15 @@ export class CadastroDeAtividadeComponent implements OnInit {
           },
           (error) => {
             this.isLoading = false;
-            this.errorMessage =
-              error.message || 'Erro ao atualizar a atividade.';
+            console.log('Erro recebido:', error); 
+
+            const status = error?.status ?? 500;
+
+            this.errorMessage = this.errorMessageService.getErrorMessage(
+              error.status,
+              'PUT',
+              'atividade'
+            );
             this.successMessage = null;
           }
         );
