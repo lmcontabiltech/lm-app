@@ -102,6 +102,7 @@
 
 .notificacao-new {
   width: 12px;
+  min-width: 12px;
   height: 12px;
   border-radius: 50%;
   background: #429941;
@@ -147,17 +148,61 @@
   background: rgba(0, 123, 255, 0.2);
 }
 
-/* em breve */
-.container-aviso {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-  background: #f0f7fd;
-  border-radius: 8px;
-  height: 80vh;
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: #666;
 }
 
-.emBreve {
-  width: 50%;
+/* status colunas atividades kanban */
+.notificacao-descricao span.status-a-fazer {
+  background-color: #eae2f0;
+  color: #a22bc6;
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin: 0 2px;
+  display: inline-block;
+  border: 1px solid #a22bc6;
+}
+
+.notificacao-descricao span.status-em-progresso {
+  background-color: #e1ebf2;
+  color: #3498db;
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin: 0 2px;
+  display: inline-block;
+  border: 1px solid #3498db;
+}
+
+.notificacao-descricao span.status-revisao {
+  background-color: #f1ebe1;
+  color: #f39c12;
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin: 0 2px;
+  display: inline-block;
+  border: 1px solid #f39c12;
+}
+
+.notificacao-descricao span.status-concluido {
+  background-color: #dfe7e0;
+  color: #1d7206;
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin: 0 2px;
+  display: inline-block;
+  border: 1px solid #1d7206;
 }
