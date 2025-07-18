@@ -165,7 +165,7 @@
   text-transform: uppercase;
   margin: 0 2px;
   display: inline-block;
-  border: 1px solid #a22bc6;
+  border: 0.1px solid #a22bc6;
 }
 
 .notificacao-descricao span.status-em-progresso {
@@ -178,7 +178,7 @@
   text-transform: uppercase;
   margin: 0 2px;
   display: inline-block;
-  border: 1px solid #3498db;
+  border: 0.1px solid #3498db;
 }
 
 .notificacao-descricao span.status-revisao {
@@ -191,7 +191,7 @@
   text-transform: uppercase;
   margin: 0 2px;
   display: inline-block;
-  border: 1px solid #f39c12;
+  border: 0.1px solid #f39c12;
 }
 
 .notificacao-descricao span.status-concluido {
@@ -204,5 +204,5 @@
   text-transform: uppercase;
   margin: 0 2px;
   display: inline-block;
-  border: 1px solid #1d7206;
+  border: 0.1px solid #1d7206;
 }

@@ -30,7 +30,7 @@ export class NotificacoesComponent implements OnInit, OnDestroy {
   isMarkingAsRead: { [key: number]: boolean } = {};
   isMarkingAllAsRead = false;
 
-  itensPorPagina = 5;
+  itensPorPagina = 10;
   paginaAtual = 1;
   totalPaginas = Math.ceil(this.notificacoes.length / this.itensPorPagina);
 
