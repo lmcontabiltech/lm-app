@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Notificacao } from 'src/app/sistema/notificacoes/notificacao';
 import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -81,14 +81,16 @@ export class NotificacaoService {
   }
 
   marcarComoLida(notificacaoId: number): Observable<void> {
-    return this.http
-      .put<void>(`${this.apiURL}/${notificacaoId}/marcar-como-lida`, {})
-      .pipe(
-        catchError((error) => {
-          console.error('Erro ao marcar notificação como lida:', error);
-          return throwError(() => error);
-        })
-      );
+    const url = `${this.apiURL}/${notificacaoId}/marcar-como-lida`;
+
+    return this.http.put<void>(url, {}).pipe(
+      tap((response) => {
+        console.log('✅ Resposta da API:', response);
+      }),
+      catchError((error) => {
+        return throwError(() => error);
+      })
+    );
   }
 
   marcarTodasComoLidas(): Observable<number> {
