@@ -262,4 +262,62 @@ export class ColaboradoresService {
       })
     );
   }
+
+  buscarUsuariosInativosPorNome(nome: string): Observable<Usuario[]> {
+    if (!nome || nome.trim() === '') {
+      return this.getUsuariosInativos();
+    }
+
+    const url = `${this.apiURL}/inativos/search?search=${encodeURIComponent(
+      nome.trim()
+    )}`;
+
+    return this.http.get<Usuario[]>(url).pipe(
+      map((response) => {
+        return response;
+      }),
+      catchError((error) => {
+        return throwError(() => error);
+      })
+    );
+  }
+
+  filtroUsuariosInativosPorSetor(setor: string): Observable<Usuario[]> {
+    if (!setor || setor.trim() === '') {
+      return this.getUsuariosInativos();
+    }
+
+    const setoresValidos = [
+      'CONTABIL',
+      'FISCAL',
+      'PESSOAL',
+      'FINANCEIRO',
+      'PARALEGAL',
+    ];
+    const setorFormatado = setor.trim().toUpperCase();
+
+    if (!setoresValidos.includes(setorFormatado)) {
+      return throwError(
+        () =>
+          new Error(
+            `Setor inválido: ${setor}. Setores válidos: ${setoresValidos.join(
+              ', '
+            )}`
+          )
+      );
+    }
+
+    const url = `${this.apiURL}/inativos/setor/${encodeURIComponent(
+      setorFormatado
+    )}`;
+
+    return this.http.get<Usuario[]>(url).pipe(
+      map((response) => {
+        return response;
+      }),
+      catchError((error) => {
+        return throwError(() => error);
+      })
+    );
+  }
 }

@@ -86,7 +86,7 @@ export class HistoricoUsuariosInativosComponent implements OnInit {
       return;
     }
     this.isLoading = true;
-    this.colaboradoresService.buscarUsuariosPorNome(searchTerm).subscribe(
+    this.colaboradoresService.buscarUsuariosInativosPorNome(searchTerm).subscribe(
       (colaboradores: Colaborador[]) => {
         this.colaboradores = colaboradores;
         this.paginaAtual = 1;
@@ -188,12 +188,14 @@ export class HistoricoUsuariosInativosComponent implements OnInit {
   }
 
   onSetorChange() {
-    const setores = this.selectedSetor ? [this.selectedSetor] : [];
-    console.log('Setor selecionado:', setores);
     this.isLoading = true;
-    this.colaboradoresService.FiltroUsuariosBySetores(setores).subscribe(
+
+    if (!this.selectedSetor || this.selectedSetor.trim() === '') {
+      this.fetchColaboradores();
+      return;
+    }
+    this.colaboradoresService.filtroUsuariosInativosPorSetor(this.selectedSetor).subscribe(
       (usuarios) => {
-        console.log('Usuários retornados pelo backend:', usuarios);
         this.colaboradores = usuarios;
         this.paginaAtual = 1;
         this.totalPaginas = Math.ceil(
