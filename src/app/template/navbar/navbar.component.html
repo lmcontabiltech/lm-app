@@ -89,6 +89,9 @@
               [ngClass]="{ 'active-link': isActive('/usuario/notificacoes') }">
               <img src="assets/icones/notificacao.svg" alt="notificação icon" />
               <span>Notificações</span>
+              <div class="notification-badge" *ngIf="contadorNaoLidas > 0">
+                {{ contadorNaoLidas > 99 ? '99+' : contadorNaoLidas }}
+              </div>
             </a>
           </div>
         </div>

@@ -4,18 +4,21 @@ import {
   OnInit,
   ViewChild,
   Renderer2,
+  OnDestroy,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { Permissao } from 'src/app/login/permissao';
 import { AuthService } from 'src/app/services/auth.service';
 import { Usuario } from 'src/app/login/usuario';
+import { NotificacaoService } from 'src/app/services/feedback/notificacao.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
   @ViewChild('sidebar') sidebar!: ElementRef;
   @ViewChild('header') header!: ElementRef;
   @ViewChild('content') content!: ElementRef;
@@ -29,6 +32,11 @@ export class NavbarComponent implements OnInit {
   permissaoUsuario: string = '';
   fotoUsuario: string = '';
 
+  contadorNaoLidas = 0;
+  private notificacaoSubscription?: Subscription;
+  private tempoRealSubscription?: Subscription;
+  private intervalSubscription?: Subscription;
+
   // Mapeamento das permissões para suas descrições
   private permissaoDescricao: { [key: string]: string } = {
     ADMIN: 'Administrador',
@@ -39,10 +47,15 @@ export class NavbarComponent implements OnInit {
   constructor(
     private router: Router,
     private renderer: Renderer2,
-    private authService: AuthService
+    private authService: AuthService,
+    private notificacaoService: NotificacaoService
   ) {}
 
   ngOnInit(): void {
+    this.carregarPerfilUsuario();
+    this.carregarContadorNotificacoes();
+    this.conectarNotificacaoTempoReal();
+    this.iniciarAtualizacaoPeriodica();
     this.authService.obterPerfilUsuario().subscribe(
       (response: Usuario) => {
         console.log('Perfil do usuário:', response);
@@ -60,6 +73,10 @@ export class NavbarComponent implements OnInit {
     if (!this.sidebar || !this.header || !this.content) {
       console.error('Erro: Elementos da Navbar não foram encontrados');
     }
+  }
+
+  ngOnDestroy(): void {
+    this.desconectarNotificacoes();
   }
 
   toggleSidebar(): void {
@@ -135,5 +152,89 @@ export class NavbarComponent implements OnInit {
     ];
     const index = seed ? seed.charCodeAt(0) % colors.length : 0;
     return colors[index];
+  }
+
+  private carregarPerfilUsuario(): void {
+    this.authService.obterPerfilUsuario().subscribe({
+      next: (response: Usuario) => {
+        console.log('Perfil do usuário:', response);
+        this.nomeUsuario = response.nome;
+        const permissao = response.permissao;
+        this.fotoUsuario = response.fotoUrl || '';
+        this.permissaoUsuario =
+          this.permissaoDescricao[permissao] || 'Permissão desconhecida';
+      },
+      error: (err: any) => {
+        console.error('Erro ao buscar perfil do usuário', err);
+      },
+    });
+  }
+
+  private carregarContadorNotificacoes(): void {
+    this.notificacaoSubscription = this.notificacaoService
+      .getContadorNaoLidas()
+      .subscribe({
+        next: (contador) => {
+          this.contadorNaoLidas = contador;
+        },
+        error: (error) => {
+        },
+      });
+  }
+
+  private conectarNotificacaoTempoReal(): void {
+    this.tempoRealSubscription = this.notificacaoService
+      .getNotificacoesTempoReal()
+      .subscribe({
+        next: (novaNotificacao) => {
+
+          if (!novaNotificacao.lida) {
+            this.contadorNaoLidas++;
+            console.log('🔢 Contador atualizado para:', this.contadorNaoLidas);
+          }
+        },
+        error: (error) => {
+          // Reconectar após 5 segundos
+          setTimeout(() => {
+            this.conectarNotificacaoTempoReal();
+          }, 5000);
+        },
+      });
+  }
+
+  private iniciarAtualizacaoPeriodica(): void {
+    // Atualizar contador a cada 2 minutos como fallback
+    this.intervalSubscription = new Subscription();
+
+    const interval = setInterval(() => {
+      this.carregarContadorNotificacoes();
+    }, 120000); // 2 minutos
+
+    this.intervalSubscription.add(() => clearInterval(interval));
+  }
+
+  private desconectarNotificacoes(): void {
+
+    if (this.notificacaoSubscription) {
+      this.notificacaoSubscription.unsubscribe();
+    }
+
+    if (this.tempoRealSubscription) {
+      this.tempoRealSubscription.unsubscribe();
+    }
+
+    if (this.intervalSubscription) {
+      this.intervalSubscription.unsubscribe();
+    }
+  }
+
+  public atualizarContadorNotificacoes(): void {
+    this.carregarContadorNotificacoes();
+  }
+
+  public notificacaoLida(): void {
+    if (this.contadorNaoLidas > 0) {
+      this.contadorNaoLidas--;
+    }
   }
 }
