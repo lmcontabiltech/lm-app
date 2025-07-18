@@ -316,6 +316,34 @@ mat-drawer-content.shifted {
   margin-left: 90px !important;
 }
 
+.notification-badge {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #dc3545;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 500;
+  border-radius: 50%;
+  min-width: 22px;
+  width: auto;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+}
+
+.show-sidebar .notification-badge {
+  top: -8px;
+  right: -8px;
+  transform: none;
+}
+
 /* BREAKPOINTS */
 @media screen and (max-width: 899px) {
   .header {

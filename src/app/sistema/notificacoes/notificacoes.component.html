@@ -7,31 +7,35 @@
     <div class="filtro-container">
       <div class="select-container">
         <app-select-padrao
-            label="Setor"
-            [options]="setores"
-            [(selectedValue)]="selectedSetor"
-            (selectedValueChange)="onSetorChange()"
-            [showDefaultOption]="true"
-            [defaultLabel]="'Todos os setores'"
+            label="Notificação"
+            [options]="statusOptions"
+            [(selectedValue)]="filtroLidas"
+            (selectedValueChange)="onFiltroLidasChange()"
+            [showDefaultOption]="false"
+            [defaultLabel]="'Todos as notificações'"
             [defaultValue]="''">
         </app-select-padrao>
       </div>
-
-      <div class="search-container">
-        <app-search (searchChange)="onSearch($event)"></app-search>
-      </div>
     </div>
 
-    <div class="notificacao-container">
-        <div class="notificacao-item" *ngFor="let notificacao of notificacoesPaginadas" (click)="marcarComoLida(notificacao)" [class.lida]="notificacao.lida">
+    <div class="progress-bar-container" *ngIf="isLoading">
+      <div class="progress-bar"></div>
+    </div>
+
+    <div class="notificacao-container" *ngIf="!isLoading">
+        <div class="notificacao-item" *ngFor="let notificacao of notificacoesPaginadas" (click)="marcarComoLida(notificacao)" 
+             [class.lida]="notificacao.lida" [class.processing]="isNotificacaoBeingProcessed(notificacao)">
           <div class="notificacao-mensagem">
-            <div class="avatar"></div>
-            <span>{{ notificacao.usuario }}</span>
-            <p>{{ notificacao.descricao }}</p>
+            <span>{{ notificacao.titulo || 'Título não definido' }}:</span>
+            <p class="notificacao-descricao" [innerHTML]="formatarDescricaoComStatus(notificacao.descricao)"></p>
           </div>
-          <div class="notificacao-new" *ngIf="!notificacao.lida"></div>
+          <div class="notificacao-new" *ngIf="!notificacao.lida && !isNotificacaoBeingProcessed(notificacao)"></div>
         </div>
-      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="notificacoesPaginadas.length === 0">
+        <h3>Nenhuma notificação encontrada</h3>
+    </div>
     
       <div class="paginacao">
             <app-pagination
@@ -43,3 +47,5 @@
       </div>  
   </div>
 </div>
+
+<app-feedback></app-feedback>

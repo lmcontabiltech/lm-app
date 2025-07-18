@@ -87,15 +87,8 @@ export class EmpresasService {
     return this.http.put<Empresa>(url, empresa).pipe(
       map((response) => response),
       catchError((error) => {
-        let errorMessage = 'Erro ao atualizar a empresa.';
-
-        if (error.error instanceof ErrorEvent) {
-          errorMessage = `Erro: ${error.error.message}`;
-        } else if (error.status) {
-          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
-        }
-        console.error(errorMessage);
-        return throwError(() => new Error(errorMessage));
+        console.error('Erro ao atualizar a empresa:', error);
+        return throwError(() => error);
       })
     );
   }

@@ -8,6 +8,7 @@ import { ColaboradoresService } from 'src/app/services/administrativo/colaborado
 import { RegimeDaEmpresa } from '../empresas/enums/regime-da-empresa';
 import { RegimeDaEmpresaDescricao } from '../empresas/enums/regime-da-empresa-descricao';
 import { AuthService } from 'src/app/services/auth.service';
+import { ErrorMessageService } from 'src/app/services/feedback/error-message.service';
 
 @Component({
   selector: 'app-cadastro-de-empresa',
@@ -50,7 +51,8 @@ export class CadastroDeEmpresaComponent implements OnInit {
     private route: ActivatedRoute,
     private authService: AuthService,
     private router: Router,
-    private colaboradorService: ColaboradoresService
+    private colaboradorService: ColaboradoresService,
+    private errorMessageService: ErrorMessageService
   ) {
     this.empresaForm = this.formBuilder.group({
       razaoSocial: ['', Validators.required],
@@ -121,7 +123,11 @@ export class CadastroDeEmpresaComponent implements OnInit {
         },
         (error) => {
           this.isLoading = false;
-          this.errorMessage = 'Erro ao atualizar empresa.';
+          this.errorMessage = this.errorMessageService.getErrorMessage(
+            error.status,
+            'PUT',
+            'empresa'
+          );
           this.successMessage = null;
         }
       );
@@ -152,8 +158,6 @@ export class CadastroDeEmpresaComponent implements OnInit {
       this.isEditMode = true;
       this.carregarDadosEmpresa(this.empresaId);
     }
-
-
   }
 
   private carregarDadosEmpresa(empresaId: string): void {
