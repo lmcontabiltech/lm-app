@@ -96,8 +96,15 @@
 
 .notificacao-mensagem p {
   font-size: 16px;
-  color: #37383c;
+  color: #6e6e6e;
   margin: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  flex-wrap: wrap;
+  line-height: 1.2;
+  word-break: break-word;
+  white-space: normal;
 }
 
 .notificacao-new {
@@ -158,9 +165,9 @@
 .notificacao-descricao span.status-a-fazer {
   background-color: #eae2f0;
   color: #a22bc6;
-  padding: 2px 8px;
+  padding: 3px 6px;
   border-radius: 8px;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 500;
   text-transform: uppercase;
   margin: 0 2px;
@@ -171,9 +178,9 @@
 .notificacao-descricao span.status-em-progresso {
   background-color: #e1ebf2;
   color: #3498db;
-  padding: 2px 8px;
+  padding: 3px 6px;
   border-radius: 8px;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 500;
   text-transform: uppercase;
   margin: 0 2px;
@@ -184,9 +191,9 @@
 .notificacao-descricao span.status-revisao {
   background-color: #f1ebe1;
   color: #f39c12;
-  padding: 2px 8px;
+  padding: 3px 6px;
   border-radius: 8px;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 500;
   text-transform: uppercase;
   margin: 0 2px;
@@ -197,9 +204,9 @@
 .notificacao-descricao span.status-concluido {
   background-color: #dfe7e0;
   color: #1d7206;
-  padding: 2px 8px;
+  padding: 3px 6px;
   border-radius: 8px;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 500;
   text-transform: uppercase;
   margin: 0 2px;
