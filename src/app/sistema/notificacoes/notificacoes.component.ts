@@ -69,6 +69,7 @@ export class NotificacoesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.carregarNotificacoes();
     this.carregarContadorNaoLidas();
+    this.conectarNotificacoesTempoReal();
   }
 
   ngOnDestroy(): void {
@@ -288,8 +289,6 @@ export class NotificacoesComponent implements OnInit, OnDestroy {
 
   formatarDescricaoComStatus(descricao: string): SafeHtml {
     if (!descricao) return '';
-
-    console.log('🔍 Formatando descrição:', descricao);
 
     let resultado = descricao;
 
