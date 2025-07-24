@@ -1,1 +1,103 @@
-<p>historico-empresas-inativas works!</p>
+<div class="main-container">
+    <div class="header-container">
+        <h2>Histórico deEmpresas</h2>
+        <div class="btn-container">
+        </div>
+    </div>
+
+    <div class="table-container">
+        <div class="filtro-container">
+             <div class="select-container">
+                <app-select-padrao
+                  label="Regimes"
+                  [options]="regimes"
+                  [(selectedValue)]="selectedRegime"
+                  (selectedValueChange)="onRegimeChange()"
+                  [showDefaultOption]="true"
+                  [defaultLabel]="'Todos os regimes'"
+                  [defaultValue]="''">
+                </app-select-padrao>
+             </div>
+
+            <div class="search-container">
+                <app-search (searchChange)="onSearch($event)"></app-search>
+            </div>
+        </div>
+
+        <div *ngIf="successMessage" class="alert alert-success">
+            <span>{{ successMessage }}</span>
+            <button class="close-btn" (click)="clearMessage()" aria-label="Fechar">&times;</button>
+            <div class="progress-bar-sucess" [style.animation]="successMessage ? 'progressBarAnim 3s linear' : 'none'"></div>
+        </div>
+
+        <div class="progress-bar-container" *ngIf="isLoading">
+            <div class="progress-bar"></div>
+        </div>
+
+        <div [ngClass]="{'tabela-container': true, 'no-data': empresasPaginados.length === 0}">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Razão social</th>
+                        <th>CNPJ</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="empresasPaginados.length > 0">
+                    <tr *ngFor="let empresa of empresasPaginados">
+                        <td>
+                            <div class="perfil">
+                                <span>
+                                    <a (click)="visualizarEmpresa(empresa.id)" >
+                                        {{ empresa.razaoSocial }}
+                                    </a>
+                                </span>
+                            </div>
+                        </td>
+                        <td>{{ empresa.cnpj }}</td>
+                        <td>
+                            <span [class.ativo]="empresa.status === 'ATIVO'"
+                                  [class.inativo]="empresa.status === 'INATIVO'">
+                              {{ empresa.status }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="container-acoes">
+                                <button class="btn-acao edit" (click)="editarEmpresa(empresa.id)">
+                                    <img src="assets/icones/edit.svg" alt="Editar">
+                                    Editar
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div *ngIf="empresasPaginados.length === 0" class="feedback-container">
+            <ng-container *ngIf="mensagemBusca; else semEmpresas">
+                <div>
+                <div class="search alert-warning text-center">
+                    {{ mensagemBusca }}
+                </div>
+                </div>
+            </ng-container>
+            <ng-template #semEmpresas>
+                <div class="no-data-message">
+                <img src="assets/imagens/no-data.svg" alt="Sem dados">
+                <p>Não há empresas cadastradas.</p>
+                </div>
+            </ng-template>
+        </div>
+
+        <div class="paginacao">
+            <app-pagination
+            [paginaAtual]="paginaAtual"
+            [totalItens]="totalItens"
+            [itensPorPagina]="itensPorPagina"
+            (paginaMudou)="onPaginaMudou($event)">
+            </app-pagination>
+        </div>  
+    </div>
+</div>

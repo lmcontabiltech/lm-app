@@ -18,4 +18,5 @@ export class Empresa {
   identificadorPessoal!: string;
   pessoal!: { id: string; nome: string; email: string; fotoUrl: string } | null;
   atividades!: Atividade[];
+  status!: string;
 }
