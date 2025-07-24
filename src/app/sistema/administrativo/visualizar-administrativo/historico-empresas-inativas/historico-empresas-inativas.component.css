@@ -20,6 +20,26 @@
   margin: 0;
 }
 
+.back-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.back-title img {
+  width: 30px;
+  height: auto;
+  color: #1a1918;
+  margin: 0;
+  padding: 4px;
+  cursor: pointer;
+}
+
+.back-title img:hover {
+  background: #b6bddd;
+  border-radius: 50%;
+}
+
 .btn-container {
   display: flex;
   gap: 16px;

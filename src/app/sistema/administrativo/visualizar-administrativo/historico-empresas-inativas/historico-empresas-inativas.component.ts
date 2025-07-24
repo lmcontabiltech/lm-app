@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { Empresa } from '../../empresas/empresa';
 import { EmpresasService } from 'src/app/services/administrativo/empresas.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -41,6 +42,7 @@ export class HistoricoEmpresasInativasComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private location: Location,
     private empresasService: EmpresasService,
     private authService: AuthService,
     private modalService: ModalService
@@ -68,6 +70,10 @@ export class HistoricoEmpresasInativasComponent implements OnInit {
           this.permissaoUsuario = 'Desconhecido';
       }
     }
+  }
+
+  goBack() {
+    this.location.back();
   }
 
   cadastrarEmpresa(): void {
