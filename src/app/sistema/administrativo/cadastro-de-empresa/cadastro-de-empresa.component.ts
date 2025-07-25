@@ -15,6 +15,7 @@ import { Situacao } from '../empresas/enums/situacao';
 import { SituacaoDescricao } from '../empresas/enums/situacao-descricao';
 import { TipoEmpresa } from '../empresas/enums/tipo-empresa';
 import { TipoEmpresaDescricao } from '../empresas/enums/tipo-empresa-descricao';
+import { EnderecoService, Estado } from 'src/app/services/endereco.service';
 
 @Component({
   selector: 'app-cadastro-de-empresa',
@@ -62,8 +63,7 @@ export class CadastroDeEmpresaComponent implements OnInit {
 
   situacao = Object.keys(Situacao).map((key) => ({
     value: Situacao[key as keyof typeof Situacao],
-    description:
-      SituacaoDescricao[Situacao[key as keyof typeof Situacao]],
+    description: SituacaoDescricao[Situacao[key as keyof typeof Situacao]],
   }));
   selectedSituacao: string = '';
 
@@ -74,6 +74,11 @@ export class CadastroDeEmpresaComponent implements OnInit {
   }));
   selectedTipoEmpresa: string = '';
 
+  estados: { value: string; description: string }[] = [];
+  selectedEstado: string = '';
+  cidades: { value: string; description: string }[] = [];
+  selectedCidade: string = '';
+
   constructor(
     private location: Location,
     private formBuilder: FormBuilder,
@@ -82,7 +87,8 @@ export class CadastroDeEmpresaComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private colaboradorService: ColaboradoresService,
-    private errorMessageService: ErrorMessageService
+    private errorMessageService: ErrorMessageService,
+    private enderecoService: EnderecoService
   ) {
     this.empresaForm = this.formBuilder.group({
       razaoSocial: ['', Validators.required],
@@ -99,13 +105,15 @@ export class CadastroDeEmpresaComponent implements OnInit {
       controleParcelamento: [''],
       situacao: [''],
       tipo: [''],
+      estado: [''],
+      cidade: [''],
     });
   }
 
   ngOnInit(): void {
     this.verificarModoEdicao();
     this.carregarFuncionarios();
-
+    this.carregarEstadosECidades();
     const usuario = this.authService.getUsuarioAutenticado();
     if (usuario?.permissao) {
       this.permissaoUsuario = this.mapPermissao(usuario.permissao);
@@ -292,5 +300,52 @@ export class CadastroDeEmpresaComponent implements OnInit {
         },
       ];
     }
+  }
+
+  onEstadoChange(nome: string): void {
+    const cidadeControl = this.empresaForm.get('cidade');
+
+    console.log('onEstadoChange chamado com o estado:', nome);
+    this.empresaForm.get('estado')?.setValue(nome);
+
+    if (!nome) {
+      cidadeControl?.disable();
+      this.enderecoService.getTodasCidades().subscribe((cidades) => {
+        this.cidades = cidades.map((cidade) => ({
+          value: cidade.nome,
+          description: cidade.nome,
+        }));
+        this.selectedCidade = '';
+        cidadeControl?.setValue(null);
+      });
+    } else {
+      cidadeControl?.enable();
+      this.enderecoService.getCidadesByEstado(nome).subscribe((cidades) => {
+        console.log('Cidades filtradas pelo estado:', cidades);
+        this.cidades = cidades.map((cidade) => ({
+          value: cidade.nome,
+          description: cidade.nome,
+        }));
+        this.selectedCidade = '';
+        cidadeControl?.setValue(null);
+      });
+    }
+  }
+
+  onCidadeChange(nome: string): void {
+    console.log('onCidadeChange chamado com a cidade:', nome);
+    this.empresaForm.get('endereco.cidade')?.setValue(nome);
+  }
+
+  private carregarEstadosECidades(): void {
+    this.enderecoService.getEstados().subscribe((estados: Estado[]) => {
+      this.estados = estados.map((estado: Estado) => ({
+        value: estado.sigla,
+        description: estado.nome,
+      }));
+      console.log('Estados carregados:', this.estados);
+    });
+
+    this.onEstadoChange('');
   }
 }

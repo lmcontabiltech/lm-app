@@ -72,6 +72,33 @@
                     </div>
                 </div>
 
+                <div class="input-duo">
+                    <div class="form-group">
+                        <label for="estado">Estado</label>
+                        <app-select-padrao
+                          label="Selecione o estado"
+                          [options]="estados"
+                          [(selectedValue)]="selectedEstado"
+                          (selectedValueChange)="onEstadoChange($event)"
+                          formControlName="estado"
+                          [showDefaultOption]="false"
+                          [defaultLabel]="''"
+                          [defaultValue]="''">
+                        </app-select-padrao>
+                    </div>
+                    <div class="form-group">
+                        <label for="cidade">Cidade</label>
+                        <app-select-padrao
+                          label="Selecione a cidade"
+                          [options]="cidades"
+                          [(selectedValue)]="selectedCidade"
+                          (selectedValueChange)="onCidadeChange($event)"
+                          formControlName="cidade"
+                          [disabled]="empresaForm.get('cidade')?.disabled === true">
+                        </app-select-padrao>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label>Status</label>
                     <div class="radio-group">
