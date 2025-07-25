@@ -37,11 +37,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private tempoRealSubscription?: Subscription;
   private intervalSubscription?: Subscription;
 
-  // Mapeamento das permissões para suas descrições
   private permissaoDescricao: { [key: string]: string } = {
     ADMIN: 'Administrador',
     COORDENADOR: 'Coordenador',
     USER: 'Colaborador',
+    ESTAGIARIO: 'Estágiario'
   };
 
   constructor(

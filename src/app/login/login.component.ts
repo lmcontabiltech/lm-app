@@ -82,7 +82,8 @@ export class LoginComponent {
           case Permissao.COORDENADOR:
             this.router.navigate(['/usuario/dashboard-coordenador']);
             break;
-          case Permissao.USER: 
+          case Permissao.USER:
+          case Permissao.ESTAGIARIO:
             this.router.navigate(['/usuario/dashboard-colaborador']);
             break;
           default:
