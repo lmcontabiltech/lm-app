@@ -22,4 +22,6 @@ export class Empresa {
   controleParcelamento!: string;
   situacao!: string;
   tipo!: string;
+  estado!: string;
+  cidade!: string;
 }

@@ -101,7 +101,7 @@ export class CadastroDeEmpresaComponent implements OnInit {
       identificadorFinanceiro: [''],
       identificadorParalegal: [''],
       identificadorPessoal: [''],
-      status: ['ATIVO', Validators.required],
+      status: ['ATIVO'],
       controleParcelamento: [''],
       situacao: [''],
       tipo: [''],
@@ -207,12 +207,29 @@ export class CadastroDeEmpresaComponent implements OnInit {
       (empresa: Empresa) => {
         console.log('Dados da empresa recebidos:', empresa);
 
+        const estado = empresa.estado;
+        const cidade = empresa.cidade;
+
         this.empresaForm.patchValue({
           ...empresa,
         });
 
+        this.enderecoService.getCidadesByEstado(estado).subscribe((cidades) => {
+          this.cidades = cidades.map((cidade) => ({
+            value: cidade.nome,
+            description: cidade.nome,
+          }));
+          this.selectedCidade = cidade;
+          this.empresaForm.get('cidade')?.setValue(cidade);
+        });
+
         this.tratarColaboradores(empresa);
         this.selectedRegime = empresa.regimeEmpresa || '';
+        this.selectedControleParcelamento = empresa.controleParcelamento || '';
+        this.selectedSituacao = empresa.situacao || '';
+        this.selectedTipoEmpresa = empresa.tipo || '';
+        this.selectedEstado = estado;
+        this.empresaForm.get('cidade')?.enable();
       },
       (error) => {
         console.error('Erro ao carregar os dados da empresa:', error);
@@ -334,7 +351,7 @@ export class CadastroDeEmpresaComponent implements OnInit {
 
   onCidadeChange(nome: string): void {
     console.log('onCidadeChange chamado com a cidade:', nome);
-    this.empresaForm.get('endereco.cidade')?.setValue(nome);
+    this.empresaForm.get('cidade')?.setValue(nome);
   }
 
   private carregarEstadosECidades(): void {
