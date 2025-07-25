@@ -55,21 +55,21 @@
     <div class="cards-infos">
             <div class="card">
             <div class="qtd">
-                <span>12</span>
+                <span>{{ resumoAtividadesUsuario.totalAtribuidas }}</span>
                 <img src="assets/icones/dashboard/add-user.svg" alt="pessoas" />
             </div>
             <p>Tarefas atribuídas</p>
             </div>
             <div class="card">
             <div class="qtd">
-                <span>12</span>
+                <span>{{ resumoAtividadesUsuario.emAndamento }}</span>
                 <img src="assets/icones/dashboard/calendario.svg" alt="predios" />
             </div>
             <p>Em progresso</p>
             </div>
             <div class="card">
             <div class="qtd">
-                <span>12</span>
+                <span>{{ resumoAtividadesUsuario.concluidas }}</span>
                 <img src="assets/icones/dashboard/check.svg" alt="pessoa" />
             </div>
             <p>Concluídas</p>
@@ -80,7 +80,7 @@
         <div id="contabil">
              <div class="title-grafico">
                 <h3>
-                    Atividades do Setor Contábil
+                    Atividades do Setor {{ nomeSetorGrafico }}
                 </h3>
                 <div class="select-container">
                     <app-select-padrao
@@ -91,16 +91,24 @@
             </div>
             <div class="duo-container">
                 <app-grafico-barra-horizontal
-                    [series]="[{ name: 'Abertas', data: [10, 25, 40] }]"
+                    [series]="[{ name: 'Abertas', data: [
+                        atividadesResumoSetor?.abertas?.noPrazo ?? 0,
+                        atividadesResumoSetor?.abertas?.emAtraso ?? 0,
+                        atividadesResumoSetor?.abertas?.comMultas ?? 0
+                    ] }]"
                     [categories]="['No prazo', 'Em atraso', 'Com multas']"
                     [colors]="['#FEB019']"
                     title="Abertas">
                 </app-grafico-barra-horizontal>
                 <app-grafico-barra-horizontal
-                    [series]="[{ name: 'Concluidas', data: [18, 20, 10] }]"
+                    [series]="[{ name: 'Concluídas', data: [
+                        atividadesResumoSetor?.concluidas?.noPrazo ?? 0,
+                        atividadesResumoSetor?.concluidas?.emAtraso ?? 0,
+                        atividadesResumoSetor?.concluidas?.comMultas ?? 0
+                    ] }]"
                     [categories]="['No prazo', 'Em atraso', 'Com multas']"
                     [colors]="['#1fde82']"
-                    title="Concluidas">
+                    title="Concluídas">
                 </app-grafico-barra-horizontal>
             </div>
         </div>
