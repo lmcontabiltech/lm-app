@@ -45,6 +45,9 @@ export class DashboardCoordenadorComponent implements OnInit {
           case 'ROLE_USER':
             this.permissaoUsuario = 'Colaborador';
             break;
+          case 'ROLE_ESTAGIARIO':
+            this.permissaoUsuario = 'Estágiario';
+            break;
           default:
             this.permissaoUsuario = 'Desconhecido';
         }
