@@ -129,4 +129,54 @@ export class EmpresasService {
       })
     );
   }
+
+  getEmpresasInativas(): Observable<Empresa[]> {
+    const url = `${this.apiURL}/inativas`;
+    return this.http.get<Empresa[]>(url).pipe(
+      catchError((error) => {
+        let errorMessage = 'Erro ao buscar empresas inativas.';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
+  getEmpresasInativasPorRegime(regime: string): Observable<Empresa[]> {
+    const url = `${this.apiURL}/inativas/regime/${regime}`;
+    return this.http.get<Empresa[]>(url).pipe(
+      catchError((error) => {
+        let errorMessage = 'Erro ao buscar empresas inativas pelo regime.';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
+  buscarEmpresasInativasPorNome(razaoSocial: string): Observable<Empresa[]> {
+    const url = `${this.apiURL}/inativas/search?search=${encodeURIComponent(
+      razaoSocial
+    )}`;
+    return this.http.get<Empresa[]>(url).pipe(
+      catchError((error) => {
+        let errorMessage = 'Erro ao buscar empresas inativas por razão social.';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
 }

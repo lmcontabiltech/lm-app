@@ -10,7 +10,7 @@ import { Prioridade } from './enums/prioridade';
 import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
 import { AtividadeService } from 'src/app/services/gerenciamento/atividade.service';
 import { ModalAtividadeService } from 'src/app/services/modal/modalAtividade.service';
-import { ModalService } from 'src/app/services/modal/modalDeletar.service';
+import { ModalDeleteService } from 'src/app/services/modal/modalDeletar.service';
 import { EmpresasService } from 'src/app/services/administrativo/empresas.service';
 import { AutoCompleteOption } from 'src/app/shared/select-auto-complete/select-auto-complete.component';
 import { FeedbackComponent } from 'src/app/shared/feedback/feedback.component';
@@ -62,7 +62,7 @@ export class AtividadesComponent implements OnInit, AfterViewInit {
     private router: Router,
     private atividadeService: AtividadeService,
     private modalAtividadeService: ModalAtividadeService,
-    private modalDeleteService: ModalService,
+    private modalDeleteService: ModalDeleteService,
     private empresasService: EmpresasService
   ) {}
 

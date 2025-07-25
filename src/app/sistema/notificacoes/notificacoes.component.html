@@ -16,6 +16,10 @@
             [defaultValue]="''">
         </app-select-padrao>
       </div>
+
+      <div class="btn-container">
+          <button class="btn btn-secondary" (click)="openModalConfirmacao()">Marcar todas como lidas</button>
+      </div>
     </div>
 
     <div class="progress-bar-container" *ngIf="isLoading">

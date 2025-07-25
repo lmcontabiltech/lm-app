@@ -11,23 +11,23 @@
             <form (ngSubmit)="onSubmit()" [formGroup]="empresaForm">
                 <div class="form-group">
                     <label for="razaoSocial">Razão social</label>
-                    <input type="text" id="razaoSocial" name="razaoSocial" formControlName="razaoSocial" class="form-control" placeholder="Digite" required>
+                    <input type="text" id="razaoSocial" name="razaoSocial" formControlName="razaoSocial" class="form-control" placeholder="Digite a razão social da empresa" required>
                 </div>
 
                 <div class="form-group">
                     <label for="cnpj">CNPJ</label>
-                    <input type="text" id="cnpj" name="cnpj" formControlName="cnpj" class="form-control" placeholder="Digite" mask="00.000.000/0000-00" [dropSpecialCharacters]="false" required>
+                    <input type="text" id="cnpj" name="cnpj" formControlName="cnpj" class="form-control" placeholder="00.000.000/0000-00" mask="00.000.000/0000-00" [dropSpecialCharacters]="false" required>
                 </div>
 
                 <div class="input-duo">
                     <div class="form-group">
                         <label for="codEmpresa">Código da empresa no Questor</label>
-                        <input type="text" id="codEmpresa" name="codEmpresa" formControlName="codQuestor" class="form-control" placeholder="Digite" required>
+                        <input type="text" id="codEmpresa" name="codEmpresa" formControlName="codQuestor" class="form-control" placeholder="Digite o código do questor" required>
                     </div>
         
                     <div class="form-group">
                         <label for="codEmpDominio">Código da empresa no Domínio</label>
-                        <input type="text" id="codEmpDominio" name="codEmpDominio" formControlName="codEmpDominio" class="form-control" placeholder="Digite" required>
+                        <input type="text" id="codEmpDominio" name="codEmpDominio" formControlName="codEmpDominio" class="form-control" placeholder="Digite o código do domínio" required>
                     </div>
                 </div>
 
@@ -39,6 +39,78 @@
                     [(selectedValue)]="selectedRegime"
                     formControlName="regimeEmpresa">
                     </app-select-padrao>
+                </div>
+
+                <div class="form-group">
+                    <label for="controleParcelamento">Controle de Parcelamento</label>
+                    <app-select-padrao
+                    label="Selecionar controle de parcelamento"
+                    [options]="controleParcelamento"
+                    [(selectedValue)]="selectedControleParcelamento"
+                    formControlName="controleParcelamento">
+                    </app-select-padrao>
+                </div>
+
+                <div class="input-duo">
+                    <div class="form-group">
+                        <label for="tipo">Tipo da empresa</label>
+                        <app-select-padrao
+                        label="Selecionar tipo da empresa"
+                        [options]="tipoEmpresa"
+                        [(selectedValue)]="selectedTipoEmpresa"
+                        formControlName="tipo">
+                        </app-select-padrao>
+                    </div>
+                    <div class="form-group">
+                        <label for="situacao">Situação da empresa</label>
+                        <app-select-padrao
+                        label="Selecionar situação da empresa"
+                        [options]="situacao"
+                        [(selectedValue)]="selectedSituacao"
+                        formControlName="situacao">
+                        </app-select-padrao>
+                    </div>
+                </div>
+
+                <div class="input-duo">
+                    <div class="form-group">
+                        <label for="estado">Estado</label>
+                        <app-select-padrao
+                          label="Selecione o estado"
+                          [options]="estados"
+                          [(selectedValue)]="selectedEstado"
+                          (selectedValueChange)="onEstadoChange($event)"
+                          formControlName="estado"
+                          [showDefaultOption]="false"
+                          [defaultLabel]="''"
+                          [defaultValue]="''">
+                        </app-select-padrao>
+                    </div>
+                    <div class="form-group">
+                        <label for="cidade">Cidade</label>
+                        <app-select-padrao
+                          label="Selecione a cidade"
+                          [options]="cidades"
+                          [(selectedValue)]="selectedCidade"
+                          (selectedValueChange)="onCidadeChange($event)"
+                          formControlName="cidade"
+                          [disabled]="empresaForm.get('cidade')?.disabled === true">
+                        </app-select-padrao>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Status</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="ativo" name="status" value="ATIVO" formControlName="status" checked>
+                            <label for="ativo">Ativo</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="inativo" name="status" value="INATIVO" formControlName="status">
+                            <label for="inativo">Inativo</label>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="divisao">

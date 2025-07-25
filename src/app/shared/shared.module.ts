@@ -22,6 +22,7 @@ import { GraficoLinhaComponent } from './graficos/grafico-linha/grafico-linha.co
 import { GraficoBarraVerticalComponent } from './graficos/grafico-barra-vertical/grafico-barra-vertical.component';
 import { GraficoRosquinhaComponent } from './graficos/grafico-rosquinha/grafico-rosquinha.component';
 import { FeedbackComponent } from './feedback/feedback.component';
+import { ModalPadraoComponent } from './modal-padrao/modal-padrao.component';
 
 export function playerFactory() {
   return player;
@@ -48,6 +49,7 @@ export function playerFactory() {
     GraficoBarraVerticalComponent,
     GraficoRosquinhaComponent,
     FeedbackComponent,
+    ModalPadraoComponent,
   ],
   imports: [
     CommonModule,
@@ -74,6 +76,7 @@ export function playerFactory() {
     GraficoBarraVerticalComponent,
     GraficoRosquinhaComponent,
     FeedbackComponent,
+    ModalPadraoComponent,
   ],
 })
 export class SharedModule {}

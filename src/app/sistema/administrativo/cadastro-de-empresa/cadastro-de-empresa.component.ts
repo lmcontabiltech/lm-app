@@ -9,6 +9,13 @@ import { RegimeDaEmpresa } from '../empresas/enums/regime-da-empresa';
 import { RegimeDaEmpresaDescricao } from '../empresas/enums/regime-da-empresa-descricao';
 import { AuthService } from 'src/app/services/auth.service';
 import { ErrorMessageService } from 'src/app/services/feedback/error-message.service';
+import { ControleDeParcelamento } from '../empresas/enums/controle-de-parcelamento';
+import { ControleDeParcelamentoDescricao } from '../empresas/enums/controle-de-parcelamento-descricao';
+import { Situacao } from '../empresas/enums/situacao';
+import { SituacaoDescricao } from '../empresas/enums/situacao-descricao';
+import { TipoEmpresa } from '../empresas/enums/tipo-empresa';
+import { TipoEmpresaDescricao } from '../empresas/enums/tipo-empresa-descricao';
+import { EnderecoService, Estado } from 'src/app/services/endereco.service';
 
 @Component({
   selector: 'app-cadastro-de-empresa',
@@ -23,6 +30,8 @@ export class CadastroDeEmpresaComponent implements OnInit {
   permissaoUsuario: string = '';
   isEditMode = false;
   empresaId: string | null = null;
+  status: string = 'ATIVO';
+
   funcionariosFiscal: { value: string; description: string }[] = [];
   selectedFiscal: string = '';
   funcionariosFinanceiro: { value: string; description: string }[] = [];
@@ -41,8 +50,34 @@ export class CadastroDeEmpresaComponent implements OnInit {
         RegimeDaEmpresa[key as keyof typeof RegimeDaEmpresa]
       ],
   }));
-
   selectedRegime: string = '';
+
+  controleParcelamento = Object.keys(ControleDeParcelamento).map((key) => ({
+    value: ControleDeParcelamento[key as keyof typeof ControleDeParcelamento],
+    description:
+      ControleDeParcelamentoDescricao[
+        ControleDeParcelamento[key as keyof typeof ControleDeParcelamento]
+      ],
+  }));
+  selectedControleParcelamento: string = '';
+
+  situacao = Object.keys(Situacao).map((key) => ({
+    value: Situacao[key as keyof typeof Situacao],
+    description: SituacaoDescricao[Situacao[key as keyof typeof Situacao]],
+  }));
+  selectedSituacao: string = '';
+
+  tipoEmpresa = Object.keys(TipoEmpresa).map((key) => ({
+    value: TipoEmpresa[key as keyof typeof TipoEmpresa],
+    description:
+      TipoEmpresaDescricao[TipoEmpresa[key as keyof typeof TipoEmpresa]],
+  }));
+  selectedTipoEmpresa: string = '';
+
+  estados: { value: string; description: string }[] = [];
+  selectedEstado: string = '';
+  cidades: { value: string; description: string }[] = [];
+  selectedCidade: string = '';
 
   constructor(
     private location: Location,
@@ -52,7 +87,8 @@ export class CadastroDeEmpresaComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private colaboradorService: ColaboradoresService,
-    private errorMessageService: ErrorMessageService
+    private errorMessageService: ErrorMessageService,
+    private enderecoService: EnderecoService
   ) {
     this.empresaForm = this.formBuilder.group({
       razaoSocial: ['', Validators.required],
@@ -65,13 +101,19 @@ export class CadastroDeEmpresaComponent implements OnInit {
       identificadorFinanceiro: [''],
       identificadorParalegal: [''],
       identificadorPessoal: [''],
+      status: ['ATIVO'],
+      controleParcelamento: [''],
+      situacao: [''],
+      tipo: [''],
+      estado: [''],
+      cidade: [''],
     });
   }
 
   ngOnInit(): void {
     this.verificarModoEdicao();
     this.carregarFuncionarios();
-
+    this.carregarEstadosECidades();
     const usuario = this.authService.getUsuarioAutenticado();
     if (usuario?.permissao) {
       this.permissaoUsuario = this.mapPermissao(usuario.permissao);
@@ -165,12 +207,29 @@ export class CadastroDeEmpresaComponent implements OnInit {
       (empresa: Empresa) => {
         console.log('Dados da empresa recebidos:', empresa);
 
+        const estado = empresa.estado;
+        const cidade = empresa.cidade;
+
         this.empresaForm.patchValue({
           ...empresa,
         });
 
+        this.enderecoService.getCidadesByEstado(estado).subscribe((cidades) => {
+          this.cidades = cidades.map((cidade) => ({
+            value: cidade.nome,
+            description: cidade.nome,
+          }));
+          this.selectedCidade = cidade;
+          this.empresaForm.get('cidade')?.setValue(cidade);
+        });
+
         this.tratarColaboradores(empresa);
         this.selectedRegime = empresa.regimeEmpresa || '';
+        this.selectedControleParcelamento = empresa.controleParcelamento || '';
+        this.selectedSituacao = empresa.situacao || '';
+        this.selectedTipoEmpresa = empresa.tipo || '';
+        this.selectedEstado = estado;
+        this.empresaForm.get('cidade')?.enable();
       },
       (error) => {
         console.error('Erro ao carregar os dados da empresa:', error);
@@ -258,5 +317,52 @@ export class CadastroDeEmpresaComponent implements OnInit {
         },
       ];
     }
+  }
+
+  onEstadoChange(nome: string): void {
+    const cidadeControl = this.empresaForm.get('cidade');
+
+    console.log('onEstadoChange chamado com o estado:', nome);
+    this.empresaForm.get('estado')?.setValue(nome);
+
+    if (!nome) {
+      cidadeControl?.disable();
+      this.enderecoService.getTodasCidades().subscribe((cidades) => {
+        this.cidades = cidades.map((cidade) => ({
+          value: cidade.nome,
+          description: cidade.nome,
+        }));
+        this.selectedCidade = '';
+        cidadeControl?.setValue(null);
+      });
+    } else {
+      cidadeControl?.enable();
+      this.enderecoService.getCidadesByEstado(nome).subscribe((cidades) => {
+        console.log('Cidades filtradas pelo estado:', cidades);
+        this.cidades = cidades.map((cidade) => ({
+          value: cidade.nome,
+          description: cidade.nome,
+        }));
+        this.selectedCidade = '';
+        cidadeControl?.setValue(null);
+      });
+    }
+  }
+
+  onCidadeChange(nome: string): void {
+    console.log('onCidadeChange chamado com a cidade:', nome);
+    this.empresaForm.get('cidade')?.setValue(nome);
+  }
+
+  private carregarEstadosECidades(): void {
+    this.enderecoService.getEstados().subscribe((estados: Estado[]) => {
+      this.estados = estados.map((estado: Estado) => ({
+        value: estado.sigla,
+        description: estado.nome,
+      }));
+      console.log('Estados carregados:', this.estados);
+    });
+
+    this.onEstadoChange('');
   }
 }

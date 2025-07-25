@@ -5,6 +5,9 @@ import { EmpresasService } from 'src/app/services/administrativo/empresas.servic
 import { Empresa } from '../../empresas/empresa';
 import { Setor } from '../../cadastro-de-colaborador/setor';
 import { RegimeDaEmpresaDescricao } from '../../empresas/enums/regime-da-empresa-descricao';
+import { ControleDeParcelamentoDescricao } from '../../empresas/enums/controle-de-parcelamento-descricao';
+import { TipoEmpresaDescricao } from '../../empresas/enums/tipo-empresa-descricao';
+import { SituacaoDescricao } from '../../empresas/enums/situacao-descricao';
 
 @Component({
   selector: 'app-detalhes-empresa',
@@ -74,6 +77,27 @@ export class DetalhesEmpresaComponent implements OnInit {
 
     const regimeKey = regime as keyof typeof RegimeDaEmpresaDescricao;
     return RegimeDaEmpresaDescricao[regimeKey] || regime;
+  }
+
+  getControleParcelamentoDescricao(controle?: string): string {
+    if (!controle) return '-';
+
+    const controleKey = controle as keyof typeof ControleDeParcelamentoDescricao;
+    return ControleDeParcelamentoDescricao[controleKey] || controle;
+  }
+
+  getTipoEmpresaDescricao(tipo?: string): string {
+    if (!tipo) return '-';
+
+    const tipoKey = tipo as keyof typeof TipoEmpresaDescricao;
+    return TipoEmpresaDescricao[tipoKey] || tipo;
+  }
+
+  getSituacaoDescricao(situacao?: string): string {
+    if (!situacao) return '-';
+
+    const situacaoKey = situacao as keyof typeof SituacaoDescricao;
+    return SituacaoDescricao[situacaoKey] || situacao;
   }
 
   extrairColaboradores(): void {

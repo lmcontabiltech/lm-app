@@ -7,6 +7,9 @@ import {
   GraficoSetor,
 } from 'src/app/services/graficos/dashboard-admin.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { DashboardColaboradorService } from 'src/app/services/graficos/dashboard-colaborador.service';
+import { DashboardAtividadesPorSetorResponseDTO } from '../dashboard-admin/atividades-por-setor';
+import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
 
 @Component({
   selector: 'app-dashboard-colaborador',
@@ -18,15 +21,18 @@ export class DashboardColaboradorComponent implements OnInit {
   cotacoes: any = {};
   selic: string = '';
   permissaoUsuario: string = '';
+  nomeSetorGrafico: string = '';
 
   setorUsuario = {
     nome: '',
     key: '',
     porcentagem: 0,
-    icone: ''
+    icone: '',
   };
 
-  private setoresMap: { [key: string]: { nome: string; key: string; icone: string } } = {
+  private setoresMap: {
+    [key: string]: { nome: string; key: string; icone: string };
+  } = {
     CONTABIL: { nome: 'Contábil', key: 'contabil', icone: 'calculator.svg' },
     FISCAL: { nome: 'Fiscal', key: 'fiscal', icone: 'coin.svg' },
     PESSOAL: { nome: 'Pessoal', key: 'pessoal', icone: 'duo.svg' },
@@ -34,16 +40,26 @@ export class DashboardColaboradorComponent implements OnInit {
     FINANCEIRO: { nome: 'Financeiro', key: 'financeiro', icone: 'money.svg' },
   };
 
+  resumoAtividadesUsuario = {
+    concluidas: 0,
+    emAndamento: 0,
+    totalAtribuidas: 0,
+  };
+
+  atividadesResumoSetor?: DashboardAtividadesPorSetorResponseDTO;
+
   constructor(
     private exchangeService: ExchangeService,
     private colaboradorService: ColaboradoresService,
     private dashboardAdminService: DashboardAdminService,
-    private authService: AuthService
+    private authService: AuthService,
+    private dashboardColaboradorService: DashboardColaboradorService
   ) {}
 
   ngOnInit(): void {
     this.loadTaxas();
     this.carregarPerfilUsuario();
+    this.carregarResumoAtividadesUsuario();
   }
 
   loadTaxas(): void {
@@ -92,7 +108,9 @@ export class DashboardColaboradorComponent implements OnInit {
             porcentagem: 0,
           };
 
+          this.nomeSetorGrafico = this.setoresMap[usuario.setor].nome;
           this.carregarProgressoSetor(usuario.setor);
+          this.carregarResumoSetor(usuario.setor);
         }
       },
       error: (error) => {
@@ -116,5 +134,37 @@ export class DashboardColaboradorComponent implements OnInit {
           this.setorUsuario.porcentagem = 0;
         },
       });
+  }
+
+  carregarResumoAtividadesUsuario(): void {
+    this.dashboardColaboradorService.getResumoAtividadesUsuario().subscribe({
+      next: (resumo) => {
+        this.resumoAtividadesUsuario = resumo;
+      },
+      error: (err) => {
+        console.error('Erro ao buscar resumo das atividades do usuário:', err);
+      },
+    });
+  }
+
+  carregarResumoSetor(setor: Setor): void {
+    const dataInicio = this.getDataInicioUltimos7Dias();
+    this.dashboardColaboradorService
+      .getAtividadesResumoSetor(setor, dataInicio)
+      .subscribe({
+        next: (resumo) => {
+          this.atividadesResumoSetor = resumo;
+        },
+        error: (err) => {
+          console.error('Erro ao buscar resumo de atividades do setor:', err);
+        },
+      });
+  }
+
+  // Função utilitária para pegar a data de 7 dias atrás
+  getDataInicioUltimos7Dias(): string {
+    const hoje = new Date();
+    hoje.setDate(hoje.getDate() - 7);
+    return hoje.toISOString().split('T')[0];
   }
 }

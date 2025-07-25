@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Empresa } from './empresa';
 import { EmpresasService } from '../../../services/administrativo/empresas.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { ModalService } from 'src/app/services/modal/modalDeletar.service';
+import { ModalDeleteService } from 'src/app/services/modal/modalDeletar.service';
 import { RegimeDaEmpresa } from './enums/regime-da-empresa';
 import { RegimeDaEmpresaDescricao } from './enums/regime-da-empresa-descricao';
 
@@ -43,7 +43,7 @@ export class EmpresasComponent implements OnInit {
     private router: Router,
     private empresasService: EmpresasService,
     private authService: AuthService,
-    private modalService: ModalService
+    private modalDeleteService: ModalDeleteService
   ) {}
 
   ngOnInit(): void {
@@ -182,7 +182,7 @@ export class EmpresasComponent implements OnInit {
   openModalDeletar(empresa: any): void {
     this.selectedEmpresa = empresa;
 
-    this.modalService.openModal(
+    this.modalDeleteService.openModal(
       {
         title: 'Remoção de Empresa',
         description: `Tem certeza que deseja excluir a empresa <strong>${empresa.razaoSocial}</strong> cadastrada?`,

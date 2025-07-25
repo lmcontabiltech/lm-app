@@ -1,24 +1,24 @@
 import { Injectable, ComponentRef, ViewContainerRef } from '@angular/core';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { ModalDeleteComponent } from '../../shared/modal-delete/modal-delete.component';
+import { ModalPadraoComponent } from '../../shared/modal-padrao/modal-padrao.component';
 
 @Injectable({ providedIn: 'root' })
-export class ModalDeleteService {
+export class ModalPadraoService {
   private outlet!: ViewContainerRef;
-  private modalRef!: ComponentRef<ModalDeleteComponent>;
+  private modalRef!: ComponentRef<ModalPadraoComponent>;
 
   registerOutlet(outlet: ViewContainerRef): void {
     this.outlet = outlet;
   }
 
   openModal(
-    config?: Partial<ModalDeleteComponent>,
-    onConfirmDelete?: () => void
+    config?: Partial<ModalPadraoComponent>,
+    onConfirmAcao?: () => void
   ): void {
     if (!this.outlet) throw new Error('Outlet não registrado!');
     this.outlet.clear();
 
-    this.modalRef = this.outlet.createComponent(ModalDeleteComponent);
+    this.modalRef = this.outlet.createComponent(ModalPadraoComponent);
 
     if (config) {
       Object.assign(this.modalRef.instance, config);
@@ -28,8 +28,8 @@ export class ModalDeleteService {
       this.closeModal();
     });
 
-    this.modalRef.instance.confirmDelete.subscribe(() => {
-      if (onConfirmDelete) onConfirmDelete();
+    this.modalRef.instance.confirmAcao.subscribe(() => {
+      if (onConfirmAcao) onConfirmAcao();
       this.closeModal();
     });
   }
