@@ -12,6 +12,7 @@ import { NotificacaoService } from 'src/app/services/feedback/notificacao.servic
 import { FeedbackComponent } from 'src/app/shared/feedback/feedback.component';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
+import { ModalPadraoService } from 'src/app/services/modal/modalConfirmacao.service';
 
 @Component({
   selector: 'app-notificacoes',
@@ -39,6 +40,7 @@ export class NotificacoesComponent implements OnInit, OnDestroy {
   filtroLidas: string = 'todas';
 
   contadorNaoLidas = 0;
+  selectedNotificacao: any = null;
 
   // SSE Subscription
   private sseSubscription?: Subscription;
@@ -63,7 +65,8 @@ export class NotificacoesComponent implements OnInit, OnDestroy {
 
   constructor(
     private notificacaoService: NotificacaoService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private modalPadraoService: ModalPadraoService
   ) {}
 
   ngOnInit(): void {
@@ -139,14 +142,6 @@ export class NotificacoesComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (
-      !confirm(
-        `Deseja marcar todas as ${this.contadorNaoLidas} notificações não lidas como lidas?`
-      )
-    ) {
-      return;
-    }
-
     this.isMarkingAllAsRead = true;
 
     this.notificacaoService.marcarTodasComoLidas().subscribe({
@@ -188,6 +183,20 @@ export class NotificacoesComponent implements OnInit, OnDestroy {
         this.isMarkingAllAsRead = false;
       },
     });
+  }
+
+  openModalConfirmacao(): void {
+    this.modalPadraoService.openModal(
+      {
+        title: 'Marca as notificações',
+        description: `Tem certeza que deseja marcar todas as notificações como lidas?`,
+        confirmTextoBotao: 'Confirmar',
+        size: 'md',
+      },
+      () => {
+        this.marcarTodasComoLidas();
+      }
+    );
   }
 
   atualizarPaginacao(): void {
