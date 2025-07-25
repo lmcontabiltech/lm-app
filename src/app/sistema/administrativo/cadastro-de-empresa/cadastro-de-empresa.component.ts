@@ -9,6 +9,12 @@ import { RegimeDaEmpresa } from '../empresas/enums/regime-da-empresa';
 import { RegimeDaEmpresaDescricao } from '../empresas/enums/regime-da-empresa-descricao';
 import { AuthService } from 'src/app/services/auth.service';
 import { ErrorMessageService } from 'src/app/services/feedback/error-message.service';
+import { ControleDeParcelamento } from '../empresas/enums/controle-de-parcelamento';
+import { ControleDeParcelamentoDescricao } from '../empresas/enums/controle-de-parcelamento-descricao';
+import { Situacao } from '../empresas/enums/situacao';
+import { SituacaoDescricao } from '../empresas/enums/situacao-descricao';
+import { TipoEmpresa } from '../empresas/enums/tipo-empresa';
+import { TipoEmpresaDescricao } from '../empresas/enums/tipo-empresa-descricao';
 
 @Component({
   selector: 'app-cadastro-de-empresa',
@@ -23,6 +29,8 @@ export class CadastroDeEmpresaComponent implements OnInit {
   permissaoUsuario: string = '';
   isEditMode = false;
   empresaId: string | null = null;
+  status: string = 'ATIVO';
+
   funcionariosFiscal: { value: string; description: string }[] = [];
   selectedFiscal: string = '';
   funcionariosFinanceiro: { value: string; description: string }[] = [];
@@ -41,8 +49,30 @@ export class CadastroDeEmpresaComponent implements OnInit {
         RegimeDaEmpresa[key as keyof typeof RegimeDaEmpresa]
       ],
   }));
-
   selectedRegime: string = '';
+
+  controleParcelamento = Object.keys(ControleDeParcelamento).map((key) => ({
+    value: ControleDeParcelamento[key as keyof typeof ControleDeParcelamento],
+    description:
+      ControleDeParcelamentoDescricao[
+        ControleDeParcelamento[key as keyof typeof ControleDeParcelamento]
+      ],
+  }));
+  selectedControleParcelamento: string = '';
+
+  situacao = Object.keys(Situacao).map((key) => ({
+    value: Situacao[key as keyof typeof Situacao],
+    description:
+      SituacaoDescricao[Situacao[key as keyof typeof Situacao]],
+  }));
+  selectedSituacao: string = '';
+
+  tipoEmpresa = Object.keys(TipoEmpresa).map((key) => ({
+    value: TipoEmpresa[key as keyof typeof TipoEmpresa],
+    description:
+      TipoEmpresaDescricao[TipoEmpresa[key as keyof typeof TipoEmpresa]],
+  }));
+  selectedTipoEmpresa: string = '';
 
   constructor(
     private location: Location,
@@ -65,6 +95,10 @@ export class CadastroDeEmpresaComponent implements OnInit {
       identificadorFinanceiro: [''],
       identificadorParalegal: [''],
       identificadorPessoal: [''],
+      status: ['ATIVO', Validators.required],
+      controleParcelamento: [''],
+      situacao: [''],
+      tipo: [''],
     });
   }
 

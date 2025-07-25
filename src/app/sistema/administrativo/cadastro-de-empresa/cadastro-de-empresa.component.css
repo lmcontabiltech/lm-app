@@ -99,6 +99,25 @@ form {
   color: var(--lm-text);
 }
 
+/* radio btn */
+.radio-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.radio-group input[type="radio"] {
+  width: 24px;
+  height: 24px;
+  background: var(--form-background);
+}
+
+.radio-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 /* Breakpoints */
 @media (min-width: 1200px) {
   .main-container {

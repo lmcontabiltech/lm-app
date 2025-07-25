@@ -41,6 +41,51 @@
                     </app-select-padrao>
                 </div>
 
+                <div class="form-group">
+                    <label for="controleParcelamento">Controle de Parcelamento</label>
+                    <app-select-padrao
+                    label="Selecionar controle de parcelamento"
+                    [options]="controleParcelamento"
+                    [(selectedValue)]="selectedControleParcelamento"
+                    formControlName="controleParcelamento">
+                    </app-select-padrao>
+                </div>
+
+                <div class="input-duo">
+                    <div class="form-group">
+                        <label for="tipo">Tipo da empresa</label>
+                        <app-select-padrao
+                        label="Selecionar tipo da empresa"
+                        [options]="tipoEmpresa"
+                        [(selectedValue)]="selectedTipoEmpresa"
+                        formControlName="tipo">
+                        </app-select-padrao>
+                    </div>
+                    <div class="form-group">
+                        <label for="situacao">Situação da empresa</label>
+                        <app-select-padrao
+                        label="Selecionar situação da empresa"
+                        [options]="situacao"
+                        [(selectedValue)]="selectedSituacao"
+                        formControlName="situacao">
+                        </app-select-padrao>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Status</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="ativo" name="status" value="ATIVO" formControlName="status" checked>
+                            <label for="ativo">Ativo</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="inativo" name="status" value="INATIVO" formControlName="status">
+                            <label for="inativo">Inativo</label>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="divisao">
                     <p>Funcionários responsáveis</p>
                     <hr class="line">
