@@ -128,6 +128,8 @@ export class CadastroDeEmpresaComponent implements OnInit {
         return 'Coordenador';
       case 'ROLE_USER':
         return 'Colaborador';
+      case 'ROLE_ESTAGIARIO':
+        return 'Estágiario';
       default:
         return 'Desconhecido';
     }
