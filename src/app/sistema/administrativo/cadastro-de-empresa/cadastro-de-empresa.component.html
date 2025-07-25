@@ -11,23 +11,23 @@
             <form (ngSubmit)="onSubmit()" [formGroup]="empresaForm">
                 <div class="form-group">
                     <label for="razaoSocial">Razão social</label>
-                    <input type="text" id="razaoSocial" name="razaoSocial" formControlName="razaoSocial" class="form-control" placeholder="Digite" required>
+                    <input type="text" id="razaoSocial" name="razaoSocial" formControlName="razaoSocial" class="form-control" placeholder="Digite a razão social da empresa" required>
                 </div>
 
                 <div class="form-group">
                     <label for="cnpj">CNPJ</label>
-                    <input type="text" id="cnpj" name="cnpj" formControlName="cnpj" class="form-control" placeholder="Digite" mask="00.000.000/0000-00" [dropSpecialCharacters]="false" required>
+                    <input type="text" id="cnpj" name="cnpj" formControlName="cnpj" class="form-control" placeholder="00.000.000/0000-00" mask="00.000.000/0000-00" [dropSpecialCharacters]="false" required>
                 </div>
 
                 <div class="input-duo">
                     <div class="form-group">
                         <label for="codEmpresa">Código da empresa no Questor</label>
-                        <input type="text" id="codEmpresa" name="codEmpresa" formControlName="codQuestor" class="form-control" placeholder="Digite" required>
+                        <input type="text" id="codEmpresa" name="codEmpresa" formControlName="codQuestor" class="form-control" placeholder="Digite o código do questor" required>
                     </div>
         
                     <div class="form-group">
                         <label for="codEmpDominio">Código da empresa no Domínio</label>
-                        <input type="text" id="codEmpDominio" name="codEmpDominio" formControlName="codEmpDominio" class="form-control" placeholder="Digite" required>
+                        <input type="text" id="codEmpDominio" name="codEmpDominio" formControlName="codEmpDominio" class="form-control" placeholder="Digite o código do domínio" required>
                     </div>
                 </div>
 
