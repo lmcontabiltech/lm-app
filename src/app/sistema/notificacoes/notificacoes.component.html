@@ -30,7 +30,6 @@
         <div class="notificacao-item" *ngFor="let notificacao of notificacoesPaginadas" (click)="marcarComoLida(notificacao)" 
              [class.lida]="notificacao.lida" [class.processing]="isNotificacaoBeingProcessed(notificacao)">
           <div class="notificacao-mensagem">
-            <span>{{ notificacao.titulo || 'Título não definido' }}:</span>
             <p class="notificacao-descricao" [innerHTML]="formatarDescricaoComStatus(notificacao.descricao)"></p>
           </div>
           <div class="notificacao-new" *ngIf="!notificacao.lida && !isNotificacaoBeingProcessed(notificacao)"></div>
