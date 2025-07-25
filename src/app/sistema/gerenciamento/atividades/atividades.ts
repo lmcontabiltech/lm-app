@@ -22,5 +22,5 @@ export class Atividade {
   usuarios?: { id: string; nome: string; fotoUrl: string }[];
   idsUsuario?: [];
   subtarefas!: { tarefa: string; id: number; checked: boolean }[];
-  multas?: multaAplicada[];
+  multas?: { id: number; tipo: string }[];
 }
