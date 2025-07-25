@@ -40,6 +40,9 @@ export class PerifericosComponent implements OnInit {
         case 'ROLE_USER':
           this.permissaoUsuario = 'Colaborador';
           break;
+        case 'ROLE_ESTAGIARIO':
+          this.permissaoUsuario = 'Estagiario';
+          break;
         default:
           this.permissaoUsuario = 'Desconhecido';
       }
