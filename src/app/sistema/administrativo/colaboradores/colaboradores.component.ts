@@ -63,7 +63,7 @@ export class ColaboradoresComponent implements OnInit {
       case 'ROLE_USER':
         return 'Colaborador';
       case 'ROLE_ESTAGIARIO':
-        return 'Estágiario';
+        return 'Estagiario';
       default:
         return 'Desconhecido';
     }
