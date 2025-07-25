@@ -5,7 +5,7 @@ import {
   AfterViewInit,
 } from '@angular/core';
 import { ThemeService } from './services/modo-escuro/theme.service';
-import { ModalService } from './services/modal/modalDeletar.service';
+import { ModalDeleteService } from './services/modal/modalDeletar.service';
 import { ModalAtividadeService } from './services/modal/modalAtividade.service';
 
 @Component({
@@ -21,14 +21,14 @@ export class AppComponent {
 
   constructor(
     private themeService: ThemeService,
-    private modalService: ModalService,
+    private modalDeleteService: ModalDeleteService,
     private modalAtividadeService: ModalAtividadeService
   ) {
     // O serviço será inicializado automaticamente pelo Angular
   }
 
   ngAfterViewInit(): void {
-    this.modalService.registerOutlet(this.modalOutlet);
+    this.modalDeleteService.registerOutlet(this.modalOutlet);
     this.modalAtividadeService.registerOutlet(this.modalOutlet);
   }
 }

@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Processo } from './processo';
 import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
 import { ProcessoService } from 'src/app/services/gerenciamento/processo.service';
-import { ModalService } from 'src/app/services/modal/modalDeletar.service';
+import { ModalDeleteService } from 'src/app/services/modal/modalDeletar.service';
 import { SetorDescricao } from '../../administrativo/cadastro-de-colaborador/setor-descricao';
 
 @Component({
@@ -34,7 +34,7 @@ export class ProcessosComponent implements OnInit {
   constructor(
     private router: Router,
     private processoService: ProcessoService,
-    private modalService: ModalService
+    private modaldeleteService: ModalDeleteService
   ) {}
 
   ngOnInit(): void {
@@ -114,7 +114,7 @@ export class ProcessosComponent implements OnInit {
   openModalDeletar(processo: any): void {
     this.selectedProcesso = processo;
 
-    this.modalService.openModal(
+    this.modaldeleteService.openModal(
       {
         title: 'Remoção de Processo',
         description: `Tem certeza que deseja excluir o processo <strong>${processo.nome}</strong> cadastrado?`,

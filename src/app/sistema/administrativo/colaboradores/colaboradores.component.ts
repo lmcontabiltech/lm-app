@@ -5,7 +5,7 @@ import { Setor } from '../cadastro-de-colaborador/setor';
 import { SetorDescricao } from '../cadastro-de-colaborador/setor-descricao';
 import { ColaboradoresService } from '../../../services/administrativo/colaboradores.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { ModalService } from 'src/app/services/modal/modalDeletar.service';
+import { ModalDeleteService } from 'src/app/services/modal/modalDeletar.service';
 
 @Component({
   selector: 'app-colaboradores',
@@ -40,7 +40,7 @@ export class ColaboradoresComponent implements OnInit {
     private router: Router,
     private colaboradoresService: ColaboradoresService,
     private authService: AuthService,
-    private modalService: ModalService
+    private modalDeleteService: ModalDeleteService
   ) {}
 
   ngOnInit(): void {
@@ -167,7 +167,7 @@ export class ColaboradoresComponent implements OnInit {
   openModalDeletar(colaborador: any): void {
     this.selectedColaborador = colaborador;
 
-    this.modalService.openModal(
+    this.modalDeleteService.openModal(
       {
         title: 'Remoção de Usuário',
         description: `Tem certeza que deseja excluir o(a) colaborador(a) <strong>${colaborador.nome}</strong>?`,
