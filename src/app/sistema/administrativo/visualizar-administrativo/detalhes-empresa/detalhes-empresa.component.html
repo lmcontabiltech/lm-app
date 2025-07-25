@@ -29,7 +29,33 @@
         <div class="data-grid">
             <div class="item-data">
                 <label>Regime da Empresa</label>
-                <p>{{ getRegimeDescricao(empresa.regimeEmpresa) }}</p>
+                <p>{{ getRegimeDescricao(empresa.regimeEmpresa) || '-' }}</p>
+            </div>
+        </div>
+        <div class="data-grid">
+            <div class="item-data">
+                <label>Controle do Parcelamento</label>
+                <p>{{ getControleParcelamentoDescricao(empresa.controleParcelamento) || '-' }}</p>
+            </div>
+            <div class="item-data">
+                <label>Situação da Empresa</label>
+                <p>{{ getSituacaoDescricao(empresa.situacao) || '-' }}</p>
+            </div>
+        </div>
+        <div class="data-grid">
+            <div class="item-data">
+                <label>Tipo da Empresa</label>
+                <p>{{ getTipoEmpresaDescricao(empresa.tipo) || '-' }}</p>
+            </div>
+        </div>
+        <div class="data-grid">
+            <div class="item-data">
+                <label>Estado</label>
+                <p>{{ empresa.estado || '-' }}</p>
+            </div>
+            <div class="item-data">
+                <label>Cidade</label>
+                <p>{{ empresa.cidade || '-' }}</p>
             </div>
         </div>
     </div>

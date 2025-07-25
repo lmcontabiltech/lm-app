@@ -83,6 +83,9 @@
   word-break: break-word;
   white-space: pre-line;
   max-width: 100%;
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 8px;
 }
 
 /* Divisão */
