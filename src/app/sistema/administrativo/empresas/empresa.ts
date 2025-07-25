@@ -17,6 +17,12 @@ export class Empresa {
   paralegal!: { id: string; nome: string; email: string; fotoUrl: string } | null;
   identificadorPessoal!: string;
   pessoal!: { id: string; nome: string; email: string; fotoUrl: string } | null;
+  identificadorJuridico!: string;
+  juridico!: { id: string; nome: string; email: string; fotoUrl: string } | null;
+  identificadorEstagiario!: string;
+  estagiario!: { id: string; nome: string; email: string; fotoUrl: string } | null;
+  identificadorOutros!: string;
+  outros!: { id: string; nome: string; email: string; fotoUrl: string } | null;
   atividades!: Atividade[];
   status!: string;
   controleParcelamento!: string;
