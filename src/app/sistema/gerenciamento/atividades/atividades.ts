@@ -19,8 +19,8 @@ export class Atividade {
   dateDaEntrega!: string;
   prioridade!: Prioridade;
   status?: string;
-  usuarios?: { nome: string; fotoUrl: string }[];
+  usuarios?: { id: string; nome: string; fotoUrl: string }[];
   idsUsuario?: [];
-  subtarefas!: { tarefa: string; id: number; checked: boolean }[];;
-  multas?: multaAplicada[]
+  subtarefas!: { tarefa: string; id: number; checked: boolean }[];
+  multas?: { id: number; tipo: string }[];
 }

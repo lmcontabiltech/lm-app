@@ -69,7 +69,7 @@ export class CadastroDeAtividadeComponent implements OnInit {
   processos: { value: string; description: string }[] = [];
   selectedProcesso: string = '';
   multas: { value: string; description: string }[] = [];
-  selectedMulta: multaAplicada[] = [];
+  selectedMulta: { id: string; tipo: string }[] = [];
 
   constructor(
     private location: Location,
@@ -211,7 +211,7 @@ export class CadastroDeAtividadeComponent implements OnInit {
           },
           (error) => {
             this.isLoading = false;
-            console.log('Erro recebido:', error); 
+            console.log('Erro recebido:', error);
 
             const status = error?.status ?? 500;
 
@@ -283,21 +283,31 @@ export class CadastroDeAtividadeComponent implements OnInit {
                   ? [atividade.empresa.id]
                   : [];
 
-                const idsUsuario = Array.isArray(atividade.idsUsuario)
-                  ? atividade.idsUsuario
-                  : atividade.usuarios
-                  ? atividade.usuarios.map((u: any) => u.id)
-                  : [];
-
                 this.atividadeForm.patchValue({
                   ...atividade,
                   idEmpresas,
-                  idsUsuario,
+                  idsUsuario:
+                    atividade.usuarios?.map((usuario) => ({
+                      value: usuario.id,
+                      description: usuario.nome,
+                    })) || [],
+                  multas: (atividade.multas || []).map(
+                    (multaObj: { id: number; tipo: string }) => {
+                      const multaSelect = this.multas.find(
+                        (m) => m.value === multaObj.tipo
+                      );
+                      return multaSelect
+                        ? {
+                            value: multaSelect.value,
+                            description: multaSelect.description,
+                          }
+                        : { value: multaObj.tipo, description: multaObj.tipo };
+                    }
+                  ),
                 });
 
                 // Atualize os selects múltiplos
                 this.selectedEmpresa = idEmpresas;
-                this.selectedMembro = idsUsuario;
                 this.tratarDadosAtividade(atividade);
               },
               (error) => {
@@ -350,9 +360,6 @@ export class CadastroDeAtividadeComponent implements OnInit {
     // Possui Multa
     this.selectedPossuiMulta =
       atividade.multas && atividade.multas.length > 0 ? 'Sim' : 'Não';
-    // Multa
-    this.selectedMulta = atividade.multas || [];
-    this.atividadeForm.get('multas')?.setValue(this.selectedMulta);
   }
 
   onSetorChange(setor: string) {
