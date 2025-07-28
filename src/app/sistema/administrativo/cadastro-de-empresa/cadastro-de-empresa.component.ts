@@ -200,11 +200,21 @@ export class CadastroDeEmpresaComponent implements OnInit {
         },
         (error) => {
           this.isLoading = false;
-          this.errorMessage = this.errorMessageService.getErrorMessage(
-            error.status,
-            'POST',
-            'empresa'
-          );
+          if (
+            error.status === 409 &&
+            error.error &&
+            typeof error.error.message === 'string' &&
+            error.error.message.toLowerCase().includes('cnpj')
+          ) {
+            this.errorMessage =
+              'Já existe uma empresa cadastrada com este CNPJ.';
+          } else {
+            this.errorMessage = this.errorMessageService.getErrorMessage(
+              error.status,
+              'POST',
+              'empresa'
+            );
+          }
           this.successMessage = null;
         }
       );
