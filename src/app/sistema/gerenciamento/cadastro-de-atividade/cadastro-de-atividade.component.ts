@@ -184,7 +184,7 @@ export class CadastroDeAtividadeComponent implements OnInit {
     let empresasParaEnviar: string[] = [];
 
     if (this.isEditMode) {
-      empresasParaEnviar = [this.atividadeForm.value.idEmpresas];
+      empresasParaEnviar = [this.atividadeForm.value.idEmpresa];
     } else {
       empresasParaEnviar = this.atividadeForm.value.idEmpresas;
     }
@@ -200,7 +200,8 @@ export class CadastroDeAtividadeComponent implements OnInit {
     const atividade: Atividade = {
       ...this.atividadeForm.value,
       idsUsuario: this.atividadeForm.value.idsUsuario,
-      idEmpresas: empresasParaEnviar,
+      idEmpresas: !this.isEditMode ? empresasParaEnviar : undefined,
+      idEmpresa: this.isEditMode ? empresasParaEnviar[0] : undefined,
       multas: multasParaEnviar,
     };
 
@@ -249,7 +250,13 @@ export class CadastroDeAtividadeComponent implements OnInit {
         },
         (error) => {
           this.isLoading = false;
-          this.errorMessage = error.message || 'Erro ao cadastrar a atividade.';
+          const status = error?.status ?? 500;
+
+          this.errorMessage = this.errorMessageService.getErrorMessage(
+            error.status,
+            'POST',
+            'atividade'
+          );
           this.successMessage = null;
         }
       );
