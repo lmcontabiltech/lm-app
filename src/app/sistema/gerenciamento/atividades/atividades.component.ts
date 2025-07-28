@@ -14,6 +14,7 @@ import { ModalDeleteService } from 'src/app/services/modal/modalDeletar.service'
 import { EmpresasService } from 'src/app/services/administrativo/empresas.service';
 import { AutoCompleteOption } from 'src/app/shared/select-auto-complete/select-auto-complete.component';
 import { FeedbackComponent } from 'src/app/shared/feedback/feedback.component';
+import { ErrorMessageService } from 'src/app/services/feedback/error-message.service';
 
 interface Tasks {
   [key: string]: Atividade[];
@@ -63,7 +64,8 @@ export class AtividadesComponent implements OnInit, AfterViewInit {
     private atividadeService: AtividadeService,
     private modalAtividadeService: ModalAtividadeService,
     private modalDeleteService: ModalDeleteService,
-    private empresasService: EmpresasService
+    private empresasService: EmpresasService,
+    private errorMessageService: ErrorMessageService
   ) {}
 
   ngOnInit(): void {
@@ -219,7 +221,15 @@ export class AtividadesComponent implements OnInit, AfterViewInit {
         this.showFeedback('success', 'Atividade arquivada com sucesso!');
       },
       error: (err) => {
-        this.showFeedback('error', err.message || 'Erro ao arquivar atividade.');
+        const status = err.status || 500;
+        const msg = err.error?.message
+          ? `Atividade: ${err.error.message}`
+          : this.errorMessageService.getErrorMessage(
+              status,
+              'DELETE',
+              'atividade'
+            );
+        this.showFeedback('error', msg);
       },
     });
   }
@@ -227,10 +237,10 @@ export class AtividadesComponent implements OnInit, AfterViewInit {
   abrirModalConfirmacaoDeletar(atividade: Atividade): void {
     this.modalDeleteService.openModal(
       {
-        title: 'Remover Atividade',
-        description: `Tem certeza que deseja excluir a atividade <strong>${atividade.nome}</strong>?`,
+        title: 'Arquivar Atividade',
+        description: `Tem certeza que deseja arquivar a atividade <strong>${atividade.nome}</strong>?`,
         item: atividade,
-        deletarTextoBotao: 'Remover',
+        deletarTextoBotao: 'Arquivar',
         size: 'md',
       },
       () => {
