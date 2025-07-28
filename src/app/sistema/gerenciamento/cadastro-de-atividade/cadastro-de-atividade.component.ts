@@ -70,7 +70,7 @@ export class CadastroDeAtividadeComponent implements OnInit {
   processos: { value: string; description: string }[] = [];
   selectedProcesso: string = '';
   multas: { value: string; description: string }[] = [];
-  selectedMulta: { id: string; tipo: string }[] = [];
+  selectedMulta: { value: string; description: string }[] = [];
 
   empresa: { value: string; description: string }[] = [];
   selectedEmpresa: string = '';
@@ -320,9 +320,29 @@ export class CadastroDeAtividadeComponent implements OnInit {
                       value: usuario.id,
                       description: usuario.nome,
                     })) || [];
+
+                  this.selectedMulta = (atividade.multas || []).map((multa) => {
+                    const tipo = typeof multa === 'string' ? multa : multa.tipo;
+                    const multaObj = this.multas.find((m) => m.value === tipo);
+                    return multaObj
+                      ? {
+                          value: multaObj.value,
+                          description: multaObj.description,
+                        }
+                      : { value: tipo, description: tipo };
+                  });
+                }
+
+                if (atividade.multas && atividade.multas.length > 0) {
+                  this.atividadeForm.get('multas')?.enable();
+                  this.selectedPossuiMulta = 'Sim';
+                } else {
+                  this.atividadeForm.get('multas')?.disable();
+                  this.selectedPossuiMulta = 'Não';
                 }
 
                 this.tratarDadosAtividade(atividade);
+                this.selectedSetor = atividade.setor || '';
               },
               (error) => {
                 console.error('Erro ao carregar os dados da atividade:', error);
