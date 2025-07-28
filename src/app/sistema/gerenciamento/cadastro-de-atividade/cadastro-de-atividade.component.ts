@@ -66,7 +66,7 @@ export class CadastroDeAtividadeComponent implements OnInit {
   empresasDisponiveis: { value: string; description: string }[] = [];
   selectedEmpresas: string[] = [];
   membros: { value: string; description: string }[] = [];
-  selectedMembro: string[] = [];
+  selectedMembro: { value: string; description: string }[] = [];
   processos: { value: string; description: string }[] = [];
   selectedProcesso: string = '';
   multas: { value: string; description: string }[] = [];
@@ -261,7 +261,6 @@ export class CadastroDeAtividadeComponent implements OnInit {
       ? event.map((item: any) => item.value)
       : [];
     this.atividadeForm.get('idsUsuario')?.setValue(ids);
-    console.log('Membros selecionados (ids):', ids);
   }
 
   onMultaChange(val: any[]) {
@@ -303,37 +302,26 @@ export class CadastroDeAtividadeComponent implements OnInit {
                       })) || []
                     : '',
                   idsUsuario:
-                    atividade.usuarios?.map((usuario) => ({
-                      value: usuario.id,
-                      description: usuario.nome,
-                    })) || [],
+                    atividade.usuarios?.map((usuario) => usuario.id) || [],
                   multas: (atividade.multas || []).map(
-                    (multaObj: { id: number; tipo: string }) => {
-                      const multaSelect = this.multas.find(
-                        (m) => m.value === multaObj.tipo
-                      );
-                      return multaSelect
-                        ? {
-                            value: multaSelect.value,
-                            description: multaSelect.description,
-                          }
-                        : { value: multaObj.tipo, description: multaObj.tipo };
-                    }
+                    (multaObj: { id: number; tipo: string }) => multaObj.tipo
                   ),
                 });
 
                 if (this.isEditMode) {
-                  // Preenche as opções do select único com todas as empresas disponíveis
                   this.empresa = this.empresasDisponiveis;
-                  // Seleciona a empresa vinculada à atividade
                   this.selectedEmpresa = atividade.empresa?.id || '';
-                  // Atualiza o valor do form control para garantir que o select fique populado
                   this.atividadeForm
                     .get('idEmpresas')
                     ?.setValue(this.selectedEmpresa);
+
+                  this.selectedMembro =
+                    atividade.usuarios?.map((usuario) => ({
+                      value: usuario.id,
+                      description: usuario.nome,
+                    })) || [];
                 }
 
-                // Atualize os selects múltiplos
                 this.tratarDadosAtividade(atividade);
               },
               (error) => {
