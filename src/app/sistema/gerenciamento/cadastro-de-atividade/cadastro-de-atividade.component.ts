@@ -63,13 +63,17 @@ export class CadastroDeAtividadeComponent implements OnInit {
   selectedPossuiMulta: string = '';
 
   empresas: { value: string; description: string }[] = [];
-  selectedEmpresa: string[] = [];
+  empresasDisponiveis: { value: string; description: string }[] = [];
+  selectedEmpresas: string[] = [];
   membros: { value: string; description: string }[] = [];
   selectedMembro: string[] = [];
   processos: { value: string; description: string }[] = [];
   selectedProcesso: string = '';
   multas: { value: string; description: string }[] = [];
   selectedMulta: { id: string; tipo: string }[] = [];
+
+  empresa: { value: string; description: string }[] = [];
+  selectedEmpresa: string = '';
 
   constructor(
     private location: Location,
@@ -113,10 +117,11 @@ export class CadastroDeAtividadeComponent implements OnInit {
   carregarEmpresas(callback?: () => void): void {
     this.empresasService.getEmpresas().subscribe(
       (empresas) => {
-        this.empresas = empresas.map((empresa) => ({
+        this.empresasDisponiveis = empresas.map((empresa) => ({
           value: empresa.id,
           description: empresa.razaoSocial,
         }));
+        this.empresas = this.empresasDisponiveis; // para o multiplo-select
         if (callback) callback();
       },
       (error) => {
@@ -176,6 +181,14 @@ export class CadastroDeAtividadeComponent implements OnInit {
   }
 
   onSubmit(): void {
+    let empresasParaEnviar: string[] = [];
+
+    if (this.isEditMode) {
+      empresasParaEnviar = [this.atividadeForm.value.idEmpresas];
+    } else {
+      empresasParaEnviar = this.atividadeForm.value.idEmpresas;
+    }
+
     const multasSelecionadas = this.atividadeForm.value.multas;
     const multasParaEnviar = Array.isArray(multasSelecionadas)
       ? multasSelecionadas.map((tipo: string, idx: number) => ({
@@ -187,7 +200,7 @@ export class CadastroDeAtividadeComponent implements OnInit {
     const atividade: Atividade = {
       ...this.atividadeForm.value,
       idsUsuario: this.atividadeForm.value.idsUsuario,
-      idEmpresas: this.atividadeForm.value.idEmpresas,
+      idEmpresas: empresasParaEnviar,
       multas: multasParaEnviar,
     };
 
@@ -263,7 +276,12 @@ export class CadastroDeAtividadeComponent implements OnInit {
       ? event.map((item: any) => item.value)
       : [];
     this.atividadeForm.get('idEmpresas')?.setValue(values);
-    console.log('Empresas selecionadas (values):', values);
+  }
+
+  onEmpresaChange(event: any) {
+    const value = event?.value ?? event;
+    this.atividadeForm.get('idEmpresas')?.setValue(value);
+    this.selectedEmpresa = value;
   }
 
   private verificarModoEdicao(): void {
@@ -276,16 +294,14 @@ export class CadastroDeAtividadeComponent implements OnInit {
             .getAtividadeById(String(this.atividadeId))
             .subscribe(
               (atividade: Atividade) => {
-                // Seleciona empresas já cadastradas
-                const idEmpresas = Array.isArray(atividade.idEmpresas)
-                  ? atividade.idEmpresas
-                  : atividade.empresa
-                  ? [atividade.empresa.id]
-                  : [];
-
                 this.atividadeForm.patchValue({
                   ...atividade,
-                  idEmpresas,
+                  idEmpresas: !this.isEditMode
+                    ? atividade.empresas?.map((empresa) => ({
+                        value: empresa.id,
+                        description: empresa.razaoSocial,
+                      })) || []
+                    : '',
                   idsUsuario:
                     atividade.usuarios?.map((usuario) => ({
                       value: usuario.id,
@@ -306,8 +322,18 @@ export class CadastroDeAtividadeComponent implements OnInit {
                   ),
                 });
 
+                if (this.isEditMode) {
+                  // Preenche as opções do select único com todas as empresas disponíveis
+                  this.empresa = this.empresasDisponiveis;
+                  // Seleciona a empresa vinculada à atividade
+                  this.selectedEmpresa = atividade.empresa?.id || '';
+                  // Atualiza o valor do form control para garantir que o select fique populado
+                  this.atividadeForm
+                    .get('idEmpresas')
+                    ?.setValue(this.selectedEmpresa);
+                }
+
                 // Atualize os selects múltiplos
-                this.selectedEmpresa = idEmpresas;
                 this.tratarDadosAtividade(atividade);
               },
               (error) => {
