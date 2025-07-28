@@ -4,71 +4,93 @@
             <img src="assets/icones/back-left.svg" alt="Back" class="back-icon" (click)="goBack()">
             <span>{{ isEditMode ? 'Editar empresa' : 'Cadastrar empresa' }}</span>
         </div>
-
-    
     
         <div class="forms-container">
             <form (ngSubmit)="onSubmit()" [formGroup]="empresaForm">
                 <div class="form-group">
-                    <label for="razaoSocial">Razão social</label>
-                    <input type="text" id="razaoSocial" name="razaoSocial" formControlName="razaoSocial" class="form-control" placeholder="Digite a razão social da empresa" required>
+                    <label for="razaoSocial">Razão social<span *ngIf="isRequired('razaoSocial')" class="required-asterisk">*</span></label>
+                    <input type="text" id="razaoSocial" name="razaoSocial" formControlName="razaoSocial" class="form-control" placeholder="Digite a razão social da empresa" required maxlength="250">
+                    <div *ngIf="empresaForm.get('razaoSocial')?.invalid && (empresaForm.get('razaoSocial')?.touched || empresaForm.get('razaoSocial')?.dirty)" class="error-obrigatorio">
+                        O campo Razão Social é obrigatório.
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="cnpj">CNPJ</label>
+                    <label for="cnpj">CNPJ<span *ngIf="isRequired('cnpj')" class="required-asterisk">*</span></label>
                     <input type="text" id="cnpj" name="cnpj" formControlName="cnpj" class="form-control" placeholder="00.000.000/0000-00" mask="00.000.000/0000-00" [dropSpecialCharacters]="false" required>
+                    <div *ngIf="empresaForm.get('cnpj')?.invalid && (empresaForm.get('cnpj')?.touched || empresaForm.get('cnpj')?.dirty)" class="error-obrigatorio">
+                        O campo CNPJ é obrigatório.
+                    </div>
                 </div>
 
                 <div class="input-duo">
                     <div class="form-group">
-                        <label for="codEmpresa">Código da empresa no Questor</label>
-                        <input type="text" id="codEmpresa" name="codEmpresa" formControlName="codQuestor" class="form-control" placeholder="Digite o código do questor" required>
+                        <label for="codEmpresa">Código da empresa no Questor<span *ngIf="isRequired('codQuestor')" class="required-asterisk">*</span></label>
+                        <input type="text" id="codEmpresa" name="codEmpresa" formControlName="codQuestor" class="form-control" placeholder="Digite o código do questor" required maxlength="250">
+                        <div *ngIf="empresaForm.get('codQuestor')?.invalid && (empresaForm.get('codQuestor')?.touched || empresaForm.get('codQuestor')?.dirty)" class="error-obrigatorio">
+                            O campo Código da empresa no Questor é obrigatório.
+                        </div>
                     </div>
         
                     <div class="form-group">
-                        <label for="codEmpDominio">Código da empresa no Domínio</label>
-                        <input type="text" id="codEmpDominio" name="codEmpDominio" formControlName="codEmpDominio" class="form-control" placeholder="Digite o código do domínio" required>
+                        <label for="codEmpDominio">Código da empresa no Domínio<span *ngIf="isRequired('codEmpDominio')" class="required-asterisk">*</span></label>
+                        <input type="text" id="codEmpDominio" name="codEmpDominio" formControlName="codEmpDominio" class="form-control" placeholder="Digite o código do domínio" required maxlength="250">
+                        <div *ngIf="empresaForm.get('codEmpDominio')?.invalid && (empresaForm.get('codEmpDominio')?.touched || empresaForm.get('codEmpDominio')?.dirty)" class="error-obrigatorio">
+                            O campo Código da empresa no Domínio é obrigatório.
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="regimeEmpresa">Regime da empresa</label>
+                    <label for="regimeEmpresa">Regime da empresa<span *ngIf="isRequired('regimeEmpresa')" class="required-asterisk">*</span></label>
                     <app-select-padrao
                     label="Selecionar regime da empresa"
                     [options]="regimes"
                     [(selectedValue)]="selectedRegime"
                     formControlName="regimeEmpresa">
                     </app-select-padrao>
+                    <div *ngIf="empresaForm.get('regimeEmpresa')?.invalid && (empresaForm.get('regimeEmpresa')?.touched || empresaForm.get('regimeEmpresa')?.dirty)" class="error-obrigatorio">
+                        O campo Regime da empresa é obrigatório.
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="controleParcelamento">Controle de Parcelamento</label>
+                    <label for="controleParcelamento">Controle de Parcelamento<span *ngIf="isRequired('controleParcelamento')" class="required-asterisk">*</span></label>
                     <app-select-padrao
                     label="Selecionar controle de parcelamento"
                     [options]="controleParcelamento"
                     [(selectedValue)]="selectedControleParcelamento"
                     formControlName="controleParcelamento">
                     </app-select-padrao>
+                    <div *ngIf="empresaForm.get('controleParcelamento')?.invalid && (empresaForm.get('controleParcelamento')?.touched || empresaForm.get('controleParcelamento')?.dirty)" class="error-obrigatorio">
+                        O campo Controle de Parcelamento é obrigatório.
+                    </div>
                 </div>
 
                 <div class="input-duo">
                     <div class="form-group">
-                        <label for="tipo">Tipo da empresa</label>
+                        <label for="tipo">Tipo da empresa<span *ngIf="isRequired('tipo')" class="required-asterisk">*</span></label>
                         <app-select-padrao
                         label="Selecionar tipo da empresa"
                         [options]="tipoEmpresa"
                         [(selectedValue)]="selectedTipoEmpresa"
                         formControlName="tipo">
                         </app-select-padrao>
+                        <div *ngIf="empresaForm.get('tipo')?.invalid && (empresaForm.get('tipo')?.touched || empresaForm.get('tipo')?.dirty)" class="error-obrigatorio">
+                            O campo Tipo da empresa é obrigatório.
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label for="situacao">Situação da empresa</label>
+                        <label for="situacao">Situação da empresa<span *ngIf="isRequired('situacao')" class="required-asterisk">*</span></label>
                         <app-select-padrao
                         label="Selecionar situação da empresa"
                         [options]="situacao"
                         [(selectedValue)]="selectedSituacao"
                         formControlName="situacao">
                         </app-select-padrao>
+                        <div *ngIf="empresaForm.get('situacao')?.invalid && (empresaForm.get('situacao')?.touched || empresaForm.get('situacao')?.dirty)" class="error-obrigatorio">
+                            O campo Situação da empresa é obrigatório.
+                        </div>
                     </div>
                 </div>
 
@@ -173,21 +195,21 @@
                     </app-multiplo-select>
                 </div>
 
+                <div class="alerts">
+                    <div class="alert-two alert-success" *ngIf="successMessage">
+                    {{ successMessage }}
+                    </div>
+                    <div class="alert-two alert-danger" *ngIf="errorMessage">
+                        {{ errorMessage }}
+                    </div>
+                </div>
+
                 <div class="container-btn">
                     <button type="submit" class="btn-cadastrar">
                         {{ isEditMode ? 'Atualizar empresa' : 'Cadastrar empresa' }}
                     </button>
                 </div>
             </form>
-        </div>
-
-        <div class="alerts">
-            <div class="alerts-container alert-success" *ngIf="successMessage">
-            {{ successMessage }}
-            </div>
-            <div class=" alerts-container alert-danger" *ngIf="errorMessage">
-                {{ errorMessage }}
-            </div>
         </div>
 
         <app-loading *ngIf="isLoading"></app-loading>

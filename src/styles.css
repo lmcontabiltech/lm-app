@@ -488,6 +488,14 @@ select:focus {
   width: 100%;
 }
 
+.alert-two {
+  padding: 12px 24px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  margin-top: 24px;
+  width: 100%;
+}
+
 .search {
   padding: 12px 24px;
   border-radius: 8px;
@@ -566,4 +574,16 @@ select:focus {
   100% {
     width: 0;
   }
+}
+
+/* erros de input obrigatorios */
+.required-asterisk {
+  color: red;
+  margin-left: 4px;
+}
+
+.error-obrigatorio {
+  color: var(--danger);
+  font-size: 0.875rem;
+  margin-top: 4px;
 }

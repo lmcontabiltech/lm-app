@@ -2,7 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Empresa } from '../empresas/empresa';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl,
+} from '@angular/forms';
 import { EmpresasService } from '../../../services/administrativo/empresas.service';
 import { ColaboradoresService } from 'src/app/services/administrativo/colaboradores.service';
 import { RegimeDaEmpresa } from '../empresas/enums/regime-da-empresa';
@@ -145,6 +150,7 @@ export class CadastroDeEmpresaComponent implements OnInit {
   onSubmit(): void {
     if (this.empresaForm.invalid) {
       this.empresaForm.markAllAsTouched();
+      this.errorMessage = 'Por favor, preencha todos os campos obrigatórios.';
       return;
     }
 
@@ -160,8 +166,6 @@ export class CadastroDeEmpresaComponent implements OnInit {
       identificadorPessoal: this.selectedPessoal.map((u) => u.value),
       identificadorContabil: this.selectedContabil.map((u) => u.value),
     };
-
-    console.log('Dados da empresa a serem enviados:', empresa);
 
     if (this.isEditMode && this.empresaId) {
       this.empresasService.atualizarEmpresa(this.empresaId, empresa).subscribe(
@@ -196,9 +200,12 @@ export class CadastroDeEmpresaComponent implements OnInit {
         },
         (error) => {
           this.isLoading = false;
-          this.errorMessage = 'Erro ao cadastrar empresa.';
+          this.errorMessage = this.errorMessageService.getErrorMessage(
+            error.status,
+            'POST',
+            'empresa'
+          );
           this.successMessage = null;
-          console.error('Erro ao cadastrar empresa:', error);
         }
       );
     }
@@ -215,8 +222,6 @@ export class CadastroDeEmpresaComponent implements OnInit {
   private carregarDadosEmpresa(empresaId: string): void {
     this.empresasService.getEmpresaById(empresaId).subscribe(
       (empresa: Empresa) => {
-        console.log('Dados da empresa recebidos:', empresa);
-
         const estado = empresa.estado;
         const cidade = empresa.cidade;
 
@@ -242,7 +247,13 @@ export class CadastroDeEmpresaComponent implements OnInit {
         this.empresaForm.get('cidade')?.enable();
       },
       (error) => {
-        console.error('Erro ao carregar os dados da empresa:', error);
+        this.isLoading = false;
+        this.errorMessage = this.errorMessageService.getErrorMessage(
+          error.status,
+          'GET',
+          'empresa'
+        );
+        this.successMessage = null;
       }
     );
   }
@@ -268,9 +279,10 @@ export class CadastroDeEmpresaComponent implements OnInit {
           }));
         },
         (error) => {
-          console.error(
-            `Erro ao carregar os usuários do setor ${setor}:`,
-            error
+          this.errorMessage = this.errorMessageService.getErrorMessage(
+            error.status,
+            'GET',
+            'colaboradores'
           );
         }
       );
@@ -313,7 +325,6 @@ export class CadastroDeEmpresaComponent implements OnInit {
   onEstadoChange(nome: string): void {
     const cidadeControl = this.empresaForm.get('cidade');
 
-    console.log('onEstadoChange chamado com o estado:', nome);
     this.empresaForm.get('estado')?.setValue(nome);
 
     if (!nome) {
@@ -329,7 +340,6 @@ export class CadastroDeEmpresaComponent implements OnInit {
     } else {
       cidadeControl?.enable();
       this.enderecoService.getCidadesByEstado(nome).subscribe((cidades) => {
-        console.log('Cidades filtradas pelo estado:', cidades);
         this.cidades = cidades.map((cidade) => ({
           value: cidade.nome,
           description: cidade.nome,
@@ -341,7 +351,6 @@ export class CadastroDeEmpresaComponent implements OnInit {
   }
 
   onCidadeChange(nome: string): void {
-    console.log('onCidadeChange chamado com a cidade:', nome);
     this.empresaForm.get('cidade')?.setValue(nome);
   }
 
@@ -351,9 +360,17 @@ export class CadastroDeEmpresaComponent implements OnInit {
         value: estado.sigla,
         description: estado.nome,
       }));
-      console.log('Estados carregados:', this.estados);
     });
 
     this.onEstadoChange('');
+  }
+
+  isRequired(controlName: string): boolean {
+    const control = this.empresaForm.get(controlName);
+    if (control && control.validator) {
+      const validator = control.validator({} as AbstractControl);
+      return !!(validator && validator['required']);
+    }
+    return false;
   }
 }
