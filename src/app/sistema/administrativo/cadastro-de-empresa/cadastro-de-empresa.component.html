@@ -120,52 +120,57 @@
 
                 <div class="form-group">
                     <label for="contabil">Setor Contábil</label>
-                    <app-select-padrao
+                    <app-multiplo-select
                     label="Selecionar funcionário"
                     [options]="funcionariosContabil"
-                    [(selectedValue)]="selectedContabil"                
+                    [(selectedValue)]="selectedContabil" 
+                    [multiple]="true"               
                     formControlName="identificadorContabil">
-                    </app-select-padrao>
+                    </app-multiplo-select>
                 </div>
 
                 <div class="form-group">
                     <label for="fiscal">Setor Fiscal</label>
-                    <app-select-padrao
+                    <app-multiplo-select
                     label="Selecionar funcionário"
                     [options]="funcionariosFiscal"
                     [(selectedValue)]="selectedFiscal"
+                    [multiple]="true" 
                     formControlName="identificadorFiscal">
-                    </app-select-padrao>
+                    </app-multiplo-select>
                 </div>
 
                 <div class="form-group">
                     <label for="pessoal">Setor Pessoal</label>
-                    <app-select-padrao
+                    <app-multiplo-select
                     label="Selecionar funcionário"
                     [options]="funcionariosPessoal"
                     [(selectedValue)]="selectedPessoal"
+                    [multiple]="true" 
                     formControlName="identificadorPessoal">
-                    </app-select-padrao>
+                    </app-multiplo-select>
                 </div>
 
                 <div class="form-group">
                     <label for="paralegal">Setor Paralegal</label>
-                    <app-select-padrao
+                    <app-multiplo-select
                     label="Selecionar funcionário"
                     [options]="funcionariosParalegal"
                     [(selectedValue)]="selectedParalegal"
+                    [multiple]="true" 
                     formControlName="identificadorParalegal">
-                    </app-select-padrao>
+                    </app-multiplo-select>
                 </div>
 
                 <div class="form-group">
                     <label for="financeiro">Setor Financeiro</label>
-                    <app-select-padrao
+                    <app-multiplo-select
                     label="Selecionar funcionário"
                     [options]="funcionariosFinanceiro"
                     [(selectedValue)]="selectedFinanceiro"
+                    [multiple]="true" 
                     formControlName="identificadorFinanceiro">
-                    </app-select-padrao>
+                    </app-multiplo-select>
                 </div>
 
                 <div class="container-btn">

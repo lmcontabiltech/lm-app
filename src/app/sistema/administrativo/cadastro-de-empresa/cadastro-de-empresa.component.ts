@@ -33,15 +33,15 @@ export class CadastroDeEmpresaComponent implements OnInit {
   status: string = 'ATIVO';
 
   funcionariosFiscal: { value: string; description: string }[] = [];
-  selectedFiscal: string = '';
+  selectedFiscal: { value: string; description: string }[] = [];
   funcionariosFinanceiro: { value: string; description: string }[] = [];
-  selectedFinanceiro: string = '';
+  selectedFinanceiro: { value: string; description: string }[] = [];
   funcionariosParalegal: { value: string; description: string }[] = [];
-  selectedParalegal: string = '';
+  selectedParalegal: { value: string; description: string }[] = [];
   funcionariosPessoal: { value: string; description: string }[] = [];
-  selectedPessoal: string = '';
+  selectedPessoal: { value: string; description: string }[] = [];
   funcionariosContabil: { value: string; description: string }[] = [];
-  selectedContabil: string = '';
+  selectedContabil: { value: string; description: string }[] = [];
 
   regimes = Object.keys(RegimeDaEmpresa).map((key) => ({
     value: RegimeDaEmpresa[key as keyof typeof RegimeDaEmpresa],
@@ -96,14 +96,14 @@ export class CadastroDeEmpresaComponent implements OnInit {
       regimeEmpresa: ['', Validators.required],
       codQuestor: ['', Validators.required],
       codEmpDominio: ['', Validators.required],
-      identificadorContabil: [''],
-      identificadorFiscal: [''],
-      identificadorFinanceiro: [''],
-      identificadorParalegal: [''],
-      identificadorPessoal: [''],
-      identificadorJuridico: [''],
-      identificadorEstagiario: [''],
-      identificadorOutros: [''],
+      identificadorContabil: [[]],
+      identificadorFiscal: [[]],
+      identificadorFinanceiro: [[]],
+      identificadorParalegal: [[]],
+      identificadorPessoal: [[]],
+      // identificadorJuridico: [''],
+      // identificadorEstagiario: [''],
+      // identificadorOutros: [''],
       status: ['ATIVO'],
       controleParcelamento: ['', Validators.required],
       situacao: ['', Validators.required],
@@ -154,6 +154,11 @@ export class CadastroDeEmpresaComponent implements OnInit {
 
     const empresa: Empresa = {
       ...this.empresaForm.value,
+      identificadorFiscal: this.selectedFiscal.map((u) => u.value),
+      identificadorFinanceiro: this.selectedFinanceiro.map((u) => u.value),
+      identificadorParalegal: this.selectedParalegal.map((u) => u.value),
+      identificadorPessoal: this.selectedPessoal.map((u) => u.value),
+      identificadorContabil: this.selectedContabil.map((u) => u.value),
     };
 
     console.log('Dados da empresa a serem enviados:', empresa);
@@ -273,54 +278,35 @@ export class CadastroDeEmpresaComponent implements OnInit {
   }
 
   private tratarColaboradores(empresa: Empresa): void {
-    if (empresa.fiscal) {
-      this.selectedFiscal = empresa.fiscal.id;
-      this.funcionariosFiscal = [
-        {
-          value: empresa.fiscal.id,
-          description: empresa.fiscal.nome,
-        },
-      ];
+    if (empresa.fiscal && Array.isArray(empresa.fiscal)) {
+      this.selectedFiscal = empresa.fiscal.map((user) => ({
+        value: user.id,
+        description: user.nome,
+      }));
     }
-
-    if (empresa.pessoal) {
-      this.selectedPessoal = empresa.pessoal.id;
-      this.funcionariosPessoal = [
-        {
-          value: empresa.pessoal.id,
-          description: empresa.pessoal.nome,
-        },
-      ];
+    if (empresa.financeiro && Array.isArray(empresa.financeiro)) {
+      this.selectedFinanceiro = empresa.financeiro.map((user) => ({
+        value: user.id,
+        description: user.nome,
+      }));
     }
-
-    if (empresa.financeiro) {
-      this.selectedFinanceiro = empresa.financeiro.id;
-      this.funcionariosFinanceiro = [
-        {
-          value: empresa.financeiro.id,
-          description: empresa.financeiro.nome,
-        },
-      ];
+    if (empresa.paralegal && Array.isArray(empresa.paralegal)) {
+      this.selectedParalegal = empresa.paralegal.map((user) => ({
+        value: user.id,
+        description: user.nome,
+      }));
     }
-
-    if (empresa.paralegal) {
-      this.selectedParalegal = empresa.paralegal.id;
-      this.funcionariosParalegal = [
-        {
-          value: empresa.paralegal.id,
-          description: empresa.paralegal.nome,
-        },
-      ];
+    if (empresa.pessoal && Array.isArray(empresa.pessoal)) {
+      this.selectedPessoal = empresa.pessoal.map((user) => ({
+        value: user.id,
+        description: user.nome,
+      }));
     }
-
-    if (empresa.contabil) {
-      this.selectedContabil = empresa.contabil.id;
-      this.funcionariosContabil = [
-        {
-          value: empresa.contabil.id,
-          description: empresa.contabil.nome,
-        },
-      ];
+    if (empresa.contabil && Array.isArray(empresa.contabil)) {
+      this.selectedContabil = empresa.contabil.map((user) => ({
+        value: user.id,
+        description: user.nome,
+      }));
     }
   }
 
