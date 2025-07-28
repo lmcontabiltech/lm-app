@@ -384,4 +384,14 @@ export class AtividadesComponent implements OnInit, AfterViewInit {
     const title = type === 'success' ? 'Sucesso' : 'Erro';
     this.feedbackComponent?.show(type, title, message);
   }
+
+  get tituloAtividades(): string {
+    if (this.empresasSelecionadas.length === 1) {
+      const empresa = this.empresasOptions.find(
+        (e) => e.value === this.empresasSelecionadas[0]
+      );
+      return empresa?.description || 'Atividades';
+    }
+    return 'Atividades';
+  }
 }

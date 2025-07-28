@@ -1,11 +1,11 @@
 <div class="main-container">
   <div class="header-container">
-    <h2>Atividades</h2>
+    <h2>{{ tituloAtividades }}</h2>
       <div class="header-actions">
         <app-select-auto-complete
           placeholder="Buscar empresas..."
           [options]="empresasOptions"
-          [maxItems]="5"
+          [maxItems]="1"
           (itemAdded)="onEmpresaSelecionada(empresasSelecionadas)"
           (itemRemoved)="onEmpresaSelecionada(empresasSelecionadas)"
           [(ngModel)]="empresasSelecionadas"
