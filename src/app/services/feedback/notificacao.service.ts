@@ -250,7 +250,6 @@ export class NotificacaoService {
 
     // Log de todas as linhas recebidas para debug
     if (trimmedLine) {
-      console.log('📝 Linha SSE recebida:', trimmedLine);
     }
 
     // Processar linha de dados SSE
@@ -259,27 +258,12 @@ export class NotificacaoService {
         const data = trimmedLine.substring(6);
 
         if (data.trim()) {
-          console.log('📨 Dados SSE recebidos:', data);
           const notificacao = JSON.parse(data);
-          console.log('🎯 Notificação parseada:', notificacao);
           observer.next(notificacao);
         }
       } catch (error) {
         console.error('❌ Erro ao parsear dados SSE:', error, 'Linha:', line);
       }
-    }
-
-    // Log de outros tipos de linha SSE
-    if (trimmedLine.startsWith('event: ')) {
-      console.log('🏷️ Evento SSE:', trimmedLine);
-    }
-
-    if (trimmedLine.startsWith('id: ')) {
-      console.log('🆔 ID SSE:', trimmedLine);
-    }
-
-    if (trimmedLine.startsWith('retry: ')) {
-      console.log('🔄 Retry SSE:', trimmedLine);
     }
   }
 }
