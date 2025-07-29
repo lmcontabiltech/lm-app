@@ -172,9 +172,6 @@ export class NotificacaoService {
 
       const sseUrl = `${this.apiURL}/notificacoes`;
 
-      console.log('🔗 Conectando ao SSE com token do AuthService:', sseUrl);
-      console.log('🔑 Token preview:', token.substring(0, 50) + '...');
-
       const controller = new AbortController();
 
       fetch(sseUrl, {
@@ -198,7 +195,6 @@ export class NotificacaoService {
             throw new Error(`HTTP ${response.status}: ${response.statusText}`);
           }
 
-          console.log('✅ Conexão SSE estabelecida com Authorization header');
 
           const reader = response.body?.getReader();
           if (!reader) {
@@ -214,7 +210,6 @@ export class NotificacaoService {
                 const { done, value } = await reader.read();
 
                 if (done) {
-                  console.log('🔗 Stream SSE finalizada');
                   observer.complete();
                   break;
                 }
