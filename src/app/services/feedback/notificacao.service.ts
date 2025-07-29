@@ -26,7 +26,6 @@ export class NotificacaoService {
         return response.notificacoes || response.data || [];
       }),
       catchError((error) => {
-        console.error('Erro ao buscar notificações:', error);
         return throwError(() => error);
       })
     );
@@ -41,15 +40,10 @@ export class NotificacaoService {
             : response.contador || response.count || response.total || 0;
 
         this.contadorNaoLidasSubject.next(contador);
-        console.log('🔄 BehaviorSubject sincronizado com servidor:', contador);
 
         return contador;
       }),
       catchError((error) => {
-        console.error(
-          'Erro ao buscar contador de notificações não lidas:',
-          error
-        );
         return throwError(() => error);
       })
     );
@@ -68,7 +62,6 @@ export class NotificacaoService {
           return response.notificacoes || response.data || [];
         }),
         catchError((error) => {
-          console.error('Erro ao buscar notificações por filtro:', error);
           return throwError(() => error);
         })
       );
@@ -83,20 +76,16 @@ export class NotificacaoService {
         return response.notificacoes || response.data || [];
       }),
       catchError((error) => {
-        console.error('Erro ao buscar notificações recentes:', error);
         return throwError(() => error);
       })
     );
   }
 
   atualizarContadorGlobal(): void {
-    console.log('🔄 Atualizando contador global...');
     this.getContadorNaoLidas().subscribe({
       next: (contador) => {
-        console.log('✅ Contador global atualizado para:', contador);
       },
       error: (error) => {
-        console.error('❌ Erro ao atualizar contador global:', error);
       },
     });
   }
@@ -106,7 +95,6 @@ export class NotificacaoService {
     this.contadorNaoLidasSubject.next(contadorAtual + 1);
     console.log('➕ Contador incrementado para:', contadorAtual + 1);
   }
-
 
   decrementarContador(): void {
     const contadorAtual = this.contadorNaoLidasSubject.value;
@@ -121,7 +109,6 @@ export class NotificacaoService {
 
     return this.http.put<void>(url, {}).pipe(
       tap((response) => {
-        console.log('✅ Notificação marcada como lida:', notificacaoId);
         this.decrementarContador();
       }),
       catchError((error) => {
@@ -142,15 +129,10 @@ export class NotificacaoService {
 
           // Zera contador local
           this.contadorNaoLidasSubject.next(0);
-          console.log('🔄 Contador zerado após marcar todas como lidas');
 
           return quantidadeMarcadas;
         }),
         catchError((error) => {
-          console.error(
-            'Erro ao marcar todas as notificações como lidas:',
-            error
-          );
           return throwError(() => error);
         })
       );
@@ -194,7 +176,6 @@ export class NotificacaoService {
             }
             throw new Error(`HTTP ${response.status}: ${response.statusText}`);
           }
-
 
           const reader = response.body?.getReader();
           if (!reader) {
@@ -256,9 +237,7 @@ export class NotificacaoService {
           const notificacao = JSON.parse(data);
           observer.next(notificacao);
         }
-      } catch (error) {
-        console.error('❌ Erro ao parsear dados SSE:', error, 'Linha:', line);
-      }
+      } catch (error) {}
     }
   }
 }
