@@ -2,7 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Empresa } from '../empresas/empresa';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl,
+} from '@angular/forms';
 import { EmpresasService } from '../../../services/administrativo/empresas.service';
 import { ColaboradoresService } from 'src/app/services/administrativo/colaboradores.service';
 import { RegimeDaEmpresa } from '../empresas/enums/regime-da-empresa';
@@ -33,15 +38,15 @@ export class CadastroDeEmpresaComponent implements OnInit {
   status: string = 'ATIVO';
 
   funcionariosFiscal: { value: string; description: string }[] = [];
-  selectedFiscal: string = '';
+  selectedFiscal: { value: string; description: string }[] = [];
   funcionariosFinanceiro: { value: string; description: string }[] = [];
-  selectedFinanceiro: string = '';
+  selectedFinanceiro: { value: string; description: string }[] = [];
   funcionariosParalegal: { value: string; description: string }[] = [];
-  selectedParalegal: string = '';
+  selectedParalegal: { value: string; description: string }[] = [];
   funcionariosPessoal: { value: string; description: string }[] = [];
-  selectedPessoal: string = '';
+  selectedPessoal: { value: string; description: string }[] = [];
   funcionariosContabil: { value: string; description: string }[] = [];
-  selectedContabil: string = '';
+  selectedContabil: { value: string; description: string }[] = [];
 
   regimes = Object.keys(RegimeDaEmpresa).map((key) => ({
     value: RegimeDaEmpresa[key as keyof typeof RegimeDaEmpresa],
@@ -96,14 +101,14 @@ export class CadastroDeEmpresaComponent implements OnInit {
       regimeEmpresa: ['', Validators.required],
       codQuestor: ['', Validators.required],
       codEmpDominio: ['', Validators.required],
-      identificadorContabil: [''],
-      identificadorFiscal: [''],
-      identificadorFinanceiro: [''],
-      identificadorParalegal: [''],
-      identificadorPessoal: [''],
-      identificadorJuridico: [''],
-      identificadorEstagiario: [''],
-      identificadorOutros: [''],
+      identificadorContabil: [[]],
+      identificadorFiscal: [[]],
+      identificadorFinanceiro: [[]],
+      identificadorParalegal: [[]],
+      identificadorPessoal: [[]],
+      // identificadorJuridico: [''],
+      // identificadorEstagiario: [''],
+      // identificadorOutros: [''],
       status: ['ATIVO'],
       controleParcelamento: ['', Validators.required],
       situacao: ['', Validators.required],
@@ -145,6 +150,7 @@ export class CadastroDeEmpresaComponent implements OnInit {
   onSubmit(): void {
     if (this.empresaForm.invalid) {
       this.empresaForm.markAllAsTouched();
+      this.errorMessage = 'Por favor, preencha todos os campos obrigatórios.';
       return;
     }
 
@@ -154,9 +160,12 @@ export class CadastroDeEmpresaComponent implements OnInit {
 
     const empresa: Empresa = {
       ...this.empresaForm.value,
+      identificadorFiscal: this.selectedFiscal.map((u) => u.value),
+      identificadorFinanceiro: this.selectedFinanceiro.map((u) => u.value),
+      identificadorParalegal: this.selectedParalegal.map((u) => u.value),
+      identificadorPessoal: this.selectedPessoal.map((u) => u.value),
+      identificadorContabil: this.selectedContabil.map((u) => u.value),
     };
-
-    console.log('Dados da empresa a serem enviados:', empresa);
 
     if (this.isEditMode && this.empresaId) {
       this.empresasService.atualizarEmpresa(this.empresaId, empresa).subscribe(
@@ -191,9 +200,22 @@ export class CadastroDeEmpresaComponent implements OnInit {
         },
         (error) => {
           this.isLoading = false;
-          this.errorMessage = 'Erro ao cadastrar empresa.';
+          if (
+            error.status === 409 &&
+            error.error &&
+            typeof error.error.message === 'string' &&
+            error.error.message.toLowerCase().includes('cnpj')
+          ) {
+            this.errorMessage =
+              'Já existe uma empresa cadastrada com este CNPJ.';
+          } else {
+            this.errorMessage = this.errorMessageService.getErrorMessage(
+              error.status,
+              'POST',
+              'empresa'
+            );
+          }
           this.successMessage = null;
-          console.error('Erro ao cadastrar empresa:', error);
         }
       );
     }
@@ -210,8 +232,6 @@ export class CadastroDeEmpresaComponent implements OnInit {
   private carregarDadosEmpresa(empresaId: string): void {
     this.empresasService.getEmpresaById(empresaId).subscribe(
       (empresa: Empresa) => {
-        console.log('Dados da empresa recebidos:', empresa);
-
         const estado = empresa.estado;
         const cidade = empresa.cidade;
 
@@ -237,7 +257,13 @@ export class CadastroDeEmpresaComponent implements OnInit {
         this.empresaForm.get('cidade')?.enable();
       },
       (error) => {
-        console.error('Erro ao carregar os dados da empresa:', error);
+        this.isLoading = false;
+        this.errorMessage = this.errorMessageService.getErrorMessage(
+          error.status,
+          'GET',
+          'empresa'
+        );
+        this.successMessage = null;
       }
     );
   }
@@ -263,9 +289,10 @@ export class CadastroDeEmpresaComponent implements OnInit {
           }));
         },
         (error) => {
-          console.error(
-            `Erro ao carregar os usuários do setor ${setor}:`,
-            error
+          this.errorMessage = this.errorMessageService.getErrorMessage(
+            error.status,
+            'GET',
+            'colaboradores'
           );
         }
       );
@@ -273,61 +300,41 @@ export class CadastroDeEmpresaComponent implements OnInit {
   }
 
   private tratarColaboradores(empresa: Empresa): void {
-    if (empresa.fiscal) {
-      this.selectedFiscal = empresa.fiscal.id;
-      this.funcionariosFiscal = [
-        {
-          value: empresa.fiscal.id,
-          description: empresa.fiscal.nome,
-        },
-      ];
+    if (empresa.fiscal && Array.isArray(empresa.fiscal)) {
+      this.selectedFiscal = empresa.fiscal.map((user) => ({
+        value: user.id,
+        description: user.nome,
+      }));
     }
-
-    if (empresa.pessoal) {
-      this.selectedPessoal = empresa.pessoal.id;
-      this.funcionariosPessoal = [
-        {
-          value: empresa.pessoal.id,
-          description: empresa.pessoal.nome,
-        },
-      ];
+    if (empresa.financeiro && Array.isArray(empresa.financeiro)) {
+      this.selectedFinanceiro = empresa.financeiro.map((user) => ({
+        value: user.id,
+        description: user.nome,
+      }));
     }
-
-    if (empresa.financeiro) {
-      this.selectedFinanceiro = empresa.financeiro.id;
-      this.funcionariosFinanceiro = [
-        {
-          value: empresa.financeiro.id,
-          description: empresa.financeiro.nome,
-        },
-      ];
+    if (empresa.paralegal && Array.isArray(empresa.paralegal)) {
+      this.selectedParalegal = empresa.paralegal.map((user) => ({
+        value: user.id,
+        description: user.nome,
+      }));
     }
-
-    if (empresa.paralegal) {
-      this.selectedParalegal = empresa.paralegal.id;
-      this.funcionariosParalegal = [
-        {
-          value: empresa.paralegal.id,
-          description: empresa.paralegal.nome,
-        },
-      ];
+    if (empresa.pessoal && Array.isArray(empresa.pessoal)) {
+      this.selectedPessoal = empresa.pessoal.map((user) => ({
+        value: user.id,
+        description: user.nome,
+      }));
     }
-
-    if (empresa.contabil) {
-      this.selectedContabil = empresa.contabil.id;
-      this.funcionariosContabil = [
-        {
-          value: empresa.contabil.id,
-          description: empresa.contabil.nome,
-        },
-      ];
+    if (empresa.contabil && Array.isArray(empresa.contabil)) {
+      this.selectedContabil = empresa.contabil.map((user) => ({
+        value: user.id,
+        description: user.nome,
+      }));
     }
   }
 
   onEstadoChange(nome: string): void {
     const cidadeControl = this.empresaForm.get('cidade');
 
-    console.log('onEstadoChange chamado com o estado:', nome);
     this.empresaForm.get('estado')?.setValue(nome);
 
     if (!nome) {
@@ -343,7 +350,6 @@ export class CadastroDeEmpresaComponent implements OnInit {
     } else {
       cidadeControl?.enable();
       this.enderecoService.getCidadesByEstado(nome).subscribe((cidades) => {
-        console.log('Cidades filtradas pelo estado:', cidades);
         this.cidades = cidades.map((cidade) => ({
           value: cidade.nome,
           description: cidade.nome,
@@ -355,7 +361,6 @@ export class CadastroDeEmpresaComponent implements OnInit {
   }
 
   onCidadeChange(nome: string): void {
-    console.log('onCidadeChange chamado com a cidade:', nome);
     this.empresaForm.get('cidade')?.setValue(nome);
   }
 
@@ -365,9 +370,17 @@ export class CadastroDeEmpresaComponent implements OnInit {
         value: estado.sigla,
         description: estado.nome,
       }));
-      console.log('Estados carregados:', this.estados);
     });
 
     this.onEstadoChange('');
+  }
+
+  isRequired(controlName: string): boolean {
+    const control = this.empresaForm.get(controlName);
+    if (control && control.validator) {
+      const validator = control.validator({} as AbstractControl);
+      return !!(validator && validator['required']);
+    }
+    return false;
   }
 }

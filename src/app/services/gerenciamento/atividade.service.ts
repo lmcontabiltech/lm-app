@@ -74,15 +74,8 @@ export class AtividadeService {
     const url = `${this.apiURL}/${id}`;
     return this.http.delete<void>(url).pipe(
       catchError((error) => {
-        let errorMessage = 'Erro ao deletar o atividade.';
-
-        if (error.error instanceof ErrorEvent) {
-          errorMessage = `Erro: ${error.error.message}`;
-        } else if (error.status) {
-          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
-        }
-        console.error(errorMessage);
-        return throwError(() => new Error(errorMessage));
+        console.error('Erro ao deletar atividade:', error);
+        return throwError(() => error);
       })
     );
   }

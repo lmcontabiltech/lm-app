@@ -26,6 +26,9 @@ export class DetalhesEmpresaComponent implements OnInit {
     fotoUrl: string;
   }> = [];
 
+  paginaAtual = 1;
+  itensPorPagina = 8;
+
   constructor(
     private location: Location,
     private route: ActivatedRoute,
@@ -82,7 +85,8 @@ export class DetalhesEmpresaComponent implements OnInit {
   getControleParcelamentoDescricao(controle?: string): string {
     if (!controle) return '-';
 
-    const controleKey = controle as keyof typeof ControleDeParcelamentoDescricao;
+    const controleKey =
+      controle as keyof typeof ControleDeParcelamentoDescricao;
     return ControleDeParcelamentoDescricao[controleKey] || controle;
   }
 
@@ -103,59 +107,49 @@ export class DetalhesEmpresaComponent implements OnInit {
   extrairColaboradores(): void {
     this.colaboradores = [];
 
-    if (this.empresa.contabil) {
-      this.colaboradores.push({
-        id: this.empresa.contabil.id,
-        nome: this.empresa.contabil.nome,
-        setor: Setor.CONTABIL,
-        username: this.empresa.contabil.nome,
-        email: this.empresa.contabil.email,
-        fotoUrl: this.empresa.contabil.fotoUrl || '',
-      });
-    }
+    const adicionarColaboradores = (lista: any, setor: Setor) => {
+      if (Array.isArray(lista)) {
+        lista.forEach((colaborador) => {
+          this.colaboradores.push({
+            id: colaborador.id,
+            nome: colaborador.nome,
+            setor: setor,
+            username: colaborador.nome,
+            email: colaborador.email,
+            fotoUrl: colaborador.fotoUrl || '',
+          });
+        });
+      } else if (lista && typeof lista === 'object') {
+        // Se vier como objeto único
+        this.colaboradores.push({
+          id: lista.id,
+          nome: lista.nome,
+          setor: setor,
+          username: lista.nome,
+          email: lista.email,
+          fotoUrl: lista.fotoUrl || '',
+        });
+      }
+    };
 
-    if (this.empresa.fiscal) {
-      this.colaboradores.push({
-        id: this.empresa.fiscal.id,
-        nome: this.empresa.fiscal.nome,
-        setor: Setor.FISCAL,
-        username: this.empresa.fiscal.nome,
-        email: this.empresa.fiscal.email,
-        fotoUrl: this.empresa.fiscal.fotoUrl || '',
-      });
-    }
+    adicionarColaboradores(this.empresa.contabil, Setor.CONTABIL);
+    adicionarColaboradores(this.empresa.fiscal, Setor.FISCAL);
+    adicionarColaboradores(this.empresa.financeiro, Setor.FINANCEIRO);
+    adicionarColaboradores(this.empresa.paralegal, Setor.PARALEGAL);
+    adicionarColaboradores(this.empresa.pessoal, Setor.PESSOAL);
+  }
 
-    if (this.empresa.financeiro) {
-      this.colaboradores.push({
-        id: this.empresa.financeiro.id,
-        nome: this.empresa.financeiro.nome,
-        setor: Setor.FINANCEIRO,
-        username: this.empresa.financeiro.nome,
-        email: this.empresa.financeiro.email,
-        fotoUrl: this.empresa.financeiro.fotoUrl || '',
-      });
-    }
+  get totalItens() {
+    return this.colaboradores.length;
+  }
 
-    if (this.empresa.paralegal) {
-      this.colaboradores.push({
-        id: this.empresa.paralegal.id,
-        nome: this.empresa.paralegal.nome,
-        setor: Setor.PARALEGAL,
-        username: this.empresa.paralegal.nome,
-        email: this.empresa.paralegal.email,
-        fotoUrl: this.empresa.paralegal.fotoUrl || '',
-      });
-    }
+  get colaboradoresPaginados() {
+    const inicio = (this.paginaAtual - 1) * this.itensPorPagina;
+    const fim = inicio + this.itensPorPagina;
+    return this.colaboradores.slice(inicio, fim);
+  }
 
-    if (this.empresa.pessoal) {
-      this.colaboradores.push({
-        id: this.empresa.pessoal.id,
-        nome: this.empresa.pessoal.nome,
-        setor: Setor.PESSOAL,
-        username: this.empresa.pessoal.nome,
-        email: this.empresa.pessoal.email,
-        fotoUrl: this.empresa.pessoal.fotoUrl || '',
-      });
-    }
+  onPaginaMudou(novaPagina: number) {
+    this.paginaAtual = novaPagina;
   }
 }

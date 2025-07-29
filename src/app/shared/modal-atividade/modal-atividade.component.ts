@@ -91,6 +91,11 @@ export class ModalAtividadeComponent {
       .join(', ');
   }
 
+  getDescricaoMulta(tipo: string): string {
+    const multaObj = MULTAS_TIPO.find((m) => m.key === tipo);
+    return multaObj ? multaObj.descricao : tipo;
+  }
+
   onSubtarefaToggle(index: number, event: Event) {
     const input = event.target as HTMLInputElement;
     if (!input || !this.atividade?.subtarefas || !this.atividade?.id) return;

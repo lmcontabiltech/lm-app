@@ -49,9 +49,9 @@ export class CadastroPerifericosComponent implements OnInit {
   ) {
     this.perifericoForm = this.formBuilder.group({
       nome: ['', Validators.required],
-      descricao: [''],
-      colaborador: ['', Validators.required],
-      tipoPosse: ['PROPRIO_EMPRESA', Validators.required],
+      descricaoProduto: [''],
+      colaborador: [''],
+      tipoPosse: ['PROPRIO_EMPRESA'],
       dataEntrega: ['', Validators.required],
       dataDevolucao: ['', Validators.required],
       anotacao: [''],
@@ -109,6 +109,7 @@ export class CadastroPerifericosComponent implements OnInit {
     };
 
     console.log('Dados do periferico a serem enviados:', periferico);
+    console.log('JSON enviado para o backend:', JSON.stringify(periferico, null, 2));
 
     if (this.isEditMode && this.perifericoId) {
       this.perifericoService

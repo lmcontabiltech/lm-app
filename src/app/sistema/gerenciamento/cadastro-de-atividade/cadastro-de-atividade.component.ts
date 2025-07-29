@@ -63,13 +63,17 @@ export class CadastroDeAtividadeComponent implements OnInit {
   selectedPossuiMulta: string = '';
 
   empresas: { value: string; description: string }[] = [];
-  selectedEmpresa: string[] = [];
+  empresasDisponiveis: { value: string; description: string }[] = [];
+  selectedEmpresas: string[] = [];
   membros: { value: string; description: string }[] = [];
-  selectedMembro: string[] = [];
+  selectedMembro: { value: string; description: string }[] = [];
   processos: { value: string; description: string }[] = [];
   selectedProcesso: string = '';
   multas: { value: string; description: string }[] = [];
-  selectedMulta: { id: string; tipo: string }[] = [];
+  selectedMulta: { value: string; description: string }[] = [];
+
+  empresa: { value: string; description: string }[] = [];
+  selectedEmpresa: string = '';
 
   constructor(
     private location: Location,
@@ -113,10 +117,11 @@ export class CadastroDeAtividadeComponent implements OnInit {
   carregarEmpresas(callback?: () => void): void {
     this.empresasService.getEmpresas().subscribe(
       (empresas) => {
-        this.empresas = empresas.map((empresa) => ({
+        this.empresasDisponiveis = empresas.map((empresa) => ({
           value: empresa.id,
           description: empresa.razaoSocial,
         }));
+        this.empresas = this.empresasDisponiveis; // para o multiplo-select
         if (callback) callback();
       },
       (error) => {
@@ -176,6 +181,14 @@ export class CadastroDeAtividadeComponent implements OnInit {
   }
 
   onSubmit(): void {
+    let empresasParaEnviar: string[] = [];
+
+    if (this.isEditMode) {
+      empresasParaEnviar = [this.atividadeForm.value.idEmpresa];
+    } else {
+      empresasParaEnviar = this.atividadeForm.value.idEmpresas;
+    }
+
     const multasSelecionadas = this.atividadeForm.value.multas;
     const multasParaEnviar = Array.isArray(multasSelecionadas)
       ? multasSelecionadas.map((tipo: string, idx: number) => ({
@@ -187,7 +200,8 @@ export class CadastroDeAtividadeComponent implements OnInit {
     const atividade: Atividade = {
       ...this.atividadeForm.value,
       idsUsuario: this.atividadeForm.value.idsUsuario,
-      idEmpresas: this.atividadeForm.value.idEmpresas,
+      idEmpresas: !this.isEditMode ? empresasParaEnviar : undefined,
+      idEmpresa: this.isEditMode ? empresasParaEnviar[0] : undefined,
       multas: multasParaEnviar,
     };
 
@@ -236,7 +250,13 @@ export class CadastroDeAtividadeComponent implements OnInit {
         },
         (error) => {
           this.isLoading = false;
-          this.errorMessage = error.message || 'Erro ao cadastrar a atividade.';
+          const status = error?.status ?? 500;
+
+          this.errorMessage = this.errorMessageService.getErrorMessage(
+            error.status,
+            'POST',
+            'atividade'
+          );
           this.successMessage = null;
         }
       );
@@ -248,7 +268,6 @@ export class CadastroDeAtividadeComponent implements OnInit {
       ? event.map((item: any) => item.value)
       : [];
     this.atividadeForm.get('idsUsuario')?.setValue(ids);
-    console.log('Membros selecionados (ids):', ids);
   }
 
   onMultaChange(val: any[]) {
@@ -263,7 +282,12 @@ export class CadastroDeAtividadeComponent implements OnInit {
       ? event.map((item: any) => item.value)
       : [];
     this.atividadeForm.get('idEmpresas')?.setValue(values);
-    console.log('Empresas selecionadas (values):', values);
+  }
+
+  onEmpresaChange(event: any) {
+    const value = event?.value ?? event;
+    this.atividadeForm.get('idEmpresas')?.setValue(value);
+    this.selectedEmpresa = value;
   }
 
   private verificarModoEdicao(): void {
@@ -276,39 +300,56 @@ export class CadastroDeAtividadeComponent implements OnInit {
             .getAtividadeById(String(this.atividadeId))
             .subscribe(
               (atividade: Atividade) => {
-                // Seleciona empresas já cadastradas
-                const idEmpresas = Array.isArray(atividade.idEmpresas)
-                  ? atividade.idEmpresas
-                  : atividade.empresa
-                  ? [atividade.empresa.id]
-                  : [];
-
                 this.atividadeForm.patchValue({
                   ...atividade,
-                  idEmpresas,
+                  idEmpresas: !this.isEditMode
+                    ? atividade.empresas?.map((empresa) => ({
+                        value: empresa.id,
+                        description: empresa.razaoSocial,
+                      })) || []
+                    : '',
                   idsUsuario:
-                    atividade.usuarios?.map((usuario) => ({
-                      value: usuario.id,
-                      description: usuario.nome,
-                    })) || [],
+                    atividade.usuarios?.map((usuario) => usuario.id) || [],
                   multas: (atividade.multas || []).map(
-                    (multaObj: { id: number; tipo: string }) => {
-                      const multaSelect = this.multas.find(
-                        (m) => m.value === multaObj.tipo
-                      );
-                      return multaSelect
-                        ? {
-                            value: multaSelect.value,
-                            description: multaSelect.description,
-                          }
-                        : { value: multaObj.tipo, description: multaObj.tipo };
-                    }
+                    (multaObj: { id: number; tipo: string }) => multaObj.tipo
                   ),
                 });
 
-                // Atualize os selects múltiplos
-                this.selectedEmpresa = idEmpresas;
+                if (this.isEditMode) {
+                  this.empresa = this.empresasDisponiveis;
+                  this.selectedEmpresa = atividade.empresa?.id || '';
+                  this.atividadeForm
+                    .get('idEmpresas')
+                    ?.setValue(this.selectedEmpresa);
+
+                  this.selectedMembro =
+                    atividade.usuarios?.map((usuario) => ({
+                      value: usuario.id,
+                      description: usuario.nome,
+                    })) || [];
+
+                  this.selectedMulta = (atividade.multas || []).map((multa) => {
+                    const tipo = typeof multa === 'string' ? multa : multa.tipo;
+                    const multaObj = this.multas.find((m) => m.value === tipo);
+                    return multaObj
+                      ? {
+                          value: multaObj.value,
+                          description: multaObj.description,
+                        }
+                      : { value: tipo, description: tipo };
+                  });
+                }
+
+                if (atividade.multas && atividade.multas.length > 0) {
+                  this.atividadeForm.get('multas')?.enable();
+                  this.selectedPossuiMulta = 'Sim';
+                } else {
+                  this.atividadeForm.get('multas')?.disable();
+                  this.selectedPossuiMulta = 'Não';
+                }
+
                 this.tratarDadosAtividade(atividade);
+                this.selectedSetor = atividade.setor || '';
               },
               (error) => {
                 console.error('Erro ao carregar os dados da atividade:', error);

@@ -51,16 +51,27 @@
                 <textarea type="text" id="descricao" name="descricao" formControlName="descricao" class="form-control" placeholder="Digite a descrição da atividade" rows="6"></textarea>
             </div>
 
-            <div class="form-group">
-                <label for="idEmpresas">Empresa</label>
+            <div class="form-group" *ngIf="!isEditMode">
+                <label for="idEmpresas">Empresas</label>
                 <app-multiplo-select
-                  label="Selecionar empresa"
+                  label="Selecionar empresas"
                   [options]="empresas"
-                  [(selectedValue)]="selectedEmpresa"
+                  [(selectedValue)]="selectedEmpresas"
                   [multiple]="true"
                   formControlName="idEmpresas"
                   (selectedValueChange)="onEmpresasChange($event)">
                 </app-multiplo-select>
+            </div>
+
+            <div class="form-group" *ngIf="isEditMode">
+                <label for="idEmpresas">Empresa</label>
+                <app-select-padrao
+                    label="Selecionar empresa"
+                    [options]="empresa"
+                    [(selectedValue)]="selectedEmpresa"
+                    formControlName="idEmpresas"
+                    (selectedValueChange)="onEmpresaChange($event)">
+                </app-select-padrao>
             </div>
 
             <div class="input-duo">

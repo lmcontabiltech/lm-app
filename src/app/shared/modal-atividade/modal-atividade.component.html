@@ -79,7 +79,7 @@
                         *ngFor="let multa of atividade?.multas"
                         class="multa-tag"
                       >
-                        {{ multa.tipo }}
+                        {{ getDescricaoMulta(multa.tipo) }}
                       </span>
                       <span
                         *ngIf="!atividade?.multas?.length"
@@ -157,6 +157,11 @@
                 </div>
 
                 <div class="menu-acao">
+                  <button
+                    class="btn btn-delete"
+                  >
+                    Copiar
+                  </button>
                   <button
                     class="btn btn-delete"
                     (click)="DeletarAtividade(atividade.id)"

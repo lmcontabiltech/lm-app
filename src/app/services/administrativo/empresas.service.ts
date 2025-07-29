@@ -17,15 +17,8 @@ export class EmpresasService {
     return this.http.post<Empresa>(this.apiURL, empresa).pipe(
       map((response) => response),
       catchError((error) => {
-        let errorMessage = 'Erro ao cadastrar a empresa.';
-
-        if (error.error instanceof ErrorEvent) {
-          errorMessage = `Erro: ${error.error.message}`;
-        } else if (error.status) {
-          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
-        }
-        console.error(errorMessage);
-        return throwError(() => new Error(errorMessage));
+        console.error('Erro ao cadastrar a empresa:', error);
+        return throwError(() => error);
       })
     );
   }
@@ -34,15 +27,8 @@ export class EmpresasService {
     return this.http.get<Empresa[]>(this.apiURL).pipe(
       map((response) => response),
       catchError((error) => {
-        let errorMessage = 'Erro ao buscar as empresas.';
-
-        if (error.error instanceof ErrorEvent) {
-          errorMessage = `Erro: ${error.error.message}`;
-        } else if (error.status) {
-          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
-        }
-        console.error(errorMessage);
-        return throwError(() => new Error(errorMessage));
+        console.error('Erro no servidor:', error);
+        return throwError(() => error);
       })
     );
   }
@@ -52,15 +38,8 @@ export class EmpresasService {
     return this.http.get<Empresa>(url).pipe(
       map((response) => response),
       catchError((error) => {
-        let errorMessage = 'Erro ao buscar a empresa.';
-
-        if (error.error instanceof ErrorEvent) {
-          errorMessage = `Erro: ${error.error.message}`;
-        } else if (error.status) {
-          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
-        }
-        console.error(errorMessage);
-        return throwError(() => new Error(errorMessage));
+        console.error('Erro no servidor:', error);
+        return throwError(() => error);
       })
     );
   }
@@ -69,15 +48,8 @@ export class EmpresasService {
     const url = `${this.apiURL}/${id}`;
     return this.http.delete<void>(url).pipe(
       catchError((error) => {
-        let errorMessage = 'Erro ao deletar a empresa.';
-
-        if (error.error instanceof ErrorEvent) {
-          errorMessage = `Erro: ${error.error.message}`;
-        } else if (error.status) {
-          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
-        }
-        console.error(errorMessage);
-        return throwError(() => new Error(errorMessage));
+        console.error('Erro no servidor:', error);
+        return throwError(() => error);
       })
     );
   }
