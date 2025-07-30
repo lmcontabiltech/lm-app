@@ -24,6 +24,7 @@
                         <tr>
                             <th>Nome</th>
                             <th>Colaborador</th>
+                            <th>Estação</th>
                             <th>Data da Entrega</th>
                             <th>Data da Devolução</th>
                             <th>Ações</th>
@@ -42,6 +43,7 @@
                                 </div>
                             </td>
                             <td>{{ periferico.colaborador.nome }}</td>
+                            <td>{{ periferico.estacao }}</td>
                             <td>{{ periferico.dataEntrega | date: 'dd/MM/yyyy' }}</td>
                             <td>{{ periferico.dataDevolucao | date: 'dd/MM/yyyy' }}</td>
                             <td>
