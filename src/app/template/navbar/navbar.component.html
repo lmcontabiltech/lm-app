@@ -99,21 +99,34 @@
         <div *ngIf="permissaoUsuario === 'Administrador' || permissaoUsuario === 'Coordenador' || permissaoUsuario === 'Estagiario'">
           <h3 class="sidebar-title">ADMINISTRATIVO</h3>
           <div class="sidebar-list">
-            <a routerLink="/usuario/colaboradores" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/colaboradores')}">
+            <a 
+              *ngIf="permissaoUsuario === 'Administrador' || permissaoUsuario === 'Coordenador'" 
+              routerLink="/usuario/colaboradores" 
+              class="sidebar-link" 
+              [ngClass]="{'active-link': isActive('/usuario/colaboradores')}">
               <img src="assets/icones/People-icon.svg" alt="image" />
               <span>Colaboradores</span>
             </a>
-            <a routerLink="/usuario/empresas" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/empresas')}">
+
+            <a 
+              *ngIf="permissaoUsuario === 'Administrador' || permissaoUsuario === 'Coordenador' || permissaoUsuario === 'Estagiario'" 
+              routerLink="/usuario/empresas" 
+              class="sidebar-link" 
+              [ngClass]="{'active-link': isActive('/usuario/empresas')}">
               <img src="assets/icones/empresas-icon.svg" alt="home icon" />
               <span>Empresas</span>
             </a>
 
-            <a routerLink="/usuario/perifericos" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/perifericos')}">
+            <a 
+              *ngIf="permissaoUsuario === 'Administrador' || permissaoUsuario === 'Coordenador'" 
+              routerLink="/usuario/perifericos" 
+              class="sidebar-link" 
+              [ngClass]="{'active-link': isActive('/usuario/perifericos')}">
               <img src="assets/icones/box.svg" alt="home icon" />
               <span>Inventário</span>
             </a>
           </div>
-        </div>        
+        </div>
 
         <div>
             <h3 class="sidebar-title">GERENCIAMENTO</h3>
