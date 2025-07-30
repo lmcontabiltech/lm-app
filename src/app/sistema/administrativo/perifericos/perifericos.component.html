@@ -41,7 +41,9 @@
                                     </span>
                                 </div>
                             </td>
-                            <td>{{ periferico.colaborador }}</td>
+                            <td>{{ periferico.colaborador.nome }}</td>
+                            <td>{{ periferico.dataEntrega | date: 'dd/MM/yyyy' }}</td>
+                            <td>{{ periferico.dataDevolucao | date: 'dd/MM/yyyy' }}</td>
                             <td>
                                 <div class="container-acoes">
                                     <button class="btn-acao edit" (click)="editarPeriferico(periferico.id)">
