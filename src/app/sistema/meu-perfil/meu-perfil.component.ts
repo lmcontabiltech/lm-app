@@ -26,6 +26,15 @@ export class MeuPerfilComponent implements OnInit {
   errorMessage: string | null = null;
   messageTimeout: any;
 
+  passwordVisible: { [key: string]: boolean } = {
+    password: false,
+    confirmPassword: false,
+  };
+
+  oldPassword: string = '';
+  newPassword: string = '';
+  confirmPassword: string = '';
+
   constructor(
     public themeService: ThemeService,
     private location: Location,
@@ -154,15 +163,62 @@ export class MeuPerfilComponent implements OnInit {
     if (this.messageTimeout) clearTimeout(this.messageTimeout);
   }
 
+  getDescricaoSetor(setor: string): string {
+    return SetorDescricao[setor as keyof typeof SetorDescricao] || setor || '-';
+  }
+
   toggleChangePassword() {
     this.showChangePassword = !this.showChangePassword;
   }
 
   changePassword() {
-    this.showChangePassword = false;
+    if (!this.oldPassword && !this.newPassword && !this.confirmPassword) {
+      this.showMessage('error', 'Preencha todos os campos.');
+      return;
+    }
+
+    if (this.newPassword !== this.confirmPassword) {
+      this.showMessage('error', 'As senhas não coincidem.');
+      return;
+    }
+
+    const dto = {
+      oldPassword: this.oldPassword,
+      newPassword: this.newPassword,
+      confirmPassword: this.confirmPassword,
+    };
+
+    console.log('Enviando DTO para redefinir senha:', dto);
+
+    this.colaboradoresService
+      .redefinirSenha({
+        oldPassword: this.oldPassword,
+        newPassword: this.newPassword,
+        confirmPassword: this.confirmPassword,
+      })
+      .subscribe({
+        next: () => {
+          this.showChangePassword = false;
+          this.showMessage('success', 'Senha alterada com sucesso!');
+        },
+        error: (error) => {
+          this.showMessage(
+            'error',
+            error.message || 'Erro ao alterar a senha.'
+          );
+          console.error('Erro ao redefinir senha:', error);
+        },
+      });
   }
 
-  getDescricaoSetor(setor: string): string {
-    return SetorDescricao[setor as keyof typeof SetorDescricao] || setor || '-';
+  togglePasswordVisibility(field: string) {
+    this.passwordVisible[field] = !this.passwordVisible[field];
+    const passwordInput = document.querySelector(`input[name="${field}"]`);
+    if (passwordInput) {
+      passwordInput.setAttribute(
+        'type',
+        this.passwordVisible[field] ? 'text' : 'password'
+      );
+    }
   }
 }

@@ -278,6 +278,25 @@ input:checked + .slider:before {
   height: 48px;
 }
 
+.input-senha {
+  position: relative;
+  padding-bottom: 16px;
+  border-radius: 8px;
+}
+
+.input-icon {
+  position: absolute;
+  right: 15px;
+  top: 55%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.input-icon img {
+  width: 20px;
+  height: 20px;
+}
+
 .editar-dados {
   display: flex;
   flex-direction: column;

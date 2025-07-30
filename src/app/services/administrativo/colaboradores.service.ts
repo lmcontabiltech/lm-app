@@ -320,4 +320,25 @@ export class ColaboradoresService {
       })
     );
   }
+
+  redefinirSenha(dto: {
+    oldPassword: string;
+    newPassword: string;
+    confirmPassword: string;
+  }): Observable<any> {
+    const url = `${this.apiURL}/newPassword`;
+    return this.http.put<any>(url, dto).pipe(
+      map((response) => response),
+      catchError((error) => {
+        let errorMessage = 'Erro ao redefinir a senha.';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
 }
