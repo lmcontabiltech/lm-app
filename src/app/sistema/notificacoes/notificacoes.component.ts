@@ -86,13 +86,11 @@ export class NotificacoesComponent implements OnInit, OnDestroy {
 
     this.notificacaoService.getNotificacoes().subscribe({
       next: (notificacoes: Notificacao[]) => {
-        console.log('Notificações carregadas:', notificacoes);
         this.notificacoes = notificacoes;
         this.aplicarFiltros();
         this.isLoading = false;
       },
       error: (error) => {
-        console.error('Erro ao carregar notificações:', error);
         this.showFeedback('error', 'Erro ao carregar notificações');
         this.isLoading = false;
       },
@@ -105,7 +103,6 @@ export class NotificacoesComponent implements OnInit, OnDestroy {
         this.contadorNaoLidas = contador;
       },
       error: (error) => {
-        console.error('Erro ao carregar contador:', error);
       },
     });
   }
@@ -146,7 +143,6 @@ export class NotificacoesComponent implements OnInit, OnDestroy {
 
     this.notificacaoService.marcarTodasComoLidas().subscribe({
       next: (quantidadeMarcadas: number) => {
-        console.log(`${quantidadeMarcadas} notificações marcadas como lidas`);
 
         // Marcar todas como lidas localmente
         this.notificacoes.forEach((notificacao) => {
@@ -172,10 +168,6 @@ export class NotificacoesComponent implements OnInit, OnDestroy {
         this.isMarkingAllAsRead = false;
       },
       error: (error) => {
-        console.error(
-          'Erro ao marcar todas as notificações como lidas:',
-          error
-        );
         this.showFeedback(
           'error',
           'Erro ao marcar todas as notificações como lidas'
@@ -262,7 +254,6 @@ export class NotificacoesComponent implements OnInit, OnDestroy {
       .getNotificacoesTempoReal()
       .subscribe({
         next: (notificacao: Notificacao) => {
-          console.log('Nova notificação recebida em tempo real:', notificacao);
 
           this.notificacoes.unshift(notificacao);
 
@@ -273,7 +264,6 @@ export class NotificacoesComponent implements OnInit, OnDestroy {
           this.showFeedback('info', notificacao.titulo, notificacao.descricao);
         },
         error: (error) => {
-          console.error('Erro no stream de notificações:', error);
           setTimeout(() => {
             this.conectarNotificacoesTempoReal();
           }, 5000);

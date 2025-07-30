@@ -49,20 +49,20 @@
             <div class="form-group">
                 <label for="estacao">Estação</label>
                 <app-select-padrao
-                  label="Selecionar a estação"
-                  [options]="setores"
-                  [(selectedValue)]="selectedSetor">
+                    label="Selecionar a estação"
+                    [options]="setores"
+                    [(selectedValue)]="selectedSetor"
+                    formControlName="estacao">
                 </app-select-padrao>
             </div>
 
             <div class="form-group">
-                <label for="colaborador">Colaborador</label>
+                <label for="idColaborador">Colaborador</label>
                 <app-select-padrao
                     label="Selecionar o colaborador"
                     [options]="usuarios"
                     [(selectedValue)]="selectedUsuario"
-                    formControlName="colaborador"
-                >
+                    formControlName="idColaborador">
                 </app-select-padrao>
             </div>
 
@@ -117,21 +117,21 @@
             ></textarea>
             </div>
 
+            <div class="alerts">
+                <div class="alert-two alert-success" *ngIf="successMessage">
+                    {{ successMessage }}
+                </div>
+                <div class="alert-two alert-danger" *ngIf="errorMessage">
+                    {{ errorMessage }}
+                </div>
+            </div>
+
             <div class="container-btn">
             <button type="submit" class="btn-cadastrar">
                 {{ isEditMode ? "Atualizar periférico" : "Cadastrar periférico" }}
             </button>
             </div>
         </form>
-        </div>
-
-        <div class="alerts">
-        <div class="alerts-container alert-success" *ngIf="successMessage">
-            {{ successMessage }}
-        </div>
-        <div class="alerts-container alert-danger" *ngIf="errorMessage">
-            {{ errorMessage }}
-        </div>
         </div>
 
         <app-loading *ngIf="isLoading"></app-loading>

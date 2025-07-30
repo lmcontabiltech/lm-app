@@ -278,6 +278,25 @@ input:checked + .slider:before {
   height: 48px;
 }
 
+.input-senha {
+  position: relative;
+  padding-bottom: 8px;
+  border-radius: 8px;
+}
+
+.input-icon {
+  position: absolute;
+  right: 15px;
+  top: 60%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.input-icon img {
+  width: 20px;
+  height: 20px;
+}
+
 .editar-dados {
   display: flex;
   flex-direction: column;
@@ -322,7 +341,7 @@ input:checked + .slider:before {
 }
 .close-btn {
   position: absolute;
-  top: 8px;
+  top: 2%;
   right: 12px;
   background: none;
   border: none;
@@ -351,6 +370,28 @@ input:checked + .slider:before {
   to {
     width: 0;
   }
+}
+
+/* regras da senha */
+.password-rules {
+  margin: 8px 0 0 0;
+  padding: 0 0 0 18px;
+  list-style: none;
+  font-size: 0.95em;
+}
+.password-rules p {
+  color: #d9534f;
+  margin-bottom: 2px;
+  transition: color 0.2s;
+}
+.password-rules p.valid {
+  color: #28a745;
+}
+.password-rules p span {
+  margin-right: 4px;
+}
+.password-rules p.valid span {
+  color: #28a745;
 }
 
 /* Breakpoints */

@@ -50,10 +50,10 @@ export class CadastroPerifericosComponent implements OnInit {
     this.perifericoForm = this.formBuilder.group({
       nome: ['', Validators.required],
       descricaoProduto: [''],
-      colaborador: [''],
+      idColaborador: [0],
       tipoPosse: ['PROPRIO_EMPRESA'],
       dataEntrega: ['', Validators.required],
-      dataDevolucao: ['', Validators.required],
+      dataDevolucao: [''],
       anotacao: [''],
       estacao: ['', Validators.required],
     });
@@ -108,8 +108,23 @@ export class CadastroPerifericosComponent implements OnInit {
       ...this.perifericoForm.value,
     };
 
+    const formData = new FormData();
+    formData.append('periferico', JSON.stringify(periferico));
+
+    const fotoFile = this.selectedFoto['foto'];
+    if (fotoFile) {
+      formData.append('foto', fotoFile);
+    }
+
+    if (!periferico.idColaborador) {
+      delete periferico.idColaborador;
+    }
+
     console.log('Dados do periferico a serem enviados:', periferico);
-    console.log('JSON enviado para o backend:', JSON.stringify(periferico, null, 2));
+    console.log(
+      'JSON enviado para o backend:',
+      JSON.stringify(periferico, null, 2)
+    );
 
     if (this.isEditMode && this.perifericoId) {
       this.perifericoService
@@ -130,7 +145,7 @@ export class CadastroPerifericosComponent implements OnInit {
           }
         );
     } else {
-      this.perifericoService.cadastrarPeriferico(periferico).subscribe(
+      this.perifericoService.cadastrarPeriferico(formData).subscribe(
         (response) => {
           this.isLoading = false;
           this.successMessage = 'Periferico cadastrada com sucesso!';

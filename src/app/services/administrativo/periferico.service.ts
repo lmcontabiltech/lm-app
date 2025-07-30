@@ -13,8 +13,12 @@ export class PerifericoService {
 
   constructor(private http: HttpClient) {}
 
-  cadastrarPeriferico(periferico: Periferico): Observable<Periferico> {
-    return this.http.post<Periferico>(this.apiURL, periferico).pipe(
+  cadastrarPeriferico(formData: FormData): Observable<Periferico> {
+    console.log('Dados enviados para o backend:');
+    formData.forEach((value, key) => {
+      console.log(`${key}:`, value);
+    });
+    return this.http.post<any>(this.apiURL, formData).pipe(
       map((response) => response),
       catchError((error) => {
         let errorMessage = 'Erro ao cadastrar o periferico.';
@@ -82,7 +86,10 @@ export class PerifericoService {
     );
   }
 
-  atualizarPeriferico(id: string, periferico: Periferico): Observable<Periferico> {
+  atualizarPeriferico(
+    id: string,
+    periferico: Periferico
+  ): Observable<Periferico> {
     const url = `${this.apiURL}/${id}`;
     return this.http.put<Periferico>(url, periferico).pipe(
       map((response) => response),
