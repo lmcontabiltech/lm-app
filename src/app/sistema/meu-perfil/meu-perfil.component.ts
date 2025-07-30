@@ -4,6 +4,7 @@ import { Location } from '@angular/common';
 import { ColaboradoresService } from 'src/app/services/administrativo/colaboradores.service';
 import { Setor } from '../administrativo/cadastro-de-colaborador/setor';
 import { SetorDescricao } from '../administrativo/cadastro-de-colaborador/setor-descricao';
+import { ErrorMessageService } from 'src/app/services/feedback/error-message.service';
 
 @Component({
   selector: 'app-meu-perfil',
@@ -38,7 +39,8 @@ export class MeuPerfilComponent implements OnInit {
   constructor(
     public themeService: ThemeService,
     private location: Location,
-    private colaboradoresService: ColaboradoresService
+    private colaboradoresService: ColaboradoresService,
+    private errorMessageService: ErrorMessageService
   ) {}
 
   ngOnInit(): void {
@@ -188,8 +190,6 @@ export class MeuPerfilComponent implements OnInit {
       confirmPassword: this.confirmPassword,
     };
 
-    console.log('Enviando DTO para redefinir senha:', dto);
-
     this.colaboradoresService
       .redefinirSenha({
         oldPassword: this.oldPassword,
@@ -200,13 +200,23 @@ export class MeuPerfilComponent implements OnInit {
         next: () => {
           this.showChangePassword = false;
           this.showMessage('success', 'Senha alterada com sucesso!');
+          this.oldPassword = '';
+          this.newPassword = '';
+          this.confirmPassword = '';
         },
         error: (error) => {
-          this.showMessage(
-            'error',
-            error.message || 'Erro ao alterar a senha.'
-          );
-          console.error('Erro ao redefinir senha:', error);
+          let msg = '';
+          if (error.status) {
+            msg = this.errorMessageService.getErrorMessage(
+              error.status,
+              'PUT',
+              'senha'
+            );
+          }
+          if (error.error?.message) {
+            msg = error.error.message;
+          }
+          this.showMessage('error', msg || 'Erro ao alterar a senha.');
         },
       });
   }

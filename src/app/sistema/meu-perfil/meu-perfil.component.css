@@ -341,7 +341,7 @@ input:checked + .slider:before {
 }
 .close-btn {
   position: absolute;
-  top: 8px;
+  top: 2%;
   right: 12px;
   background: none;
   border: none;
