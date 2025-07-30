@@ -168,22 +168,50 @@
             <img *ngIf="passwordVisible['oldPassword']" src="assets/icones/eye-closed.svg" alt="Mostrar senha" class="toggle-password"/>
         </div>
       </div>
-      <div class="input-senha">
-        <label for="newPassword">Nova senha</label>
-        <input
-          type="password"
-          id="newPassword"
-          name="newPassword"
-          class="input-perfil"
-          placeholder="Insira sua nova senha"
-          [(ngModel)]="newPassword"
-          required
-        />
-        <div class="input-icon" type="button" (click)="togglePasswordVisibility('newPassword')">
-            <img *ngIf="!passwordVisible['newPassword']" src="assets/icones/eye-open.svg" alt="Mostrar senha" class="toggle-password"/>
-            <img *ngIf="passwordVisible['newPassword']" src="assets/icones/eye-closed.svg" alt="Mostrar senha" class="toggle-password"/>
+      <div>
+        <div class="input-senha">
+          <label for="newPassword">Nova senha</label>
+          <input
+            type="password"
+            id="newPassword"
+            name="newPassword"
+            class="input-perfil"
+            placeholder="Insira sua nova senha"
+            [(ngModel)]="newPassword"
+            required
+          />
+          <div class="input-icon" type="button" (click)="togglePasswordVisibility('newPassword')">
+              <img *ngIf="!passwordVisible['newPassword']" src="assets/icones/eye-open.svg" alt="Mostrar senha" class="toggle-password"/>
+              <img *ngIf="passwordVisible['newPassword']" src="assets/icones/eye-closed.svg" alt="Mostrar senha" class="toggle-password"/>
+          </div>
+        </div>
+
+        <div class="password-rules-container">
+          <div class="password-rules">
+            <p [class.valid]="senhaMin8">
+              <span [class.valid]="senhaMin8">•</span>
+              Mínimo de 8 caracteres
+            </p>
+            <p [class.valid]="senhaMaiuscula">
+              <span [class.valid]="senhaMaiuscula">•</span>
+              Pelo menos 1 letra maiúscula
+            </p>
+            <p [class.valid]="senhaMinuscula">
+              <span [class.valid]="senhaMinuscula">•</span>
+              Pelo menos 1 letra minúscula
+            </p>
+            <p [class.valid]="senhaNumero">
+              <span [class.valid]="senhaNumero">•</span>
+              Pelo menos 1 número
+            </p>
+            <p [class.valid]="senhaEspecial">
+              <span [class.valid]="senhaEspecial">•</span>
+              Pelo menos 1 caractere especial
+            </p>
+          </div>
         </div>
       </div>
+
       <div class="input-senha">
         <label for="confirmPassword">Confirmar nova senha</label>
         <input

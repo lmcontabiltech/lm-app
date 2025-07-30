@@ -280,14 +280,14 @@ input:checked + .slider:before {
 
 .input-senha {
   position: relative;
-  padding-bottom: 16px;
+  padding-bottom: 8px;
   border-radius: 8px;
 }
 
 .input-icon {
   position: absolute;
   right: 15px;
-  top: 55%;
+  top: 60%;
   transform: translateY(-50%);
   cursor: pointer;
 }
@@ -370,6 +370,28 @@ input:checked + .slider:before {
   to {
     width: 0;
   }
+}
+
+/* regras da senha */
+.password-rules {
+  margin: 8px 0 0 0;
+  padding: 0 0 0 18px;
+  list-style: none;
+  font-size: 0.95em;
+}
+.password-rules p {
+  color: #d9534f;
+  margin-bottom: 2px;
+  transition: color 0.2s;
+}
+.password-rules p.valid {
+  color: #28a745;
+}
+.password-rules p span {
+  margin-right: 4px;
+}
+.password-rules p.valid span {
+  color: #28a745;
 }
 
 /* Breakpoints */

@@ -221,4 +221,20 @@ export class MeuPerfilComponent implements OnInit {
       );
     }
   }
+
+  get senhaMin8(): boolean {
+    return (this.newPassword?.length ?? 0) >= 8;
+  }
+  get senhaMaiuscula(): boolean {
+    return /[A-Z]/.test(this.newPassword || '');
+  }
+  get senhaMinuscula(): boolean {
+    return /[a-z]/.test(this.newPassword || '');
+  }
+  get senhaNumero(): boolean {
+    return /\d/.test(this.newPassword || '');
+  }
+  get senhaEspecial(): boolean {
+    return /[!@#$%^&*(),.?":{}|<>]/.test(this.newPassword || '');
+  }
 }
