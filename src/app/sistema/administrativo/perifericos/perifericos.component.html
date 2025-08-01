@@ -43,7 +43,9 @@
                                 </div>
                             </td>
                             <td>{{ periferico.colaborador.nome }}</td>
-                            <td>{{ periferico.estacao }}</td>
+                            <td>
+                                <app-setor-tag [setor]="getSetorEnum(periferico.estacao)"></app-setor-tag>
+                            </td>
                             <td>{{ periferico.dataEntrega | date: 'dd/MM/yyyy' }}</td>
                             <td>{{ periferico.dataDevolucao | date: 'dd/MM/yyyy' }}</td>
                             <td>

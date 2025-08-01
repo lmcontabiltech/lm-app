@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Periferico } from './periferico';
 import { PerifericoService } from 'src/app/services/administrativo/periferico.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { Setor } from '../cadastro-de-colaborador/setor';
 
 @Component({
   selector: 'app-perifericos',
@@ -101,7 +102,9 @@ export class PerifericosComponent implements OnInit {
     if (confirm('Tem certeza que deseja excluir este periferico?')) {
       this.perifericoService.deletarPeriferico(id).subscribe(
         () => {
-          this.perifericos = this.perifericos.filter((periferico) => periferico.id !== id);
+          this.perifericos = this.perifericos.filter(
+            (periferico) => periferico.id !== id
+          );
           this.totalPaginas = Math.ceil(
             this.perifericos.length / this.itensPorPagina
           );
@@ -116,5 +119,9 @@ export class PerifericosComponent implements OnInit {
 
   editarPeriferico(id: string): void {
     this.router.navigate(['/usuario/cadastro-de-perifericos', id]);
+  }
+
+  getSetorEnum(estacao: string): Setor | 'ALL' {
+    return (Setor as any)[estacao] || estacao;
   }
 }
