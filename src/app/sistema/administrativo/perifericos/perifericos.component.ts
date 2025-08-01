@@ -19,6 +19,12 @@ export class PerifericosComponent implements OnInit {
 
   permissaoUsuario: string = '';
 
+  termoBusca: string = '';
+  mensagemBusca: string = '';
+  isLoading = false;
+  successMessage: string = '';
+  messageTimeout: any;
+
   constructor(
     private router: Router,
     private perifericoService: PerifericoService,
@@ -55,7 +61,37 @@ export class PerifericosComponent implements OnInit {
   }
 
   onSearch(searchTerm: string) {
-    console.log('Search term:', searchTerm);
+    if (!searchTerm || searchTerm.trim() === '') {
+      this.mensagemBusca = '';
+      this.fetchPerifericos();
+      return;
+    }
+    this.isLoading = true;
+    this.perifericoService.buscarPerifericosPorNome(searchTerm).subscribe(
+      (perifericos: Periferico[]) => {
+        this.perifericos = perifericos;
+        this.paginaAtual = 1;
+        this.totalPaginas = Math.ceil(
+          this.perifericos.length / this.itensPorPagina
+        );
+        this.atualizarPaginacao();
+        this.isLoading = false;
+        if (!perifericos || perifericos.length === 0) {
+          this.mensagemBusca = 'Busca não encontrada';
+        } else {
+          this.mensagemBusca = '';
+        }
+      },
+      (error) => {
+        console.error('Erro ao buscar empresas:', error);
+        this.isLoading = false;
+        if (error.message && error.message.includes('404')) {
+          this.perifericos = [];
+          this.atualizarPaginacao();
+          this.mensagemBusca = 'Busca não encontrada';
+        }
+      }
+    );
   }
 
   fetchPerifericos(): void {
@@ -127,5 +163,25 @@ export class PerifericosComponent implements OnInit {
 
   getSetorEnum(estacao: string): Setor | 'ALL' {
     return (Setor as any)[estacao] || estacao;
+  }
+
+  exibirMensagemDeSucesso(): void {
+    const state = window.history.state as { successMessage?: string };
+    if (state?.successMessage) {
+      this.successMessage = state.successMessage;
+      setTimeout(() => (this.successMessage = ''), 3000);
+      window.history.replaceState({}, document.title);
+    }
+  }
+
+  showMessage(type: 'success' | 'error', msg: string) {
+    this.clearMessage();
+    if (type === 'success') this.successMessage = msg;
+    this.messageTimeout = setTimeout(() => this.clearMessage(), 3000);
+  }
+
+  clearMessage() {
+    this.successMessage = '';
+    if (this.messageTimeout) clearTimeout(this.messageTimeout);
   }
 }
