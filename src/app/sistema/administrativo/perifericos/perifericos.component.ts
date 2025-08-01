@@ -121,6 +121,10 @@ export class PerifericosComponent implements OnInit {
     this.router.navigate(['/usuario/cadastro-de-perifericos', id]);
   }
 
+  visualizarPeriferico(id: string): void {
+    this.router.navigate(['/usuario/detalhes-periferico', id]);
+  }
+
   getSetorEnum(estacao: string): Setor | 'ALL' {
     return (Setor as any)[estacao] || estacao;
   }
