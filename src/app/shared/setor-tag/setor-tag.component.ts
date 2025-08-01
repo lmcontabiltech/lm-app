@@ -31,11 +31,23 @@ export class SetorTagComponent {
       case Setor.FISCAL:
         return '#1F337F';
       case Setor.PESSOAL:
-        return '#4a59a0'; 
+        return '#4a59a0';
       case Setor.PARALEGAL:
         return '#585A60';
       case Setor.FINANCEIRO:
         return '#5a5f7b';
+      case Setor.JURIDICO:
+        return '#2C3E50';
+      case Setor.ADMINISTRATIVO:
+        return '#34495E';
+      case Setor.RH:
+        return '#6A3BCE';
+      case Setor.SUPORTE_TI:
+        return '#0984E3';
+      case Setor.ESTAGIARIO:
+        return '#3A3AB3';
+      case Setor.OUTRO:
+        return '#217f94ff';
       default:
         return '#CCD0DE';
     }
@@ -48,16 +60,15 @@ export class SetorTagComponent {
   lightenColor(color: string, percent: number): string {
     const num = parseInt(color.replace('#', ''), 16);
     const amt = Math.round(2.55 * percent * 100);
-    const R = (num >> 16) + amt;
-    const G = ((num >> 8) & 0x00FF) + amt;
-    const B = (num & 0x0000FF) + amt;
-    return `#${(
-      0x1000000 +
-      (R < 255 ? (R < 1 ? 0 : R) : 255) * 0x10000 +
-      (G < 255 ? (G < 1 ? 0 : G) : 255) * 0x100 +
-      (B < 255 ? (B < 1 ? 0 : B) : 255)
-    )
-      .toString(16)
-      .slice(1)}`;
+
+    let R = (num >> 16) + amt;
+    let G = ((num >> 8) & 0x00ff) + amt;
+    let B = (num & 0x0000ff) + amt;
+
+    R = Math.max(0, Math.min(255, R));
+    G = Math.max(0, Math.min(255, G));
+    B = Math.max(0, Math.min(255, B));
+
+    return `#${((1 << 24) + (R << 16) + (G << 8) + B).toString(16).slice(1)}`;
   }
 }
