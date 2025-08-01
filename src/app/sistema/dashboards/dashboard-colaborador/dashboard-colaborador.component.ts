@@ -10,6 +10,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { DashboardColaboradorService } from 'src/app/services/graficos/dashboard-colaborador.service';
 import { DashboardAtividadesPorSetorResponseDTO } from '../dashboard-admin/atividades-por-setor';
 import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
+import { GraficoAtividadesPorMes } from '../dashboard-admin/atividades-por-mes';
 
 @Component({
   selector: 'app-dashboard-colaborador',
@@ -48,6 +49,29 @@ export class DashboardColaboradorComponent implements OnInit {
 
   atividadesResumoSetor?: DashboardAtividadesPorSetorResponseDTO;
 
+  atividadesPorMesSetor: { mes: string; quantidade: number }[] = [];
+  totalAtividadesPorMes: number = 0;
+
+  graficoAtividadesMensaisSetor = {
+    series: [
+      { name: 'Atividades', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+    ],
+    categories: [
+      'Jan',
+      'Fev',
+      'Mar',
+      'Abr',
+      'Mai',
+      'Jun',
+      'Jul',
+      'Ago',
+      'Set',
+      'Out',
+      'Nov',
+      'Dez',
+    ],
+  };
+
   constructor(
     private exchangeService: ExchangeService,
     private colaboradorService: ColaboradoresService,
@@ -66,7 +90,6 @@ export class DashboardColaboradorComponent implements OnInit {
     this.exchangeService.getExchangeRates().subscribe({
       next: (data) => {
         this.cotacoes = data;
-        console.log('Cotações armazenadas:', this.cotacoes);
       },
       error: (err) => console.error('Erro ao buscar taxas de câmbio:', err),
     });
@@ -74,7 +97,6 @@ export class DashboardColaboradorComponent implements OnInit {
     this.exchangeService.getSelicRate().subscribe({
       next: (valorSelic) => {
         this.selic = valorSelic.toFixed(2);
-        console.log('Taxa Selic:', this.selic);
       },
       error: (err) => console.error('Erro ao buscar taxa Selic:', err),
     });
@@ -84,7 +106,6 @@ export class DashboardColaboradorComponent implements OnInit {
     this.authService.obterPerfilUsuario().subscribe({
       next: (usuario) => {
         this.usuario = usuario;
-        console.log('Perfil do usuário:', usuario);
 
         switch (usuario.permissao) {
           case 'ROLE_ADMIN':
@@ -111,6 +132,7 @@ export class DashboardColaboradorComponent implements OnInit {
           this.nomeSetorGrafico = this.setoresMap[usuario.setor].nome;
           this.carregarProgressoSetor(usuario.setor);
           this.carregarResumoSetor(usuario.setor);
+          this.carregarGraficoAtividadesPorMes(usuario.setor);
         }
       },
       error: (error) => {
@@ -166,5 +188,59 @@ export class DashboardColaboradorComponent implements OnInit {
     const hoje = new Date();
     hoje.setDate(hoje.getDate() - 7);
     return hoje.toISOString().split('T')[0];
+  }
+
+  carregarGraficoAtividadesPorMes(setor: Setor): void {
+    this.dashboardColaboradorService.getAtividadesPorMesSetor(setor).subscribe({
+      next: (data: GraficoAtividadesPorMes) => {
+        console.log('Dados recebidos para atividades por mês:', data);
+        this.atividadesPorMesSetor = data.valoresPorMes;
+        this.totalAtividadesPorMes = data.total;
+        this.atualizarGraficoAtividades();
+      },
+      error: (error) => {
+        console.error('Erro ao carregar atividades por mês:', error);
+        this.atividadesPorMesSetor = [];
+        this.totalAtividadesPorMes = 0;
+        this.graficoAtividadesMensaisSetor.series = [
+          { name: 'Atividades', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+        ];
+      },
+    });
+  }
+
+  atualizarGraficoAtividades(): void {
+    const mesesOrdenados = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+
+    const dadosGrafico: number[] = [];
+
+    mesesOrdenados.forEach((mes) => {
+      const mesEncontrado = this.atividadesPorMesSetor.find(
+        (m) => m.mes === mes
+      );
+      dadosGrafico.push(
+        mesEncontrado ? Math.floor(mesEncontrado.quantidade) : 0
+      );
+    });
+
+    this.graficoAtividadesMensaisSetor.series = [
+      {
+        name: 'Atividades',
+        data: dadosGrafico,
+      },
+    ];
   }
 }

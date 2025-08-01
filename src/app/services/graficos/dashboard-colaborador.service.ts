@@ -66,4 +66,28 @@ export class DashboardColaboradorService {
         })
       );
   }
+
+  getAtividadesPorMesSetor(setor: Setor): Observable<{
+    total: number;
+    valoresPorMes: { mes: string; quantidade: number }[];
+  }> {
+    const url = `${this.apiURL}/atividades/por-mes/setor/${setor}`;
+    return this.http
+      .get<{
+        total: number;
+        valoresPorMes: { mes: string; quantidade: number }[];
+      }>(url)
+      .pipe(
+        catchError((error) => {
+          let errorMessage = `Erro ao buscar métricas de atividades por mês para o setor ${setor}.`;
+          if (error.error instanceof ErrorEvent) {
+            errorMessage = `Erro: ${error.error.message}`;
+          } else if (error.status) {
+            errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+          }
+          console.error(errorMessage);
+          return throwError(() => new Error(errorMessage));
+        })
+      );
+  }
 }
