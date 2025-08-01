@@ -5,6 +5,7 @@ import { PerifericoService } from 'src/app/services/administrativo/periferico.se
 import { AuthService } from 'src/app/services/auth.service';
 import { Setor } from '../cadastro-de-colaborador/setor';
 import { SetorDescricao } from '../cadastro-de-colaborador/setor-descricao';
+import { ModalDeleteService } from 'src/app/services/modal/modalDeletar.service';
 
 @Component({
   selector: 'app-perifericos',
@@ -17,6 +18,7 @@ export class PerifericosComponent implements OnInit {
   itensPorPagina = 5;
   paginaAtual = 1;
   totalPaginas = 0;
+  selectedPeriferico: any = null;
 
   permissaoUsuario: string = '';
 
@@ -35,7 +37,8 @@ export class PerifericosComponent implements OnInit {
   constructor(
     private router: Router,
     private perifericoService: PerifericoService,
-    private authService: AuthService
+    private authService: AuthService,
+    private modalDeleteService: ModalDeleteService
   ) {}
 
   ngOnInit(): void {
@@ -143,22 +146,42 @@ export class PerifericosComponent implements OnInit {
   }
 
   deletarPeriferico(id: string): void {
-    if (confirm('Tem certeza que deseja excluir este periferico?')) {
-      this.perifericoService.deletarPeriferico(id).subscribe(
-        () => {
-          this.perifericos = this.perifericos.filter(
-            (periferico) => periferico.id !== id
-          );
-          this.totalPaginas = Math.ceil(
-            this.perifericos.length / this.itensPorPagina
-          );
-          this.atualizarPaginacao();
-        },
-        (error: any) => {
-          console.error('Erro ao excluir periferico:', error);
-        }
-      );
-    }
+    const perifericoRemovido = this.perifericos.find((e) => e.id === id);
+    this.perifericoService.deletarPeriferico(id).subscribe(
+      () => {
+        this.perifericos = this.perifericos.filter(
+          (periferico) => periferico.id !== id
+        );
+        this.totalPaginas = Math.ceil(
+          this.perifericos.length / this.itensPorPagina
+        );
+        this.atualizarPaginacao();
+        this.showMessage(
+          'success',
+          `Periférico "${perifericoRemovido?.nome || ''}" deletado com sucesso!`
+        );
+      },
+      (error: any) => {
+        console.error('Erro ao excluir periférico:', error);
+      }
+    );
+  }
+
+  openModalDeletar(periferico: any): void {
+    this.selectedPeriferico = periferico;
+
+    this.modalDeleteService.openModal(
+      {
+        title: 'Remoção de Periférico',
+        description: `Tem certeza que deseja excluir o periférico <strong>${periferico.nome}</strong> cadastrado?`,
+        item: periferico,
+        deletarTextoBotao: 'Remover',
+        size: 'md',
+      },
+      () => {
+        this.deletarPeriferico(periferico.id);
+      }
+    );
   }
 
   editarPeriferico(id: string): void {
