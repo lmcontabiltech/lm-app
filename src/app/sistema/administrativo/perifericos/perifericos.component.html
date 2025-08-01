@@ -37,12 +37,12 @@
                                     <div class="avatar"></div>
                                     <span>
                                         <a (click)="visualizarPeriferico(periferico.id)" >
-                                            {{ periferico.nome }}
+                                            {{ periferico.nome || '-' }}
                                         </a>
                                     </span>
                                 </div>
                             </td>
-                            <td>{{ periferico.colaborador.nome }}</td>
+                            <td>{{ periferico.colaborador.nome || '-' }}</td>
                             <td>
                                 <app-setor-tag [setor]="getSetorEnum(periferico.estacao)"></app-setor-tag>
                             </td>
