@@ -36,11 +36,29 @@ export class GraficoRosquinhaComponent implements OnInit, OnChanges, OnDestroy {
   @Input() categories: string[] = [];
   @Input() labels: string[] = [];
   @Input() colors: string[] = [
-    '#008FFB',
-    '#00E396',
-    '#FEB019',
-    '#FF4560',
-    '#775DD0',
+    '#008FFB', // azul
+    '#00E396', // verde
+    '#FEB019', // amarelo
+    '#FF4560', // vermelho
+    '#775DD0', // roxo
+    
+    '#3F51B5', // azul indigo
+    '#546E7A', // cinza azulado
+    '#26A69A', // teal
+    '#D10CE8', // magenta
+    '#F9CE1D', // amarelo claro
+
+    '#FF6B6B', // vermelho coral
+    '#1ABC9C', // verde água
+    '#9C27B0', // roxo escuro
+    '#F39C12', // laranja forte
+    '#E74C3C', // vermelho vivo
+
+    '#2ECC71', // verde vivo
+    '#2980B9', // azul escuro
+    '#8E44AD', // roxo vibrante
+    '#34495E', // azul petróleo
+    '#95A5A6', // cinza claro
   ];
   @Input() colorPalette: string = 'palette1';
 

@@ -1,0 +1,59 @@
+<div class="main-container">
+    <div class="breadcrumb-container">
+        <div class="back-title">
+            <img src="assets/icones/back-left-blue.svg" alt="Back" class="back-icon" (click)="goBack()">
+            <span>Detalhes do periférico</span>
+        </div>
+    </div>
+    <div class="actions">
+        <h1>{{ periferico.nome }}</h1>
+        <p>Data da Entrega: <span>{{ periferico.dataEntrega | date: 'dd/MM/yyyy' }}</span></p>
+    </div>
+</div>
+<div class="subMain-container">
+    <div class="divisao">
+        <p>Geral</p>
+        <hr class="line">
+    </div>
+    <div class="data-itens">
+        <div class="item-data foto-item">
+            <label>Foto do Periférico</label>
+            <ng-container *ngIf="periferico.fotoUrl; else semFoto">
+                <img [src]="periferico.fotoUrl" alt="Foto do Periférico">
+            </ng-container>
+            <ng-template #semFoto>-</ng-template>
+        </div>
+
+        <div class="item-data">
+            <label>Descrição do Periférico</label>
+            <p>{{ periferico.descricaoProduto || '-' }}</p>
+        </div>
+    
+        <div class="data-grid">
+            <div class="item-data">
+                <label>Estação</label>
+                <p>{{ periferico.estacao || '-' }}</p>
+            </div>
+            <div class="item-data">
+                <label>Tipo de Posse</label>
+                <p>{{ getTipoPosseDescricao(periferico.tipoPosse) }}</p>
+            </div>
+        </div>
+
+        <div class="item-data">
+            <label>Anotações sobre o Periférico</label>
+            <p>{{ periferico.anotacao || '-' }}</p>
+        </div>
+
+        <div class="data-grid">
+            <div class="item-data">
+                <label>Colaborador Responsável</label>
+                <p>{{ periferico.colaborador.nome || '-' }}</p>
+            </div>
+            <div class="item-data">
+                <label>Data de Devolução</label>
+                <p>{{ periferico.dataDevolucao ? (periferico.dataDevolucao | date: 'dd/MM/yyyy') : '-' }}</p>
+            </div>
+        </div>
+    </div>
+</div>

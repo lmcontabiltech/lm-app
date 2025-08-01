@@ -27,6 +27,10 @@ import { HistoricoAtividadesComponent } from './gerenciamento/historico-atividad
 import { DetalhesEmpresaComponent } from './administrativo/visualizar-administrativo/detalhes-empresa/detalhes-empresa.component';
 import { HistoricoUsuariosInativosComponent } from './administrativo/visualizar-administrativo/historico-usuarios-inativos/historico-usuarios-inativos.component';
 import { HistoricoEmpresasInativasComponent } from './administrativo/visualizar-administrativo/historico-empresas-inativas/historico-empresas-inativas.component';
+import { DetalhesPerifericoComponent } from './administrativo/visualizar-administrativo/detalhes-periferico/detalhes-periferico.component';
+import { CadastroFilialEmpresaComponent } from './administrativo/cadastro-filial-empresa/cadastro-filial-empresa.component';
+import { FilialEmpresaComponent } from './administrativo/filial-empresa/filial-empresa.component';
+import { DetalhesFilialEmpresaComponent } from './administrativo/visualizar-administrativo/detalhes-filial-empresa/detalhes-filial-empresa.component';
 
 const routes: Routes = [
   {  path: 'usuario', 
@@ -47,6 +51,7 @@ const routes: Routes = [
       { path: 'perifericos', component:PerifericosComponent},
       { path: 'cadastro-de-perifericos', component: CadastroPerifericosComponent},
       { path: 'cadastro-de-perifericos/:id', component: CadastroPerifericosComponent},
+      { path: 'detalhes-periferico/:id', component: DetalhesPerifericoComponent},
       { path: 'cadastro-de-colaborador', component: CadastroDeColaboradorComponent},
       { path: 'cadastro-de-colaborador/:id', component: CadastroDeColaboradorComponent},
       { path: 'cadastro-de-empresa', component: CadastroDeEmpresaComponent},
@@ -54,6 +59,9 @@ const routes: Routes = [
       { path: 'detalhes-empresa/:id', component: DetalhesEmpresaComponent},
       { path: 'historico-usuarios-inativos', component: HistoricoUsuariosInativosComponent},
       { path: 'historico-empresas-inativas', component: HistoricoEmpresasInativasComponent},
+      { path: 'cadastro-filial-empresa', component: CadastroFilialEmpresaComponent},
+      { path: 'filial-empresa', component: FilialEmpresaComponent},
+      { path: 'detalhes-filial-empresa/:id', component: DetalhesFilialEmpresaComponent},
 
       { path: 'atividades', component: AtividadesComponent},
       { path: 'chat', component: ChatComponent},

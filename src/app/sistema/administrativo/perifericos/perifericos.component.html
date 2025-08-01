@@ -9,7 +9,13 @@
             <div class="filtro-container">
                 <div class="select-container">
                     <app-select-padrao
-                    label="Todos os perifericos">
+                    label="Estação"
+                    [options]="setores"
+                    [(selectedValue)]="selectedSetor"
+                    (selectedValueChange)="onEstacaoChange()"
+                    [showDefaultOption]="true"
+                    [defaultLabel]="'Todas'"
+                    [defaultValue]="''">
                     </app-select-padrao>
                 </div>
 
@@ -18,8 +24,18 @@
                 </div>
             </div>
 
+            <div *ngIf="successMessage" class="alert alert-success">
+                <span>{{ successMessage }}</span>
+                <button class="close-btn" (click)="clearMessage()" aria-label="Fechar">&times;</button>
+                <div class="progress-bar-sucess" [style.animation]="successMessage ? 'progressBarAnim 3s linear' : 'none'"></div>
+            </div>
+
+            <div class="progress-bar-container" *ngIf="isLoading">
+                <div class="progress-bar"></div>
+            </div>
+
             <div [ngClass]="{'tabela-container': true, 'no-data': perifericosPaginados.length === 0}">
-                <table *ngIf="perifericosPaginados.length > 0; else noDataTemplate">
+                <table>
                     <thead>
                         <tr>
                             <th>Nome</th>
@@ -30,20 +46,22 @@
                             <th>Ações</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody *ngIf="perifericosPaginados.length > 0">
                         <tr *ngFor="let periferico of perifericosPaginados">
                             <td>
                                 <div class="perfil">
                                     <div class="avatar"></div>
                                     <span>
-                                        <a (click)="cadastrarPeriferico()" >
-                                            {{ periferico.nome }}
+                                        <a (click)="visualizarPeriferico(periferico.id)" >
+                                            {{ periferico.nome || '-' }}
                                         </a>
                                     </span>
                                 </div>
                             </td>
-                            <td>{{ periferico.colaborador.nome }}</td>
-                            <td>{{ periferico.estacao }}</td>
+                            <td>{{ periferico.colaborador.nome || '-' }}</td>
+                            <td>
+                                <app-setor-tag [setor]="getSetorEnum(periferico.estacao)"></app-setor-tag>
+                            </td>
                             <td>{{ periferico.dataEntrega | date: 'dd/MM/yyyy' }}</td>
                             <td>{{ periferico.dataDevolucao | date: 'dd/MM/yyyy' }}</td>
                             <td>
@@ -52,7 +70,7 @@
                                         <img src="assets/icones/edit.svg" alt="Editar">
                                         Editar
                                     </button>
-                                    <button class="btn-acao delete" (click)="deletarPeriferico(periferico.id)">
+                                    <button class="btn-acao delete" (click)="openModalDeletar(periferico)">
                                         <img src="assets/icones/delete.svg" alt="Excluir">
                                         Excluir
                                     </button>
@@ -61,28 +79,32 @@
                         </tr>
                     </tbody>
                 </table>
-                <ng-template #noDataTemplate>
+            </div>
+
+            <div *ngIf="perifericosPaginados.length === 0" class="feedback-container">
+                <ng-container *ngIf="mensagemBusca; else semPerifericos">
+                    <div>
+                    <div class="search alert-warning text-center">
+                        {{ mensagemBusca }}
+                    </div>
+                    </div>
+                </ng-container>
+                <ng-template #semPerifericos>
                     <div class="no-data-message">
-                        <img src="assets/imagens/no-data.svg" alt="Sem dados">
-                        <p>Não há perifericos cadastrados.</p>
+                    <img src="assets/imagens/no-data.svg" alt="Sem dados">
+                    <p>Não há perifericos cadastrados.</p>
                     </div>
                 </ng-template>
             </div>
 
             <div class="paginacao">
-                <button (click)="paginaAnterior()" [disabled]="paginaAtual === 1">
-                    <img src="assets/icones/carret-left.svg" alt="Esquerda">
-                </button>
-                    <span *ngFor="let pagina of [].constructor(totalPaginas); let i = index">
-
-                    <button (click)="mudarPagina(i + 1)" [class.ativo]="paginaAtual === i + 1">
-                        {{ i + 1 }}
-                    </button>
-                </span>
-                <button (click)="proximaPagina()" [disabled]="paginaAtual === totalPaginas">
-                    <img src="assets/icones/carret-right.svg" alt="Direita">
-                </button>
-            </div>
+                <app-pagination
+                [paginaAtual]="paginaAtual"
+                [totalItens]="totalItens"
+                [itensPorPagina]="itensPorPagina"
+                (paginaMudou)="onPaginaMudou($event)">
+                </app-pagination>
+            </div>  
         </div>
     </div>
 </div>

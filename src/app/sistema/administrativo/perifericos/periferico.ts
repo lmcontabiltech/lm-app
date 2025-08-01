@@ -9,6 +9,7 @@ export class Periferico {
   estacao!: string;
   tipoPosse!: string;
   colaborador!: { id: string; nome: string };
+  fotoUrl?: string;
 
   toJson?(): string {
     return JSON.stringify({

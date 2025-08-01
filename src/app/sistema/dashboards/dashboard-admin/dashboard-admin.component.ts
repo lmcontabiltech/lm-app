@@ -337,17 +337,17 @@ export class DashboardAdminComponent implements OnInit {
   atualizarGraficoAtividades(): void {
     const mesesOrdenados = [
       'Jan',
-      'Fev',
+      'Feb',
       'Mar',
-      'Abr',
-      'Mai',
+      'Apr',
+      'May',
       'Jun',
       'Jul',
-      'Ago',
-      'Set',
-      'Out',
+      'Aug',
+      'Sep',
+      'Oct',
       'Nov',
-      'Dez',
+      'Dec',
     ];
 
     const dadosGrafico: number[] = [];

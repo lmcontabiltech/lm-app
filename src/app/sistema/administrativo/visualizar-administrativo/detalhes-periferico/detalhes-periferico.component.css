@@ -1,0 +1,273 @@
+.main-container {
+  margin: 90px 32px 24px;
+  max-width: 100%;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.subMain-container {
+  margin: 24px 32px 24px;
+  max-width: 100%;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* back */
+.back-title {
+  display: flex;
+  align-items: center;
+}
+
+.back-title span {
+  font-size: 20px;
+  font-weight: 500;
+  color: #273e74;
+  margin-left: 12px;
+}
+
+.back-title img {
+  width: 30px;
+  height: auto;
+  color: #1a1918;
+  margin: 0;
+  padding: 4px;
+  cursor: pointer;
+}
+
+.back-title img:hover {
+  background: #dfdfdf;
+  border-radius: 50%;
+}
+
+/* Breadcrumb e buscar */
+.breadcrumb-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  align-items: center;
+}
+
+.breadcrumb {
+  font-size: 1rem;
+  color: #666261;
+  margin: 0;
+}
+
+.breadcrumb a {
+  color: #666;
+  font-size: 16px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.breadcrumb a:hover {
+  font-size: 16px;
+  text-decoration: underline;
+}
+
+.breadcrumb-highlight {
+  margin-left: 5px;
+  color: #008000;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.actions h1 {
+  word-break: break-word;
+  white-space: pre-line;
+  max-width: 100%;
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+/* Divisão */
+.divisao {
+  width: 100%;
+}
+
+.divisao p {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.data-itens {
+  margin: 16px 0;
+}
+
+.data-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.item-data label {
+  color: #716f6e;
+}
+
+.item-data p {
+  word-break: break-word;
+  white-space: pre-line;
+  max-width: 100%;
+}
+
+.item-data-sub {
+  display: flex;
+  align-items: center;
+  padding-top: 8px;
+}
+
+.item-data-sub p {
+  word-break: break-word;
+  white-space: pre-line;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.data-grid-trio {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.data-grid-quad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.perfil {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  background: #ddd;
+  border-radius: 50%;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatar span {
+  font-size: 14px;
+  color: #202020;
+  font-weight: 500;
+}
+
+/* Paginação */
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 8px;
+  gap: 15px;
+}
+
+.container-scroll {
+  display: flex;
+  flex-direction: column;
+  overflow-x: auto;
+  width: 100%;
+  gap: 12px;
+}
+
+.item-data { 
+  margin-bottom: 16px;
+}
+
+.foto-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 24px;
+}
+
+.foto-item img {
+  width: 500px;
+  height: auto;
+  border-radius: 8px;
+  align-items: center;
+}
+
+/* Breakpoints */
+@media (min-width: 1200px) {
+  .main-container {
+    margin: 90px 20px 20px;
+    padding: 40px;
+  }
+
+  .subMain-container {
+    margin: 20px 20px 20px;
+    padding: 40px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+  .main-container {
+    margin: 90px 20px 20px;
+    padding: 40px;
+  }
+
+  .subMain-container {
+    margin: 20px 20px 20px;
+    padding: 20px;
+  }
+}
+
+@media (max-width: 767px) {
+  .main-container {
+    margin: 90px 20px 20px;
+    padding: 20px;
+  }
+
+  .subMain-container {
+    margin: 20px 20px 20px;
+    padding: 20px;
+  }
+
+  .data-grid-trio {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    width: 100%;
+    gap: 12px;
+    padding-bottom: 16px;
+  }
+
+  .data-grid-trio > .item-data,
+  .data-grid-quad > .item-data {
+    min-width: 120px;
+    flex: auto;
+  }
+
+  .foto-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    align-items: center;
+  }
+}

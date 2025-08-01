@@ -151,31 +151,90 @@ tr:hover {
   gap: 5px;
 }
 
-.paginacao button {
+/* Alert styles */
+.mensg-repostas {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 40px;
+}
+
+.alert {
+  position: relative;
+  padding: 12px 16px 12px 16px;
+  border-radius: 4px;
+  margin: 0;
+  font-size: 15px;
+  box-shadow: 0 2px 8px #0001;
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+}
+
+.alert-success {
+  background: #c8f8c2;
+  color: #40812d;
+  border: 1px solid #bae2b6;
+  font-weight: 500;
+}
+.alert-danger {
+  background: #f2c6c6;
+  color: #a12c2a;
+  border: 1px solid #f8b5bc;
+  font-weight: 500;
+}
+
+.close-btn {
+  padding: 0;
+  margin: 0;
+  width: 20px;
+  background: none;
   border: none;
-  background: transparent;
-  padding: 8px 12px;
-  border-radius: 25%;
+  font-size: 20px;
+  color: inherit;
   cursor: pointer;
-  transition: 0.3s;
+  line-height: 1;
+}
+
+.progress-bar-sucess {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 100%;
+  background: #40812d;
+  opacity: 0.5;
+  pointer-events: none;
+}
+.alert-danger .progress-bar-sucess {
+  background: #a12c2a;
+}
+@keyframes progressBarAnim {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0;
+  }
+}
+
+.btn-secondary {
+  all: none;
+  display: inline-block;
+  padding: 12px 24px;
   font-size: 16px;
   font-weight: 500;
-  color: #585a60;
+  color: var(--lm-branco);
+  background-color: var(--lm-accent);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s, border-color 0.3s;
 }
 
-.paginacao button.ativo {
-  background: #e5e8f1;
-  color: #37383c;
-  font-weight: 600;
-}
-
-.paginacao button:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-.paginacao button:not(:disabled):hover {
-  background: rgba(0, 123, 255, 0.2);
+.btn-secondary:hover {
+  background-color: var(--lm-primary);
 }
 
 /* Breakpoints */

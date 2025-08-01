@@ -122,13 +122,13 @@
         </div>
 
         <app-grafico-linha
-            [series]="[{ name: 'Desempenho', data: [30, 40, 35, 50, 48, 60, 70, 91, 125, 15, 200, 20] }]"
-            [categories]="['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'out', 'nov', 'dez',]"
+            [series]="graficoAtividadesMensaisSetor.series"
+            [categories]="graficoAtividadesMensaisSetor.categories"
             [colors]="['#5EA828']"
             title="Atividades concluidas por mês"
             totalLabel="Total"
             [showTotal]="true"
-            subtitle="Total: 0">
+            [subtitle]="'Total: ' + totalAtividadesPorMes">
         </app-grafico-linha>
     </div>
 </div>

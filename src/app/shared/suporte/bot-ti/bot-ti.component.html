@@ -1,0 +1,18 @@
+<!-- Botão flutuante -->
+<button class="chat-toggle" *ngIf="!isOpen" (click)="toggleChat()">
+  <img src="assets/icones/suporte-ti.svg" alt="Botão de Suporte TI">
+</button>
+
+<!-- Janela de chat -->
+<div class="chat-window" *ngIf="isOpen" [@chatOpen]>
+  <div class="chat-header">
+    <h2>Suporte de TI</h2>
+    <button class="close-btn" (click)="toggleChat()">×</button>
+  </div>
+
+  <div class="chat-content">
+    <div class="chat-body">
+        <p>Olá! Como posso te ajudar?</p>
+    </div>
+  </div>
+</div>
