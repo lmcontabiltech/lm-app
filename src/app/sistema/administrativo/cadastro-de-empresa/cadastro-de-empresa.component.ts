@@ -110,7 +110,7 @@ export class CadastroDeEmpresaComponent implements OnInit {
       // identificadorEstagiario: [''],
       // identificadorOutros: [''],
       status: ['ATIVO'],
-      controleParcelamento: ['', Validators.required],
+      controleParcelamento: [[]],
       situacao: ['', Validators.required],
       tipo: ['', Validators.required],
       estado: [''],
