@@ -9,7 +9,13 @@
             <div class="filtro-container">
                 <div class="select-container">
                     <app-select-padrao
-                    label="Todos os perifericos">
+                    label="Estação"
+                    [options]="setores"
+                    [(selectedValue)]="selectedSetor"
+                    (selectedValueChange)="onEstacaoChange()"
+                    [showDefaultOption]="true"
+                    [defaultLabel]="'Todas'"
+                    [defaultValue]="''">
                     </app-select-padrao>
                 </div>
 

@@ -4,6 +4,7 @@ import { Periferico } from './periferico';
 import { PerifericoService } from 'src/app/services/administrativo/periferico.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { Setor } from '../cadastro-de-colaborador/setor';
+import { SetorDescricao } from '../cadastro-de-colaborador/setor-descricao';
 
 @Component({
   selector: 'app-perifericos',
@@ -25,6 +26,12 @@ export class PerifericosComponent implements OnInit {
   successMessage: string = '';
   messageTimeout: any;
 
+  selectedSetor: string = '';
+  setores = Object.keys(Setor).map((key) => ({
+    value: Setor[key as keyof typeof Setor],
+    description: SetorDescricao[Setor[key as keyof typeof Setor]],
+  }));
+
   constructor(
     private router: Router,
     private perifericoService: PerifericoService,
@@ -32,6 +39,7 @@ export class PerifericosComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.exibirMensagemDeSucesso();
     this.fetchPerifericos();
     this.atualizarPaginacao();
 
@@ -183,5 +191,32 @@ export class PerifericosComponent implements OnInit {
   clearMessage() {
     this.successMessage = '';
     if (this.messageTimeout) clearTimeout(this.messageTimeout);
+  }
+
+  onEstacaoChange() {
+    const setor = this.selectedSetor || '';
+    console.log('Setor selecionado:', setor);
+    this.isLoading = true;
+    this.perifericoService.filtroPerifericosPorSetor(setor).subscribe(
+      (perifericos) => {
+        console.log('Periféricos retornados pelo backend:', perifericos);
+        this.perifericos = perifericos;
+        this.paginaAtual = 1;
+        this.totalPaginas = Math.ceil(
+          this.perifericos.length / this.itensPorPagina
+        );
+        this.atualizarPaginacao();
+        this.isLoading = false;
+        this.mensagemBusca =
+          perifericos.length === 0
+            ? 'Nenhum periférico encontrado para o setor selecionado.'
+            : '';
+      },
+      (error) => {
+        this.isLoading = false;
+        this.mensagemBusca = 'Erro ao buscar periféricos por setor.';
+        console.error(error);
+      }
+    );
   }
 }
