@@ -15,7 +15,7 @@ import { ModalDeleteService } from 'src/app/services/modal/modalDeletar.service'
 export class PerifericosComponent implements OnInit {
   perifericos: Periferico[] = [];
   perifericosPaginados: Periferico[] = [];
-  itensPorPagina = 5;
+  itensPorPagina = 6;
   paginaAtual = 1;
   totalPaginas = 0;
   selectedPeriferico: any = null;
@@ -126,23 +126,13 @@ export class PerifericosComponent implements OnInit {
     this.perifericosPaginados = this.perifericos.slice(inicio, fim);
   }
 
-  mudarPagina(pagina: number): void {
-    this.paginaAtual = pagina;
+  get totalItens() {
+    return this.perifericos.length;
+  }
+
+  onPaginaMudou(novaPagina: number) {
+    this.paginaAtual = novaPagina;
     this.atualizarPaginacao();
-  }
-
-  paginaAnterior(): void {
-    if (this.paginaAtual > 1) {
-      this.paginaAtual--;
-      this.atualizarPaginacao();
-    }
-  }
-
-  proximaPagina(): void {
-    if (this.paginaAtual < this.totalPaginas) {
-      this.paginaAtual++;
-      this.atualizarPaginacao();
-    }
   }
 
   deletarPeriferico(id: string): void {
