@@ -4,4 +4,5 @@ export const ControleDeParcelamentoDescricao: Record<ControleDeParcelamento, str
   [ControleDeParcelamento.ESTADUAL]: 'Estadual',
   [ControleDeParcelamento.FEDERAL]: 'Federal',
   [ControleDeParcelamento.MUNICIPAL]: 'Municipal',
+  [ControleDeParcelamento.NENHUM]: 'Nenhum',
 };

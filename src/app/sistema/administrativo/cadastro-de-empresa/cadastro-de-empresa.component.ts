@@ -64,7 +64,7 @@ export class CadastroDeEmpresaComponent implements OnInit {
         ControleDeParcelamento[key as keyof typeof ControleDeParcelamento]
       ],
   }));
-  selectedControleParcelamento: string = '';
+  selectedControleParcelamento: { value: string; description: string }[] = [];
 
   situacao = Object.keys(Situacao).map((key) => ({
     value: Situacao[key as keyof typeof Situacao],
@@ -110,7 +110,7 @@ export class CadastroDeEmpresaComponent implements OnInit {
       // identificadorEstagiario: [''],
       // identificadorOutros: [''],
       status: ['ATIVO'],
-      controleParcelamento: ['', Validators.required],
+      controleParcelamento: [[]],
       situacao: ['', Validators.required],
       tipo: ['', Validators.required],
       estado: [''],
@@ -165,7 +165,12 @@ export class CadastroDeEmpresaComponent implements OnInit {
       identificadorParalegal: this.selectedParalegal.map((u) => u.value),
       identificadorPessoal: this.selectedPessoal.map((u) => u.value),
       identificadorContabil: this.selectedContabil.map((u) => u.value),
+      controleParcelamento: this.selectedControleParcelamento.map(
+        (u) => u.value
+      ),
     };
+
+    console.log('Dados enviados para o backend:', empresa);
 
     if (this.isEditMode && this.empresaId) {
       this.empresasService.atualizarEmpresa(this.empresaId, empresa).subscribe(
@@ -250,11 +255,28 @@ export class CadastroDeEmpresaComponent implements OnInit {
 
         this.tratarColaboradores(empresa);
         this.selectedRegime = empresa.regimeEmpresa || '';
-        this.selectedControleParcelamento = empresa.controleParcelamento || '';
         this.selectedSituacao = empresa.situacao || '';
         this.selectedTipoEmpresa = empresa.tipo || '';
         this.selectedEstado = estado;
         this.empresaForm.get('cidade')?.enable();
+        let controleParcelamentoArr: string[] = [];
+        if (Array.isArray(empresa.controleParcelamento)) {
+          controleParcelamentoArr = empresa.controleParcelamento;
+        } else if (
+          typeof empresa.controleParcelamento === 'string' &&
+          empresa.controleParcelamento
+        ) {
+          controleParcelamentoArr = [empresa.controleParcelamento];
+        }
+
+        this.selectedControleParcelamento = controleParcelamentoArr.map(
+          (value: string) => {
+            const found = this.controleParcelamento.find(
+              (opt) => opt.value === value
+            );
+            return found ? found : { value, description: value };
+          }
+        );
       },
       (error) => {
         this.isLoading = false;

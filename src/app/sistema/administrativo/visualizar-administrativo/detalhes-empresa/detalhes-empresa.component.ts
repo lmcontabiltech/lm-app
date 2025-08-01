@@ -82,12 +82,23 @@ export class DetalhesEmpresaComponent implements OnInit {
     return RegimeDaEmpresaDescricao[regimeKey] || regime;
   }
 
-  getControleParcelamentoDescricao(controle?: string): string {
+  getControleParcelamentoDescricaoArray(controle?: string[] | string): string {
     if (!controle) return '-';
-
-    const controleKey =
-      controle as keyof typeof ControleDeParcelamentoDescricao;
-    return ControleDeParcelamentoDescricao[controleKey] || controle;
+    if (Array.isArray(controle)) {
+      return controle
+        .map(
+          (c) =>
+            ControleDeParcelamentoDescricao[
+              c as keyof typeof ControleDeParcelamentoDescricao
+            ] || c
+        )
+        .join(', ');
+    }
+    return (
+      ControleDeParcelamentoDescricao[
+        controle as keyof typeof ControleDeParcelamentoDescricao
+      ] || controle
+    );
   }
 
   getTipoEmpresaDescricao(tipo?: string): string {
