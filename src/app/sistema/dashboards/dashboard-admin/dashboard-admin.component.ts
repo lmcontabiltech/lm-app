@@ -23,7 +23,7 @@ import {
   GraficoSetor,
 } from 'src/app/services/graficos/dashboard-admin.service';
 import { forkJoin } from 'rxjs';
-import { PeriodoDias } from './enums/Periodo-dias';
+import { PeriodoDias } from './enums/periodo-dias';
 import { PeriodoDiasDescricao } from './enums/periodo-dias-descricao';
 
 @Component({

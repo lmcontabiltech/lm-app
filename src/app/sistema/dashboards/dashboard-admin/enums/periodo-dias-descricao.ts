@@ -1,4 +1,4 @@
-import { PeriodoDias } from './Periodo-dias';
+import { PeriodoDias } from './periodo-dias';
 
 export const PeriodoDiasDescricao: Record<PeriodoDias, string> = {
   [PeriodoDias.SETE]: '7 Dias',
