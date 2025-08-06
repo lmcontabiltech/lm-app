@@ -8,16 +8,16 @@ import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
 import {
   GraficoFuncionariosPorSetor,
   FuncionarioPorSetor,
-} from 'src/app/sistema/dashboards/dashboard-admin/funcionarios-por-setor';
+} from 'src/app/sistema/dashboards/dashboard-admin/models/funcionarios-por-setor';
 import {
   AtividadePorMes,
   GraficoAtividadesPorMes,
-} from 'src/app/sistema/dashboards/dashboard-admin/atividades-por-mes';
+} from 'src/app/sistema/dashboards/dashboard-admin/models/atividades-por-mes';
 import {
   EmpresaPorRegime,
   GraficoEmpresasPorRegime,
-} from 'src/app/sistema/dashboards/dashboard-admin/empresa-por-regime';
-import { DashboardAtividadesPorSetorResponseDTO } from './atividades-por-setor';
+} from 'src/app/sistema/dashboards/dashboard-admin/models/empresa-por-regime';
+import { DashboardAtividadesPorSetorResponseDTO } from './models/atividades-por-setor';
 import {
   DashboardAdminService,
   GraficoSetor,
