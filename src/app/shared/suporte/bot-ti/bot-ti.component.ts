@@ -57,11 +57,14 @@ export class BotTiComponent implements OnInit {
     }
   }
 
-  iniciarConversa() {
+  iniciarConversa(novaSolicitacao: boolean = false) {
     this.mensagens = [];
     this.inputMensagem = '';
     this.conversaEncerrada = false;
-    this.digitarBot('Olá, tudo bem? Nos conte como podemos ajudar você hoje');
+    const textoInicial = novaSolicitacao
+      ? 'Seja bem-vindo novamente! Como podemos ajudar você desta vez?'
+      : 'Olá, tudo bem? Nos conte como podemos ajudar você hoje';
+    this.digitarBot(textoInicial);
   }
 
   digitarBot(texto: string, callback?: () => void) {
@@ -114,7 +117,7 @@ export class BotTiComponent implements OnInit {
 
   novaSolicitacao() {
     this.resetarConversa();
-    this.iniciarConversa();
+    this.iniciarConversa(true);
   }
 
   resetarConversa() {
