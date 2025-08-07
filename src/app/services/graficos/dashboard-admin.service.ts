@@ -4,10 +4,10 @@ import { environment } from 'src/environments/environment';
 import { Processo } from 'src/app/sistema/gerenciamento/processos/processo';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { GraficoFuncionariosPorSetor } from 'src/app/sistema/dashboards/dashboard-admin/funcionarios-por-setor';
-import { GraficoAtividadesPorMes } from 'src/app/sistema/dashboards/dashboard-admin/atividades-por-mes';
-import { GraficoEmpresasPorRegime } from 'src/app/sistema/dashboards/dashboard-admin/empresa-por-regime';
-import { DashboardAtividadesPorSetorResponseDTO } from 'src/app/sistema/dashboards/dashboard-admin/atividades-por-setor';
+import { GraficoFuncionariosPorSetor } from 'src/app/sistema/dashboards/dashboard-admin/models/funcionarios-por-setor';
+import { GraficoAtividadesPorMes } from 'src/app/sistema/dashboards/dashboard-admin/models/atividades-por-mes';
+import { GraficoEmpresasPorRegime } from 'src/app/sistema/dashboards/dashboard-admin/models/empresa-por-regime';
+import { DashboardAtividadesPorSetorResponseDTO } from 'src/app/sistema/dashboards/dashboard-admin/models/atividades-por-setor';
 import { Setor } from 'src/app/sistema/administrativo/cadastro-de-colaborador/setor';
 
 export interface GraficoSetor {

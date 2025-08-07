@@ -8,9 +8,9 @@ import {
 } from 'src/app/services/graficos/dashboard-admin.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { DashboardColaboradorService } from 'src/app/services/graficos/dashboard-colaborador.service';
-import { DashboardAtividadesPorSetorResponseDTO } from '../dashboard-admin/atividades-por-setor';
+import { DashboardAtividadesPorSetorResponseDTO } from '../dashboard-admin/models/atividades-por-setor';
 import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
-import { GraficoAtividadesPorMes } from '../dashboard-admin/atividades-por-mes';
+import { GraficoAtividadesPorMes } from '../dashboard-admin/models/atividades-por-mes';
 
 @Component({
   selector: 'app-dashboard-colaborador',

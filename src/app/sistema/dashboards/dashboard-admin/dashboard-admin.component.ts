@@ -8,21 +8,23 @@ import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
 import {
   GraficoFuncionariosPorSetor,
   FuncionarioPorSetor,
-} from 'src/app/sistema/dashboards/dashboard-admin/funcionarios-por-setor';
+} from 'src/app/sistema/dashboards/dashboard-admin/models/funcionarios-por-setor';
 import {
   AtividadePorMes,
   GraficoAtividadesPorMes,
-} from 'src/app/sistema/dashboards/dashboard-admin/atividades-por-mes';
+} from 'src/app/sistema/dashboards/dashboard-admin/models/atividades-por-mes';
 import {
   EmpresaPorRegime,
   GraficoEmpresasPorRegime,
-} from 'src/app/sistema/dashboards/dashboard-admin/empresa-por-regime';
-import { DashboardAtividadesPorSetorResponseDTO } from './atividades-por-setor';
+} from 'src/app/sistema/dashboards/dashboard-admin/models/empresa-por-regime';
+import { DashboardAtividadesPorSetorResponseDTO } from './models/atividades-por-setor';
 import {
   DashboardAdminService,
   GraficoSetor,
 } from 'src/app/services/graficos/dashboard-admin.service';
 import { forkJoin } from 'rxjs';
+import { PeriodoDias } from './enums/periodo-dias';
+import { PeriodoDiasDescricao } from './enums/periodo-dias-descricao';
 
 @Component({
   selector: 'app-dashboard-admin',
@@ -142,6 +144,20 @@ export class DashboardAdminComponent implements OnInit {
         categories: ['No prazo', 'Em atraso', 'Com multas'],
       },
     },
+  };
+
+  periodos = Object.keys(PeriodoDias).map((key) => ({
+    value: PeriodoDias[key as keyof typeof PeriodoDias],
+    description:
+      PeriodoDiasDescricao[PeriodoDias[key as keyof typeof PeriodoDias]],
+  }));
+
+  periodoSelecionadoSetor: { [key: string]: string } = {
+    CONTABIL: '',
+    FISCAL: '',
+    PESSOAL: '',
+    PARALEGAL: '',
+    FINANCEIRO: '',
   };
 
   constructor(
@@ -474,8 +490,6 @@ export class DashboardAdminComponent implements OnInit {
       Setor.FINANCEIRO,
     ];
 
-    console.log('📋 Setores:', setores);
-
     const requests = setores.map((setor) =>
       this.dashboardAdminService.getAtividadesResumoSetor(setor, dataInicio)
     );
@@ -486,26 +500,8 @@ export class DashboardAdminComponent implements OnInit {
           this.resumoAtividadesSetores[setor] = resultados[index];
           this.atualizarGraficosSetor(setor, resultados[index]);
         });
-
-        console.log(
-          'Resumo de atividades por setor carregado:',
-          this.resumoAtividadesSetores
-        );
-        console.log('🎯 Estado final dos dados:');
-        console.log(
-          '   - resumoAtividadesSetores:',
-          this.resumoAtividadesSetores
-        );
-        console.log(
-          '   - graficosAtividadesPorSetor:',
-          this.graficosAtividadesPorSetor
-        );
       },
       error: (error) => {
-        console.error(
-          '❌ Erro ao carregar resumo de atividades por setor:',
-          error
-        );
         this.resetarGraficosSetores();
       },
     });
@@ -619,5 +615,38 @@ export class DashboardAdminComponent implements OnInit {
           console.error(`Erro ao recarregar dados do setor ${setor}:`, error);
         },
       });
+  }
+
+  carregarResumoAtividadesSetor(setor: Setor): void {
+    const dataInicio = this.getDataInicioPeriodoSetor(setor);
+    this.dashboardAdminService
+      .getAtividadesResumoSetor(setor, dataInicio)
+      .subscribe({
+        next: (dados) => {
+          this.resumoAtividadesSetores[setor] = dados;
+          this.atualizarGraficosSetor(setor, dados);
+        },
+        error: () => {},
+      });
+  }
+
+  onPeriodoChangeSetor(setor: string, novoPeriodo: string) {
+    const setorEnum = Setor[setor as keyof typeof Setor];
+    this.periodoSelecionadoSetor[setorEnum] = novoPeriodo;
+    this.carregarResumoAtividadesSetor(setorEnum);
+  }
+
+  getDataInicioPeriodoSetor(setor: Setor): string {
+    const hoje = new Date();
+    const dias = Number(this.periodoSelecionadoSetor[setor]) || 7;
+    hoje.setDate(hoje.getDate() - dias);
+    return hoje.toISOString().split('T')[0];
+  }
+
+  resetPeriodo() {
+    Object.keys(this.periodoSelecionadoSetor).forEach((setor) => {
+      this.periodoSelecionadoSetor[setor] = PeriodoDias.SETE;
+    });
+    this.carregarResumoAtividadesSetores();
   }
 }

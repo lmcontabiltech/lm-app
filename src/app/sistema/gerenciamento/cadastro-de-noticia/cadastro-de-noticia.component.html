@@ -5,21 +5,22 @@
     </div>
   
     <div class="forms-container">
-        <form>
+        <form [formGroup]="noticiaForm">
             <div class="form-group">
                 <label for="titulo">Titulo</label>
-                <input type="text" id="titulo" name="titulo" class="form-control" placeholder="Digite" required>
+                <input type="text" id="titulo" name="titulo" formControlName="titulo" class="form-control" placeholder="Digite" required>
             </div>
 
             <div class="form-group">
                 <label for="descricao">Texto da notícia</label>
-                <textarea type="text" id="descricao" name="descricao" class="form-control" placeholder="Digite" rows="6" required></textarea>
+                <textarea type="text" id="descricao" name="descricao" formControlName="descricao" class="form-control" placeholder="Digite" rows="6" required></textarea>
             </div>
 
             <div class="form-group">
                 <label for="setor">Setor</label>
                 <app-select-padrao
                   label="Selecionar o setor"
+                  formControlName="destinatario"
                   [customStyles]="{'background': '#FFFFFF'}">
                 </app-select-padrao>
             </div>

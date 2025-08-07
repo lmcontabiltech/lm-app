@@ -2,10 +2,15 @@
     <div class="title-container">
         <h2>Bem-vindo(a), {{ usuario?.nome }}</h2>
         <div class="select-container">
-        <app-select-padrao
-            label="Últimos 7 dias"
+        <!-- <app-select-padrao
+            label="Período"
+            [options]="periodos"
+            [(selectedValue)]="periodoSelecionado"
+            [showDefaultOption]="true"
+            [defaultLabel]="'Sem período'"
+            [defaultValue]="''"
             [customStyles]="{ 'background-color': '#f8f9fa' }">
-        </app-select-padrao>
+        </app-select-padrao> -->
         </div>
     </div>
     <div class="cards-container">
@@ -146,8 +151,14 @@
                 </h3>
                 <div class="select-container">
                     <app-select-padrao
-                    label="Últimos 7 dias"
-                    [customStyles]="{ 'background-color': '#f8f9fa' }">
+                        label="Período"
+                        [options]="periodos"
+                        [(selectedValue)]="periodoSelecionadoSetor['CONTABIL']"
+                        (selectedValueChange)="onPeriodoChangeSetor('CONTABIL', $event)"
+                        [showDefaultOption]="true"
+                        [defaultLabel]="'Sem período'"
+                        [defaultValue]="''"
+                        [customStyles]="{ 'background-color': '#f8f9fa' }">
                     </app-select-padrao>
                 </div>
             </div>
@@ -173,8 +184,14 @@
                 </h3>
                 <div class="select-container">
                     <app-select-padrao
-                    label="Últimos 7 dias"
-                    [customStyles]="{ 'background-color': '#f8f9fa' }">
+                        label="Período"
+                        [options]="periodos"
+                        [(selectedValue)]="periodoSelecionadoSetor['FISCAL']"
+                        (selectedValueChange)="onPeriodoChangeSetor('FISCAL', $event)"
+                        [showDefaultOption]="true"
+                        [defaultLabel]="'Sem período'"
+                        [defaultValue]="''"
+                        [customStyles]="{ 'background-color': '#f8f9fa' }">
                     </app-select-padrao>
                 </div>
             </div>
@@ -200,8 +217,14 @@
                 </h3>
                 <div class="select-container">
                     <app-select-padrao
-                    label="Últimos 7 dias"
-                    [customStyles]="{ 'background-color': '#f8f9fa' }">
+                        label="Período"
+                        [options]="periodos"
+                        [(selectedValue)]="periodoSelecionadoSetor['PESSOAL']"
+                        (selectedValueChange)="onPeriodoChangeSetor('PESSOAL', $event)"
+                        [showDefaultOption]="true"
+                        [defaultLabel]="'Sem período'"
+                        [defaultValue]="''"
+                        [customStyles]="{ 'background-color': '#f8f9fa' }">
                     </app-select-padrao>
                 </div>
             </div>
@@ -227,8 +250,14 @@
                 </h3>
                 <div class="select-container">
                     <app-select-padrao
-                    label="Últimos 7 dias"
-                    [customStyles]="{ 'background-color': '#f8f9fa' }">
+                        label="Período"
+                        [options]="periodos"
+                        [(selectedValue)]="periodoSelecionadoSetor['PARALEGAL']"
+                        (selectedValueChange)="onPeriodoChangeSetor('PARALEGAL', $event)"
+                        [showDefaultOption]="true"
+                        [defaultLabel]="'Sem período'"
+                        [defaultValue]="''"
+                        [customStyles]="{ 'background-color': '#f8f9fa' }">
                     </app-select-padrao>
                 </div>
             </div>
@@ -254,8 +283,14 @@
                 </h3>
                 <div class="select-container">
                     <app-select-padrao
-                    label="Últimos 7 dias"
-                    [customStyles]="{ 'background-color': '#f8f9fa' }">
+                        label="Período"
+                        [options]="periodos"
+                        [(selectedValue)]="periodoSelecionadoSetor['FINANCEIRO']"
+                        (selectedValueChange)="onPeriodoChangeSetor('FINANCEIRO', $event)"
+                        [showDefaultOption]="true"
+                        [defaultLabel]="'Sem período'"
+                        [defaultValue]="''"
+                        [customStyles]="{ 'background-color': '#f8f9fa' }">
                     </app-select-padrao>
                 </div>
             </div>
@@ -282,8 +317,12 @@
                 </h3>
                 <div class="select-container">
                     <app-select-padrao
-                    label="Últimos 7 dias"
-                    [customStyles]="{ 'background-color': '#f8f9fa' }">
+                        label="Período"
+                        [options]="periodos"
+                        [showDefaultOption]="true"
+                        [defaultLabel]="'Sem período'"
+                        [defaultValue]="''"
+                        [customStyles]="{ 'background-color': '#f8f9fa' }">
                     </app-select-padrao>
                 </div>
             </div>

@@ -7,12 +7,46 @@
 <div class="chat-window" *ngIf="isOpen" [@chatOpen]>
   <div class="chat-header">
     <h2>Suporte de TI</h2>
-    <button class="close-btn" (click)="toggleChat()">×</button>
+    <button class="close-btn" (click)="fecharChat()">×</button>
   </div>
-
   <div class="chat-content">
     <div class="chat-body">
-        <p>Olá! Como posso te ajudar?</p>
+      <div *ngFor="let msg of mensagens">
+        <div
+          [ngClass]="{
+            'mensagem-bot': msg.autor === 'BOT',
+            'mensagem-user': msg.autor === 'USER'
+          }"
+        >
+          <span *ngIf="msg.autor === 'BOT'">
+            <img src="assets/imagens/drc-suporte.svg" alt="BOT" class="bot-avatar" />
+          </span>
+          <span class="mensagem-texto">
+            <ng-container *ngIf="msg.digitando; else textoNormal">
+              <span class="digitando-balao">
+                <span class="dot" *ngFor="let d of [1,2,3]; let i = index" [ngStyle]="{'animation-delay': (i * 0.2) + 's'}">.</span>
+              </span>
+            </ng-container>
+            <ng-template #textoNormal>
+              {{ msg.texto }}
+            </ng-template>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!conversaEncerrada" class="chat-input">
+      <input
+        type="text"
+        [(ngModel)]="inputMensagem"
+        [disabled]="digitandoBot"
+        placeholder="Digite sua mensagem..."
+        (keyup.enter)="enviarMensagem()"
+      />
+      <button (click)="enviarMensagem()" [disabled]="digitandoBot || !inputMensagem.trim()">Enviar</button>
+    </div>
+    <div *ngIf="conversaEncerrada" class="chat-encerrado-botoes">
+      <button class="btn-nova" (click)="novaSolicitacao()">Nova solicitação</button>
+      <button class="fechar-btn" (click)="fecharChat()">Fechar conversa</button>
     </div>
   </div>
 </div>
