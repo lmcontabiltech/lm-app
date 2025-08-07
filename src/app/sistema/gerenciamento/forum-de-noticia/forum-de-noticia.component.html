@@ -1,24 +1,33 @@
 <div class="main-container">
-    <div class="container-aviso">
-      <img src="assets/imagens/em-breve.png" alt="Em breve" class="emBreve">
-    </div>
-    <!-- <div class="header-container">
+    <div class="header-container">
         <h2>Fórum de notícias</h2>
         <button class="btn btn-primary" (click)="cadastrarNoticia()">Cadastrar notícia +</button>
     </div>
 
     <div class="table-container">
         <div class="filtro-container">
-            <app-select-padrao
-                  label="Todos as notícias">
-            </app-select-padrao>
+            <div class="select-container">
+                <app-select-padrao
+                      label="Todos as notícias">
+                </app-select-padrao>
+            </div>
 
             <div class="search-container">
                 <app-search (searchChange)="onSearch($event)"></app-search>
             </div>
         </div>
 
-        <div class="tabela-container">
+        <div *ngIf="successMessage" class="alert alert-success">
+            <span>{{ successMessage }}</span>
+            <button class="close-btn" (click)="clearMessage()" aria-label="Fechar">&times;</button>
+            <div class="progress-bar-sucess" [style.animation]="successMessage ? 'progressBarAnim 3s linear' : 'none'"></div>
+        </div>
+
+        <div class="progress-bar-container" *ngIf="isLoading">
+            <div class="progress-bar"></div>
+        </div>
+
+        <div [ngClass]="{'tabela-container': true, 'no-data': noticiasPaginados.length === 0}">
             <table>
                 <thead>
                     <tr>
@@ -60,19 +69,29 @@
             </table>
         </div>
 
-        <div class="paginacao">
-            <button (click)="paginaAnterior()" [disabled]="paginaAtual === 1">
-                <img src="assets/icones/carret-left.svg" alt="Esquerda">
-            </button>
-                <span *ngFor="let pagina of [].constructor(totalPaginas); let i = index">
-
-                <button (click)="mudarPagina(i + 1)" [class.ativo]="paginaAtual === i + 1">
-                    {{ i + 1 }}
-                </button>
-            </span>
-            <button (click)="proximaPagina()" [disabled]="paginaAtual === totalPaginas">
-                <img src="assets/icones/carret-right.svg" alt="Direita">
-            </button>
+         <div *ngIf="noticiasPaginados.length === 0" class="feedback-container">
+            <ng-container *ngIf="mensagemBusca; else semNoticias">
+                <div>
+                <div class="search alert-warning text-center">
+                    {{ mensagemBusca }}
+                </div>
+                </div>
+            </ng-container>
+            <ng-template #semNoticias>
+                <div class="no-data-message">
+                <img src="assets/imagens/no-data.svg" alt="Sem dados">
+                <p>Não há noticias cadastradas.</p>
+                </div>
+            </ng-template>
         </div>
-    </div> -->
+
+        <div class="paginacao">
+            <app-pagination
+            [paginaAtual]="paginaAtual"
+            [totalItens]="totalItens"
+            [itensPorPagina]="itensPorPagina"
+            (paginaMudou)="onPaginaMudou($event)">
+            </app-pagination>
+        </div>  
+    </div>
 </div>
