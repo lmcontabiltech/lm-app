@@ -64,8 +64,21 @@ export class BotTiComponent implements OnInit {
 
   toggleChat() {
     this.isOpen = !this.isOpen;
-    if (this.isOpen && this.mensagens.length === 0) {
-      this.iniciarConversa();
+    if (this.isOpen) {
+      this.authService.obterPerfilUsuario().subscribe({
+        next: (usuario) => {
+          this.nome = usuario.nome || 'Usuário';
+          if (this.mensagens.length === 0) {
+            this.iniciarConversa();
+          }
+        },
+        error: () => {
+          this.nome = 'Usuário';
+          if (this.mensagens.length === 0) {
+            this.iniciarConversa();
+          }
+        },
+      });
     }
     if (!this.isOpen) {
       this.resetarConversa();
