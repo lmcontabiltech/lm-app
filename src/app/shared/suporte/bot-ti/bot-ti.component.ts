@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { trigger, style, animate, transition } from '@angular/animations';
+import { AuthService } from 'src/app/services/auth.service';
 
 interface Mensagem {
   autor: 'BOT' | 'USER';
@@ -43,9 +44,23 @@ export class BotTiComponent implements OnInit {
   conversaEncerrada = false;
   podeEncerrar = false;
 
-  constructor() {}
+  nome = '';
+  marca = 'DRC Suporte de TI';
+  protocolo = '';
 
-  ngOnInit(): void {}
+  constructor(private authService: AuthService) {}
+
+  ngOnInit(): void {
+    this.protocolo = Math.floor(100000 + Math.random() * 900000).toString();
+    this.authService.obterPerfilUsuario().subscribe({
+      next: (usuario) => {
+        this.nome = usuario.nome || 'Usuário';
+      },
+      error: () => {
+        this.nome = 'Usuário';
+      },
+    });
+  }
 
   toggleChat() {
     this.isOpen = !this.isOpen;
@@ -62,8 +77,8 @@ export class BotTiComponent implements OnInit {
     this.inputMensagem = '';
     this.conversaEncerrada = false;
     const textoInicial = novaSolicitacao
-      ? 'Seja bem-vindo novamente! Como podemos ajudar você desta vez?'
-      : 'Olá, tudo bem? Nos conte como podemos ajudar você hoje';
+      ? `Seja bem-vindo novamente ${this.nome}! Como podemos ajudar você desta vez?`
+      : `Olá, ${this.nome} tudo bem? Em que posso te ajudar?`;
     this.digitarBot(textoInicial);
   }
 
@@ -97,13 +112,15 @@ export class BotTiComponent implements OnInit {
     )
       return;
     this.mensagens.push({ autor: 'USER', texto: this.inputMensagem });
-    const respostaBot =
-      'Certo, nosso suporte já foi contactado, logo mais entraremos em contato e resolveremos sua solicitação. Se precisar de uma nova solicitação, inicie uma nova conversa.';
+    const respostaBot = `Perfeito! Já acionamos nosso time de suporte. Em breve entraremos em contato para resolver sua solicitação. Protocolo:`;
     this.inputMensagem = '';
     setTimeout(() => {
       this.digitarBot(respostaBot, () => {
         setTimeout(() => {
-          this.mensagens.push({ autor: 'BOT', texto: 'Conversa encerrada.' });
+          this.mensagens.push({
+            autor: 'BOT',
+            texto: `Atendimento encerrado. Se precisar de algo, é só chamar novamente a ${this.marca}.`,
+          });
           this.conversaEncerrada = true;
         }, 600);
       });
