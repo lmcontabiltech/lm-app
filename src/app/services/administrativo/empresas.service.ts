@@ -84,11 +84,15 @@ export class EmpresasService {
     );
   }
 
-  getEmpresasPorRegime(regime: string): Observable<Empresa[]> {
-    const url = `${this.apiURL}/regime/${regime}`;
-    console.log('Chamando endpoint:', url);
+  getEmpresasPorRegime(
+    regime: string,
+    unidade?: string
+  ): Observable<Empresa[]> {
+    const params: any = { regime };
+    if (unidade) params.unidade = unidade;
 
-    return this.http.get<Empresa[]>(url).pipe(
+    const url = `${this.apiURL}/filtro`;
+    return this.http.get<Empresa[]>(url, { params }).pipe(
       catchError((error) => {
         let errorMessage = 'Erro ao buscar empresas pelo regime.';
         if (error.error instanceof ErrorEvent) {
