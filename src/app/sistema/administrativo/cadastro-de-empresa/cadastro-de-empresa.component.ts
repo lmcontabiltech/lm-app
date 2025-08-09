@@ -268,6 +268,15 @@ export class CadastroDeEmpresaComponent implements OnInit {
     this.empresasService.getEmpresaById(empresaId).subscribe(
       (empresa: Empresa) => {
         console.log('Empresa recebida do backend:', empresa);
+
+        this.carregarEmpresas(() => {
+          // Preenche o select de empresa matriz
+          this.selectedMatriz = empresa.matriz?.id || '';
+          this.empresaForm
+            .get('identificadorEmpresaMatriz')
+            ?.setValue(this.selectedMatriz);
+        });
+
         const estado = empresa.estado;
         const cidade = empresa.cidade;
 

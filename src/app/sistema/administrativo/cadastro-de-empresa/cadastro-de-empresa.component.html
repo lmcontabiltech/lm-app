@@ -45,7 +45,10 @@
                             [options]="empresasMatriz"
                             [(selectedValue)]="selectedMatriz"
                             formControlName="identificadorEmpresaMatriz"
-                            [disabled]="matrizSelecionada">
+                            [disabled]="matrizSelecionada"
+                            [showDefaultOption]="true"
+                            [defaultLabel]="'Nenhuma'"
+                            [defaultValue]="''">
                         </app-select-padrao>
                     </div>
                 </div>
