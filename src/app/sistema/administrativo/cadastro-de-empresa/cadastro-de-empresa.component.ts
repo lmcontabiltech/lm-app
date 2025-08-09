@@ -36,6 +36,7 @@ export class CadastroDeEmpresaComponent implements OnInit {
   isEditMode = false;
   empresaId: string | null = null;
   status: string = 'ATIVO';
+  unidadeEmpresa: string = 'MATRIZ';
 
   funcionariosFiscal: { value: string; description: string }[] = [];
   selectedFiscal: { value: string; description: string }[] = [];
@@ -84,6 +85,9 @@ export class CadastroDeEmpresaComponent implements OnInit {
   cidades: { value: string; description: string }[] = [];
   selectedCidade: string = '';
 
+  empresasMatriz: { value: string; description: string }[] = [];
+  selectedMatriz: string = '';
+
   constructor(
     private location: Location,
     private formBuilder: FormBuilder,
@@ -115,6 +119,7 @@ export class CadastroDeEmpresaComponent implements OnInit {
       tipo: ['', Validators.required],
       estado: [''],
       cidade: [''],
+      unidadeEmpresa: ['MATRIZ'],
     });
   }
 
@@ -122,6 +127,7 @@ export class CadastroDeEmpresaComponent implements OnInit {
     this.verificarModoEdicao();
     this.carregarFuncionarios();
     this.carregarEstadosECidades();
+    this.carregarEmpresas();
     const usuario = this.authService.getUsuarioAutenticado();
     if (usuario?.permissao) {
       this.permissaoUsuario = this.mapPermissao(usuario.permissao);
@@ -145,6 +151,22 @@ export class CadastroDeEmpresaComponent implements OnInit {
 
   goBack() {
     this.location.back();
+  }
+
+  carregarEmpresas(callback?: () => void): void {
+    this.empresasService.getEmpresas().subscribe(
+      (empresas) => {
+        this.empresasMatriz = empresas.map((empresa) => ({
+          value: empresa.id,
+          description: empresa.razaoSocial,
+        }));
+        if (callback) callback();
+      },
+      (error) => {
+        console.error('Erro ao carregar as empresas:', error);
+        if (callback) callback();
+      }
+    );
   }
 
   onSubmit(): void {
