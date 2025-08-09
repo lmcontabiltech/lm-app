@@ -41,10 +41,11 @@
                     <div class="form-group">
                         <label for="identificadorEmpresaMatriz">Empresa matriz</label>
                         <app-select-padrao
-                        label="Selecionar empresa matriz"
-                        [options]="empresasMatriz"
-                        [(selectedValue)]="selectedMatriz"
-                        formControlName="identificadorEmpresaMatriz">
+                            label="Selecionar empresa matriz"
+                            [options]="empresasMatriz"
+                            [(selectedValue)]="selectedMatriz"
+                            formControlName="identificadorEmpresaMatriz"
+                            [disabled]="matrizSelecionada">
                         </app-select-padrao>
                     </div>
                 </div>

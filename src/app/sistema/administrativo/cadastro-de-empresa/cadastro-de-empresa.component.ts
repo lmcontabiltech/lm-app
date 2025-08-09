@@ -120,6 +120,7 @@ export class CadastroDeEmpresaComponent implements OnInit {
       estado: [''],
       cidade: [''],
       unidadeEmpresa: ['MATRIZ'],
+      identificadorEmpresaMatriz: [''],
     });
   }
 
@@ -132,6 +133,13 @@ export class CadastroDeEmpresaComponent implements OnInit {
     if (usuario?.permissao) {
       this.permissaoUsuario = this.mapPermissao(usuario.permissao);
     }
+
+    this.empresaForm.get('unidadeEmpresa')?.valueChanges.subscribe((valor) => {
+      if (valor === 'MATRIZ') {
+        this.selectedMatriz = '';
+        this.empresaForm.get('identificadorEmpresaMatriz')?.setValue('');
+      }
+    });
   }
 
   private mapPermissao(permissao: string): string {
@@ -259,6 +267,7 @@ export class CadastroDeEmpresaComponent implements OnInit {
   private carregarDadosEmpresa(empresaId: string): void {
     this.empresasService.getEmpresaById(empresaId).subscribe(
       (empresa: Empresa) => {
+        console.log('Empresa recebida do backend:', empresa);
         const estado = empresa.estado;
         const cidade = empresa.cidade;
 
@@ -426,5 +435,9 @@ export class CadastroDeEmpresaComponent implements OnInit {
       return !!(validator && validator['required']);
     }
     return false;
+  }
+
+  get matrizSelecionada(): boolean {
+    return this.empresaForm.get('unidadeEmpresa')?.value === 'MATRIZ';
   }
 }
