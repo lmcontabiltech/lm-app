@@ -122,9 +122,15 @@ export class EmpresasService {
     );
   }
 
-  getEmpresasInativasPorRegime(regime: string): Observable<Empresa[]> {
-    const url = `${this.apiURL}/inativas/regime/${regime}`;
-    return this.http.get<Empresa[]>(url).pipe(
+  getEmpresasInativasPorRegime(
+    regime: string,
+    unidade?: string
+  ): Observable<Empresa[]> {
+    const params: any = { regime };
+    if (unidade) params.unidade = unidade;
+
+    const url = `${this.apiURL}/inativas/filtro`;
+    return this.http.get<Empresa[]>(url, { params }).pipe(
       catchError((error) => {
         let errorMessage = 'Erro ao buscar empresas inativas pelo regime.';
         if (error.error instanceof ErrorEvent) {
