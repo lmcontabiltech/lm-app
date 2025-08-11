@@ -12,17 +12,17 @@
             </div>
 
             <div class="form-group">
-                <label for="descricao">Texto da notícia</label>
-                <textarea type="text" id="descricao" name="descricao" formControlName="descricao" class="form-control" placeholder="Digite" rows="6" required></textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="setor">Setor</label>
+                <label for="setor">Destinatário</label>
                 <app-select-padrao
                   label="Selecionar o setor"
                   formControlName="destinatario"
                   [customStyles]="{'background': '#FFFFFF'}">
                 </app-select-padrao>
+            </div>
+
+            <div class="form-group">
+                <label for="descricao">Texto da notícia</label>
+                <textarea type="text" id="descricao" name="descricao" formControlName="descricao" class="form-control" placeholder="Digite" rows="6" required></textarea>
             </div>
 
             <div class="container-btn">
