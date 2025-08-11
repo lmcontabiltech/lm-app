@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { trigger, style, animate, transition } from '@angular/animations';
 import { AuthService } from 'src/app/services/auth.service';
+import { ColaboradoresService } from 'src/app/services/administrativo/colaboradores.service';
 
 interface Mensagem {
   autor: 'BOT' | 'USER';
@@ -48,7 +49,10 @@ export class BotTiComponent implements OnInit {
   marca = 'DRC Suporte de TI';
   protocolo = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private colaboradoresService: ColaboradoresService
+  ) {}
 
   ngOnInit(): void {
     this.protocolo = Math.floor(100000 + Math.random() * 900000).toString();
@@ -124,20 +128,46 @@ export class BotTiComponent implements OnInit {
       this.conversaEncerrada
     )
       return;
+
+    // Adiciona mensagem do usuário ao chat
     this.mensagens.push({ autor: 'USER', texto: this.inputMensagem });
-    const respostaBot = `Perfeito! Já acionamos nosso time de suporte. Em breve entraremos em contato para resolver sua solicitação. Protocolo:`;
-    this.inputMensagem = '';
-    setTimeout(() => {
-      this.digitarBot(respostaBot, () => {
+
+    // Envia mensagem ao suporte
+    this.colaboradoresService.enviarEmailSuporte(this.inputMensagem).subscribe({
+      next: (resposta) => {
+        // Captura o protocolo retornado pelo backend
+        this.protocolo = resposta?.idSolicitacao || '';
+        const respostaBot = `Perfeito! Já acionamos nosso time de suporte. Em breve entraremos em contato para resolver sua solicitação. Protocolo: ${this.protocolo}`;
+        this.inputMensagem = '';
         setTimeout(() => {
-          this.mensagens.push({
-            autor: 'BOT',
-            texto: `Atendimento encerrado. Se precisar de algo, é só chamar novamente a ${this.marca}.`,
+          this.digitarBot(respostaBot, () => {
+            setTimeout(() => {
+              this.mensagens.push({
+                autor: 'BOT',
+                texto: `Atendimento encerrado. Se precisar de algo, é só chamar novamente a ${this.marca}.`,
+              });
+              this.conversaEncerrada = true;
+            }, 600);
           });
-          this.conversaEncerrada = true;
-        }, 600);
-      });
-    }, 400);
+        }, 400);
+      },
+      error: () => {
+        // Erro: mostra mensagem de erro do bot
+        this.inputMensagem = '';
+        this.digitarBot(
+          'Desculpe, não foi possível enviar sua mensagem ao suporte. Tente novamente mais tarde.',
+          () => {
+            setTimeout(() => {
+              this.mensagens.push({
+                autor: 'BOT',
+                texto: `Atendimento encerrado. Se precisar de algo, é só chamar novamente a ${this.marca}.`,
+              });
+              this.conversaEncerrada = true;
+            }, 600);
+          }
+        );
+      },
+    });
   }
 
   fecharChat() {

@@ -335,4 +335,21 @@ export class ColaboradoresService {
       })
     );
   }
+
+  enviarEmailSuporte(mensagem: string): Observable<any> {
+    const url = `${this.apiURL}/email/suporte`;
+    const requestDTO = { mensagem };
+    return this.http.post<any>(url, requestDTO).pipe(
+      catchError((error) => {
+        let errorMessage = 'Erro ao enviar e-mail para o suporte.';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
 }
