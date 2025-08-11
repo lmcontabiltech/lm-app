@@ -71,7 +71,7 @@ export class CadastroDeNoticiaComponent implements OnInit {
     };
 
     const formData = new FormData();
-    formData.append('noticia', JSON.stringify(noticia));
+    formData.append('dados', JSON.stringify(noticia));
 
     if (this.selectedFile) {
       formData.append('arquivo', this.selectedFile);
