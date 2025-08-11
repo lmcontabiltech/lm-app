@@ -1,35 +1,54 @@
 <div class="main-container">
     <div class="back-title">
         <img src="assets/icones/back-left.svg" alt="Back" class="back-icon" (click)="goBack()">
-        <span>Cadastrar notícia</span>
+        <span>{{ isEditMode ? 'Editar notícia' : 'Cadastrar notícia' }}</span>
     </div>
   
     <div class="forms-container">
-        <form [formGroup]="noticiaForm">
+        <form (ngSubmit)="onSubmit()" [formGroup]="noticiaForm">
             <div class="form-group">
                 <label for="titulo">Titulo</label>
-                <input type="text" id="titulo" name="titulo" formControlName="titulo" class="form-control" placeholder="Digite" required>
+                <input type="text" id="titulo" name="titulo" formControlName="titulo" class="form-control" placeholder="Digite um título para a notícia" required>
             </div>
 
             <div class="form-group">
-                <label for="descricao">Texto da notícia</label>
-                <textarea type="text" id="descricao" name="descricao" formControlName="descricao" class="form-control" placeholder="Digite" rows="6" required></textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="setor">Setor</label>
-                <app-select-padrao
+                <label for="setor">Destinatário</label>
+                <app-multiplo-select
                   label="Selecionar o setor"
                   formControlName="destinatario"
-                  [customStyles]="{'background': '#FFFFFF'}">
-                </app-select-padrao>
+                  [multiple]="true"
+                  formControlName="setor">
+                </app-multiplo-select>
+            </div>
+
+            <div class="form-group">
+                <label for="arquivo">Arquivo</label>
+                <app-input-midias
+                    label="Clique ou arraste sua imagem/vídeo aqui"
+                    inputId="arquivo-noticia"
+                    (midiaSelected)="onArquivoSelecionado($event)"
+                    (fileRemoved)="onArquivoRemovido()">
+                </app-input-midias>
+            </div>
+
+            <div class="form-group">
+                 <!-- <label for="descricao">Notícia</label> -->
+                <app-input-word
+                    placeholder="Digite o conteúdo da notícia..."
+                    name="conteudo"
+                    id="editor-conteudo"
+                    formControlName="conteudo"
+                    height="400px">
+                </app-input-word>
             </div>
 
             <div class="container-btn">
                 <button type="submit" class="btn-cadastrar">
-                    Cadastrar notícia
+                    {{ isEditMode ? 'Atualizar notícia' : 'Cadastrar notícia' }}
                 </button>
             </div>
         </form>
     </div>
+
+    <app-loading *ngIf="isLoading"></app-loading>
 </div>

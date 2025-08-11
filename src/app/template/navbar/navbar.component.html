@@ -28,7 +28,7 @@
         </button>
         <div class="dropdown-menu" id="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
           <button routerLink="/usuario/meu-perfil" class="dropdown-item">Meu perfil</button>
-          <button class="dropdown-item" (click)="logout()">Sair</button>
+          <button class="dropdown-item" (click)="openModalLogout()">Sair</button>
         </div>
       </div>
     </div>

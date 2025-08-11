@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Noticia } from './noticia';
 import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
 import { SetorDescricao } from '../../administrativo/cadastro-de-colaborador/setor-descricao';
+import { NoticiaService } from 'src/app/services/gerenciamento/noticia.service';
 
 @Component({
   selector: 'app-forum-de-noticia',
@@ -10,44 +11,7 @@ import { SetorDescricao } from '../../administrativo/cadastro-de-colaborador/set
   styleUrls: ['./forum-de-noticia.component.css'],
 })
 export class ForumDeNoticiaComponent implements OnInit {
-  noticias: Noticia[] = [
-    {
-      titulo: 'Título da notícia',
-      data: '22/12/2024 às 12:30',
-      setor: Setor.FISCAL,
-    },
-    {
-      titulo: 'Título da notícia',
-      data: '22/12/2024 às 12:30',
-      setor: Setor.PESSOAL,
-    },
-    {
-      titulo: 'Título da notícia',
-      data: '22/12/2024 às 12:30',
-      setor: Setor.CONTABIL,
-    },
-    {
-      titulo: 'Título da notícia',
-      data: '22/12/2024 às 12:30',
-      setor: Setor.FISCAL,
-    },
-    { titulo: 'Título da notícia', data: '22/12/2024 às 12:30', setor: 'ALL' },
-    {
-      titulo: 'Título da notícia',
-      data: '22/12/2024 às 12:30',
-      setor: Setor.CONTABIL,
-    },
-    {
-      titulo: 'Título da notícia',
-      data: '22/12/2024 às 12:30',
-      setor: Setor.PESSOAL,
-    },
-    {
-      titulo: 'Título da notícia',
-      data: '22/12/2024 às 12:30',
-      setor: Setor.FISCAL,
-    },
-  ];
+  noticias: Noticia[] = [];
 
   itensPorPagina = 5;
   paginaAtual = 1;
@@ -67,10 +31,12 @@ export class ForumDeNoticiaComponent implements OnInit {
 
   selectedSetor: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private noticiaService: NoticiaService) {}
 
   ngOnInit(): void {
+    this.exibirMensagemDeSucesso();
     this.atualizarPaginacao();
+    this.fetchNoticias();
   }
 
   cadastrarNoticia(): void {
@@ -94,6 +60,32 @@ export class ForumDeNoticiaComponent implements OnInit {
   onPaginaMudou(novaPagina: number) {
     this.paginaAtual = novaPagina;
     this.atualizarPaginacao();
+  }
+
+  fetchNoticias(): void {
+    this.isLoading = true;
+
+    this.noticiaService.getNoticias().subscribe(
+      (noticias: any[]) => {
+        console.log('Notícias retornadas:', noticias);
+        this.noticias = noticias;
+        this.totalPaginas = Math.ceil(
+          this.noticias.length / this.itensPorPagina
+        );
+        this.atualizarPaginacao();
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Erro ao carregar noticias:', error);
+        this.isLoading = false;
+      }
+    );
+  }
+
+  visualizarNoticia(id: string): void {
+    console.log('Visualizando notícia com ID:', id);
+    this.router.navigate(['/usuario/detalhes-noticia', id]);
+    console.log('Navegando para detalhes da notícia com ID:', id);
   }
 
   exibirMensagemDeSucesso(): void {

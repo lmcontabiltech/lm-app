@@ -24,6 +24,8 @@ import { GraficoRosquinhaComponent } from './graficos/grafico-rosquinha/grafico-
 import { FeedbackComponent } from './feedback/feedback.component';
 import { ModalPadraoComponent } from './modal-padrao/modal-padrao.component';
 import { BotTiComponent } from './suporte/bot-ti/bot-ti.component';
+import { InputWordComponent } from './input-word/input-word.component';
+import { InputMidiasComponent } from './input-midias/input-midias.component';
 
 export function playerFactory() {
   return player;
@@ -52,6 +54,8 @@ export function playerFactory() {
     FeedbackComponent,
     ModalPadraoComponent,
     BotTiComponent,
+    InputWordComponent,
+    InputMidiasComponent,
   ],
   imports: [
     CommonModule,
@@ -80,6 +84,8 @@ export function playerFactory() {
     FeedbackComponent,
     ModalPadraoComponent,
     BotTiComponent,
+    InputMidiasComponent,
+    InputWordComponent
   ],
 })
 export class SharedModule {}
