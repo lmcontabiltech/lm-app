@@ -12,6 +12,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Usuario } from 'src/app/login/usuario';
 import { NotificacaoService } from 'src/app/services/feedback/notificacao.service';
 import { Subscription } from 'rxjs';
+import { ModalPadraoService } from 'src/app/services/modal/modalConfirmacao.service';
 
 @Component({
   selector: 'app-navbar',
@@ -41,14 +42,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
     ADMIN: 'Administrador',
     COORDENADOR: 'Coordenador',
     USER: 'Colaborador',
-    ESTAGIARIO: 'Estagiario'
+    ESTAGIARIO: 'Estagiario',
   };
 
   constructor(
     private router: Router,
     private renderer: Renderer2,
     private authService: AuthService,
-    private notificacaoService: NotificacaoService
+    private notificacaoService: NotificacaoService,
+    private modalConfirmacaoService: ModalPadraoService
   ) {}
 
   ngOnInit(): void {
@@ -177,8 +179,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         next: (contador) => {
           this.contadorNaoLidas = contador;
         },
-        error: (error) => {
-        },
+        error: (error) => {},
       });
   }
 
@@ -187,7 +188,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
       .getNotificacoesTempoReal()
       .subscribe({
         next: (novaNotificacao) => {
-
           if (!novaNotificacao.lida) {
             this.contadorNaoLidas++;
             console.log('🔢 Contador atualizado para:', this.contadorNaoLidas);
@@ -214,7 +214,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   private desconectarNotificacoes(): void {
-
     if (this.notificacaoSubscription) {
       this.notificacaoSubscription.unsubscribe();
     }
@@ -236,5 +235,19 @@ export class NavbarComponent implements OnInit, OnDestroy {
     if (this.contadorNaoLidas > 0) {
       this.contadorNaoLidas--;
     }
+  }
+
+  openModalLogout(): void {
+    this.modalConfirmacaoService.openModal(
+      {
+        title: 'Sair da Plataforma',
+        description: `Tem certeza que deseja sair da plataforma <strong>LM Gestor</strong>? Você será redirecionado para a tela de login.`,
+        confirmTextoBotao: 'Sair',
+        size: 'md',
+      },
+      () => {
+        this.logout();
+      }
+    );
   }
 }
