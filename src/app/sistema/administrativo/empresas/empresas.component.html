@@ -16,7 +16,7 @@
                   [options]="regimes"
                   [(selectedValue)]="selectedRegime"
                   (selectedValueChange)="onRegimeChange()"
-                  [showDefaultOption]="true"
+                  [showDefaultOption]="false"
                   [defaultLabel]="'Todos os regimes'"
                   [defaultValue]="''">
                 </app-select-padrao>
@@ -43,7 +43,7 @@
                     <tr>
                         <th>Razão social</th>
                         <th>CNPJ</th>
-                        <th>Código do Questor</th>
+                        <th>Unidade da empresa</th>
                         <th>Regime da Empresa</th>
                         <th>Ações</th>
                     </tr>
@@ -60,7 +60,7 @@
                             </div>
                         </td>
                         <td>{{ empresa.cnpj }}</td>
-                        <td>{{ empresa.codQuestor }}</td>
+                        <td>{{ empresa.unidadeEmpresa }}</td>
                         <td>{{ getDescricaoRegime(empresa.regimeEmpresa) }}</td>
                         <td>
                             <div class="container-acoes">

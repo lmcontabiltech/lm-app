@@ -147,4 +147,10 @@ form {
     width: 22px;
     height: auto;
   }
+
+  .input-duo {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
 }

@@ -41,6 +41,7 @@
                     <tr>
                         <th>Razão social</th>
                         <th>CNPJ</th>
+                        <th>Unidade da empresa</th>
                         <th>Status</th>
                         <th>Ações</th>
                     </tr>
@@ -57,6 +58,7 @@
                             </div>
                         </td>
                         <td>{{ empresa.cnpj }}</td>
+                        <td>{{ empresa.unidadeEmpresa }}</td>
                         <td>
                             <span [class.ativo]="empresa.status === 'ATIVO'"
                                   [class.inativo]="empresa.status === 'INATIVO'">

@@ -36,6 +36,7 @@ export class CadastroDeEmpresaComponent implements OnInit {
   isEditMode = false;
   empresaId: string | null = null;
   status: string = 'ATIVO';
+  unidadeEmpresa: string = 'MATRIZ';
 
   funcionariosFiscal: { value: string; description: string }[] = [];
   selectedFiscal: { value: string; description: string }[] = [];
@@ -84,6 +85,9 @@ export class CadastroDeEmpresaComponent implements OnInit {
   cidades: { value: string; description: string }[] = [];
   selectedCidade: string = '';
 
+  empresasMatriz: { value: string; description: string }[] = [];
+  selectedMatriz: string = '';
+
   constructor(
     private location: Location,
     private formBuilder: FormBuilder,
@@ -115,6 +119,8 @@ export class CadastroDeEmpresaComponent implements OnInit {
       tipo: ['', Validators.required],
       estado: [''],
       cidade: [''],
+      unidadeEmpresa: ['MATRIZ'],
+      identificadorEmpresaMatriz: [''],
     });
   }
 
@@ -122,10 +128,18 @@ export class CadastroDeEmpresaComponent implements OnInit {
     this.verificarModoEdicao();
     this.carregarFuncionarios();
     this.carregarEstadosECidades();
+    this.carregarEmpresas();
     const usuario = this.authService.getUsuarioAutenticado();
     if (usuario?.permissao) {
       this.permissaoUsuario = this.mapPermissao(usuario.permissao);
     }
+
+    this.empresaForm.get('unidadeEmpresa')?.valueChanges.subscribe((valor) => {
+      if (valor === 'MATRIZ') {
+        this.selectedMatriz = '';
+        this.empresaForm.get('identificadorEmpresaMatriz')?.setValue('');
+      }
+    });
   }
 
   private mapPermissao(permissao: string): string {
@@ -145,6 +159,22 @@ export class CadastroDeEmpresaComponent implements OnInit {
 
   goBack() {
     this.location.back();
+  }
+
+  carregarEmpresas(callback?: () => void): void {
+    this.empresasService.getEmpresas().subscribe(
+      (empresas) => {
+        this.empresasMatriz = empresas.map((empresa) => ({
+          value: empresa.id,
+          description: empresa.razaoSocial,
+        }));
+        if (callback) callback();
+      },
+      (error) => {
+        console.error('Erro ao carregar as empresas:', error);
+        if (callback) callback();
+      }
+    );
   }
 
   onSubmit(): void {
@@ -237,6 +267,16 @@ export class CadastroDeEmpresaComponent implements OnInit {
   private carregarDadosEmpresa(empresaId: string): void {
     this.empresasService.getEmpresaById(empresaId).subscribe(
       (empresa: Empresa) => {
+        console.log('Empresa recebida do backend:', empresa);
+
+        this.carregarEmpresas(() => {
+          // Preenche o select de empresa matriz
+          this.selectedMatriz = empresa.matriz?.id || '';
+          this.empresaForm
+            .get('identificadorEmpresaMatriz')
+            ?.setValue(this.selectedMatriz);
+        });
+
         const estado = empresa.estado;
         const cidade = empresa.cidade;
 
@@ -404,5 +444,9 @@ export class CadastroDeEmpresaComponent implements OnInit {
       return !!(validator && validator['required']);
     }
     return false;
+  }
+
+  get matrizSelecionada(): boolean {
+    return this.empresaForm.get('unidadeEmpresa')?.value === 'MATRIZ';
   }
 }
