@@ -84,6 +84,8 @@ export function playerFactory() {
     FeedbackComponent,
     ModalPadraoComponent,
     BotTiComponent,
+    InputMidiasComponent,
+    InputWordComponent
   ],
 })
 export class SharedModule {}

@@ -25,6 +25,10 @@ export class CadastroDeNoticiaComponent implements OnInit {
   }));
   selectedSetor: string = '';
 
+  arquivo: File | { documentoUrl: string; id: number; name: string } | null =
+    null;
+  selectedFile: File | null = null;
+
   constructor(
     private location: Location,
     private formBuilder: FormBuilder,
@@ -43,5 +47,19 @@ export class CadastroDeNoticiaComponent implements OnInit {
 
   goBack() {
     this.location.back();
+  }
+
+  onArquivoSelecionado(arquivo: File | null): void {
+    if (arquivo) {
+      console.log('📎 Arquivo selecionado:', arquivo.name);
+      console.log('📊 Tamanho:', arquivo.size);
+      console.log('🎭 Tipo:', arquivo.type);
+      this.selectedFile = arquivo;
+    }
+  }
+
+  onArquivoRemovido(): void {
+    console.log('🗑️ Arquivo removido');
+    this.selectedFile = null;
   }
 }

@@ -1,1 +1,52 @@
-<p>input-midias works!</p>
+<div class="cont-midias">
+  <div class="midia-upload" (drop)="onDrop($event)" (dragover)="onDragOver($event)">
+    <input 
+      type="file" 
+      [id]="inputId" 
+      name="midia"
+      (change)="onFileSelected($event)" 
+      accept="image/*,video/*" />
+    
+    <label [for]="inputId">
+      <div class="midia-preview" id="midiaPreview">
+        <!-- Preview de Imagem -->
+        <ng-container *ngIf="midiaPreview && isPreviewImage(midiaPreview)">
+          <img [src]="midiaPreview" alt="Image Preview" class="preview-image" />
+          <button type="button" class="remove-btn" (click)="removeFile($event)" title="Remover arquivo">
+            <span>&times;</span>
+          </button>
+          <div class="file-info">
+            <span class="file-type-badge image">Imagem</span>
+            <span class="file-name">{{ getFileName() }}</span>
+            <span class="file-size">{{ getFileSize() }}</span>
+          </div>
+        </ng-container>
+
+        <!-- Preview de Vídeo -->
+        <ng-container *ngIf="midiaPreview && isPreviewVideo(midiaPreview)">
+          <video [src]="midiaPreview" alt="Video Preview" controls class="preview-video"></video>
+          <button type="button" class="remove-btn" (click)="removeFile($event)" title="Remover arquivo">
+            <span>&times;</span>
+          </button>
+          <div class="file-info">
+            <span class="file-type-badge video">Vídeo</span>
+            <span class="file-name">{{ getFileName() }}</span>
+            <span class="file-size">{{ getFileSize() }}</span>
+          </div>
+        </ng-container>
+
+        <!-- Placeholder quando não há arquivo -->
+        <div *ngIf="!midiaPreview" class="upload-placeholder">
+          <div class="upload-icons">
+            <img src="assets/icones/image.svg" class="upload-icon">
+          </div>
+          <span class="upload-text">{{ label }}</span>
+          <div class="upload-formats">
+            <small>Formatos aceitos: JPG, PNG, GIF, MP4, AVI, MOV</small>
+            <small>Tamanho máximo: 5GB</small>
+          </div>
+        </div>
+      </div>
+    </label>
+  </div>
+</div>
