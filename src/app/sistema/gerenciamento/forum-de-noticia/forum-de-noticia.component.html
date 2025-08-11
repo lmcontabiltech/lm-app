@@ -49,9 +49,9 @@
                             </div>
                         </td>
                         <td>
-                            <app-setor-tag [setor]="noticia.setor"></app-setor-tag>
+                            <app-setor-tag [setor]="noticia.destinatario"></app-setor-tag>
                         </td>
-                        <td>{{ noticia.data }}</td>
+                        <td>{{ noticia.publicadaEm | date: 'dd/MM/yyyy HH:mm' }}</td>
                         <td>
                             <div class="container-acoes">
                                 <button class="btn-acao edit">

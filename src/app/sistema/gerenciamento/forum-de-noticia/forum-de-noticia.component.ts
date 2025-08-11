@@ -10,44 +10,7 @@ import { SetorDescricao } from '../../administrativo/cadastro-de-colaborador/set
   styleUrls: ['./forum-de-noticia.component.css'],
 })
 export class ForumDeNoticiaComponent implements OnInit {
-  noticias: Noticia[] = [
-    {
-      titulo: 'Título da notícia',
-      data: '22/12/2024 às 12:30',
-      setor: Setor.FISCAL,
-    },
-    {
-      titulo: 'Título da notícia',
-      data: '22/12/2024 às 12:30',
-      setor: Setor.PESSOAL,
-    },
-    {
-      titulo: 'Título da notícia',
-      data: '22/12/2024 às 12:30',
-      setor: Setor.CONTABIL,
-    },
-    {
-      titulo: 'Título da notícia',
-      data: '22/12/2024 às 12:30',
-      setor: Setor.FISCAL,
-    },
-    { titulo: 'Título da notícia', data: '22/12/2024 às 12:30', setor: 'ALL' },
-    {
-      titulo: 'Título da notícia',
-      data: '22/12/2024 às 12:30',
-      setor: Setor.CONTABIL,
-    },
-    {
-      titulo: 'Título da notícia',
-      data: '22/12/2024 às 12:30',
-      setor: Setor.PESSOAL,
-    },
-    {
-      titulo: 'Título da notícia',
-      data: '22/12/2024 às 12:30',
-      setor: Setor.FISCAL,
-    },
-  ];
+  noticias: Noticia[] = [];
 
   itensPorPagina = 5;
   paginaAtual = 1;

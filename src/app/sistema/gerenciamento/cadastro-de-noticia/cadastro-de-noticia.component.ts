@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { Noticia } from '../forum-de-noticia/noticia';
 import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
 import { SetorDescricao } from '../../administrativo/cadastro-de-colaborador/setor-descricao';
+import { NoticiaService } from 'src/app/services/gerenciamento/noticia.service';
 import { ColaboradoresService } from 'src/app/services/administrativo/colaboradores.service';
 
 @Component({
@@ -34,6 +36,7 @@ export class CadastroDeNoticiaComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
+    private noticiaService: NoticiaService,
     private colaboradoresService: ColaboradoresService
   ) {
     this.noticiaForm = this.formBuilder.group({
