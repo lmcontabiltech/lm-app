@@ -1,23 +1,24 @@
 <div class="main-container">
     <div class="back-title">
         <img src="assets/icones/back-left.svg" alt="Back" class="back-icon" (click)="goBack()">
-        <span>Cadastrar notícia</span>
+        <span>{{ isEditMode ? 'Editar notícia' : 'Cadastrar notícia' }}</span>
     </div>
   
     <div class="forms-container">
-        <form [formGroup]="noticiaForm">
+        <form (ngSubmit)="onSubmit()" [formGroup]="noticiaForm">
             <div class="form-group">
                 <label for="titulo">Titulo</label>
-                <input type="text" id="titulo" name="titulo" formControlName="titulo" class="form-control" placeholder="Digite" required>
+                <input type="text" id="titulo" name="titulo" formControlName="titulo" class="form-control" placeholder="Digite um título para a notícia" required>
             </div>
 
             <div class="form-group">
                 <label for="setor">Destinatário</label>
-                <app-select-padrao
+                <app-multiplo-select
                   label="Selecionar o setor"
                   formControlName="destinatario"
-                  [customStyles]="{'background': '#FFFFFF'}">
-                </app-select-padrao>
+                  [multiple]="true"
+                  formControlName="setor">
+                </app-multiplo-select>
             </div>
 
             <div class="form-group">
@@ -43,9 +44,11 @@
 
             <div class="container-btn">
                 <button type="submit" class="btn-cadastrar">
-                    Cadastrar notícia
+                    {{ isEditMode ? 'Atualizar notícia' : 'Cadastrar notícia' }}
                 </button>
             </div>
         </form>
     </div>
+
+    <app-loading *ngIf="isLoading"></app-loading>
 </div>

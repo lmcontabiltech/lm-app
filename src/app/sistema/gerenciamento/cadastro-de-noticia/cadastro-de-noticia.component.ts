@@ -46,8 +46,7 @@ export class CadastroDeNoticiaComponent implements OnInit {
   ) {
     this.noticiaForm = this.formBuilder.group({
       titulo: ['', Validators.required],
-      descricao: [''],
-      destinatario: [''],
+      conteudo: [''],
     });
   }
 
