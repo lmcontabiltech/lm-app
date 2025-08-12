@@ -44,7 +44,7 @@
                         <span class="noticia-autor">por {{ noticia.autor.nome }}</span>
                     </div>
                     <div class="noticia-visualizacoes">
-                    <span>{{ noticia.visualizacoes || 0 }} visualizações</span>
+                    <span>{{ noticia.qtdVisualizacoes || 0 }} visualizações</span>
                     </div>
                     <div class="noticia-resumo">
                     {{ stripHtmlTags(noticia.conteudo) | slice:0:100 }}<span *ngIf="stripHtmlTags(noticia.conteudo).length > 120">...</span>

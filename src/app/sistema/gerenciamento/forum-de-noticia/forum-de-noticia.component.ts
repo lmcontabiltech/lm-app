@@ -84,9 +84,21 @@ export class ForumDeNoticiaComponent implements OnInit {
     );
   }
 
-  visualizarNoticia(id: string): void {
-    this.router.navigate(['/usuario/detalhes-noticia', id]);
-    console.log('Navegando para detalhes da notícia com ID:', id);
+  visualizarNoticia(id: string | number): void {
+    const idNum = typeof id === 'string' ? Number(id) : id;
+    this.noticiaService.marcarNoticiaComoVisualizada(idNum).subscribe({
+      next: () => {
+        const noticia = this.noticiasPaginados.find(
+          (n) => String(n.id) === String(id)
+        );
+        if (noticia) noticia.visualizada = true;
+        // Navegue para detalhes se necessário
+        this.router.navigate(['/usuario/detalhes-noticia', idNum]);
+      },
+      error: (err) => {
+        console.error('Erro ao marcar como visualizada:', err);
+      },
+    });
   }
 
   exibirMensagemDeSucesso(): void {

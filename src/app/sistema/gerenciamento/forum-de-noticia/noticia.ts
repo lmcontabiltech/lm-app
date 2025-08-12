@@ -13,8 +13,11 @@ export class Noticia {
   };
   destinatario!: Setor;
   tipo!: string;
-  visualizacoes?: number;
+  qtdVisualizacoes?: number;
   visualizada?: boolean;
+  editada?: boolean;
+  editor?: { id: string; nome: string };
+  usuariosQueVisualizaram?: { id: string; nome: string }[];
 
   toJson?(): string {
     return JSON.stringify({
