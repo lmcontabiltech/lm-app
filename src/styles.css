@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap");
-@import '~quill/dist/quill.snow.css';
+@import "~quill/dist/quill.snow.css";
 
 html,
 body {
@@ -587,4 +587,21 @@ select:focus {
   color: var(--danger);
   font-size: 0.875rem;
   margin-top: 4px;
+}
+
+/* QUILL */
+.ql-align-center {
+  text-align: center;
+}
+
+.ql-align-right {
+  text-align: right;
+}
+
+.ql-align-justify {
+  text-align: justify;
+}
+
+.ql-align-left {
+  text-align: left;
 }
