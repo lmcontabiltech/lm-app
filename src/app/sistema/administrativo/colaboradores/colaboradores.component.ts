@@ -36,6 +36,8 @@ export class ColaboradoresComponent implements OnInit {
   successMessage: string = '';
   messageTimeout: any;
 
+  ordenacaoNome: 'asc' | 'desc' | null = null;
+
   constructor(
     private router: Router,
     private colaboradoresService: ColaboradoresService,
@@ -248,5 +250,24 @@ export class ColaboradoresComponent implements OnInit {
         console.error(error);
       }
     );
+  }
+
+  alternarOrdenacaoNome() {
+    if (this.ordenacaoNome === 'asc') {
+      this.ordenacaoNome = 'desc';
+    } else {
+      this.ordenacaoNome = 'asc';
+    }
+    this.colaboradores.sort((a, b) => {
+      const nomeA = a.nome.toLowerCase();
+      const nomeB = b.nome.toLowerCase();
+      if (this.ordenacaoNome === 'asc') {
+        return nomeA.localeCompare(nomeB);
+      } else {
+        return nomeB.localeCompare(nomeA);
+      }
+    });
+    this.paginaAtual = 1;
+    this.atualizarPaginacao();
   }
 }
