@@ -1,21 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Noticia } from './noticia';
+import { Location } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Noticia } from '../forum-de-noticia/noticia';
 import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
 import { SetorDescricao } from '../../administrativo/cadastro-de-colaborador/setor-descricao';
 import { NoticiaService } from 'src/app/services/gerenciamento/noticia.service';
-import { TipoNoticia, TipoNoticiaCor } from './enums/tipo-noticia';
-import { TipoNoticiaDescricao } from './enums/tipo-noticia-descricao';
 
 @Component({
-  selector: 'app-forum-de-noticia',
-  templateUrl: './forum-de-noticia.component.html',
-  styleUrls: ['./forum-de-noticia.component.css'],
+  selector: 'app-central-de-noticias',
+  templateUrl: './central-de-noticias.component.html',
+  styleUrls: ['./central-de-noticias.component.css'],
 })
-export class ForumDeNoticiaComponent implements OnInit {
+export class CentralDeNoticiasComponent implements OnInit {
   noticias: Noticia[] = [];
 
-  itensPorPagina = 8;
+  itensPorPagina = 5;
   paginaAtual = 1;
   totalPaginas = Math.ceil(this.noticias.length / this.itensPorPagina);
   noticiasPaginados: Noticia[] = [];
@@ -33,7 +32,11 @@ export class ForumDeNoticiaComponent implements OnInit {
 
   selectedSetor: string = '';
 
-  constructor(private router: Router, private noticiaService: NoticiaService) {}
+  constructor(
+    private router: Router,
+    private noticiaService: NoticiaService,
+    private location: Location
+  ) {}
 
   ngOnInit(): void {
     this.exibirMensagemDeSucesso();
@@ -41,8 +44,12 @@ export class ForumDeNoticiaComponent implements OnInit {
     this.fetchNoticias();
   }
 
-  centralNoticia(): void {
-    this.router.navigate(['/usuario/central-de-noticias']);
+  goBack() {
+    this.location.back();
+  }
+
+  cadastrarNoticia(): void {
+    this.router.navigate(['/usuario/cadastro-de-noticia']);
   }
 
   onSearch(searchTerm: string) {
@@ -85,6 +92,7 @@ export class ForumDeNoticiaComponent implements OnInit {
   }
 
   visualizarNoticia(id: string): void {
+    console.log('Visualizando notícia com ID:', id);
     this.router.navigate(['/usuario/detalhes-noticia', id]);
     console.log('Navegando para detalhes da notícia com ID:', id);
   }
@@ -107,29 +115,5 @@ export class ForumDeNoticiaComponent implements OnInit {
   clearMessage() {
     this.successMessage = '';
     if (this.messageTimeout) clearTimeout(this.messageTimeout);
-  }
-
-  stripHtmlTags(html: string): string {
-    if (!html) return '';
-    return html
-      .replace(/<[^>]*>/g, '')
-      .replace(/\s+/g, ' ')
-      .trim();
-  }
-
-  getTipoDescricao(tipo: string | TipoNoticia): string {
-    const tipoFinal = tipo && tipo !== '' ? tipo : TipoNoticia.COMUNICADO;
-    return (
-      TipoNoticiaDescricao[tipoFinal as TipoNoticia] ||
-      TipoNoticiaDescricao[TipoNoticia.COMUNICADO]
-    );
-  }
-
-  getTipoCor(tipo: string | TipoNoticia): string {
-    const tipoFinal = tipo && tipo !== '' ? tipo : TipoNoticia.COMUNICADO;
-    return (
-      TipoNoticiaCor[tipoFinal as TipoNoticia] ||
-      TipoNoticiaCor[TipoNoticia.COMUNICADO]
-    );
   }
 }

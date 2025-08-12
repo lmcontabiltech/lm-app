@@ -4,7 +4,7 @@ export class Noticia {
   id!: string;
   titulo!: string;
   conteudo!: string;
-  autor!: { id: string; username: string };
+  autor!: { id: string; nome: string };
   publicadaEm!: number;
   arquivo?: {
     documentoUrl: string;
@@ -12,6 +12,9 @@ export class Noticia {
     name: string;
   };
   destinatario!: Setor;
+  tipo!: string;
+  visualizacoes?: number;
+  visualizada?: boolean;
 
   toJson?(): string {
     return JSON.stringify({

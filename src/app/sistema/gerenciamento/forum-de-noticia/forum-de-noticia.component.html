@@ -1,7 +1,7 @@
 <div class="main-container">
     <div class="header-container">
         <h2>Fórum de notícias</h2>
-        <button class="btn btn-primary" (click)="cadastrarNoticia()">Cadastrar notícia +</button>
+        <button class="btn btn-primary" (click)="centralNoticia()">Central de notícias</button>
     </div>
 
     <div class="table-container">
@@ -27,46 +27,32 @@
             <div class="progress-bar"></div>
         </div>
 
-        <div [ngClass]="{'tabela-container': true, 'no-data': noticiasPaginados.length === 0}">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Título</th>
-                        <th>Destinatário</th>
-                        <th>Data/Horário</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let noticia of noticiasPaginados">
-                        <td>
-                            <div class="perfil">
-                                <span>
-                                    <a>
-                                        {{ noticia.titulo }}
-                                    </a>
-                                </span>
-                            </div>
-                        </td>
-                        <td>
-                            <app-setor-tag [setor]="noticia.destinatario"></app-setor-tag>
-                        </td>
-                        <td>{{ noticia.publicadaEm | date: 'dd/MM/yyyy HH:mm' }}</td>
-                        <td>
-                            <div class="container-acoes">
-                                <button class="btn-acao edit">
-                                    <img src="assets/icones/edit.svg" alt="Editar">
-                                    Editar
-                                </button>
-                                <button class="btn-acao delete">
-                                    <img src="assets/icones/delete.svg" alt="Excluir">
-                                     Excluir
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="noticia-container" *ngIf="!isLoading">
+            <div class="noticia-item" *ngFor="let noticia of noticiasPaginados" [class.lida]="noticia.visualizada">
+                <div class="noticia-tag">
+                    <span class="tag-bolinha" [ngStyle]="{'background': getTipoCor(noticia.tipo)}"></span>
+                    {{ getTipoDescricao(noticia.tipo) }}
+                </div>
+
+                <!-- Foto e título -->
+                <div class="notificacao-mensagem">
+                <img *ngIf="noticia.arquivo?.documentoUrl" [src]="noticia.arquivo?.documentoUrl" alt="Foto" class="avatar" />
+                <div class="noticia-info">
+                    <span class="noticia-titulo">{{ noticia.titulo }}</span>
+                    <div class="noticia-meta">
+                        <span class="noticia-data">{{ noticia.publicadaEm | date:'dd/MM/yyyy HH:mm' }}</span>
+                        <span class="noticia-autor">por {{ noticia.autor.nome }}</span>
+                    </div>
+                    <div class="noticia-visualizacoes">
+                    <span>{{ noticia.visualizacoes || 0 }} visualizações</span>
+                    </div>
+                    <div class="noticia-resumo">
+                    {{ stripHtmlTags(noticia.conteudo) | slice:0:100 }}<span *ngIf="stripHtmlTags(noticia.conteudo).length > 120">...</span>
+                    </div>
+                </div>
+                </div>
+                <button class="btn-visualizar" (click)="visualizarNoticia(noticia.id); $event.stopPropagation()">Ler notícia</button>
+            </div>
         </div>
 
          <div *ngIf="noticiasPaginados.length === 0" class="feedback-container">
@@ -80,7 +66,7 @@
             <ng-template #semNoticias>
                 <div class="no-data-message">
                 <img src="assets/imagens/no-data.svg" alt="Sem dados">
-                <p>Não há noticias cadastradas.</p>
+                <p>Não há noticias disponiveis.</p>
                 </div>
             </ng-template>
         </div>
