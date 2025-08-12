@@ -22,8 +22,14 @@
                 </app-select-padrao>
             </div>
 
-            <div class="search-container">
-                <app-search (searchChange)="onSearch($event)"></app-search>
+            <div class="acoes-container">
+                <div class="search-container">
+                    <app-search (searchChange)="onSearch($event)"></app-search>
+                </div>
+
+                <button class="btn btn-outline" (click)="exportCsv()" [disabled]="isExporting">
+                    {{ isExporting ? 'Carregando...' : 'Exportar' }}
+                </button>
             </div>
         </div>
 

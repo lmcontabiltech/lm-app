@@ -318,6 +318,33 @@ tr:hover {
   font-weight: 500;
 }
 
+/* exportar */
+.btn-outline {
+  all: none;
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #178ab8;
+  background: transparent;
+  border: #178ab8 2.5px solid;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.btn-outline:hover {
+  background-color: #178ab8;
+  color: var(--lm-branco);
+}
+
+.acoes-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 /* Breakpoints */
 @media (min-width: 1200px) {
   .main-container {
@@ -365,5 +392,11 @@ tr:hover {
 
   button {
     width: 100%;
+  }
+
+  .acoes-container {
+    width: 100%;
+    flex-direction: column;
+    gap: 16px;
   }
 }
