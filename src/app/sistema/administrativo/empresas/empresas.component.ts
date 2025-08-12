@@ -39,6 +39,12 @@ export class EmpresasComponent implements OnInit {
       ],
   }));
 
+  unidades = [
+    { value: 'MATRIZ', description: 'Matriz' },
+    { value: 'FILIAL', description: 'Filial' },
+  ];
+  selectedUnidade: string = '';
+
   constructor(
     private router: Router,
     private empresasService: EmpresasService,
@@ -244,6 +250,45 @@ export class EmpresasComponent implements OnInit {
       (error) => {
         this.isLoading = false;
         this.mensagemBusca = 'Erro ao buscar empresas por regime.';
+        console.error(error);
+      }
+    );
+  }
+
+  onUnidadeChange(): void {
+    this.isLoading = true;
+    const unidade = this.selectedUnidade;
+    const regime = this.selectedRegime;
+
+    let obs;
+
+    if (regime && unidade) {
+      obs = this.empresasService.getEmpresasPorRegime(regime, unidade);
+    } else if (regime) {
+      obs = this.empresasService.getEmpresasPorRegime(regime);
+    } else if (unidade) {
+      obs = this.empresasService.getEmpresasPorRegime('', unidade);
+    } else {
+      obs = this.empresasService.getEmpresas();
+    }
+
+    obs.subscribe(
+      (empresas) => {
+        this.empresas = empresas;
+        this.paginaAtual = 1;
+        this.totalPaginas = Math.ceil(
+          this.empresas.length / this.itensPorPagina
+        );
+        this.atualizarPaginacao();
+        this.isLoading = false;
+        this.mensagemBusca =
+          empresas.length === 0
+            ? 'Nenhuma empresa encontrada para o filtro selecionado.'
+            : '';
+      },
+      (error) => {
+        this.isLoading = false;
+        this.mensagemBusca = 'Erro ao buscar empresas.';
         console.error(error);
       }
     );

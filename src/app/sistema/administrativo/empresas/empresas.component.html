@@ -10,17 +10,30 @@
 
     <div class="table-container">
         <div class="filtro-container">
-             <div class="select-container">
-                <app-select-padrao
-                  label="Regimes"
-                  [options]="regimes"
-                  [(selectedValue)]="selectedRegime"
-                  (selectedValueChange)="onRegimeChange()"
-                  [showDefaultOption]="false"
-                  [defaultLabel]="'Todos os regimes'"
-                  [defaultValue]="''">
-                </app-select-padrao>
-             </div>
+            <div class="duo-select">
+                <div class="select-container">
+                    <app-select-padrao
+                    label="Regimes"
+                    [options]="regimes"
+                    [(selectedValue)]="selectedRegime"
+                    (selectedValueChange)="onRegimeChange()"
+                    [showDefaultOption]="false"
+                    [defaultLabel]="'Todos os regimes'"
+                    [defaultValue]="''">
+                    </app-select-padrao>
+                </div>
+                <div class="select-container">
+                    <app-select-padrao
+                        label="Unidade da empresa"
+                        [options]="unidades"
+                        [(selectedValue)]="selectedUnidade"
+                        (selectedValueChange)="onUnidadeChange()"
+                        [showDefaultOption]="true"
+                        [defaultLabel]="'Todas as unidades'"
+                        [defaultValue]="''">
+                    </app-select-padrao>
+                </div>
+            </div>
 
             <div class="search-container">
                 <app-search (searchChange)="onSearch($event)"></app-search>

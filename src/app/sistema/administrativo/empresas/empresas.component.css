@@ -53,6 +53,11 @@
   width: 400px;
 }
 
+.duo-select {
+  display: flex;
+  gap: 16px;
+}
+
 /* tabela */
 .tabela-container {
   width: 100%;
@@ -255,6 +260,11 @@ tr:hover {
     margin: 90px 20px 20px;
     padding: 40px 16px;
   }
+
+  .duo-select {
+    width: 100%;
+    flex-direction: column;
+  }
 }
 
 @media (max-width: 767px) {
@@ -289,5 +299,10 @@ tr:hover {
 
   button {
     width: 100%;
+  }
+
+  .duo-select {
+    width: 100%;
+    flex-direction: column;
   }
 }
