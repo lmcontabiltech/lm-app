@@ -259,6 +259,25 @@
   }
 }
 
+.btn-secondary {
+  all: none;
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--lm-branco);
+  background-color: var(--lm-accent);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.btn-secondary:hover {
+  background-color: var(--lm-primary);
+}
+
 /* Breakpoints */
 @media (min-width: 1200px) {
   .main-container {
