@@ -1,0 +1,100 @@
+<div class="main-container">
+    <div class="header-container">
+        <div class="back-title">
+            <img src="assets/icones/back-left.svg" alt="Back" class="back-icon" (click)="goBack()">
+            <h2>Central de notícias</h2>
+        </div>
+        <button class="btn btn-primary" (click)="cadastrarNoticia()">Cadastrar notícia +</button>
+    </div>
+
+    <div class="table-container">
+        <div class="filtro-container">
+            <div class="select-container">
+                <app-select-padrao
+                      label="Todos as notícias">
+                </app-select-padrao>
+            </div>
+
+            <div class="search-container">
+                <app-search (searchChange)="onSearch($event)"></app-search>
+            </div>
+        </div>
+
+        <div *ngIf="successMessage" class="alert alert-success">
+            <span>{{ successMessage }}</span>
+            <button class="close-btn" (click)="clearMessage()" aria-label="Fechar">&times;</button>
+            <div class="progress-bar-sucess" [style.animation]="successMessage ? 'progressBarAnim 3s linear' : 'none'"></div>
+        </div>
+
+        <div class="progress-bar-container" *ngIf="isLoading">
+            <div class="progress-bar"></div>
+        </div>
+
+        <div [ngClass]="{'tabela-container': true, 'no-data': noticiasPaginados.length === 0}">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Destinatário</th>
+                        <th>Data/Horário</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let noticia of noticiasPaginados">
+                        <td>
+                            <div class="perfil">
+                                <span>
+                                    <a>
+                                        {{ noticia.titulo }}
+                                    </a>
+                                </span>
+                            </div>
+                        </td>
+                        <td>
+                            <app-setor-tag [setor]="noticia.destinatario"></app-setor-tag>
+                        </td>
+                        <td>{{ noticia.publicadaEm | date: 'dd/MM/yyyy HH:mm' }}</td>
+                        <td>
+                            <div class="container-acoes">
+                                <button class="btn-acao edit">
+                                    <img src="assets/icones/edit.svg" alt="Editar">
+                                    Editar
+                                </button>
+                                <button class="btn-acao delete">
+                                    <img src="assets/icones/delete.svg" alt="Excluir">
+                                     Excluir
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+         <div *ngIf="noticiasPaginados.length === 0" class="feedback-container">
+            <ng-container *ngIf="mensagemBusca; else semNoticias">
+                <div>
+                <div class="search alert-warning text-center">
+                    {{ mensagemBusca }}
+                </div>
+                </div>
+            </ng-container>
+            <ng-template #semNoticias>
+                <div class="no-data-message">
+                <img src="assets/imagens/no-data.svg" alt="Sem dados">
+                <p>Não há noticias cadastradas.</p>
+                </div>
+            </ng-template>
+        </div>
+
+        <div class="paginacao">
+            <app-pagination
+            [paginaAtual]="paginaAtual"
+            [totalItens]="totalItens"
+            [itensPorPagina]="itensPorPagina"
+            (paginaMudou)="onPaginaMudou($event)">
+            </app-pagination>
+        </div>  
+    </div>
+</div>

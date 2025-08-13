@@ -1,0 +1,49 @@
+<div class="main-container">
+    <div class="breadcrumb-container">
+        <div class="back-title">
+            <img src="assets/icones/back-left-blue.svg" alt="Back" class="back-icon" (click)="goBack()">
+            <span>Detalhes da noticia</span>
+        </div>
+    </div>
+    <div class="actions">
+        <h1>{{ noticia.titulo }}</h1>
+        <p>Data de publicação: {{ noticia.publicadaEm }}</p>
+    </div>
+</div>
+<div class="subMain-container">
+    <div class="divisao">
+        <p>Conteúdo da notícia</p>
+        <hr class="line">
+    </div>
+    <div class="data-itens">
+        <div class="item-data" *ngIf="noticia.arquivo as arquivo">
+            <ng-container *ngIf="arquivo.documentoUrl; else noMidia">
+                <ng-container *ngIf="isImage(arquivo.documentoUrl); else videoBlock">
+                <img [src]="arquivo.documentoUrl" [alt]="arquivo.name || 'Arquivo da notícia'" class="noticia-arquivo-img" />
+                </ng-container>
+                <ng-template #videoBlock>
+                <video [src]="arquivo.documentoUrl" controls class="noticia-arquivo-video"></video>
+                </ng-template>
+            </ng-container>
+            <ng-template #noMidia></ng-template>
+        </div>
+        <div class="item-data">
+           <div [innerHTML]="conteudoSanitizado"></div>
+        </div>
+    </div>
+
+    <div class="data-itens">
+        <div class="data-grid">
+            <div class="item-data">
+                <label>Destinatário</label>
+                <!-- <div *ngFor="let destinatario of formatarDestinatariosArray(noticia.setor)">
+                    <p>{{ destinatario }}</p>
+                </div> -->
+            </div>
+            <div class="item-data">
+                <label>Autor</label>
+                <p *ngIf="noticia.autor?.nome">{{ noticia.autor.nome || '-' }}</p>
+            </div>
+        </div>
+    </div>
+</div>

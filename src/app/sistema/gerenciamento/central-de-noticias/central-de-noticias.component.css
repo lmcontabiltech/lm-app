@@ -20,9 +20,24 @@
   margin: 0;
 }
 
-.btn-container {
+.back-title {
   display: flex;
-  gap: 16px;
+  align-items: center;
+  gap: 8px;
+}
+
+.back-title img {
+  width: 30px;
+  height: auto;
+  color: #1a1918;
+  margin: 0;
+  padding: 4px;
+  cursor: pointer;
+}
+
+.back-title img:hover {
+  background: #bbd0ff;
+  border-radius: 50%;
 }
 
 .table-container {
@@ -53,21 +68,12 @@
   width: 400px;
 }
 
-.duo-select {
-  display: flex;
-  gap: 16px;
-}
-
 /* tabela */
 .tabela-container {
   width: 100%;
   overflow-x: auto;
   border-radius: 8px;
   border: var(--lm-border) solid 1px;
-}
-
-.tabela-container.no-data {
-  border: none;
 }
 
 table {
@@ -228,25 +234,6 @@ tr:hover {
   }
 }
 
-.btn-secondary {
-  all: none;
-  display: inline-block;
-  padding: 12px 24px;
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--lm-branco);
-  background-color: var(--lm-accent);
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  text-align: center;
-  transition: background-color 0.3s, border-color 0.3s;
-}
-
-.btn-secondary:hover {
-  background-color: var(--lm-primary);
-}
-
 /* Breakpoints */
 @media (min-width: 1200px) {
   .main-container {
@@ -259,11 +246,6 @@ tr:hover {
   .main-container {
     margin: 90px 20px 20px;
     padding: 40px 16px;
-  }
-
-  .duo-select {
-    width: 100%;
-    flex-direction: column;
   }
 }
 
@@ -299,10 +281,5 @@ tr:hover {
 
   button {
     width: 100%;
-  }
-
-  .duo-select {
-    width: 100%;
-    flex-direction: column;
   }
 }

@@ -31,6 +31,8 @@ import { DetalhesPerifericoComponent } from './administrativo/visualizar-adminis
 import { CadastroFilialEmpresaComponent } from './administrativo/cadastro-filial-empresa/cadastro-filial-empresa.component';
 import { FilialEmpresaComponent } from './administrativo/filial-empresa/filial-empresa.component';
 import { DetalhesFilialEmpresaComponent } from './administrativo/visualizar-administrativo/detalhes-filial-empresa/detalhes-filial-empresa.component';
+import { CentralDeNoticiasComponent } from './gerenciamento/central-de-noticias/central-de-noticias.component';
+import { DetalhesNoticiaComponent } from './gerenciamento/visualizar-gerenciamento/detalhes-noticia/detalhes-noticia.component';
 
 const routes: Routes = [
   {  path: 'usuario', 
@@ -71,6 +73,8 @@ const routes: Routes = [
       { path: 'historico-atividades', component: HistoricoAtividadesComponent},
       { path: 'cadastro-de-noticia', component: CadastroDeNoticiaComponent},
       { path: 'cadastro-de-noticia/:id', component: CadastroDeNoticiaComponent},
+      { path: 'central-de-noticias', component: CentralDeNoticiasComponent},
+      { path: 'detalhes-noticia/:id', component: DetalhesNoticiaComponent},
       { path: 'processos', component: ProcessosComponent},
       { path: 'cadastro-de-processos', component: CadastroDeProcessosComponent},
       { path: 'cadastro-de-processos/:id', component: CadastroDeProcessosComponent},

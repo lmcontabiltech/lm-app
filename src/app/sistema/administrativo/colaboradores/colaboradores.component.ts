@@ -6,6 +6,10 @@ import { SetorDescricao } from '../cadastro-de-colaborador/setor-descricao';
 import { ColaboradoresService } from '../../../services/administrativo/colaboradores.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ModalDeleteService } from 'src/app/services/modal/modalDeletar.service';
+import {
+  ExportService,
+  Header,
+} from 'src/app/services/feedback/export.service';
 
 @Component({
   selector: 'app-colaboradores',
@@ -36,11 +40,25 @@ export class ColaboradoresComponent implements OnInit {
   successMessage: string = '';
   messageTimeout: any;
 
+  ordenacaoNome: 'asc' | 'desc' | null = null;
+
+  isExporting = false;
+
+  exportHeaders: Header[] = [
+    { key: 'nome', label: 'Nome' },
+    { key: 'setor', label: 'Setor' },
+    { key: 'email', label: 'E-mail corporativo' },
+    // Campos extras que vêm do endpoint:
+    { key: 'cargo', label: 'Cargo' },
+    { key: 'status', label: 'Status' },
+  ];
+
   constructor(
     private router: Router,
     private colaboradoresService: ColaboradoresService,
     private authService: AuthService,
-    private modalDeleteService: ModalDeleteService
+    private modalDeleteService: ModalDeleteService,
+    private exportSvc: ExportService
   ) {}
 
   ngOnInit(): void {
@@ -248,5 +266,56 @@ export class ColaboradoresComponent implements OnInit {
         console.error(error);
       }
     );
+  }
+
+  alternarOrdenacaoNome() {
+    if (this.ordenacaoNome === 'asc') {
+      this.ordenacaoNome = 'desc';
+    } else {
+      this.ordenacaoNome = 'asc';
+    }
+    this.colaboradores.sort((a, b) => {
+      const nomeA = a.nome.toLowerCase();
+      const nomeB = b.nome.toLowerCase();
+      if (this.ordenacaoNome === 'asc') {
+        return nomeA.localeCompare(nomeB);
+      } else {
+        return nomeB.localeCompare(nomeA);
+      }
+    });
+    this.paginaAtual = 1;
+    this.atualizarPaginacao();
+  }
+
+  exportCsv() {
+    this.isExporting = true;
+    const data = this.colaboradores;
+
+    if (!data?.length) {
+      this.showMessage('error', 'Nada para exportar com o setor atual.');
+      this.isExporting = false;
+      return;
+    }
+
+    const rows = this.mapForExport(data);
+    this.exportSvc.toCsv(
+      `colaboradores${this.selectedSetor ? '_' + this.selectedSetor : ''}`,
+      rows,
+      this.exportHeaders
+    );
+
+    this.isExporting = false;
+  }
+
+  private mapForExport(rows: any[]) {
+    return rows.map((r) => ({
+      nome: r.nome ?? '',
+      setor: r.setor
+        ? SetorDescricao[r.setor as keyof typeof SetorDescricao] ?? r.setor
+        : '',
+      email: r.email ?? '',
+      cargo: r.cargo ?? '',
+      status: r.ativo === true ? 'Ativo' : r.ativo === false ? 'Inativo' : '',
+    }));
   }
 }

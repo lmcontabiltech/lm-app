@@ -134,4 +134,20 @@ export class NoticiaService {
       })
     );
   }
+
+  marcarNoticiaComoVisualizada(id: number): Observable<any> {
+    const url = `${this.apiURL}/${id}/visualizar`;
+    return this.http.patch<any>(url, null).pipe(
+      catchError((error: HttpErrorResponse) => {
+        let errorMessage = 'Erro ao marcar notícia como visualizada.';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
 }

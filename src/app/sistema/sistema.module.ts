@@ -34,6 +34,8 @@ import { DetalhesPerifericoComponent } from './administrativo/visualizar-adminis
 import { DetalhesFilialEmpresaComponent } from './administrativo/visualizar-administrativo/detalhes-filial-empresa/detalhes-filial-empresa.component';
 import { FilialEmpresaComponent } from './administrativo/filial-empresa/filial-empresa.component';
 import { CadastroFilialEmpresaComponent } from './administrativo/cadastro-filial-empresa/cadastro-filial-empresa.component';
+import { CentralDeNoticiasComponent } from './gerenciamento/central-de-noticias/central-de-noticias.component';
+import { DetalhesNoticiaComponent } from './gerenciamento/visualizar-gerenciamento/detalhes-noticia/detalhes-noticia.component';
 
 
 @NgModule({
@@ -67,6 +69,8 @@ import { CadastroFilialEmpresaComponent } from './administrativo/cadastro-filial
     DetalhesFilialEmpresaComponent,
     FilialEmpresaComponent,
     CadastroFilialEmpresaComponent,
+    CentralDeNoticiasComponent,
+    DetalhesNoticiaComponent,
   ],
   imports:[
     CommonModule, 

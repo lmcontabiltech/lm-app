@@ -1,0 +1,27 @@
+export enum TipoNoticia {
+  COMUNICADO = 'COMUNICADO',
+  PRONUNCIAMENTO = 'PRONUNCIAMENTO',
+  FEEDBACK = 'FEEDBACK',
+  ATUALIZACAO = 'ATUALIZACAO',
+  LANCAMENTO = 'LANCAMENTO',
+  AVISO = 'AVISO',
+  ALERTA = 'ALERTA',
+  EVENTO = 'EVENTO',
+  PARCERIA = 'PARCERIA',
+  RESULTADO = 'RESULTADO',
+  PESQUISA = 'PESQUISA',
+}
+
+export const TipoNoticiaCor: Record<string, string> = {
+  COMUNICADO: '#1e3591',
+  PRONUNCIAMENTO: '#429941',
+  FEEDBACK: '#fbe53bff',
+  ATUALIZACAO: '#0097e6',
+  LANCAMENTO: '#8e44ad',
+  AVISO: '#e67e22',
+  ALERTA: '#e73c3cff',
+  EVENTO: '#00b86eff',
+  PARCERIA: '#ff699dff',
+  RESULTADO: '#636e72',
+  PESQUISA: '#ce0075ff',
+};

@@ -22,8 +22,14 @@
                 </app-select-padrao>
             </div>
 
-            <div class="search-container">
-                <app-search (searchChange)="onSearch($event)"></app-search>
+            <div class="acoes-container">
+                <div class="search-container">
+                    <app-search (searchChange)="onSearch($event)"></app-search>
+                </div>
+
+                <button class="btn btn-outline" (click)="exportCsv()" [disabled]="isExporting">
+                    {{ isExporting ? 'Carregando...' : 'Exportar' }}
+                </button>
             </div>
         </div>
 
@@ -41,7 +47,15 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Nome</th>
+                        <th class="th-ordenacao">
+                            Nome
+                            <button class="seta-btn" (click)="alternarOrdenacaoNome()" [class.asc]="ordenacaoNome === 'asc'" [class.desc]="ordenacaoNome === 'desc'" title="Ordenar por nome">
+                                <span class="seta-icones">
+                                <span [class.ativo]="ordenacaoNome === 'asc'">&#9650;</span>
+                                <span [class.ativo]="ordenacaoNome === 'desc'">&#9660;</span>
+                                </span>
+                            </button>
+                        </th>
                         <th>Setor</th>
                         <th>E-mail coorporativo</th>
                         <th>Ações</th>
