@@ -54,7 +54,15 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Razão social</th>
+                        <th class="th-ordenacao">
+                            Razão social
+                            <button class="seta-btn" (click)="alternarOrdenacaoNome()" [class.asc]="ordenacaoNome === 'asc'" [class.desc]="ordenacaoNome === 'desc'" title="Ordenar por razão social">
+                                <span class="seta-icones">
+                                    <span [class.ativo]="ordenacaoNome === 'asc'">&#9650;</span>
+                                    <span [class.ativo]="ordenacaoNome === 'desc'">&#9660;</span>
+                                </span>
+                            </button>
+                        </th>
                         <th>CNPJ</th>
                         <th>Unidade da empresa</th>
                         <th>Regime da Empresa</th>

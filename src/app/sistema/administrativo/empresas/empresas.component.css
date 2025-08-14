@@ -247,6 +247,58 @@ tr:hover {
   background-color: var(--lm-primary);
 }
 
+/* ordenação */
+.th-ordenacao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.nome-label {
+  font-weight: 500;
+  font-size: 16px;
+  color: var(--lm-branco);
+}
+
+.seta-btn {
+  background: none;
+  border: none;
+  padding: 0 4px;
+  font-size: 16px;
+  cursor: pointer;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  transition: color 0.2s;
+  margin: 2px;
+}
+
+.seta-btn:hover {
+  background: #bed7ff8f;
+  color: #fff;
+  border-radius: 4px;
+}
+
+.seta-icones {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  line-height: 1;
+}
+
+.seta-icones span {
+  color: #ffffff;
+  font-size: 10px;
+  transition: color 0.2s;
+}
+
+.seta-icones .ativo {
+  color: #67b3f6;
+  font-weight: 500;
+}
+
 /* Breakpoints */
 @media (min-width: 1200px) {
   .main-container {
