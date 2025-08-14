@@ -248,7 +248,7 @@ tr:hover {
 }
 
 /* ordenação */
-.th-ordenacao {
+.th-filter {
   display: flex;
   align-items: center;
   justify-content: space-between;
