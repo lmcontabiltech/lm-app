@@ -11,8 +11,8 @@ export class Noticia {
     id: number;
     name: string;
   };
-  destinatario!: Setor;
-  tipo!: string;
+  setores!: Setor[];
+  tipoNoticia!: string;
   qtdVisualizacoes?: number;
   visualizada?: boolean;
   editada?: boolean;

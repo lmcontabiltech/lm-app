@@ -12,6 +12,8 @@ import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
 import { SetorDescricao } from '../../administrativo/cadastro-de-colaborador/setor-descricao';
 import { NoticiaService } from 'src/app/services/gerenciamento/noticia.service';
 import { ColaboradoresService } from 'src/app/services/administrativo/colaboradores.service';
+import { TipoNoticia } from '../forum-de-noticia/enums/tipo-noticia';
+import { TipoNoticiaDescricao } from '../forum-de-noticia/enums/tipo-noticia-descricao';
 
 @Component({
   selector: 'app-cadastro-de-noticia',
@@ -30,11 +32,18 @@ export class CadastroDeNoticiaComponent implements OnInit {
     value: Setor[key as keyof typeof Setor],
     description: SetorDescricao[Setor[key as keyof typeof Setor]],
   }));
-  selectedSetor: string = '';
+  selectedSetor: { value: string; description: string }[] = [];
 
   arquivo: File | { documentoUrl: string; id: number; name: string } | null =
     null;
   selectedFile: File | null = null;
+
+  tiposNoticia = Object.keys(TipoNoticia).map((key) => ({
+    value: TipoNoticia[key as keyof typeof TipoNoticia],
+    description:
+      TipoNoticiaDescricao[TipoNoticia[key as keyof typeof TipoNoticia]],
+  }));
+  selectedTipoNoticia: string = '';
 
   constructor(
     private location: Location,
@@ -46,7 +55,9 @@ export class CadastroDeNoticiaComponent implements OnInit {
   ) {
     this.noticiaForm = this.formBuilder.group({
       titulo: ['', Validators.required],
-      conteudo: [''],
+      conteudo: ['', Validators.required],
+      tipoNoticia: ['', Validators.required],
+      setores: [[]],
     });
   }
 
@@ -68,6 +79,9 @@ export class CadastroDeNoticiaComponent implements OnInit {
 
     const noticia: Noticia = {
       ...this.noticiaForm.value,
+      setores: (this.noticiaForm.value.setores || []).map(
+        (s: any) => s.value || s
+      ),
     };
 
     const formData = new FormData();
@@ -137,6 +151,10 @@ export class CadastroDeNoticiaComponent implements OnInit {
   onArquivoRemovido(): void {
     console.log('🗑️ Arquivo removido');
     this.selectedFile = null;
+  }
+
+  onSetoresChange(setoresSelecionados: any[]) {
+    this.noticiaForm.get('setores')?.setValue(setoresSelecionados);
   }
 
   private verificarModoEdicao(): void {

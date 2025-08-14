@@ -52,7 +52,9 @@
                             </div>
                         </td>
                         <td>
-                            <app-setor-tag [setor]="noticia.destinatario"></app-setor-tag>
+                            <ng-container *ngFor="let setor of noticia.setores">
+                                <app-setor-tag [setor]="setor"></app-setor-tag>
+                            </ng-container>
                         </td>
                         <td>{{ noticia.publicadaEm | date: 'dd/MM/yyyy HH:mm' }}</td>
                         <td>
