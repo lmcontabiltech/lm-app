@@ -28,7 +28,7 @@
         </div>
 
         <div class="noticia-container" *ngIf="!isLoading">
-            <div class="noticia-item" *ngFor="let noticia of noticiasPaginados" [class.lida]="noticia.visualizada">
+            <div class="noticia-item" *ngFor="let noticia of noticiasPaginados" [class.lida]="noticia.lida">
                 <div class="noticia-tag">
                     <span class="tag-bolinha" [ngStyle]="{'background': getTipoCor(noticia.tipoNoticia)}"></span>
                     {{ getTipoDescricao(noticia.tipoNoticia) }}

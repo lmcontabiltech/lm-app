@@ -100,6 +100,23 @@ export class NoticiaService {
     );
   }
 
+  getNoticiasGeral(): Observable<Noticia[]> {
+    const url = `${environment.apiURLBase}/api/noticias/geral`;
+    return this.http.get<Noticia[]>(url).pipe(
+      map((response) => response),
+      catchError((error) => {
+        let errorMessage = 'Erro ao buscar todas as notícias.';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
   getNoticiaById(id: number): Observable<Noticia> {
     const url = `${this.apiURL}/${id}`;
     return this.http.get<Noticia>(url).pipe(
@@ -140,6 +157,23 @@ export class NoticiaService {
     return this.http.patch<any>(url, null).pipe(
       catchError((error: HttpErrorResponse) => {
         let errorMessage = 'Erro ao marcar notícia como visualizada.';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
+  getNoticiasNaoLidas(): Observable<Noticia[]> {
+    const url = `${this.apiURL}/nao-lidas`;
+    return this.http.get<Noticia[]>(url).pipe(
+      map((response) => response),
+      catchError((error) => {
+        let errorMessage = 'Erro ao buscar notícias não lidas.';
         if (error.error instanceof ErrorEvent) {
           errorMessage = `Erro: ${error.error.message}`;
         } else if (error.status) {

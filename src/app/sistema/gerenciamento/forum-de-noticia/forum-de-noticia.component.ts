@@ -91,7 +91,7 @@ export class ForumDeNoticiaComponent implements OnInit {
         const noticia = this.noticiasPaginados.find(
           (n) => String(n.id) === String(id)
         );
-        if (noticia) noticia.visualizada = true;
+        if (noticia) noticia.lida = true;
         // Navegue para detalhes se necessário
         this.router.navigate(['/usuario/detalhes-noticia', idNum]);
       },

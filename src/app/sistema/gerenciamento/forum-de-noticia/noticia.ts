@@ -14,7 +14,7 @@ export class Noticia {
   setores!: Setor[];
   tipoNoticia!: string;
   qtdVisualizacoes?: number;
-  visualizada?: boolean;
+  lida?: boolean;
   editada?: boolean;
   editor?: { id: string; nome: string };
   usuariosQueVisualizaram?: { id: string; nome: string }[];
