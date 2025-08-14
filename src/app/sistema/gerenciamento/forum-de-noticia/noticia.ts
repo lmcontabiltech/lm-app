@@ -5,7 +5,7 @@ export class Noticia {
   titulo!: string;
   conteudo!: string;
   autor!: { id: string; nome: string };
-  publicadaEm!: number;
+  publicadaEm!: string;
   arquivo?: {
     documentoUrl: string;
     id: number;

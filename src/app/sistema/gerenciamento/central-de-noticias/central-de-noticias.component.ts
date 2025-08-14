@@ -15,7 +15,7 @@ import { ModalDeleteService } from 'src/app/services/modal/modalDeletar.service'
 export class CentralDeNoticiasComponent implements OnInit {
   noticias: Noticia[] = [];
 
-  itensPorPagina = 5;
+  itensPorPagina = 6;
   paginaAtual = 1;
   totalPaginas = Math.ceil(this.noticias.length / this.itensPorPagina);
   noticiasPaginados: Noticia[] = [];
@@ -48,7 +48,7 @@ export class CentralDeNoticiasComponent implements OnInit {
   }
 
   goBack() {
-    this.location.back();
+    this.router.navigate(['/usuario/forum-de-noticias']);
   }
 
   cadastrarNoticia(): void {

@@ -45,7 +45,7 @@
                         <td>
                             <div class="perfil">
                                 <span>
-                                    <a>
+                                    <a (click)="visualizarNoticia(noticia.id)">
                                         {{ noticia.titulo }}
                                     </a>
                                 </span>
@@ -56,7 +56,7 @@
                                 <app-setor-tag [setor]="setor"></app-setor-tag>
                             </ng-container>
                         </td>
-                        <td>{{ noticia.publicadaEm | date: 'dd/MM/yyyy HH:mm' }}</td>
+                        <td>{{ noticia.publicadaEm }}</td>
                         <td>
                             <div class="container-acoes">
                                 <button class="btn-acao edit" (click)="editarNoticia(noticia.id)">

@@ -61,7 +61,9 @@ export class CadastroDeNoticiaComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.verificarModoEdicao();
+  }
 
   goBack() {
     this.location.back();
@@ -100,7 +102,7 @@ export class CadastroDeNoticiaComponent implements OnInit {
             this.successMessage = 'Notícia atualizada com sucesso!';
             this.errorMessage = null;
             this.noticiaForm.reset();
-            this.router.navigate(['/usuario/forum-de-noticias'], {
+            this.router.navigate(['/usuario/central-de-noticias'], {
               state: { successMessage: 'Notícia atualizada com sucesso!' },
             });
           },
@@ -117,7 +119,7 @@ export class CadastroDeNoticiaComponent implements OnInit {
           this.successMessage = 'Notícia cadastrada com sucesso!';
           this.errorMessage = null;
           this.noticiaForm.reset();
-          this.router.navigate(['/usuario/forum-de-noticias'], {
+          this.router.navigate(['/usuario/central-de-noticias'], {
             state: { successMessage: 'Notícia cadastrada com sucesso!' },
           });
         },
@@ -163,14 +165,26 @@ export class CadastroDeNoticiaComponent implements OnInit {
       this.isEditMode = true;
       this.noticiaService.getNoticiaById(Number(this.noticiaId)).subscribe(
         (noticia: Noticia) => {
+          const setoresSelecionados = (noticia.setores || []).map(
+            (setor: string) => {
+              const found = this.setores.find((opt) => opt.value === setor);
+              return found ? found : { value: setor, description: setor };
+            }
+          );
+
+          this.selectedTipoNoticia = noticia.tipoNoticia || '';
           this.noticiaForm.patchValue({
             ...noticia,
+            setores: setoresSelecionados,
+            tipoNoticia: noticia.tipoNoticia || '',
           });
 
           if (noticia.arquivo) {
             this.selectedFile = null;
             this.arquivo = noticia.arquivo;
           }
+
+          this.selectedSetor = setoresSelecionados;
         },
         (error) => {
           console.error('Erro ao carregar os dados de notícia', error);
