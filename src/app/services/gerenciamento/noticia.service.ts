@@ -169,11 +169,30 @@ export class NoticiaService {
   }
 
   getNoticiasNaoLidas(): Observable<Noticia[]> {
-    const url = `${this.apiURL}/nao-lidas`;
-    return this.http.get<Noticia[]>(url).pipe(
+    const url = `${this.apiURL}/lida-e-nao-lida`;
+    const params = { lida: 'false' };
+    return this.http.get<Noticia[]>(url, { params }).pipe(
       map((response) => response),
       catchError((error) => {
         let errorMessage = 'Erro ao buscar notícias não lidas.';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
+  buscarNoticiasPorTitulo(titulo: string): Observable<Noticia[]> {
+    const url = `${this.apiURL}/busca`;
+    const params = { titulo };
+    return this.http.get<Noticia[]>(url, { params }).pipe(
+      map((response) => response),
+      catchError((error) => {
+        let errorMessage = 'Erro ao buscar notícias pelo título.';
         if (error.error instanceof ErrorEvent) {
           errorMessage = `Erro: ${error.error.message}`;
         } else if (error.status) {
