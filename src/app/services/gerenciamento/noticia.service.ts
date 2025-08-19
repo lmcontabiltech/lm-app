@@ -168,13 +168,13 @@ export class NoticiaService {
     );
   }
 
-  getNoticiasNaoLidas(): Observable<Noticia[]> {
+  getNoticiasLidaOuNaoLida(lida: string): Observable<Noticia[]> {
     const url = `${this.apiURL}/lida-e-nao-lida`;
-    const params = { lida: 'false' };
+    const params = { lida };
     return this.http.get<Noticia[]>(url, { params }).pipe(
       map((response) => response),
       catchError((error) => {
-        let errorMessage = 'Erro ao buscar notícias não lidas.';
+        let errorMessage = 'Erro ao buscar notícias.';
         if (error.error instanceof ErrorEvent) {
           errorMessage = `Erro: ${error.error.message}`;
         } else if (error.status) {

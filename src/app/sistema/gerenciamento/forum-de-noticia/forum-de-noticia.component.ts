@@ -26,12 +26,11 @@ export class ForumDeNoticiaComponent implements OnInit {
   successMessage: string = '';
   messageTimeout: any;
 
-  setores = Object.keys(Setor).map((key) => ({
-    value: Setor[key as keyof typeof Setor],
-    description: SetorDescricao[Setor[key as keyof typeof Setor]],
-  }));
-
-  selectedSetor: string = '';
+  lidas = [
+    { value: 'false', description: 'Não lidas' },
+    { value: 'true', description: 'Lidas' },
+  ];
+  selectedLida: string = '';
 
   constructor(private router: Router, private noticiaService: NoticiaService) {}
 
@@ -143,5 +142,29 @@ export class ForumDeNoticiaComponent implements OnInit {
       TipoNoticiaCor[tipoFinal as TipoNoticia] ||
       TipoNoticiaCor[TipoNoticia.COMUNICADO]
     );
+  }
+
+  onNoticiaChange() {
+    this.isLoading = true;
+    console.log('Filtro selecionado:', this.selectedLida);
+    if (this.selectedLida === '') {
+      this.fetchNoticias();
+    } else {
+      this.noticiaService.getNoticiasLidaOuNaoLida(this.selectedLida).subscribe(
+        (noticias) => {
+          console.log('Notícias filtradas:', noticias);
+          this.noticias = noticias;
+          this.totalPaginas = Math.ceil(
+            this.noticias.length / this.itensPorPagina
+          );
+          this.atualizarPaginacao();
+          this.isLoading = false;
+        },
+        (error) => {
+          this.isLoading = false;
+          this.mensagemBusca = 'Erro ao buscar notícias.';
+        }
+      );
+    }
   }
 }
