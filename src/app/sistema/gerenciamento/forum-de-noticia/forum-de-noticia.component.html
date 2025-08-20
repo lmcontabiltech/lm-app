@@ -8,7 +8,13 @@
         <div class="filtro-container">
             <div class="select-container">
                 <app-select-padrao
-                      label="Todos as notícias">
+                      label="Notícias"
+                      [options]="lidas"
+                      [(selectedValue)]="selectedLida"
+                      (selectedValueChange)="onNoticiaChange()"
+                      [showDefaultOption]="true"
+                      [defaultLabel]="'Todas as noticias'"
+                      [defaultValue]="''">
                 </app-select-padrao>
             </div>
 
@@ -28,10 +34,10 @@
         </div>
 
         <div class="noticia-container" *ngIf="!isLoading">
-            <div class="noticia-item" *ngFor="let noticia of noticiasPaginados" [class.lida]="noticia.visualizada">
+            <div class="noticia-item" *ngFor="let noticia of noticiasPaginados" [class.lida]="noticia.lida">
                 <div class="noticia-tag">
-                    <span class="tag-bolinha" [ngStyle]="{'background': getTipoCor(noticia.tipo)}"></span>
-                    {{ getTipoDescricao(noticia.tipo) }}
+                    <span class="tag-bolinha" [ngStyle]="{'background': getTipoCor(noticia.tipoNoticia)}"></span>
+                    {{ getTipoDescricao(noticia.tipoNoticia) }}
                 </div>
 
                 <!-- Foto e título -->
@@ -40,7 +46,7 @@
                 <div class="noticia-info">
                     <span class="noticia-titulo">{{ noticia.titulo }}</span>
                     <div class="noticia-meta">
-                        <span class="noticia-data">{{ noticia.publicadaEm | date:'dd/MM/yyyy HH:mm' }}</span>
+                        <span class="noticia-data">{{ noticia.publicadaEm }}</span>
                         <span class="noticia-autor">por {{ noticia.autor.nome }}</span>
                     </div>
                     <div class="noticia-visualizacoes">

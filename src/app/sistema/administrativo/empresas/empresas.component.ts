@@ -45,6 +45,8 @@ export class EmpresasComponent implements OnInit {
   ];
   selectedUnidade: string = '';
 
+  ordenacaoNome: 'asc' | 'desc' | null = null;
+
   constructor(
     private router: Router,
     private empresasService: EmpresasService,
@@ -292,5 +294,24 @@ export class EmpresasComponent implements OnInit {
         console.error(error);
       }
     );
+  }
+
+  alternarOrdenacaoNome() {
+    if (this.ordenacaoNome === 'asc') {
+      this.ordenacaoNome = 'desc';
+    } else {
+      this.ordenacaoNome = 'asc';
+    }
+    this.empresas.sort((a, b) => {
+      const nomeA = a.razaoSocial.toLowerCase();
+      const nomeB = b.razaoSocial.toLowerCase();
+      if (this.ordenacaoNome === 'asc') {
+        return nomeA.localeCompare(nomeB);
+      } else {
+        return nomeB.localeCompare(nomeA);
+      }
+    });
+    this.paginaAtual = 1;
+    this.atualizarPaginacao();
   }
 }

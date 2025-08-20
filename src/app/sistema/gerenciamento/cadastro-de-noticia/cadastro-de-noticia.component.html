@@ -7,17 +7,29 @@
     <div class="forms-container">
         <form (ngSubmit)="onSubmit()" [formGroup]="noticiaForm">
             <div class="form-group">
+                <label for="tipoNoticia">Tipo de Notícia</label>
+                <app-select-padrao
+                  [options]="tiposNoticia"
+                  [(selectedValue)]="selectedTipoNoticia"
+                  label="Selecionar o tipo de notícia"
+                  formControlName="tipoNoticia">
+                </app-select-padrao>
+            </div>
+
+            <div class="form-group">
                 <label for="titulo">Titulo</label>
                 <input type="text" id="titulo" name="titulo" formControlName="titulo" class="form-control" placeholder="Digite um título para a notícia" required>
             </div>
 
             <div class="form-group">
-                <label for="setor">Destinatário</label>
+                <label for="setores">Destinatário</label>
                 <app-multiplo-select
-                  label="Selecionar o setor"
-                  formControlName="destinatario"
+                  label="Selecionar o destinatário"
                   [multiple]="true"
-                  formControlName="setor">
+                  [options]="setores"
+                  [(selectedValue)]="selectedSetor"
+                  (selectedValueChange)="onSetoresChange($event)"
+                  formControlName="setores">
                 </app-multiplo-select>
             </div>
 

@@ -5,16 +5,16 @@ export class Noticia {
   titulo!: string;
   conteudo!: string;
   autor!: { id: string; nome: string };
-  publicadaEm!: number;
+  publicadaEm!: string;
   arquivo?: {
     documentoUrl: string;
     id: number;
     name: string;
   };
-  destinatario!: Setor;
-  tipo!: string;
+  setores!: Setor[];
+  tipoNoticia!: string;
   qtdVisualizacoes?: number;
-  visualizada?: boolean;
+  lida?: boolean;
   editada?: boolean;
   editor?: { id: string; nome: string };
   usuariosQueVisualizaram?: { id: string; nome: string }[];

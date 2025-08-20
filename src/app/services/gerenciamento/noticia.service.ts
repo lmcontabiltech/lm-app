@@ -100,6 +100,23 @@ export class NoticiaService {
     );
   }
 
+  getNoticiasGeral(): Observable<Noticia[]> {
+    const url = `${environment.apiURLBase}/api/noticias/geral`;
+    return this.http.get<Noticia[]>(url).pipe(
+      map((response) => response),
+      catchError((error) => {
+        let errorMessage = 'Erro ao buscar todas as notícias.';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
   getNoticiaById(id: number): Observable<Noticia> {
     const url = `${this.apiURL}/${id}`;
     return this.http.get<Noticia>(url).pipe(
@@ -140,6 +157,42 @@ export class NoticiaService {
     return this.http.patch<any>(url, null).pipe(
       catchError((error: HttpErrorResponse) => {
         let errorMessage = 'Erro ao marcar notícia como visualizada.';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
+  getNoticiasLidaOuNaoLida(lida: string): Observable<Noticia[]> {
+    const url = `${this.apiURL}/lida-e-nao-lida`;
+    const params = { lida };
+    return this.http.get<Noticia[]>(url, { params }).pipe(
+      map((response) => response),
+      catchError((error) => {
+        let errorMessage = 'Erro ao buscar notícias.';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
+  buscarNoticiasPorTitulo(titulo: string): Observable<Noticia[]> {
+    const url = `${this.apiURL}/busca`;
+    const params = { titulo };
+    return this.http.get<Noticia[]>(url, { params }).pipe(
+      map((response) => response),
+      catchError((error) => {
+        let errorMessage = 'Erro ao buscar notícias pelo título.';
         if (error.error instanceof ErrorEvent) {
           errorMessage = `Erro: ${error.error.message}`;
         } else if (error.status) {

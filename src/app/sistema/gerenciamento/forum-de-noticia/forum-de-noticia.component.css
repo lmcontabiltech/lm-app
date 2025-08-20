@@ -149,7 +149,8 @@
 }
 
 .noticia-item.lida {
-  background-color: #f1f1f1c6;
+  background-color: #fbfbfb;
+  cursor: default;
 }
 
 .perfil {

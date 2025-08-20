@@ -5,6 +5,7 @@ import { Noticia } from '../forum-de-noticia/noticia';
 import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
 import { SetorDescricao } from '../../administrativo/cadastro-de-colaborador/setor-descricao';
 import { NoticiaService } from 'src/app/services/gerenciamento/noticia.service';
+import { ModalDeleteService } from 'src/app/services/modal/modalDeletar.service';
 
 @Component({
   selector: 'app-central-de-noticias',
@@ -14,7 +15,7 @@ import { NoticiaService } from 'src/app/services/gerenciamento/noticia.service';
 export class CentralDeNoticiasComponent implements OnInit {
   noticias: Noticia[] = [];
 
-  itensPorPagina = 5;
+  itensPorPagina = 6;
   paginaAtual = 1;
   totalPaginas = Math.ceil(this.noticias.length / this.itensPorPagina);
   noticiasPaginados: Noticia[] = [];
@@ -24,6 +25,7 @@ export class CentralDeNoticiasComponent implements OnInit {
   isLoading = false;
   successMessage: string = '';
   messageTimeout: any;
+  selectedNoticia: any = null;
 
   setores = Object.keys(Setor).map((key) => ({
     value: Setor[key as keyof typeof Setor],
@@ -35,7 +37,8 @@ export class CentralDeNoticiasComponent implements OnInit {
   constructor(
     private router: Router,
     private noticiaService: NoticiaService,
-    private location: Location
+    private location: Location,
+    private modaldeleteService: ModalDeleteService
   ) {}
 
   ngOnInit(): void {
@@ -45,7 +48,7 @@ export class CentralDeNoticiasComponent implements OnInit {
   }
 
   goBack() {
-    this.location.back();
+    this.router.navigate(['/usuario/forum-de-noticias']);
   }
 
   cadastrarNoticia(): void {
@@ -74,7 +77,7 @@ export class CentralDeNoticiasComponent implements OnInit {
   fetchNoticias(): void {
     this.isLoading = true;
 
-    this.noticiaService.getNoticias().subscribe(
+    this.noticiaService.getNoticiasGeral().subscribe(
       (noticias: any[]) => {
         console.log('Notícias retornadas:', noticias);
         this.noticias = noticias;
@@ -115,5 +118,46 @@ export class CentralDeNoticiasComponent implements OnInit {
   clearMessage() {
     this.successMessage = '';
     if (this.messageTimeout) clearTimeout(this.messageTimeout);
+  }
+
+  editarNoticia(id: string): void {
+    this.router.navigate(['/usuario/cadastro-de-noticia', id]);
+  }
+
+  deletarNoticia(id: string): void {
+    const noticiaRemovida = this.noticias.find((n) => n.id === id);
+    this.noticiaService.deleteNoticiaById(id).subscribe(
+      () => {
+        this.noticias = this.noticias.filter((n) => n.id !== id);
+        this.totalPaginas = Math.ceil(
+          this.noticias.length / this.itensPorPagina
+        );
+        this.atualizarPaginacao();
+        this.showMessage(
+          'success',
+          `Notícia "${noticiaRemovida?.titulo || ''}" deletada com sucesso!`
+        );
+      },
+      (error: any) => {
+        console.error('Erro ao excluir notícia:', error);
+      }
+    );
+  }
+
+  openModalDeletar(noticia: any): void {
+    this.selectedNoticia = noticia;
+
+    this.modaldeleteService.openModal(
+      {
+        title: 'Remoção de Notícia',
+        description: `Tem certeza que deseja excluir a notícia <strong>${noticia.titulo}</strong> cadastrada?`,
+        item: noticia,
+        deletarTextoBotao: 'Remover',
+        size: 'md',
+      },
+      () => {
+        this.deletarNoticia(noticia.id);
+      }
+    );
   }
 }

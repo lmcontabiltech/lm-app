@@ -109,6 +109,11 @@
   gap: 8px;
 }
 
+.item-data {
+  max-width: 100%;
+  word-break: break-word;
+}
+
 .item-data label {
   color: #716f6e;
 }
