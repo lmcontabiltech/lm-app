@@ -11,7 +11,13 @@
         <div class="filtro-container">
             <div class="select-container">
                 <app-select-padrao
-                      label="Todos as notícias">
+                  label="Setor"
+                  [options]="setores"
+                  [(selectedValue)]="selectedSetor"
+                  (selectedValueChange)="onSetorChange()"
+                  [showDefaultOption]="true"
+                  [defaultLabel]="'Todos os setores'"
+                  [defaultValue]="''">
                 </app-select-padrao>
             </div>
 

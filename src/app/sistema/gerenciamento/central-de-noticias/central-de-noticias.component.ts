@@ -160,4 +160,34 @@ export class CentralDeNoticiasComponent implements OnInit {
       }
     );
   }
+
+  onSetorChange() {
+    if (!this.selectedSetor) {
+      this.fetchNoticias();
+      return;
+    }
+    console.log('Setor selecionado:', this.selectedSetor);
+    this.isLoading = true;
+    this.noticiaService.getNoticiasPorSetor(this.selectedSetor).subscribe(
+      (noticias) => {
+        console.log('Notícias retornadas pelo backend:', noticias);
+        this.noticias = noticias;
+        this.paginaAtual = 1;
+        this.totalPaginas = Math.ceil(
+          this.noticias.length / this.itensPorPagina
+        );
+        this.atualizarPaginacao();
+        this.isLoading = false;
+        this.mensagemBusca =
+          noticias.length === 0
+            ? 'Nenhuma notícia encontrada para o setor selecionado.'
+            : '';
+      },
+      (error) => {
+        this.isLoading = false;
+        this.mensagemBusca = 'Erro ao buscar notícias por setor.';
+        console.error(error);
+      }
+    );
+  }
 }
