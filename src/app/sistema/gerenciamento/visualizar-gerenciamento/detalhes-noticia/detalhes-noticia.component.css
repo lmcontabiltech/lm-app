@@ -169,6 +169,13 @@
   font-weight: 500;
 }
 
+/* tags */
+.tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
 /* Paginação */
 .pagination {
   display: flex;

@@ -159,6 +159,13 @@ tr:hover {
   text-decoration: underline;
 }
 
+/* tags */
+.tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
 /* paginação */
 .paginacao {
   display: flex;

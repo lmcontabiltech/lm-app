@@ -58,9 +58,11 @@
                             </div>
                         </td>
                         <td>
-                            <ng-container *ngFor="let setor of noticia.setores">
-                                <app-setor-tag [setor]="setor"></app-setor-tag>
-                            </ng-container>
+                            <div class="tags">
+                                <ng-container *ngFor="let setor of noticia.setores">
+                                    <app-setor-tag [setor]="setor"></app-setor-tag>
+                                </ng-container>
+                            </div>
                         </td>
                         <td>{{ noticia.publicadaEm }}</td>
                         <td>
