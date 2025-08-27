@@ -38,6 +38,8 @@ export class CadastroDeNoticiaComponent implements OnInit {
     null;
   selectedFile: File | null = null;
 
+  midiaPreview: string | ArrayBuffer | null = null;
+
   tiposNoticia = Object.keys(TipoNoticia).map((key) => ({
     value: TipoNoticia[key as keyof typeof TipoNoticia],
     description:
@@ -143,16 +145,38 @@ export class CadastroDeNoticiaComponent implements OnInit {
 
   onArquivoSelecionado(arquivo: File | null): void {
     if (arquivo) {
-      console.log('📎 Arquivo selecionado:', arquivo.name);
-      console.log('📊 Tamanho:', arquivo.size);
-      console.log('🎭 Tipo:', arquivo.type);
       this.selectedFile = arquivo;
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.midiaPreview = reader.result as string;
+      };
+      reader.readAsDataURL(arquivo);
     }
   }
 
   onArquivoRemovido(): void {
-    console.log('🗑️ Arquivo removido');
     this.selectedFile = null;
+    this.midiaPreview = null;
+  }
+
+  removerMidiaNoticia(): void {
+    if (!this.isEditMode || !this.noticiaId) {
+      this.onArquivoRemovido();
+      return;
+    }
+    this.noticiaService.deleteImagemNoticia(Number(this.noticiaId)).subscribe({
+      next: () => {
+        this.midiaPreview = null;
+        this.selectedFile = null;
+        this.arquivo = null;
+        this.onArquivoRemovido();
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.errorMessage = err.message || 'Erro ao remover a mídia.';
+      },
+    });
   }
 
   onSetoresChange(setoresSelecionados: any[]) {
@@ -179,9 +203,12 @@ export class CadastroDeNoticiaComponent implements OnInit {
             tipoNoticia: noticia.tipoNoticia || '',
           });
 
-          if (noticia.arquivo) {
+          if (noticia.arquivo && noticia.arquivo.documentoUrl) {
             this.selectedFile = null;
             this.arquivo = noticia.arquivo;
+            this.midiaPreview = noticia.arquivo.documentoUrl;
+          } else {
+            this.midiaPreview = null;
           }
 
           this.selectedSetor = setoresSelecionados;

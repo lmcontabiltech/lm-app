@@ -36,9 +36,11 @@
         <div class="data-grid">
             <div class="item-data">
                 <label>Destinatário</label>
-                <!-- <div *ngFor="let destinatario of formatarDestinatariosArray(noticia.setor)">
-                    <p>{{ destinatario }}</p>
-                </div> -->
+                <div class="tags">
+                    <ng-container *ngFor="let setor of noticia.setores">
+                        <app-setor-tag [setor]="setor"></app-setor-tag>
+                    </ng-container>
+                </div>
             </div>
             <div class="item-data">
                 <label>Autor</label>

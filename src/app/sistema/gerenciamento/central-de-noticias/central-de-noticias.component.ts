@@ -56,7 +56,37 @@ export class CentralDeNoticiasComponent implements OnInit {
   }
 
   onSearch(searchTerm: string) {
-    console.log('Search term:', searchTerm);
+    if (!searchTerm || searchTerm.trim() === '') {
+      this.mensagemBusca = '';
+      this.fetchNoticias();
+      return;
+    }
+    this.isLoading = true;
+    this.noticiaService.buscarNoticiasPorTitulo(searchTerm).subscribe(
+      (noticias: Noticia[]) => {
+        this.noticias = noticias;
+        this.paginaAtual = 1;
+        this.totalPaginas = Math.ceil(
+          this.noticias.length / this.itensPorPagina
+        );
+        this.atualizarPaginacao();
+        this.isLoading = false;
+        if (!noticias || noticias.length === 0) {
+          this.mensagemBusca = 'Busca não encontrada';
+        } else {
+          this.mensagemBusca = '';
+        }
+      },
+      (error) => {
+        console.error('Erro ao buscar colaboradores:', error);
+        this.isLoading = false;
+        if (error.message && error.message.includes('404')) {
+          this.noticias = [];
+          this.atualizarPaginacao();
+          this.mensagemBusca = 'Busca não encontrada';
+        }
+      }
+    );
   }
 
   atualizarPaginacao(): void {
@@ -157,6 +187,36 @@ export class CentralDeNoticiasComponent implements OnInit {
       },
       () => {
         this.deletarNoticia(noticia.id);
+      }
+    );
+  }
+
+  onSetorChange() {
+    if (!this.selectedSetor) {
+      this.fetchNoticias();
+      return;
+    }
+    console.log('Setor selecionado:', this.selectedSetor);
+    this.isLoading = true;
+    this.noticiaService.getNoticiasPorSetor(this.selectedSetor).subscribe(
+      (noticias) => {
+        console.log('Notícias retornadas pelo backend:', noticias);
+        this.noticias = noticias;
+        this.paginaAtual = 1;
+        this.totalPaginas = Math.ceil(
+          this.noticias.length / this.itensPorPagina
+        );
+        this.atualizarPaginacao();
+        this.isLoading = false;
+        this.mensagemBusca =
+          noticias.length === 0
+            ? 'Nenhuma notícia encontrada para o setor selecionado.'
+            : '';
+      },
+      (error) => {
+        this.isLoading = false;
+        this.mensagemBusca = 'Erro ao buscar notícias por setor.';
+        console.error(error);
       }
     );
   }

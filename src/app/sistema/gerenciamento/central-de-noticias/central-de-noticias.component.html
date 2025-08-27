@@ -11,7 +11,13 @@
         <div class="filtro-container">
             <div class="select-container">
                 <app-select-padrao
-                      label="Todos as notícias">
+                  label="Setor"
+                  [options]="setores"
+                  [(selectedValue)]="selectedSetor"
+                  (selectedValueChange)="onSetorChange()"
+                  [showDefaultOption]="true"
+                  [defaultLabel]="'Todos os setores'"
+                  [defaultValue]="''">
                 </app-select-padrao>
             </div>
 
@@ -52,9 +58,11 @@
                             </div>
                         </td>
                         <td>
-                            <ng-container *ngFor="let setor of noticia.setores">
-                                <app-setor-tag [setor]="setor"></app-setor-tag>
-                            </ng-container>
+                            <div class="tags">
+                                <ng-container *ngFor="let setor of noticia.setores">
+                                    <app-setor-tag [setor]="setor"></app-setor-tag>
+                                </ng-container>
+                            </div>
                         </td>
                         <td>{{ noticia.publicadaEm }}</td>
                         <td>

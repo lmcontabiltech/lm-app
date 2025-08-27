@@ -203,4 +203,38 @@ export class NoticiaService {
       })
     );
   }
+
+  getNoticiasPorSetor(setor: string): Observable<Noticia[]> {
+    const url = `${this.apiURL}/setor`;
+    const params = { setor };
+    return this.http.get<Noticia[]>(url, { params }).pipe(
+      map((response) => response),
+      catchError((error) => {
+        let errorMessage = 'Erro ao buscar notícias pelo setor.';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
+  deleteImagemNoticia(id: number): Observable<void> {
+    const url = `${this.apiURL}/${id}/imagem`;
+    return this.http.delete<void>(url).pipe(
+      catchError((error: HttpErrorResponse) => {
+        let errorMessage = 'Erro ao excluir a imagem da notícia.';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
 }

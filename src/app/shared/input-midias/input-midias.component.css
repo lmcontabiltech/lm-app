@@ -71,7 +71,7 @@
   top: 8px;
   right: 8px;
   width: 28px;
-  height: 28px;
+  height: auto;
   background: rgba(220, 53, 69, 0.9);
   color: #ffffff;
   border: none;

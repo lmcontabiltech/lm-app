@@ -68,17 +68,23 @@ export class InputMidiasComponent implements OnInit {
   }
 
   isPreviewImage(preview: string | ArrayBuffer): boolean {
-    return (
-      typeof preview === 'string' &&
-      (preview.startsWith('data:image/') || preview.startsWith('http'))
-    );
+    if (typeof preview !== 'string') return false;
+    if (preview.startsWith('data:image/')) return true;
+    if (preview.startsWith('http')) {
+      // Verifica extensão de imagem
+      return /\.(jpg|jpeg|png|gif|webp)$/i.test(preview.split('?')[0]);
+    }
+    return false;
   }
 
   isPreviewVideo(preview: string | ArrayBuffer): boolean {
-    return (
-      typeof preview === 'string' &&
-      (preview.startsWith('data:video/') || preview.startsWith('http'))
-    );
+    if (typeof preview !== 'string') return false;
+    if (preview.startsWith('data:video/')) return true;
+    if (preview.startsWith('http')) {
+      // Verifica extensão de vídeo
+      return /\.(mp4|avi|mov|wmv|webm)$/i.test(preview.split('?')[0]);
+    }
+    return false;
   }
 
   private isValidFileType(file: File): boolean {

@@ -39,7 +39,8 @@
                     label="Clique ou arraste sua imagem/vídeo aqui"
                     inputId="arquivo-noticia"
                     (midiaSelected)="onArquivoSelecionado($event)"
-                    (fileRemoved)="onArquivoRemovido()">
+                    (fileRemoved)="removerMidiaNoticia()"
+                    [midiaPreview]="midiaPreview">
                 </app-input-midias>
             </div>
 
