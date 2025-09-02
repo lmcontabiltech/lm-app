@@ -213,6 +213,10 @@ main {
     padding: 48px;
   }
 
+  .login-container {
+    display: contents;
+  }
+
   .login-form {
     width: 100%;
   }
