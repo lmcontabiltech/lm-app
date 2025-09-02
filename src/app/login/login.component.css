@@ -26,6 +26,10 @@ main {
   border-radius: 24px 0 0 24px;
 }
 
+.login-form .logo-lm {
+  display: none;
+}
+
 .login-form h2 {
   font-size: 24px;
   font-weight: 500;
@@ -219,6 +223,12 @@ main {
 
   .login-form {
     width: 100%;
+  }
+
+  .login-form .logo-lm {
+    display: block;
+    width: 56px;
+    height: auto;
   }
 
   .login-text {
