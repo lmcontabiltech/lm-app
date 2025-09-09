@@ -339,22 +339,33 @@
         </div>
 
         <div class="duo-container">
-            <app-grafico-barra-vertical
-                [series]="graficoFuncionarios.series"
-                [categories]="graficoFuncionarios.categories"
-                [colors]="graficoFuncionarios.colors"
-                title="Funcionários por setor">
-            </app-grafico-barra-vertical>
             <app-grafico-rosquinha
                 [series]="graficoEmpresasRegime.series"
                 [labels]="graficoEmpresasRegime.labels"
                 colorPalette="palette2"
-                title="Regimes das empresas"
+                title="Regimes das empresas (Matriz)"
+                [height]="400"
+                donutSize="70%"
+                legendPosition="right"
+                [showLegend]="true">
+            </app-grafico-rosquinha>
+            <app-grafico-rosquinha
+                [series]="graficoEmpresasRegime.series"
+                [labels]="graficoEmpresasRegime.labels"
+                colorPalette="palette2"
+                title="Regimes das empresas (Filial)"
                 [height]="400"
                 donutSize="70%"
                 legendPosition="right"
                 [showLegend]="true">
             </app-grafico-rosquinha>
         </div>
+
+        <app-grafico-barra-vertical
+            [series]="graficoFuncionarios.series"
+            [categories]="graficoFuncionarios.categories"
+            [colors]="graficoFuncionarios.colors"
+            title="Funcionários por setor">
+        </app-grafico-barra-vertical>
     </div>
 </div>
