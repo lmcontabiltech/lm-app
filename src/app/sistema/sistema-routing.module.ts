@@ -30,6 +30,7 @@ import { HistoricoEmpresasInativasComponent } from './administrativo/visualizar-
 import { DetalhesPerifericoComponent } from './administrativo/visualizar-administrativo/detalhes-periferico/detalhes-periferico.component';
 import { CentralDeNoticiasComponent } from './gerenciamento/central-de-noticias/central-de-noticias.component';
 import { DetalhesNoticiaComponent } from './gerenciamento/visualizar-gerenciamento/detalhes-noticia/detalhes-noticia.component';
+import { AgendaComponent } from './gerenciamento/agenda/agenda.component';
 
 const routes: Routes = [
   {  path: 'usuario', 
@@ -73,7 +74,8 @@ const routes: Routes = [
       { path: 'cadastro-de-processos', component: CadastroDeProcessosComponent},
       { path: 'cadastro-de-processos/:id', component: CadastroDeProcessosComponent},
       { path: 'fluxos', component: FluxosComponent},
-      { path: 'detalhes-fluxo/:id', component: DetalhesFluxoComponent},	
+      { path: 'detalhes-fluxo/:id', component: DetalhesFluxoComponent},
+      { path: 'agenda', component: AgendaComponent},	
     ] 
   }
 ];

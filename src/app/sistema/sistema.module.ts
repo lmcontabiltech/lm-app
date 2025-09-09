@@ -33,6 +33,7 @@ import { HistoricoEmpresasInativasComponent } from './administrativo/visualizar-
 import { DetalhesPerifericoComponent } from './administrativo/visualizar-administrativo/detalhes-periferico/detalhes-periferico.component';
 import { CentralDeNoticiasComponent } from './gerenciamento/central-de-noticias/central-de-noticias.component';
 import { DetalhesNoticiaComponent } from './gerenciamento/visualizar-gerenciamento/detalhes-noticia/detalhes-noticia.component';
+import { AgendaComponent } from './gerenciamento/agenda/agenda.component';
 
 
 @NgModule({
@@ -65,6 +66,7 @@ import { DetalhesNoticiaComponent } from './gerenciamento/visualizar-gerenciamen
     DetalhesPerifericoComponent,
     CentralDeNoticiasComponent,
     DetalhesNoticiaComponent,
+    AgendaComponent,
   ],
   imports:[
     CommonModule, 
