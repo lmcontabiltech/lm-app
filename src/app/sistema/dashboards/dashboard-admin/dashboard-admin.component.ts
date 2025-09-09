@@ -71,10 +71,14 @@ export class DashboardAdminComponent implements OnInit {
       '#4a59a0',
       '#585A60',
       '#5a5f7b',
-      '#0026ffff',
-      '#0026ffff',
-      '#0026ffff',
-      '#0026ffff',
+      '#5a5f7b',
+      '#2C3E50',
+      '#34495E',
+      '#6A3BCE',
+      '#0984E3',
+      '#3A3AB3',
+      '#217f94ff',
+      '#CCD0DE',
     ],
   };
 
