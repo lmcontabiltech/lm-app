@@ -38,12 +38,38 @@ export class FluxosComponent implements OnInit {
     this.atualizarPaginacao();
   }
 
-  cadastrarProcesso(): void {
-    this.router.navigate(['/usuario/cadastro-de-processos']);
-  }
-
   onSearch(searchTerm: string) {
-    console.log('Search term:', searchTerm);
+    if (!searchTerm || searchTerm.trim() === '') {
+      this.mensagemBusca = '';
+      this.fetchProcessos();
+      return;
+    }
+    this.isLoading = true;
+    this.processoService.buscarProcessosPorNome(searchTerm).subscribe(
+      (processos: Processo[]) => {
+        this.processos = processos;
+        this.paginaAtual = 1;
+        this.totalPaginas = Math.ceil(
+          this.processos.length / this.itensPorPagina
+        );
+        this.atualizarPaginacao();
+        this.isLoading = false;
+        if (!processos || processos.length === 0) {
+          this.mensagemBusca = 'Busca não encontrada';
+        } else {
+          this.mensagemBusca = '';
+        }
+      },
+      (error) => {
+        console.error('Erro ao buscar processos:', error);
+        this.isLoading = false;
+        if (error.message && error.message.includes('404')) {
+          this.processos = [];
+          this.atualizarPaginacao();
+          this.mensagemBusca = 'Busca não encontrada';
+        }
+      }
+    );
   }
 
   fetchProcessos(): void {
