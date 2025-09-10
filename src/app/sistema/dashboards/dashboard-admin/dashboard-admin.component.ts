@@ -5,6 +5,7 @@ import { ExchangeService } from 'src/app/services/exchange.service';
 import { RegimeDaEmpresa } from '../../administrativo/empresas/enums/regime-da-empresa';
 import { RegimeDaEmpresaDescricao } from '../../administrativo/empresas/enums/regime-da-empresa-descricao';
 import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
+import { SetorDescricao } from '../../administrativo/cadastro-de-colaborador/setor-descricao';
 import {
   GraficoFuncionariosPorSetor,
   FuncionarioPorSetor,
@@ -43,10 +44,42 @@ export class DashboardAdminComponent implements OnInit {
 
   funcionariosPorSetor: FuncionarioPorSetor[] = [];
   totalFuncionarios: number = 0;
+  setoresEnum = [
+    Setor.CONTABIL,
+    Setor.FISCAL,
+    Setor.FINANCEIRO,
+    Setor.PARALEGAL,
+    Setor.PESSOAL,
+    Setor.JURIDICO,
+    Setor.ADMINISTRATIVO,
+    Setor.RH,
+    Setor.SUPORTE_TI,
+    Setor.ESTAGIARIO,
+    Setor.OUTRO,
+  ];
   graficoFuncionarios = {
-    series: [{ name: 'Funcionários', data: [0, 0, 0, 0, 0] }],
-    categories: ['Contábil', 'Fiscal', 'Financeiro', 'Paralegal', 'Pessoal'],
-    colors: ['#08195D', '#1F337F', '#4a59a0', '#585A60', '#5a5f7b'],
+    series: [
+      {
+        name: 'Funcionários',
+        data: new Array(this.setoresEnum.length).fill(0),
+      },
+    ],
+    categories: this.setoresEnum.map((setor: Setor) => SetorDescricao[setor]),
+    colors: [
+      '#08195D',
+      '#1F337F',
+      '#4a59a0',
+      '#585A60',
+      '#5a5f7b',
+      '#5a5f7b',
+      '#2C3E50',
+      '#34495E',
+      '#6A3BCE',
+      '#0984E3',
+      '#3A3AB3',
+      '#217f94ff',
+      '#CCD0DE',
+    ],
   };
 
   atividadesPorMes: AtividadePorMes[] = [];
@@ -295,16 +328,9 @@ export class DashboardAdminComponent implements OnInit {
   }
 
   atualizarGraficoFuncionarios(): void {
-    const setoresOrdenados = [
-      'CONTABIL',
-      'FISCAL',
-      'FINANCEIRO',
-      'PARALEGAL',
-      'PESSOAL',
-    ];
     const dadosGrafico: number[] = [];
 
-    setoresOrdenados.forEach((setor) => {
+    this.setoresEnum.forEach((setor: Setor) => {
       const setorEncontrado = this.funcionariosPorSetor.find(
         (s) => s.setor === setor
       );

@@ -49,7 +49,7 @@ export class ColaboradoresComponent implements OnInit {
     { key: 'setor', label: 'Setor' },
     { key: 'email', label: 'E-mail corporativo' },
     // Campos extras que vêm do endpoint:
-    { key: 'cargo', label: 'Cargo' },
+    { key: 'permissao', label: 'Cargo' },
     { key: 'status', label: 'Status' },
   ];
 
@@ -154,6 +154,7 @@ export class ColaboradoresComponent implements OnInit {
         );
         this.atualizarPaginacao();
         this.isLoading = false;
+        console.log('Colaboradores carregados:', this.colaboradores);
       },
       (error) => {
         console.error('Erro ao buscar colaboradores:', error);
@@ -314,8 +315,16 @@ export class ColaboradoresComponent implements OnInit {
         ? SetorDescricao[r.setor as keyof typeof SetorDescricao] ?? r.setor
         : '',
       email: r.email ?? '',
-      cargo: r.cargo ?? '',
-      status: r.ativo === true ? 'Ativo' : r.ativo === false ? 'Inativo' : '',
+      permissao: r.permissao ?? '',
+      status: r.status
+        ? r.status.toUpperCase() === 'ATIVO'
+          ? 'Ativo'
+          : 'Inativo'
+        : r.ativo === true
+        ? 'Ativo'
+        : r.ativo === false
+        ? 'Inativo'
+        : '',
     }));
   }
 }

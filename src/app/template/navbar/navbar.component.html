@@ -152,6 +152,11 @@
                 <span>Histórico de Atividades</span>
               </a>
 
+              <a routerLink="/usuario/agenda" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/agenda')}">
+                <img src="assets/icones/calendario.svg" alt="home icon" />
+                <span>Agenda</span>
+              </a>
+
               <a routerLink="/usuario/chat" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/chat')}">
                 <img src="assets/icones/chat.svg" alt="home icon" />
                 <span>Chat de avisos</span>

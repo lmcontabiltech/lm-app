@@ -28,11 +28,9 @@ import { DetalhesEmpresaComponent } from './administrativo/visualizar-administra
 import { HistoricoUsuariosInativosComponent } from './administrativo/visualizar-administrativo/historico-usuarios-inativos/historico-usuarios-inativos.component';
 import { HistoricoEmpresasInativasComponent } from './administrativo/visualizar-administrativo/historico-empresas-inativas/historico-empresas-inativas.component';
 import { DetalhesPerifericoComponent } from './administrativo/visualizar-administrativo/detalhes-periferico/detalhes-periferico.component';
-import { CadastroFilialEmpresaComponent } from './administrativo/cadastro-filial-empresa/cadastro-filial-empresa.component';
-import { FilialEmpresaComponent } from './administrativo/filial-empresa/filial-empresa.component';
-import { DetalhesFilialEmpresaComponent } from './administrativo/visualizar-administrativo/detalhes-filial-empresa/detalhes-filial-empresa.component';
 import { CentralDeNoticiasComponent } from './gerenciamento/central-de-noticias/central-de-noticias.component';
 import { DetalhesNoticiaComponent } from './gerenciamento/visualizar-gerenciamento/detalhes-noticia/detalhes-noticia.component';
+import { AgendaComponent } from './gerenciamento/agenda/agenda.component';
 
 const routes: Routes = [
   {  path: 'usuario', 
@@ -61,9 +59,6 @@ const routes: Routes = [
       { path: 'detalhes-empresa/:id', component: DetalhesEmpresaComponent},
       { path: 'historico-usuarios-inativos', component: HistoricoUsuariosInativosComponent},
       { path: 'historico-empresas-inativas', component: HistoricoEmpresasInativasComponent},
-      { path: 'cadastro-filial-empresa', component: CadastroFilialEmpresaComponent},
-      { path: 'filial-empresa', component: FilialEmpresaComponent},
-      { path: 'detalhes-filial-empresa/:id', component: DetalhesFilialEmpresaComponent},
 
       { path: 'atividades', component: AtividadesComponent},
       { path: 'chat', component: ChatComponent},
@@ -79,7 +74,8 @@ const routes: Routes = [
       { path: 'cadastro-de-processos', component: CadastroDeProcessosComponent},
       { path: 'cadastro-de-processos/:id', component: CadastroDeProcessosComponent},
       { path: 'fluxos', component: FluxosComponent},
-      { path: 'detalhes-fluxo/:id', component: DetalhesFluxoComponent},	
+      { path: 'detalhes-fluxo/:id', component: DetalhesFluxoComponent},
+      { path: 'agenda', component: AgendaComponent},	
     ] 
   }
 ];
