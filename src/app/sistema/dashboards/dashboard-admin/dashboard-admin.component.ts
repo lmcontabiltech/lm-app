@@ -112,6 +112,14 @@ export class DashboardAdminComponent implements OnInit {
     colors: ['#008FFB', '#00E396', '#FEB019', '#FF4560', '#775DD0'],
   };
 
+  empresasFiliaisPorRegime: EmpresaPorRegime[] = [];
+  totalEmpresasFiliaisRegime: number = 0;
+  graficoEmpresasFiliaisRegime = {
+    series: [] as number[],
+    labels: [] as string[],
+    colors: ['#008FFB', '#00E396', '#FEB019', '#FF4560', '#775DD0'],
+  };
+
   progressoAtividades: {
     [key: string]: { porcentagem: number };
   } = {
@@ -206,6 +214,7 @@ export class DashboardAdminComponent implements OnInit {
     this.carregarFuncionariosPorSetor();
     this.carregarAtividadesPorMes();
     this.carregarEmpresasPorRegime();
+    this.carregarEmpresasFiliaisPorRegime();
     this.carregarResumoAtividadesSetores();
 
     this.colaboradorService.getUsuarioByToken().subscribe(
@@ -419,8 +428,8 @@ export class DashboardAdminComponent implements OnInit {
       next: (data: GraficoEmpresasPorRegime) => {
         this.empresasPorRegime = data.regimes;
         this.totalEmpresasRegime = data.total;
-
         this.atualizarGraficoEmpresasRegime();
+        console.log('Empresas matriz por regime:', data);
       },
       error: (error) => {
         console.error('Erro ao carregar empresas por regime:', error);
@@ -504,6 +513,48 @@ export class DashboardAdminComponent implements OnInit {
 
   temRegime(regime: RegimeDaEmpresa): boolean {
     return this.empresasPorRegime.some((r) => r.regimeEmpresa === regime);
+  }
+
+  carregarEmpresasFiliaisPorRegime(): void {
+    this.dashboardAdminService.getEmpresasFiliaisPorRegime().subscribe({
+      next: (data: GraficoEmpresasPorRegime) => {
+        this.empresasFiliaisPorRegime = data.regimes;
+        this.totalEmpresasFiliaisRegime = data.total;
+        this.atualizarGraficoEmpresasFiliaisRegime();
+        console.log('Empresas filiais por regime:', data);
+      },
+      error: (error) => {
+        console.error('Erro ao carregar empresas filiais por regime:', error);
+        this.empresasFiliaisPorRegime = [];
+        this.totalEmpresasFiliaisRegime = 0;
+        this.graficoEmpresasFiliaisRegime.series = [0, 0, 0];
+      },
+    });
+  }
+
+  atualizarGraficoEmpresasFiliaisRegime(): void {
+    const regimesComEmpresas = this.empresasFiliaisPorRegime.filter(
+      (regime) => regime.qtdEmpresas > 0
+    );
+
+    const regimesParaExibir =
+      regimesComEmpresas.length > 0
+        ? regimesComEmpresas
+        : this.empresasFiliaisPorRegime;
+
+    const series: number[] = [];
+    const labels: string[] = [];
+
+    regimesParaExibir.forEach((regime) => {
+      series.push(Math.floor(regime.qtdEmpresas));
+      labels.push(this.getDescricaoRegime(regime.regimeEmpresa));
+    });
+
+    this.graficoEmpresasFiliaisRegime = {
+      ...this.graficoEmpresasFiliaisRegime,
+      series: series,
+      labels: labels,
+    };
   }
 
   carregarResumoAtividadesSetores(): void {
