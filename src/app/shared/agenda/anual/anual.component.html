@@ -1,0 +1,58 @@
+<div class="year-calendar">
+  <div class="year-header">
+    <button class="nav-btn" (click)="prevPeriod.emit()">
+      <img src="assets/icones/carret-left.svg" alt="Esquerda" />
+    </button>
+    {{ selectedYear }}
+    <button class="nav-btn" (click)="nextPeriod.emit()">
+      <img src="assets/icones/carret-right.svg" alt="Direita" />
+    </button>
+  </div>
+  <div class="year-grid-calendar">
+    <div class="month-calendar-mini" *ngFor="let m of yearMonths">
+      <div class="month-title-mini">{{ meses[m] }}</div>
+      <div class="mini-calendar-grid">
+        <div class="mini-day-name" *ngFor="let d of diaSemana.slice(0, 7)">
+          {{ d[0] }}
+        </div>
+        <ng-container *ngFor="let week of getMonthMatrix(m, selectedYear)">
+          <div class="mini-week-row" *ngFor="let day of week">
+            <div
+              class="mini-day-cell"
+              [class.other-month]="day.otherMonth"
+              [class.today]="day.date.toDateString() === hoje"
+              (click)="onDayClick(day.date, $event)"
+            >
+              {{ day.date.getDate() }}
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pop-up de eventos do dia -->
+  <div
+    class="day-popup"
+    *ngIf="showDayPopup"
+    [ngStyle]="{
+      top: popupPosition.top + 'px',
+      left: popupPosition.left + 'px'
+    }"
+  >
+    <div class="day-popup-header">
+      <span>{{ selectedDayLabel }}</span>
+      <button class="close-btn" (click)="closeDayPopup()">×</button>
+    </div>
+    <div *ngIf="selectedDayEvents.length; else noEvents">
+      <div class="event-item" *ngFor="let ev of selectedDayEvents">
+        <span class="event-title">{{ ev.titulo }}</span>
+        <span class="event-time">{{ ev.horaInicio }} - {{ ev.horaFim }}</span>
+        <span class="event-desc">{{ ev.descricao }}</span>
+      </div>
+    </div>
+    <ng-template #noEvents>
+      <div class="no-events">Nenhum evento neste dia.</div>
+    </ng-template>
+  </div>
+</div>

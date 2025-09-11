@@ -1,0 +1,145 @@
+.main-container {
+  margin: 120px 32px 24px;
+  max-width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.header-container h2 {
+  font-size: 24px;
+  color: var(--lm-text);
+  margin: 0;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 16px;
+}
+
+.subMain-container {
+  display: flex;
+  margin: 0;
+  max-width: 100%;
+  min-height: 75vh;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+
+/* Botões */
+.view-toggle {
+  display: flex;
+  gap: 8px;
+}
+
+.toggle-btn {
+  all: none;
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--lm-branco);
+  background-color: var(--lm-accent);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.toggle-btn:hover {
+  background-color: var(--lm-primary);
+}
+
+.toggle-btn.active {
+  background: #0c163c;
+}
+
+.nav-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  background: #f1f4ff;
+  border-radius: 50%;
+}
+
+.nav-btn:hover {
+  background: #d9e1ff;
+}
+
+/* calendário mensal */
+.month-calendar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+/* agenda semanal */
+.week-calendar {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+/* calendario ano */
+.year-calendar {
+  max-height: 70vh;
+  overflow-y: auto;
+  padding-right: 8px;
+  gap: 24px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Breakpoints */
+@media (min-width: 1200px) {
+  .main-container {
+    margin: 120px 32px 24px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+  .main-container {
+    margin: 100px 20px 24px;
+  }
+}
+
+@media (max-width: 767px) {
+  .main-container {
+    margin: 100px 20px 24px;
+  }
+
+  .header-container {
+    align-items: flex-start;
+    margin-bottom: 16px;
+  }
+
+  .header-actions {
+    align-items: flex-end;
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,40 @@
+<div class="week-calendar">
+  <div class="week-header">
+    <button class="nav-btn" (click)="prevPeriod.emit()">
+      <img src="assets/icones/carret-left.svg" alt="Esquerda" />
+    </button>
+    <h2>
+      Semana de {{ weekDays[0] | date : "dd/MM/yyyy" }} a
+      {{ weekDays[6] | date : "dd/MM/yyyy" }}
+    </h2>
+    <button class="nav-btn" (click)="nextPeriod.emit()">
+      <img src="assets/icones/carret-right.svg" alt="Direita" />
+    </button>
+  </div>
+  <div class="week-grid-google">
+    <div class="week-grid-header">
+      <div class="hour-cell"></div>
+      <div class="day-header" *ngFor="let dt of weekDays">
+        <div>{{ diaSemana[dt.getDay()] }}</div>
+        <div class="day-number" [class.today]="dt.toDateString() === hoje">
+          {{ dt.getDate() }}
+        </div>
+      </div>
+    </div>
+    <div class="week-grid-body">
+      <div class="hour-row" *ngFor="let hour of horasDoDia">
+        <div class="hour-cell">{{ hour }}</div>
+        <div class="event-cell" *ngFor="let dt of weekDays">
+          <ng-container *ngFor="let ev of getEventosNoHorario(dt, hour)">
+            <div class="event-block">
+              {{ ev.titulo }}
+              <span class="event-time">
+                {{ ev.horaInicio }} - {{ ev.horaFim }}
+              </span>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

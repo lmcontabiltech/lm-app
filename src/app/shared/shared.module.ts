@@ -26,6 +26,9 @@ import { ModalPadraoComponent } from './modal-padrao/modal-padrao.component';
 import { BotTiComponent } from './suporte/bot-ti/bot-ti.component';
 import { InputWordComponent } from './input-word/input-word.component';
 import { InputMidiasComponent } from './input-midias/input-midias.component';
+import { MensalComponent } from './agenda/mensal/mensal.component';
+import { SemanalComponent } from './agenda/semanal/semanal.component';
+import { AnualComponent } from './agenda/anual/anual.component';
 
 export function playerFactory() {
   return player;
@@ -56,6 +59,9 @@ export function playerFactory() {
     BotTiComponent,
     InputWordComponent,
     InputMidiasComponent,
+    MensalComponent,
+    SemanalComponent,
+    AnualComponent,
   ],
   imports: [
     CommonModule,
@@ -85,7 +91,10 @@ export function playerFactory() {
     ModalPadraoComponent,
     BotTiComponent,
     InputMidiasComponent,
-    InputWordComponent
+    InputWordComponent,
+    MensalComponent,
+    SemanalComponent,
+    AnualComponent,
   ],
 })
 export class SharedModule {}
