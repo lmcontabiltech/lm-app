@@ -1,0 +1,25 @@
+<div class="month-calendar">
+  <div class="month-header">
+    <button class="nav-btn" (click)="prevPeriod.emit()">
+      <img src="assets/icones/carret-left.svg" alt="Esquerda" />
+    </button>
+    <h2>{{ meses[selectedMonth] }} de {{ selectedYear }}</h2>
+    <button class="nav-btn" (click)="nextPeriod.emit()">
+      <img src="assets/icones/carret-right.svg" alt="Direita" />
+    </button>
+  </div>
+  <div class="calendar-grid">
+    <div class="day-name" *ngFor="let d of diaSemana">{{ d }}</div>
+    <div
+      class="day-cell"
+      *ngFor="let dt of monthDays"
+      [class.other-month]="dt.otherMonth"
+      [class.today]="dt.date.toDateString() === hoje"
+    >
+      <span class="date-label">{{ dt.date.getDate() }}</span>
+      <ng-container *ngFor="let ev of getEventosDoDia(dt.date)">
+        <div class="post-it">{{ ev.titulo }}</div>
+      </ng-container>
+    </div>
+  </div>
+</div>

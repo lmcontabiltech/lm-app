@@ -1,1 +1,76 @@
-<p>agenda works!</p>
+<div class="main-container">
+  <div class="header-container">
+    <h2>Agenda</h2>
+    <div class="header-actions">
+      <div class="view-toggle">
+        <button
+          class="toggle-btn"
+          [class.active]="viewMode === 'week'"
+          (click)="setView('week')"
+        >
+          Semana
+        </button>
+        <button
+          class="toggle-btn"
+          [class.active]="viewMode === 'month'"
+          (click)="setView('month')"
+        >
+          Mês
+        </button>
+        <button
+          class="toggle-btn"
+          [class.active]="viewMode === 'year'"
+          (click)="setView('year')"
+        >
+          Ano
+        </button>
+      </div>
+      <button class="btn btn-primary" (click)="onAddClick()">Evento +</button>
+    </div>
+  </div>
+
+  <div class="subMain-container">
+    <!-- VISÃO SEMANAL -->
+    <ng-container *ngIf="viewMode === 'week'">
+      <app-semanal
+        [weekDays]="weekDays"
+        [diaSemana]="diaSemana"
+        [horasDoDia]="horasDoDia"
+        [hoje]="hoje"
+        [getEventosNoHorario]="getEventosNoHorario.bind(this)"
+        (prevPeriod)="prevPeriod()"
+        (nextPeriod)="nextPeriod()"
+      ></app-semanal>
+    </ng-container>
+
+    <!-- VISÃO MENSAL -->
+    <ng-container *ngIf="viewMode === 'month'">
+      <app-mensal
+        [meses]="meses"
+        [diaSemana]="diaSemana"
+        [selectedMonth]="selectedMonth"
+        [selectedYear]="selectedYear"
+        [monthDays]="monthDays"
+        [hoje]="hoje"
+        [getEventosDoDia]="getEventosDoDia.bind(this)"
+        (prevPeriod)="prevPeriod()"
+        (nextPeriod)="nextPeriod()"
+      ></app-mensal>
+    </ng-container>
+
+    <!-- VISÃO ANUAL -->
+    <ng-container *ngIf="viewMode === 'year'">
+      <app-anual
+        [selectedYear]="selectedYear"
+        [meses]="meses"
+        [diaSemana]="diaSemana"
+        [yearMonths]="yearMonths"
+        [getMonthMatrix]="getMonthMatrix.bind(this)"
+        [hoje]="hoje"
+        [getEventosDoDia]="getEventosDoDia.bind(this)"
+        (prevPeriod)="prevPeriod()"
+        (nextPeriod)="nextPeriod()"
+      ></app-anual>
+    </ng-container>
+  </div>
+</div>
