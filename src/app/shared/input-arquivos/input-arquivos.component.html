@@ -12,7 +12,7 @@
     <label [for]="inputId">
       <div class="arquivo-preview" id="arquivoPreview">
         <span class="upload-placeholder">
-          <img src="assets/icones/FilePlus.svg" class="upload-icon">
+          <img src="assets/icones/doc-plus.svg" class="upload-icon">
           {{ label }}
         </span>
       </div>
@@ -22,6 +22,7 @@
   <!-- GRID sempre visível ao lado -->
   <div *ngIf="multiple && layout === 'grid'" class="grid-container">
     <div *ngIf="arquivos.length === 0" class="grid-placeholder">
+      <img src="assets/icones/noDoc.svg" class="upload-icon">
       Nenhum arquivo adicionado
     </div>
     <div class="grid-item" *ngFor="let arquivo of arquivos; let i = index">

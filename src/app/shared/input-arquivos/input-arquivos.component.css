@@ -18,8 +18,11 @@
   width: 100%;
   text-align: center;
   padding: 24px;
-  background: #FAFAFA;
+  background: #fafafa;
   height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .arquivo-upload:hover {
@@ -53,7 +56,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: #1a1918;
+  color: #18191a;
   opacity: 0.6;
 }
 
@@ -84,10 +87,11 @@
   height: 250px;
   max-height: 250px;
   width: 100%;
-
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
   gap: 8px;
 }
 
@@ -95,6 +99,12 @@
   opacity: 0.6;
   font-style: italic;
   color: #555;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  height: 100%;
 }
 
 .grid-item {
