@@ -14,6 +14,14 @@
   margin-bottom: 24px;
 }
 
+.btn-historico {
+  background: #273e74;
+}
+
+.btn-historico:hover {
+  background: #172973;
+}
+
 .header-container h2 {
   font-size: 24px;
   color: var(--lm-text);
@@ -56,8 +64,33 @@
   text-align: left;
 }
 
+.acoes {
+  width: 100%;
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+}
+
 .btn-primary {
   width: 100%;
+}
+
+.btn-secondary {
+  width: 100%;
+  background: #273e74;
+}
+
+.btn-secondary:hover {
+  background: #1e2f59;
+}
+
+.btn-reset {
+  width: 100%;
+  background: #a5a5a5;
+}
+
+.btn-reset:hover {
+  background: #8e8e8e;
 }
 
 /* Breakpoints */

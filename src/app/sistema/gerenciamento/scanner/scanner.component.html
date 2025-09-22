@@ -1,6 +1,7 @@
 <div class="main-container">
     <div class="header-container">
         <h2>Scanner</h2>
+        <button class="btn btn-historico">Histórico de movimentação</button>
     </div>
 
     <div class="sub-container">
@@ -24,13 +25,17 @@
                 [label]="'Clique ou arraste os arquivos CSV/XLS/XLSX para fazer upload'"
                 [accept]="'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv'"
                 [multiple]="true"
-                layout="grid"
+                layout="list"
                 formControlName="documentoIncorreto">
                 </app-input-arquivos>
             </div>
         </div>
 
-        <button class="btn btn-primary">Processar arquivos</button>
+        <div class="acoes">
+            <button class="btn btn-reset">Limpar dados</button>
+            <button class="btn btn-secondary">Inverter arquivos</button>
+            <button class="btn btn-primary">Processar arquivos</button>
+        </div>
     </div>
 
     <div class="sub-container"></div>
