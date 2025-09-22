@@ -133,3 +133,10 @@
   border-radius: 8px;
   margin-bottom: 5px;
 }
+
+@media (max-width: 767px) {
+  .cont-arquivos {
+    flex-direction: column;
+    gap: 16px;
+  }
+}
