@@ -157,6 +157,11 @@
                 <span>Agenda</span>
               </a>
 
+              <a routerLink="/usuario/scanner" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/scanner')}">
+                <img src="assets/icones/scanner.svg" alt="home icon" />
+                <span>Scanner</span>
+              </a>
+
               <a routerLink="/usuario/chat" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/chat')}">
                 <img src="assets/icones/chat.svg" alt="home icon" />
                 <span>Chat de avisos</span>
