@@ -1,1 +1,37 @@
-<p>scanner works!</p>
+<div class="main-container">
+    <div class="header-container">
+        <h2>Scanner</h2>
+    </div>
+
+    <div class="sub-container">
+        <div class="container-inputs">
+            <div class="form-group">
+                <label class="input-label">Arquivo principal</label>
+                <app-input-arquivos
+                inputId="input-arquivo-principal"
+                [multiple]="false"
+                [label]="'Clique ou arraste o arquivo CSV/XLS/XLSX para upload'"
+                [accept]="'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv'"
+                layout="list"
+                formControlName="documentoCorreto"
+                ></app-input-arquivos>
+            </div>
+
+            <div class="form-group">
+                <label class="input-label">Arquivos errados</label>
+                <app-input-arquivos
+                inputId="input-arquivo-errados"
+                [label]="'Clique ou arraste os arquivos CSV/XLS/XLSX para upload'"
+                [accept]="'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv'"
+                [multiple]="true"
+                layout="grid"
+                formControlName="documentoIncorreto">
+                </app-input-arquivos>
+            </div>
+        </div>
+
+        <button class="btn btn-primary">Processar arquivos</button>
+    </div>
+
+    <div class="sub-container"></div>
+</div>

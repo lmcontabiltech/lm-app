@@ -1,0 +1,91 @@
+.main-container {
+  margin: 120px 32px 24px;
+  max-width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.header-container h2 {
+  font-size: 24px;
+  color: var(--lm-text);
+  margin: 0;
+}
+.sub-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 24px;
+  box-sizing: border-box;
+  width: 100%;
+  background: var(--container-background);
+  border-radius: 8px;
+  min-height: 48px;
+  padding: 24px;
+}
+
+.container-inputs {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+}
+
+.form-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-label {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--lm-text02);
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  text-align: left;
+}
+
+.btn-primary {
+  width: 100%;
+}
+
+/* Breakpoints */
+@media (min-width: 1200px) {
+  .main-container {
+    margin: 90px 20px 20px;
+    padding: 40px 16px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+  .main-container {
+    margin: 90px 20px 20px;
+    padding: 40px 16px;
+  }
+}
+
+@media (max-width: 767px) {
+  .main-container {
+    margin: 90px 20px 20px;
+    padding: 20px 0;
+  }
+
+  .header-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-items: flex-start;
+    width: 100%;
+  }
+}

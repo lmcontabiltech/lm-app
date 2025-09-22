@@ -1,0 +1,125 @@
+/* Arquivos e Upload */
+:host {
+  display: block;
+  width: 100%;
+}
+
+.cont-arquivos {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 16px;
+}
+
+.arquivo-upload {
+  border: 1px dashed #16223f5d;
+  border-radius: 16px;
+  position: relative;
+  width: 100%;
+  text-align: center;
+  padding: 24px;
+  background: #FAFAFA;
+  height: 250px;
+}
+
+.arquivo-upload:hover {
+  background: #dee1eb;
+}
+
+.arquivo-preview {
+  max-width: 300px;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  padding: 16px;
+  cursor: pointer;
+}
+
+.arquivo-upload input[type="file"] {
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+}
+
+.upload-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #1a1918;
+  opacity: 0.6;
+}
+
+.upload-icon {
+  width: 50px;
+  margin-bottom: 10px;
+}
+
+.list-group-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  margin-top: 8px;
+}
+
+.btn {
+  margin-left: 10px;
+  background: var(--danger);
+}
+
+.grid-container {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 12px;
+  height: 250px;
+  max-height: 250px;
+  width: 100%;
+
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.grid-placeholder {
+  opacity: 0.6;
+  font-style: italic;
+  color: #555;
+}
+
+.grid-item {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px;
+  width: 140px;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.grid-item button {
+  margin-top: 5px;
+}
+
+.list-group-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  margin-bottom: 5px;
+}

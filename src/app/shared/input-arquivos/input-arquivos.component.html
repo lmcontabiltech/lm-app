@@ -1,1 +1,50 @@
-<p>input-arquivos works!</p>
+<div class="cont-arquivos" [ngClass]="{'grid-mode': multiple && layout === 'grid'}">
+  <!-- Área de upload -->
+  <div class="arquivo-upload"
+       (drop)="onDrop($event)"
+       (dragover)="onDragOver($event)">
+    <input type="file"
+           [id]="inputId"
+           name="arquivo"
+           [accept]="accept"
+           [attr.multiple]="multiple ? '' : null"
+           (change)="onPdfSelected($event)">
+    <label [for]="inputId">
+      <div class="arquivo-preview" id="arquivoPreview">
+        <span class="upload-placeholder">
+          <img src="assets/icones/FilePlus.svg" class="upload-icon">
+          {{ label }}
+        </span>
+      </div>
+    </label>
+  </div>
+
+  <!-- GRID sempre visível ao lado -->
+  <div *ngIf="multiple && layout === 'grid'" class="grid-container">
+    <div *ngIf="arquivos.length === 0" class="grid-placeholder">
+      Nenhum arquivo adicionado
+    </div>
+    <div class="grid-item" *ngFor="let arquivo of arquivos; let i = index">
+      <span>{{ arquivo.name }}</span>
+      <button type="button"
+              class="btn btn-danger btn-sm"
+              (click)="removePdf(i)">
+        Remover
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- LISTA (somente no modo list, aparece abaixo) -->
+<div class="form-group" *ngIf="arquivos.length > 0 && layout === 'list'">
+  <div class="list-group">
+    <div class="list-group-item" *ngFor="let arquivo of arquivos; let i = index">
+      {{ arquivo.name }}
+      <button type="button" class="btn btn-danger btn-sm" (click)="removePdf(i)">
+        Remover
+      </button>
+    </div>
+</div>
+</div>
+
+<div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
