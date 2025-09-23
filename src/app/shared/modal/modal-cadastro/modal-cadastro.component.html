@@ -1,0 +1,45 @@
+<div class="modal-geral" role="dialog" [attr.aria-labelledby]="title">
+  <div class="modal-bg" (click)="onModalClose()"></div>
+  <div class="modal-wrapper">
+    <div class="modal-container">
+      <div class="modal-box" [ngClass]="size">
+        <div class="bg-white pb-4 sm:p-6 sm:pb-4 custom-pad">
+          <ng-container>
+            <div class="modal-conteudo">
+              <div class="container-btn-deletar">
+                <button
+                  class="modal-close-btn"
+                  (click)="onModalClose()"
+                  aria-label="Fechar"
+                >
+                  &times;
+                </button>
+              </div>
+
+              <h2>{{ title }}</h2>
+              <span *ngIf="description" [innerHTML]="description"></span>
+              <hr class="modal-divider" />
+
+              <!-- Conteúdo dinâmico via TemplateRef ou ng-content -->
+              <ng-container *ngIf="contentTemplate; else defaultContent">
+                <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+              </ng-container>
+              <ng-template #defaultContent>
+                <ng-content></ng-content>
+              </ng-template>
+              
+              <div class="modal-botoes">
+                <button class="btn-acao cancelar" (click)="onModalClose()">
+                  Cancelar
+                </button>
+                <button class="btn-acao salvar" (click)="onConfirm()">
+                  {{ confirmTextoBotao || "Confirmar" }}
+                </button>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

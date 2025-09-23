@@ -1,5 +1,5 @@
 import { Injectable, ComponentRef, ViewContainerRef } from '@angular/core';
-import { ModalAtividadeComponent } from '../../shared/modal-atividade/modal-atividade.component';
+import { ModalAtividadeComponent } from '../../shared/modal/modal-atividade/modal-atividade.component';
 
 @Injectable({ providedIn: 'root' })
 export class ModalAtividadeService {

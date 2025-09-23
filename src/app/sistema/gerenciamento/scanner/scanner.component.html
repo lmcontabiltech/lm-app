@@ -1,0 +1,72 @@
+<div class="main-container">
+    <div class="header-container">
+        <h2>Scanner</h2>
+        <button class="btn btn-historico">Histórico de movimentação</button>
+    </div>
+
+    <div class="sub-container">
+        <div class="container-inputs">
+            <div class="form-group">
+                <label class="input-label">Arquivos corretos</label>
+                <app-input-arquivos
+                inputId="input-arquivos-corretos"
+                [multiple]="true"
+                [label]="'Clique ou arraste o arquivo CSV/XLS/XLSX para fazer upload'"
+                [accept]="'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv'"
+                layout="list"
+                [showList]="false"
+                formControlName="documentoCorreto"
+                (arquivosSelecionados)="documentoCorretoArquivos = $event"
+                ></app-input-arquivos>
+            </div>
+
+            <div class="form-group">
+                <label class="input-label">Arquivos errados</label>
+                <app-input-arquivos
+                inputId="input-arquivos-errados"
+                [label]="'Clique ou arraste os arquivos CSV/XLS/XLSX para fazer upload'"
+                [accept]="'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv'"
+                [multiple]="true"
+                layout="list"
+                [showList]="false"
+                formControlName="documentoIncorreto"
+                (arquivosSelecionados)="documentoIncorretoArquivos = $event">
+                </app-input-arquivos>
+            </div>
+        </div>
+
+        <div class="acoes">
+            <button class="btn btn-reset" (click)="limparArquivos()">Limpar dados</button>
+            <button class="btn btn-secondary" (click)="inverterArquivos()">Inverter arquivos</button>
+            <button class="btn btn-primary">Processar arquivos</button>
+        </div>
+    </div>
+
+    <div class="sub-container">
+        <div>
+            <h3>Arquivos selecionados</h3>
+            <div *ngIf="documentoCorretoArquivos.length > 0">
+                <strong>Arquivo principal:</strong>
+                <ul>
+                <li *ngFor="let arquivo of documentoCorretoArquivos; let i = index">
+                    {{ arquivo.name }}
+                    <button type="button" class="btn btn-danger btn-sm" (click)="removerArquivoCorreto(i)">
+                    Remover
+                    </button>
+                </li>
+                </ul>
+            </div>
+            <div *ngIf="documentoIncorretoArquivos.length > 0">
+                <strong>Arquivos errados:</strong>
+                <ul>
+                <li *ngFor="let arquivo of documentoIncorretoArquivos; let i = index">
+                    {{ arquivo.name }}
+                    <button type="button" class="btn btn-danger btn-sm" (click)="removerArquivoIncorreto(i)">
+                    Remover
+                    </button>
+                </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

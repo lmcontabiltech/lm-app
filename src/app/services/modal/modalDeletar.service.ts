@@ -1,6 +1,6 @@
 import { Injectable, ComponentRef, ViewContainerRef } from '@angular/core';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { ModalDeleteComponent } from '../../shared/modal-delete/modal-delete.component';
+import { ModalDeleteComponent } from '../../shared/modal/modal-delete/modal-delete.component';
 
 @Injectable({ providedIn: 'root' })
 export class ModalDeleteService {

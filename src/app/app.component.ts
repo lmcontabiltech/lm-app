@@ -8,6 +8,7 @@ import { ThemeService } from './services/modo-escuro/theme.service';
 import { ModalDeleteService } from './services/modal/modalDeletar.service';
 import { ModalAtividadeService } from './services/modal/modalAtividade.service';
 import { ModalPadraoService } from './services/modal/modalConfirmacao.service';
+import { ModalCadastroService } from './services/modal/modal-cadastro.service';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +25,8 @@ export class AppComponent {
     private themeService: ThemeService,
     private modalDeleteService: ModalDeleteService,
     private modalAtividadeService: ModalAtividadeService,
-    private modalPadraoService: ModalPadraoService
+    private modalPadraoService: ModalPadraoService,
+    private modalCadastroService: ModalCadastroService
   ) {
     // O serviço será inicializado automaticamente pelo Angular
   }
@@ -33,5 +35,6 @@ export class AppComponent {
     this.modalDeleteService.registerOutlet(this.modalOutlet);
     this.modalAtividadeService.registerOutlet(this.modalOutlet);
     this.modalPadraoService.registerOutlet(this.modalOutlet);
+    this.modalCadastroService.registerOutlet(this.modalOutlet);
   }
 }
