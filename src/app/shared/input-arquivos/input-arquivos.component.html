@@ -37,7 +37,7 @@
 </div>
 
 <!-- LISTA (somente no modo list, aparece abaixo) -->
-<div class="form-group" *ngIf="arquivos.length > 0 && layout === 'list'">
+<div class="form-group" *ngIf="arquivos.length > 0 && layout === 'list' && showList">
   <div class="list-group">
     <div class="list-group-item" *ngFor="let arquivo of arquivos; let i = index">
       {{ arquivo.name }}

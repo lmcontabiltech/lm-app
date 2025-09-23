@@ -28,6 +28,7 @@ export class InputArquivosComponent {
   >();
   @Input() multiple: boolean = true;
   @Input() layout: 'list' | 'grid' = 'list';
+  @Input() showList: boolean = true;
   @Input() accept: string = 'application/pdf';
   @Input() inputId: string =
     'arquivo-' + Math.random().toString(36).substring(2, 9);
