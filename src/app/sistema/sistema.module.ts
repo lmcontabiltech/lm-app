@@ -35,6 +35,7 @@ import { CentralDeNoticiasComponent } from './gerenciamento/central-de-noticias/
 import { DetalhesNoticiaComponent } from './gerenciamento/visualizar-gerenciamento/detalhes-noticia/detalhes-noticia.component';
 import { AgendaComponent } from './gerenciamento/agenda/agenda.component';
 import { ScannerComponent } from './gerenciamento/scanner/scanner.component';
+import { HistoricoScannerComponent } from './gerenciamento/visualizar-gerenciamento/historico-scanner/historico-scanner.component';
 
 
 @NgModule({
@@ -69,6 +70,7 @@ import { ScannerComponent } from './gerenciamento/scanner/scanner.component';
     DetalhesNoticiaComponent,
     AgendaComponent,
     ScannerComponent,
+    HistoricoScannerComponent,
   ],
   imports:[
     CommonModule, 
