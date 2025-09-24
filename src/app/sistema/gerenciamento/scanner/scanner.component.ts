@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-scanner',
@@ -6,35 +7,46 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./scanner.component.css'],
 })
 export class ScannerComponent implements OnInit {
-  documentoCorretoArquivos: (
-    | File
-    | { id: number; name: string; documentoUrl: string }
-  )[] = [];
-  documentoIncorretoArquivos: (
-    | File
-    | { id: number; name: string; documentoUrl: string }
-  )[] = [];
+  scannerForm: FormGroup;
 
-  constructor() {}
+  constructor(private formBuilder: FormBuilder) {
+    this.scannerForm = this.formBuilder.group({
+      documentoCorreto: [[]],
+      documentoIncorreto: [[]],
+    });
+  }
 
   ngOnInit(): void {}
 
   limparArquivos(): void {
-    this.documentoCorretoArquivos = [];
-    this.documentoIncorretoArquivos = [];
+    this.scannerForm.get('documentoCorreto')?.setValue([]);
+    this.scannerForm.get('documentoIncorreto')?.setValue([]);
   }
 
   removerArquivoCorreto(index: number): void {
-    this.documentoCorretoArquivos.splice(index, 1);
+    const arquivos = [...(this.scannerForm.get('documentoCorreto')?.value || [])];
+    arquivos.splice(index, 1);
+    this.scannerForm.get('documentoCorreto')?.setValue(arquivos);
   }
 
   removerArquivoIncorreto(index: number): void {
-    this.documentoIncorretoArquivos.splice(index, 1);
+    const arquivos = [...(this.scannerForm.get('documentoIncorreto')?.value || [])];
+    arquivos.splice(index, 1);
+    this.scannerForm.get('documentoIncorreto')?.setValue(arquivos);
   }
 
   inverterArquivos(): void {
-    const temp = this.documentoCorretoArquivos;
-    this.documentoCorretoArquivos = this.documentoIncorretoArquivos;
-    this.documentoIncorretoArquivos = temp;
+    const corretos = this.scannerForm.get('documentoCorreto')?.value || [];
+    const incorretos = this.scannerForm.get('documentoIncorreto')?.value || [];
+    this.scannerForm.get('documentoCorreto')?.setValue(incorretos);
+    this.scannerForm.get('documentoIncorreto')?.setValue(corretos);
+  }
+
+  get documentoCorretoArquivos() {
+    return this.scannerForm.get('documentoCorreto')?.value || [];
+  }
+
+  get documentoIncorretoArquivos() {
+    return this.scannerForm.get('documentoIncorreto')?.value || [];
   }
 }

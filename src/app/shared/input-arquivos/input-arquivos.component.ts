@@ -50,9 +50,7 @@ export class InputArquivosComponent {
   writeValue(
     value: (File | { id: number; name: string; documentoUrl: string })[]
   ): void {
-    console.log('Arquivos recebidos no writeValue:', value);
     this.arquivos = value || [];
-    console.log('Arquivos armazenados no componente:', this.arquivos);
   }
 
   registerOnChange(
@@ -123,13 +121,6 @@ export class InputArquivosComponent {
     } else {
       this.arquivos = [novosArquivos[0]];
     }
-
-    for (let arquivo of novosArquivos) {
-      if (!this.arquivos.some((a) => this.isSameArquivo(a, arquivo))) {
-        this.arquivos.push(arquivo);
-      }
-    }
-
     this.onChange([...this.arquivos]);
     this.arquivosSelecionados.emit([...this.arquivos]);
     this.errorMessage = null;
