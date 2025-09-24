@@ -5,7 +5,7 @@
     </div>
 
     <div class="sub-container">
-        <div class="container-inputs">
+        <form [formGroup]="scannerForm" class="container-inputs">
             <div class="form-group">
                 <label class="input-label">Arquivos corretos</label>
                 <app-input-arquivos
@@ -15,58 +15,85 @@
                 [accept]="'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv'"
                 layout="list"
                 [showList]="false"
-                formControlName="documentoCorreto"
-                (arquivosSelecionados)="documentoCorretoArquivos = $event"
-                ></app-input-arquivos>
+                formControlName="documentoCorreto">
+                </app-input-arquivos>
             </div>
 
             <div class="form-group">
                 <label class="input-label">Arquivos errados</label>
                 <app-input-arquivos
                 inputId="input-arquivos-errados"
-                [label]="'Clique ou arraste os arquivos CSV/XLS/XLSX para fazer upload'"
+                [label]="'Clique ou arraste o arquivo CSV/XLS/XLSX para fazer upload'"
                 [accept]="'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv'"
                 [multiple]="true"
                 layout="list"
                 [showList]="false"
-                formControlName="documentoIncorreto"
-                (arquivosSelecionados)="documentoIncorretoArquivos = $event">
+                formControlName="documentoIncorreto">
                 </app-input-arquivos>
             </div>
-        </div>
+        </form>
 
         <div class="acoes">
             <button class="btn btn-reset" (click)="limparArquivos()">Limpar dados</button>
             <button class="btn btn-secondary" (click)="inverterArquivos()">Inverter arquivos</button>
-            <button class="btn btn-primary">Processar arquivos</button>
+            <button class="btn btn-primary" (click)="processarArquivos()">Processar arquivos</button>
         </div>
     </div>
 
     <div class="sub-container">
-        <div>
-            <h3>Arquivos selecionados</h3>
-            <div *ngIf="documentoCorretoArquivos.length > 0">
-                <strong>Arquivo principal:</strong>
-                <ul>
-                <li *ngFor="let arquivo of documentoCorretoArquivos; let i = index">
-                    {{ arquivo.name }}
-                    <button type="button" class="btn btn-danger btn-sm" (click)="removerArquivoCorreto(i)">
-                    Remover
-                    </button>
-                </li>
-                </ul>
+        <div *ngIf="documentoCorretoArquivos.length === 0 && documentoIncorretoArquivos.length === 0" class="feedback-container">
+            <div class="no-data-message">
+                <img src="assets/imagens/no-data.svg" alt="Sem arquivos">
+                <p>Nenhum arquivo selecionado.</p>
             </div>
-            <div *ngIf="documentoIncorretoArquivos.length > 0">
-                <strong>Arquivos errados:</strong>
-                <ul>
-                <li *ngFor="let arquivo of documentoIncorretoArquivos; let i = index">
-                    {{ arquivo.name }}
-                    <button type="button" class="btn btn-danger btn-sm" (click)="removerArquivoIncorreto(i)">
-                    Remover
-                    </button>
-                </li>
-                </ul>
+        </div>
+        
+        <div class="container-lista-arquivos">
+            <div class="container-arquivos" *ngIf="documentoCorretoArquivos.length > 0">
+                <span>Arquivos corretos</span>
+                <div class="list-group">
+                    <div class="list-group-item" *ngFor="let arquivo of documentoCorretoArquivos; let i = index">
+                        {{ arquivo.name }}
+                        <button type="button" class="btn btn-delete" (click)="removerArquivoCorreto(i)">
+                        Remover
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="container-arquivos" *ngIf="documentoIncorretoArquivos.length > 0">
+                <span>Arquivos errados</span>
+                <div class="list-group">
+                    <div class="list-group-item" *ngFor="let arquivo of documentoIncorretoArquivos; let i = index">
+                        {{ arquivo.name }}
+                        <button type="button" class="btn btn-delete" (click)="removerArquivoIncorreto(i)">
+                        Remover
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<ng-template #formCadastroTemplate>
+    <div class="forms-container">
+        <form class="modal-form" [formGroup]="scannerForm">
+            <div class="form-group">
+                <label for="empresas">Empresas</label>
+                <app-select-auto-complete
+                placeholder="Buscar empresas..."
+                [options]="empresasOptions"
+                formControlName="empresasSelecionadas"
+                [multiple]="true"
+                (itemAdded)="onEmpresaSelecionada(scannerForm.get('empresasSelecionadas')?.value)"
+                (itemRemoved)="onEmpresaSelecionada(scannerForm.get('empresasSelecionadas')?.value)">
+                </app-select-auto-complete>
+            </div>
+
+            <div class="form-group">
+                <label for="observacoes">Observações</label>
+                <textarea formControlName="observacoes" placeholder="Digite as observações da analise" type="text"></textarea>
+            </div>
+        </form>
+    </div>
+</ng-template>
