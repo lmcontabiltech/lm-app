@@ -145,7 +145,9 @@ export class CadastroPerifericosComponent implements OnInit {
             this.isLoading = false;
             this.successMessage = 'Periferico atualizada com sucesso!';
             this.errorMessage = null;
-            this.router.navigate(['usuario/perifericos']);
+            this.router.navigate(['/usuario/perifericos'], {
+              state: { successMessage: 'Periferico cadastrado com sucesso!' },
+            });
             console.debug('Periferico atualizada com sucesso:', response);
           },
           (error) => {
@@ -162,6 +164,9 @@ export class CadastroPerifericosComponent implements OnInit {
           this.successMessage = 'Periferico cadastrada com sucesso!';
           this.errorMessage = null;
           this.perifericoForm.reset();
+          this.router.navigate(['/usuario/perifericos'], {
+            state: { successMessage: 'Periferico cadastrado com sucesso!' },
+          });
           console.debug('Periferico cadastrada com sucesso:', response);
         },
         (error) => {
