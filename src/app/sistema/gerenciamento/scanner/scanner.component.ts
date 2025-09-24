@@ -96,6 +96,7 @@ export class ScannerComponent implements OnInit {
     this.colaboradoresService
       .getUsuarioById(colaborador.id)
       .subscribe((colab) => {
+        this.scannerForm.reset();
         this.modalCadastroService.openModal(
           {
             title: 'Analisar arquivos',
