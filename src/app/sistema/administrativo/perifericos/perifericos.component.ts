@@ -106,6 +106,7 @@ export class PerifericosComponent implements OnInit {
   }
 
   fetchPerifericos(): void {
+    this.isLoading = true;
     this.perifericoService.getPeriferico().subscribe(
       (perifericos: Periferico[]) => {
         this.perifericos = perifericos;
@@ -113,9 +114,11 @@ export class PerifericosComponent implements OnInit {
           this.perifericos.length / this.itensPorPagina
         );
         this.atualizarPaginacao();
+        this.isLoading = false;
       },
       (error) => {
         console.error('Erro ao carregar perifericos:', error);
+        this.isLoading = false;
       }
     );
   }
