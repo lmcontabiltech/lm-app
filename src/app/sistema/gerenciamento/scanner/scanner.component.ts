@@ -9,6 +9,8 @@ import { ModalCadastroService } from 'src/app/services/modal/modal-cadastro.serv
 import { ColaboradoresService } from 'src/app/services/administrativo/colaboradores.service';
 import { Colaborador } from '../../administrativo/colaboradores/colaborador';
 import { AuthService } from 'src/app/services/auth.service';
+import { EmpresasService } from 'src/app/services/administrativo/empresas.service';
+import { AutoCompleteOption } from 'src/app/shared/select-auto-complete/select-auto-complete.component';
 
 @Component({
   selector: 'app-scanner',
@@ -19,6 +21,10 @@ export class ScannerComponent implements OnInit {
   scannerForm: FormGroup;
 
   colaboradores: Colaborador[] = [];
+  empresasOptions: AutoCompleteOption[] = [];
+  empresasSelecionadas: string[] = [];
+
+  isLoading = false;
 
   @ViewChild('formCadastroTemplate') formCadastroTemplate!: TemplateRef<any>;
 
@@ -26,15 +32,20 @@ export class ScannerComponent implements OnInit {
     private formBuilder: FormBuilder,
     private modalCadastroService: ModalCadastroService,
     private colaboradoresService: ColaboradoresService,
-    private authService: AuthService
+    private authService: AuthService,
+    private empresasService: EmpresasService
   ) {
     this.scannerForm = this.formBuilder.group({
       documentoCorreto: [[]],
       documentoIncorreto: [[]],
+      empresasSelecionadas: [[]],
+      observacoes: [''],
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.carregarEmpresas();
+  }
 
   limparArquivos(): void {
     this.scannerForm.get('documentoCorreto')?.setValue([]);
@@ -85,7 +96,6 @@ export class ScannerComponent implements OnInit {
     this.colaboradoresService
       .getUsuarioById(colaborador.id)
       .subscribe((colab) => {
-        this.scannerForm.reset();
         this.modalCadastroService.openModal(
           {
             title: 'Analisar arquivos',
@@ -100,4 +110,29 @@ export class ScannerComponent implements OnInit {
   }
 
   onSubmit(colab: Colaborador): void {}
+
+  carregarEmpresas(): void {
+    this.empresasService.getEmpresas().subscribe({
+      next: (empresas) => {
+        this.empresasOptions = empresas.map((empresa) => ({
+          value: empresa.id.toString(),
+          description: empresa.razaoSocial,
+        }));
+        console.log('Empresas carregadas para o select:', this.empresasOptions);
+      },
+      error: (error) => {
+        console.error('Erro ao carregar empresas:', error);
+      },
+    });
+  }
+
+  onEmpresaSelecionada(empresas: string[]): void {
+    this.empresasSelecionadas = empresas;
+    console.log('Empresas selecionadas:', empresas);
+
+    if (empresas && empresas.length > 0) {
+      const idsEmpresas = empresas.map((id) => Number(id));
+    } else {
+    }
+  }
 }

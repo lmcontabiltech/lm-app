@@ -23,7 +23,7 @@
                 <label class="input-label">Arquivos errados</label>
                 <app-input-arquivos
                 inputId="input-arquivos-errados"
-                [label]="'Clique ou arraste os arquivos CSV/XLS/XLSX para fazer upload'"
+                [label]="'Clique ou arraste o arquivo CSV/XLS/XLSX para fazer upload'"
                 [accept]="'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv'"
                 [multiple]="true"
                 layout="list"
@@ -80,7 +80,14 @@
         <form class="modal-form" [formGroup]="scannerForm">
             <div class="form-group">
                 <label for="empresas">Empresas</label>
-                <input formControlName="empresas" name="empresas" type="text" required />
+                <app-select-auto-complete
+                placeholder="Buscar empresas..."
+                [options]="empresasOptions"
+                formControlName="empresasSelecionadas"
+                [multiple]="true"
+                (itemAdded)="onEmpresaSelecionada(scannerForm.get('empresasSelecionadas')?.value)"
+                (itemRemoved)="onEmpresaSelecionada(scannerForm.get('empresasSelecionadas')?.value)">
+                </app-select-auto-complete>
             </div>
 
             <div class="form-group">
