@@ -65,5 +65,11 @@
                 </div>
             </div>
         </div>
+
+        <div *ngIf="documentoCorretoArquivos.length === 0 && documentoIncorretoArquivos.length === 0" class="feedback-container">
+        <div class="no-data-message">
+            <img src="assets/imagens/no-data.svg" alt="Sem arquivos">
+            <p>Nenhum arquivo selecionado.</p>
+        </div>
     </div>
 </div>
