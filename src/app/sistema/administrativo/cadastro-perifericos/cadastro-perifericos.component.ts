@@ -73,6 +73,17 @@ export class CadastroPerifericosComponent implements OnInit {
     this.selectedFoto[tipo] = image;
     this.perifericoForm.get(tipo)?.setValue(image);
     console.log(`Imagem de ${tipo} selecionada:`, image);
+
+    if (image) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.fotoPreview = reader.result;
+      };
+      reader.readAsDataURL(image);
+    } else {
+      // Se remover a imagem, limpa o preview
+      this.fotoPreview = null;
+    }
   }
 
   private mapPermissao(permissao: string): string {
@@ -134,7 +145,9 @@ export class CadastroPerifericosComponent implements OnInit {
             this.isLoading = false;
             this.successMessage = 'Periferico atualizada com sucesso!';
             this.errorMessage = null;
-            this.router.navigate(['usuario/perifericos']);
+            this.router.navigate(['/usuario/perifericos'], {
+              state: { successMessage: 'Periferico cadastrado com sucesso!' },
+            });
             console.debug('Periferico atualizada com sucesso:', response);
           },
           (error) => {
@@ -151,6 +164,9 @@ export class CadastroPerifericosComponent implements OnInit {
           this.successMessage = 'Periferico cadastrada com sucesso!';
           this.errorMessage = null;
           this.perifericoForm.reset();
+          this.router.navigate(['/usuario/perifericos'], {
+            state: { successMessage: 'Periferico cadastrado com sucesso!' },
+          });
           console.debug('Periferico cadastrada com sucesso:', response);
         },
         (error) => {
@@ -175,10 +191,27 @@ export class CadastroPerifericosComponent implements OnInit {
     this.perifericoService.getPerifericoById(perifericoId).subscribe(
       (periferico: Periferico) => {
         console.log('Dados da periferico recebidos:', periferico);
+        const colaboradorId = periferico.colaborador?.id
+          ? String(periferico.colaborador.id)
+          : '';
+
+        this.selectedSetor = periferico.estacao || '';
+        this.selectedUsuario = colaboradorId;
 
         this.perifericoForm.patchValue({
           ...periferico,
+          idColaborador: colaboradorId,
+          estacao: periferico.estacao || '',
         });
+
+        if (periferico.fotoUrl && typeof periferico.fotoUrl === 'string') {
+          this.fotoPreview = periferico.fotoUrl;
+          this.selectedFoto['foto'] = null;
+        } else {
+          this.fotoPreview = null;
+        }
+
+        this.carregarUsuarios();
       },
       (error) => {
         console.error('Erro ao carregar os dados da empresa:', error);
@@ -186,16 +219,18 @@ export class CadastroPerifericosComponent implements OnInit {
     );
   }
 
-  carregarUsuarios(): void {
+  carregarUsuarios(callback?: () => void): void {
     this.colaboradorService.getUsuariosNonAdmin().subscribe(
       (usuarios) => {
         this.usuarios = usuarios.map((usuario) => ({
-          value: usuario.id,
+          value: String(usuario.id),
           description: usuario.nome,
         }));
+        if (callback) callback();
       },
       (error) => {
         console.error('Erro ao carregar os usuários:', error);
+        if (callback) callback();
       }
     );
   }

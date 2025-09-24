@@ -168,4 +168,14 @@
     flex-direction: column;
     gap: 32px;
   }
+
+  .container-arquivos {
+    width: 100%;
+  }
+
+  .acoes {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
 }
