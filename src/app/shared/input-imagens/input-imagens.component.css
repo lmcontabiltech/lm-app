@@ -14,6 +14,10 @@
   background: #dee2eb;
 }
 
+.image-upload:hover {
+  background: #d1d1e7;
+}
+
 .foto-preview {
   max-width: 300px;
   width: 100%;
