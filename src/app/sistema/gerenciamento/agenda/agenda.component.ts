@@ -1,4 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl,
+} from '@angular/forms';
+import { ModalCadastroService } from 'src/app/services/modal/modal-cadastro.service';
+import { ColaboradoresService } from 'src/app/services/administrativo/colaboradores.service';
+import { Colaborador } from '../../administrativo/colaboradores/colaborador';
+import { AuthService } from 'src/app/services/auth.service';
 import { TipoEvento } from './enums/tipo-evento';
 import { TipoEventoDescricao } from './enums/tipo-evento-descricao';
 import { Evento } from './evento';
@@ -16,6 +26,14 @@ interface CalendarDay {
   styleUrls: ['./agenda.component.css'],
 })
 export class AgendaComponent implements OnInit {
+  eventoForm: FormGroup;
+
+  colaboradores: Colaborador[] = [];
+
+  isLoading = false;
+
+  @ViewChild('formCadastroTemplate') formCadastroTemplate!: TemplateRef<any>;
+
   diaSemana = [
     'Domingo',
     'Segunda',
@@ -59,7 +77,25 @@ export class AgendaComponent implements OnInit {
   TipoEvento = TipoEvento;
   TipoEventoDescricao = TipoEventoDescricao;
 
-  constructor() {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private modalCadastroService: ModalCadastroService,
+    private colaboradoresService: ColaboradoresService,
+    private authService: AuthService
+  ) {
+    this.eventoForm = this.formBuilder.group({
+      titulo: ['', [Validators.required, Validators.maxLength(100)]],
+      descricao: ['', [Validators.maxLength(500)]],
+      data: ['', Validators.required],
+      horaInicio: [''],
+      horaFim: [''],
+      frequenciaEvento: [''],
+      tipo: ['', Validators.required],
+      link: [''],
+      cor: [''],
+      participantes: [[]],
+    });
+  }
 
   ngOnInit(): void {
     this.applyFilters();
@@ -249,5 +285,33 @@ export class AgendaComponent implements OnInit {
     return matrix;
   }
 
-  onAddClick() {}
+  adicionarEvento(): void {
+    this.authService.obterPerfilUsuario().subscribe({
+      next: (usuario) => {
+        this.openModalCadastro(usuario);
+      },
+      error: (err) => {},
+    });
+  }
+
+  openModalCadastro(colaborador: Colaborador): void {
+    this.colaboradoresService
+      .getUsuarioById(colaborador.id)
+      .subscribe((colab) => {
+        this.modalCadastroService.openModal(
+          {
+            title: 'cadastrar evento',
+            description: `Preencha os dados do evento`,
+            size: 'md',
+            confirmTextoBotao: 'Salvar',
+          },
+          () => this.onSubmit(colab),
+          this.formCadastroTemplate
+        );
+      });
+  }
+
+  onSubmit(colab: Colaborador): void {
+    this.eventoForm.reset();
+  }
 }
