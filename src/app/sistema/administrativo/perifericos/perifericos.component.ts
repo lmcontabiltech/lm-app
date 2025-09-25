@@ -211,11 +211,17 @@ export class PerifericosComponent implements OnInit {
 
   onEstacaoChange() {
     const setor = this.selectedSetor || '';
-    console.log('Setor selecionado:', setor);
     this.isLoading = true;
-    this.perifericoService.filtroPerifericosPorSetor(setor).subscribe(
+
+    let obs;
+    if (!setor) {
+      obs = this.perifericoService.getPeriferico();
+    } else {
+      obs = this.perifericoService.filtroPerifericosPorSetor(setor);
+    }
+
+    obs.subscribe(
       (perifericos) => {
-        console.log('Periféricos retornados pelo backend:', perifericos);
         this.perifericos = perifericos;
         this.paginaAtual = 1;
         this.totalPaginas = Math.ceil(
