@@ -88,10 +88,10 @@ export class PerifericoService {
 
   atualizarPeriferico(
     id: string,
-    periferico: Periferico
+    formData: FormData
   ): Observable<Periferico> {
     const url = `${this.apiURL}/${id}`;
-    return this.http.put<Periferico>(url, periferico).pipe(
+    return this.http.put<Periferico>(url, formData).pipe(
       map((response) => response),
       catchError((error) => {
         let errorMessage = 'Erro ao atualizar o periferico.';
