@@ -139,7 +139,7 @@ export class CadastroPerifericosComponent implements OnInit {
 
     if (this.isEditMode && this.perifericoId) {
       this.perifericoService
-        .atualizarPeriferico(this.perifericoId, periferico)
+        .atualizarPeriferico(this.perifericoId, formData)
         .subscribe(
           (response) => {
             this.isLoading = false;
