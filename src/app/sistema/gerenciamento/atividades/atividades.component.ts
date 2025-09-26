@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  AfterViewInit,
+  TemplateRef,
+} from '@angular/core';
 import {
   CdkDragDrop,
   moveItemInArray,
@@ -15,6 +21,13 @@ import { EmpresasService } from 'src/app/services/administrativo/empresas.servic
 import { AutoCompleteOption } from 'src/app/shared/select-auto-complete/select-auto-complete.component';
 import { FeedbackComponent } from 'src/app/shared/feedback/feedback.component';
 import { ErrorMessageService } from 'src/app/services/feedback/error-message.service';
+import { ModalCadastroService } from 'src/app/services/modal/modal-cadastro.service';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl,
+} from '@angular/forms';
 
 interface Tasks {
   [key: string]: Atividade[];
@@ -59,14 +72,24 @@ export class AtividadesComponent implements OnInit, AfterViewInit {
 
   isLoading = false;
 
+  copyForm: FormGroup;
+  @ViewChild('copyFormTemplate') copyFormTemplate!: TemplateRef<any>;
+
   constructor(
     private router: Router,
     private atividadeService: AtividadeService,
     private modalAtividadeService: ModalAtividadeService,
     private modalDeleteService: ModalDeleteService,
     private empresasService: EmpresasService,
-    private errorMessageService: ErrorMessageService
-  ) {}
+    private errorMessageService: ErrorMessageService,
+    private modalCadastroService: ModalCadastroService,
+    private formBuilder: FormBuilder
+  ) {
+    this.copyForm = this.formBuilder.group({
+      dataDeInicio: ['', Validators.required],
+      dateDaEntrega: ['', Validators.required],
+    });
+  }
 
   ngOnInit(): void {
     this.dropListIds = this.statuses.map((status) => status);
@@ -203,6 +226,9 @@ export class AtividadesComponent implements OnInit, AfterViewInit {
         },
         () => {
           this.abrirModalConfirmacaoDeletar(atividade);
+        },
+        () => {
+          this.openModalCadastro(atividade);
         }
       );
     });
@@ -393,5 +419,40 @@ export class AtividadesComponent implements OnInit, AfterViewInit {
       return empresa?.description || 'Atividades';
     }
     return 'Atividades';
+  }
+
+  openModalCadastro(atividade: Atividade): void {
+    this.copyForm = this.formBuilder.group({
+      dataDeInicio: ['', Validators.required],
+      dateDaEntrega: ['', Validators.required],
+    });
+
+    this.modalCadastroService.openModal(
+      {
+        title: 'Copiar Atividade',
+        description: `Informe as datas para copiar a atividade <strong>${atividade.nome}</strong>.`,
+        size: 'md',
+        confirmTextoBotao: 'Copiar',
+      },
+      () => this.confirmarCopiaAtividade(atividade.id!),
+      this.copyFormTemplate
+    );
+  }
+
+  confirmarCopiaAtividade(id: string | number): void {
+    if (!this.copyForm?.valid) return;
+    const { dataDeInicio, dateDaEntrega } = this.copyForm.value;
+    this.atividadeService
+      .copiarAtividade(id, { dataDeInicio, dateDaEntrega })
+      .subscribe({
+        next: () => {
+          this.modalCadastroService.closeModal();
+          this.carregarAtividades();
+          this.showFeedback('success', 'Atividade copiada com sucesso!');
+        },
+        error: (err) => {
+          this.showFeedback('error', 'Erro ao copiar atividade.');
+        },
+      });
   }
 }

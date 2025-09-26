@@ -64,3 +64,16 @@
 </div>
 
 <app-feedback></app-feedback>
+
+<ng-template #copyFormTemplate>
+  <form [formGroup]="copyForm" class="modal-form">
+    <div class="form-group">
+      <label>Data de início</label>
+      <input type="date" formControlName="dataDeInicio" required />
+    </div>
+    <div class="form-group">
+      <label>Data de entrega</label>
+      <input type="date" formControlName="dateDaEntrega" required />
+    </div>
+  </form>
+</ng-template>
