@@ -292,4 +292,24 @@ export class AtividadeService {
         })
       );
   }
+
+  copiarAtividade(
+    id: number | string,
+    dto: { dataDeInicio: string; dateDaEntrega: string }
+  ): Observable<Atividade> {
+    const url = `${this.apiURL}/${id}/copy`;
+    return this.http.post<Atividade>(url, dto).pipe(
+      map((response) => response),
+      catchError((error) => {
+        let errorMessage = 'Erro ao copiar a atividade.';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
 }

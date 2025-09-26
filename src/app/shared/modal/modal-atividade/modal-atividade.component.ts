@@ -22,6 +22,7 @@ export class ModalAtividadeComponent {
   @Output() editarAtividade = new EventEmitter<string>();
   @Output() deletarAtividade = new EventEmitter<string>();
   @Output() atualizarSubtarefas = new EventEmitter<any[]>();
+  @Output() copiarAtividade = new EventEmitter<any>();
 
   loadingSubtarefas: { [key: number]: boolean } = {};
 
@@ -135,5 +136,9 @@ export class ModalAtividadeComponent {
     if (!subtarefas?.length) return 0;
     const marcadas = subtarefas.filter((s) => s.checked).length;
     return Math.round((marcadas / subtarefas.length) * 100);
+  }
+
+  CopiarAtividade(atividade: any) {
+    this.copiarAtividade.emit(atividade);
   }
 }

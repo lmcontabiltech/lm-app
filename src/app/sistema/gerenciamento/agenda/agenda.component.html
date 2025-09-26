@@ -25,7 +25,7 @@
           Ano
         </button>
       </div>
-      <button class="btn btn-primary" (click)="onAddClick()">Evento +</button>
+      <button class="btn btn-primary" (click)="adicionarEvento()">Evento +</button>
     </div>
   </div>
 
@@ -74,3 +74,61 @@
     </ng-container>
   </div>
 </div>
+
+<ng-template #formCadastroTemplate>
+    <div class="forms-container">
+        <form class="modal-form" [formGroup]="eventoForm">
+          <div class="form-group">
+              <label for="titulo">Titulo</label>
+              <input formControlName="titulo" type="text" />
+          </div>
+
+            <div class="form-group">
+                <label for="data">Data</label>
+                <input formControlName="data" type="date" />
+            </div>
+
+            <div class="input-duo">
+              <div class="form-group">
+                  <label for="horaInicio">Hora Início</label>
+                  <input formControlName="horaInicio" type="time" />
+              </div>
+              <div class="form-group">
+                  <label for="horaFim">Hora Fim</label>
+                  <input formControlName="horaFim" type="time" />
+              </div>
+            </div>
+
+            <div class="form-group">
+                <label for="frequenciaEvento">Frequência do evento</label>
+                <input formControlName="frequenciaEvento" type="text" />
+            </div>
+
+            <div class="input-duo">
+              <div class="form-group">
+                  <label for="tipo">Tipo</label>
+                  <input formControlName="tipo" type="text" />
+              </div>
+              <div class="form-group">
+                  <label for="cor">Cor</label>
+                  <input formControlName="cor" type="color" />
+              </div>
+            </div>
+
+            <div class="form-group">
+                <label for="participantes">Participantes</label>
+                <input formControlName="participantes" type="text" />
+            </div>
+
+            <div class="form-group">
+                <label for="link">Link da reunião</label>
+                <input formControlName="link" type="text" />
+            </div>
+
+            <div class="form-group">
+                <label for="descricao">Descrição</label>
+                <textarea formControlName="descricao" placeholder="Digite a descrição do evento" type="text"></textarea>
+            </div>
+        </form>
+    </div>
+</ng-template>
