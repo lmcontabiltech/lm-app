@@ -302,8 +302,30 @@
   outline: none;
 }
 
-.btn-delete {
+.btn-copy {
   background: #777777;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 20px;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  justify-content: center;
+}
+
+.btn-copy:hover,
+.btn-copy:focus {
+  background: #555555;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.15);
+  outline: none;
+}
+
+.btn-delete {
+  background: #ca8e26;
   color: #ffffff;
   border: none;
   border-radius: 8px;
@@ -319,7 +341,7 @@
 
 .btn-delete:hover,
 .btn-delete:focus {
-  background: #555555;
+  background: #a4731f;
   box-shadow: 0 4px 16px rgba(37, 99, 235, 0.15);
   outline: none;
 }
