@@ -11,6 +11,12 @@ import { Colaborador } from '../../administrativo/colaboradores/colaborador';
 import { AuthService } from 'src/app/services/auth.service';
 import { EmpresasService } from 'src/app/services/administrativo/empresas.service';
 import { AutoCompleteOption } from 'src/app/shared/select-auto-complete/select-auto-complete.component';
+import { ScannerRunResponseDTO } from './scanner';
+import {
+  ScannerService,
+  ScannerResponse,
+} from 'src/app/services/gerenciamento/scanner.service';
+import { FeedbackComponent } from 'src/app/shared/feedback/feedback.component';
 
 @Component({
   selector: 'app-scanner',
@@ -19,6 +25,7 @@ import { AutoCompleteOption } from 'src/app/shared/select-auto-complete/select-a
 })
 export class ScannerComponent implements OnInit {
   scannerForm: FormGroup;
+  resultadoScanner: ScannerResponse | null = null;
 
   colaboradores: Colaborador[] = [];
   empresasOptions: AutoCompleteOption[] = [];
@@ -27,13 +34,15 @@ export class ScannerComponent implements OnInit {
   isLoading = false;
 
   @ViewChild('formCadastroTemplate') formCadastroTemplate!: TemplateRef<any>;
+  @ViewChild(FeedbackComponent) feedbackComponent!: FeedbackComponent;
 
   constructor(
     private formBuilder: FormBuilder,
     private modalCadastroService: ModalCadastroService,
     private colaboradoresService: ColaboradoresService,
     private authService: AuthService,
-    private empresasService: EmpresasService
+    private empresasService: EmpresasService,
+    private documentosService: ScannerService
   ) {
     this.scannerForm = this.formBuilder.group({
       documentoCorreto: [[]],
@@ -110,7 +119,56 @@ export class ScannerComponent implements OnInit {
   }
 
   onSubmit(colab: Colaborador): void {
-    this.scannerForm.reset();
+    const arquivosCorretos: File[] =
+      this.scannerForm.get('documentoCorreto')?.value || [];
+    const arquivosIncorretos: File[] =
+      this.scannerForm.get('documentoIncorreto')?.value || [];
+    const empresasSelecionadas: string[] =
+      this.scannerForm.get('empresasSelecionadas')?.value || [];
+    const observacoes: string =
+      this.scannerForm.get('observacoes')?.value || '';
+
+    const meta = JSON.stringify({
+      empresas: empresasSelecionadas,
+      observacoes,
+      colaboradorId: colab.id,
+    });
+
+    // MONTA O FORM DATA MANUALMENTE PARA LOG
+    const formData = new FormData();
+    arquivosCorretos.forEach((file) =>
+      formData.append('correct', file, file.name)
+    );
+    arquivosIncorretos.forEach((file) =>
+      formData.append('incorrect', file, file.name)
+    );
+    if (meta) {
+      formData.append('meta', meta);
+    }
+
+    // LOG DO QUE ESTÁ SENDO ENVIADO
+    formData.forEach((value, key) => {
+      console.log(key, value);
+    });
+
+    this.isLoading = true;
+    this.resultadoScanner = null;
+
+    this.documentosService
+      .enviarArquivosParaScanner(arquivosCorretos, arquivosIncorretos, meta)
+      .subscribe({
+        next: (res) => {
+          this.isLoading = false;
+          this.resultadoScanner = res;
+          this.scannerForm.get('documentoCorreto')?.setValue([]);
+          this.scannerForm.get('documentoIncorreto')?.setValue([]);
+          this.showFeedback('success', 'Análise concluída com sucesso!');
+        },
+        error: (err) => {
+          this.isLoading = false;
+          this.showFeedback('error', 'Erro ao enviar arquivos para análise!');
+        },
+      });
   }
 
   carregarEmpresas(): void {
@@ -135,6 +193,16 @@ export class ScannerComponent implements OnInit {
     if (empresas && empresas.length > 0) {
       const idsEmpresas = empresas.map((id) => Number(id));
     } else {
+    }
+  }
+
+  private showFeedback(
+    type: 'success' | 'error' | 'info',
+    message: string,
+    description?: string
+  ): void {
+    if (this.feedbackComponent) {
+      this.feedbackComponent.show(type, message, description);
     }
   }
 }

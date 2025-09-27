@@ -41,39 +41,60 @@
     </div>
 
     <div class="sub-container">
-        <div *ngIf="documentoCorretoArquivos.length === 0 && documentoIncorretoArquivos.length === 0" class="feedback-container">
-            <div class="no-data-message">
-                <img src="assets/imagens/no-data.svg" alt="Sem arquivos">
-                <p>Nenhum arquivo selecionado.</p>
-            </div>
-        </div>
-        
-        <div class="container-lista-arquivos">
-            <div class="container-arquivos" *ngIf="documentoCorretoArquivos.length > 0">
-                <span>Arquivos corretos</span>
-                <div class="list-group">
-                    <div class="list-group-item" *ngFor="let arquivo of documentoCorretoArquivos; let i = index">
-                        {{ arquivo.name }}
-                        <button type="button" class="btn btn-delete" (click)="removerArquivoCorreto(i)">
-                        Remover
-                        </button>
+        <ng-container *ngIf="!isLoading">
+            <div *ngIf="resultadoScanner; else arquivosContainer" class="resultado-container">
+                <h3>Resultado da análise</h3>
+                <div *ngIf="resultadoScanner.errors && resultadoScanner.errors | json as erros">
+                    <div *ngFor="let nome of (resultadoScanner.errors | keyvalue)">
+                    <strong>{{ nome.key }}</strong>: {{ nome.value.join(', ') }}
                     </div>
                 </div>
+                <div *ngIf="resultadoScanner.file_id">
+                    <p>ID do arquivo: {{ resultadoScanner.file_id }}</p>
+                </div>
+                <!-- Adicione mais detalhes do resultado conforme necessário -->
             </div>
-            <div class="container-arquivos" *ngIf="documentoIncorretoArquivos.length > 0">
-                <span>Arquivos errados</span>
-                <div class="list-group">
-                    <div class="list-group-item" *ngFor="let arquivo of documentoIncorretoArquivos; let i = index">
-                        {{ arquivo.name }}
-                        <button type="button" class="btn btn-delete" (click)="removerArquivoIncorreto(i)">
-                        Remover
-                        </button>
+
+             <ng-template #arquivosContainer>
+                <div *ngIf="documentoCorretoArquivos.length === 0 && documentoIncorretoArquivos.length === 0" class="feedback-container">
+                    <div class="no-data-message">
+                        <img src="assets/imagens/no-data.svg" alt="Sem arquivos">
+                        <p>Nenhum arquivo selecionado.</p>
                     </div>
                 </div>
-            </div>
-        </div>
+                
+                <div class="container-lista-arquivos">
+                    <div class="container-arquivos" *ngIf="documentoCorretoArquivos.length > 0">
+                        <span>Arquivos corretos</span>
+                        <div class="list-group">
+                            <div class="list-group-item" *ngFor="let arquivo of documentoCorretoArquivos; let i = index">
+                                {{ arquivo.name }}
+                                <button type="button" class="btn btn-delete" (click)="removerArquivoCorreto(i)">
+                                Remover
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-arquivos" *ngIf="documentoIncorretoArquivos.length > 0">
+                        <span>Arquivos errados</span>
+                        <div class="list-group">
+                            <div class="list-group-item" *ngFor="let arquivo of documentoIncorretoArquivos; let i = index">
+                                {{ arquivo.name }}
+                                <button type="button" class="btn btn-delete" (click)="removerArquivoIncorreto(i)">
+                                Remover
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </ng-container>
     </div>
+
+    <app-loading *ngIf="isLoading"></app-loading>
 </div>
+
+<app-feedback></app-feedback>
 
 <ng-template #formCadastroTemplate>
     <div class="forms-container">
