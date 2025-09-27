@@ -43,16 +43,47 @@
     <div class="sub-container">
         <ng-container *ngIf="!isLoading">
             <div *ngIf="resultadoScanner; else arquivosContainer" class="resultado-container">
-                <h3>Resultado da análise</h3>
-                <div *ngIf="resultadoScanner.errors && resultadoScanner.errors | json as erros">
-                    <div *ngFor="let nome of (resultadoScanner.errors | keyvalue)">
-                    <strong>{{ nome.key }}</strong>: {{ nome.value.join(', ') }}
+                <div class="analise-detalhada">
+                    <h4>Correções por planilha</h4>
+                    <div *ngFor="let planilha of planilhasComErros">
+                        <div class="planilha-nome">{{ planilha.nome }}</div>
+                        <div class="progress-bar-wrapper">
+                            <div class="progress-bar-bg">
+                                <div
+                                class="progress-bar-fill"
+                                [style.width.%]="planilha.percent"
+                                ></div>
+                            </div>
+                            <span class="progress-label">
+                                {{ planilha.qtd }} erros corrigidos
+                            </span>
+                        </div>
                     </div>
                 </div>
-                <div *ngIf="resultadoScanner.file_id">
-                    <p>ID do arquivo: {{ resultadoScanner.file_id }}</p>
+
+                <!-- Lado direito: Gráfico geral e botões -->
+                <div class="analise-geral">
+                <h4>Análise geral</h4>
+                <app-grafico-rosquinha
+                [series]="graficoErrosCorretos.series"
+                [labels]="graficoErrosCorretos.labels"
+                colorPalette="palette2"
+                title="Erros x Correções"
+                [height]="300"
+                donutSize="70%"
+                legendPosition="bottom"
+                [showLegend]="true">
+                </app-grafico-rosquinha>
+
+                <div class="botoes-download">
+                    <button class="btn btn-secondary" (click)="baixarZip()">
+                    Baixar planilhas corrigidas
+                    </button>
+                    <button class="btn btn-secondary" (click)="baixarPdf()">
+                    Baixar PDF da análise
+                    </button>
                 </div>
-                <!-- Adicione mais detalhes do resultado conforme necessário -->
+                </div>
             </div>
 
              <ng-template #arquivosContainer>

@@ -36,6 +36,14 @@ export class ScannerComponent implements OnInit {
   @ViewChild('formCadastroTemplate') formCadastroTemplate!: TemplateRef<any>;
   @ViewChild(FeedbackComponent) feedbackComponent!: FeedbackComponent;
 
+  planilhasComErros: { nome: string; qtd: number; percent: number }[] = [];
+  graficoData: any = null;
+
+  graficoErrosCorretos: { series: number[]; labels: string[] } = {
+    series: [],
+    labels: [],
+  };
+
   constructor(
     private formBuilder: FormBuilder,
     private modalCadastroService: ModalCadastroService,
@@ -56,10 +64,16 @@ export class ScannerComponent implements OnInit {
     this.carregarEmpresas();
   }
 
-  limparArquivos(): void {
-    this.scannerForm.get('documentoCorreto')?.setValue([]);
-    this.scannerForm.get('documentoIncorreto')?.setValue([]);
+  ngOnChanges(): void {
+    if (this.resultadoScanner) {
+      this.processarResultado();
+    }
   }
+
+  // limparArquivos(): void {
+  //   this.scannerForm.get('documentoCorreto')?.setValue([]);
+  //   this.scannerForm.get('documentoIncorreto')?.setValue([]);
+  // }
 
   removerArquivoCorreto(index: number): void {
     const arquivos = [
@@ -165,6 +179,7 @@ export class ScannerComponent implements OnInit {
           this.scannerForm.get('documentoCorreto')?.setValue([]);
           this.scannerForm.get('documentoIncorreto')?.setValue([]);
           this.showFeedback('success', 'Análise concluída com sucesso!');
+          this.processarResultado();
         },
         error: (err) => {
           this.isLoading = false;
@@ -210,5 +225,61 @@ export class ScannerComponent implements OnInit {
     if (this.feedbackComponent) {
       this.feedbackComponent.show(type, message, description);
     }
+  }
+
+  processarResultado(): void {
+    const errors = this.resultadoScanner?.errors || {};
+    const totalErros = Object.values(errors).reduce(
+      (acc, arr) => acc + arr.length,
+      0
+    );
+    const totalCorretos = this.resultadoScanner?.corrections?.length || 0;
+
+    this.planilhasComErros = Object.keys(errors).map((nome) => {
+      const qtd = errors[nome].length;
+      const percent = totalErros ? Math.round((qtd / totalErros) * 100) : 0;
+      return { nome, qtd, percent };
+    });
+
+    // Dados para o gráfico rosquinha
+    this.graficoErrosCorretos = {
+      series: [totalErros, totalCorretos],
+      labels: ['Erros encontrados', 'Planilhas corrigidas'],
+    };
+  }
+
+  baixarZip(): void {
+    if (!this.resultadoScanner?.id) return;
+    this.documentosService
+      .baixarCorrecaoZip(this.resultadoScanner.id)
+      .subscribe((blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'correcoes.zip';
+        a.click();
+        window.URL.revokeObjectURL(url);
+      });
+  }
+
+  baixarPdf(): void {
+    if (!this.resultadoScanner?.id) return;
+    this.documentosService
+      .baixarRelatorioScanner(this.resultadoScanner.id)
+      .subscribe((blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'analise.pdf';
+        a.click();
+        window.URL.revokeObjectURL(url);
+      });
+  }
+
+  limparArquivos(): void {
+    this.scannerForm.reset();
+    this.resultadoScanner = null;
+    this.planilhasComErros = [];
+    this.graficoData = null;
   }
 }

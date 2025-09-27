@@ -6,8 +6,10 @@ import { catchError, map } from 'rxjs/operators';
 import { ScannerRunResponseDTO } from 'src/app/sistema/gerenciamento/scanner/scanner';
 
 export interface ScannerResponse {
+  id: number;
   file_id: string;
   errors: { [filename: string]: number[] };
+  corrections: any[];
 }
 
 @Injectable({
