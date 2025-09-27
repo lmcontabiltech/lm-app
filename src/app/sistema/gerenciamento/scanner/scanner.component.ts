@@ -29,7 +29,7 @@ export class ScannerComponent implements OnInit {
 
   colaboradores: Colaborador[] = [];
   empresasOptions: AutoCompleteOption[] = [];
-  empresasSelecionadas: string[] = [];
+  empresaSelecionada: string = '';
 
   isLoading = false;
 
@@ -47,8 +47,8 @@ export class ScannerComponent implements OnInit {
     this.scannerForm = this.formBuilder.group({
       documentoCorreto: [[]],
       documentoIncorreto: [[]],
-      empresasSelecionadas: [[]],
-      observacoes: [''],
+      empresaSelecionada: [''],
+      descricao: [''],
     });
   }
 
@@ -123,15 +123,17 @@ export class ScannerComponent implements OnInit {
       this.scannerForm.get('documentoCorreto')?.value || [];
     const arquivosIncorretos: File[] =
       this.scannerForm.get('documentoIncorreto')?.value || [];
-    const empresasSelecionadas: string[] =
-      this.scannerForm.get('empresasSelecionadas')?.value || [];
-    const observacoes: string =
-      this.scannerForm.get('observacoes')?.value || '';
+    let empresaSelecionada = this.scannerForm.get('empresaSelecionada')?.value;
+
+    if (Array.isArray(empresaSelecionada)) {
+      empresaSelecionada = empresaSelecionada[0] || '';
+    }
+    const descricao: string = this.scannerForm.get('descricao')?.value || '';
 
     const meta = JSON.stringify({
-      empresas: empresasSelecionadas,
-      observacoes,
-      colaboradorId: colab.id,
+      empresaId: empresaSelecionada,
+      descricao,
+      // colaboradorId: colab.id,
     });
 
     // MONTA O FORM DATA MANUALMENTE PARA LOG
@@ -186,14 +188,18 @@ export class ScannerComponent implements OnInit {
     });
   }
 
-  onEmpresaSelecionada(empresas: string[]): void {
-    this.empresasSelecionadas = empresas;
-    console.log('Empresas selecionadas:', empresas);
-
-    if (empresas && empresas.length > 0) {
-      const idsEmpresas = empresas.map((id) => Number(id));
+  onEmpresaSelecionada(empresa: string | string[]): void {
+    // Se vier array, pega o primeiro valor
+    if (Array.isArray(empresa)) {
+      this.empresaSelecionada = empresa[0] || '';
     } else {
+      this.empresaSelecionada = empresa;
     }
+    console.log(
+      'Empresa selecionada:',
+      this.empresaSelecionada,
+      typeof this.empresaSelecionada
+    );
   }
 
   private showFeedback(

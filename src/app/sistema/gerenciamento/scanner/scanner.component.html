@@ -100,20 +100,21 @@
     <div class="forms-container">
         <form class="modal-form" [formGroup]="scannerForm">
             <div class="form-group">
-                <label for="empresas">Empresas</label>
+                <label for="empresaId">Empresa</label>
                 <app-select-auto-complete
                 placeholder="Buscar empresas..."
                 [options]="empresasOptions"
-                formControlName="empresasSelecionadas"
-                [multiple]="true"
-                (itemAdded)="onEmpresaSelecionada(scannerForm.get('empresasSelecionadas')?.value)"
-                (itemRemoved)="onEmpresaSelecionada(scannerForm.get('empresasSelecionadas')?.value)">
+                formControlName="empresaSelecionada"
+                [multiple]="false"
+                [maxItems]="1"
+                (itemAdded)="onEmpresaSelecionada(scannerForm.get('empresaSelecionada')?.value)"
+                (itemRemoved)="onEmpresaSelecionada(scannerForm.get('empresaSelecionada')?.value)">
                 </app-select-auto-complete>
             </div>
 
             <div class="form-group">
-                <label for="observacoes">Observações</label>
-                <textarea formControlName="observacoes" placeholder="Digite as observações da analise" type="text"></textarea>
+                <label for="descricao">Observações</label>
+                <textarea formControlName="descricao" placeholder="Digite as observações da analise" type="text"></textarea>
             </div>
         </form>
     </div>
