@@ -41,58 +41,111 @@
     </div>
 
     <div class="sub-container">
-        <div *ngIf="documentoCorretoArquivos.length === 0 && documentoIncorretoArquivos.length === 0" class="feedback-container">
-            <div class="no-data-message">
-                <img src="assets/imagens/no-data.svg" alt="Sem arquivos">
-                <p>Nenhum arquivo selecionado.</p>
-            </div>
-        </div>
-        
-        <div class="container-lista-arquivos">
-            <div class="container-arquivos" *ngIf="documentoCorretoArquivos.length > 0">
-                <span>Arquivos corretos</span>
-                <div class="list-group">
-                    <div class="list-group-item" *ngFor="let arquivo of documentoCorretoArquivos; let i = index">
-                        {{ arquivo.name }}
-                        <button type="button" class="btn btn-delete" (click)="removerArquivoCorreto(i)">
-                        Remover
-                        </button>
+        <ng-container *ngIf="!isLoading">
+            <div *ngIf="resultadoScanner; else arquivosContainer" class="resultado-container">
+                <div class="analise-detalhada">
+                    <h4>Correções por planilha</h4>
+                    <div *ngFor="let planilha of planilhasComErros">
+                        <div class="planilha-nome">{{ planilha.nome }}</div>
+                        <div class="progress-bar-wrapper">
+                            <div class="progress-bar-bg">
+                                <div
+                                class="progress-bar-fill"
+                                [style.width.%]="planilha.percent"
+                                ></div>
+                            </div>
+                            <span class="progress-label">
+                                {{ planilha.qtd }} erros corrigidos
+                            </span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="container-arquivos" *ngIf="documentoIncorretoArquivos.length > 0">
-                <span>Arquivos errados</span>
-                <div class="list-group">
-                    <div class="list-group-item" *ngFor="let arquivo of documentoIncorretoArquivos; let i = index">
-                        {{ arquivo.name }}
-                        <button type="button" class="btn btn-delete" (click)="removerArquivoIncorreto(i)">
-                        Remover
-                        </button>
-                    </div>
+
+                <!-- Lado direito: Gráfico geral e botões -->
+                <div class="analise-geral">
+                <h4>Análise geral</h4>
+                <app-grafico-rosquinha
+                [series]="graficoErrosCorretos.series"
+                [labels]="graficoErrosCorretos.labels"
+                colorPalette="palette2"
+                title="Erros x Correções"
+                [height]="300"
+                donutSize="70%"
+                legendPosition="bottom"
+                [showLegend]="true">
+                </app-grafico-rosquinha>
+
+                <div class="botoes-download">
+                    <button class="btn btn-secondary" (click)="baixarZip()">
+                    Baixar planilhas corrigidas
+                    </button>
+                    <button class="btn btn-secondary" (click)="baixarPdf()">
+                    Baixar PDF da análise
+                    </button>
+                </div>
                 </div>
             </div>
-        </div>
+
+             <ng-template #arquivosContainer>
+                <div *ngIf="documentoCorretoArquivos.length === 0 && documentoIncorretoArquivos.length === 0" class="feedback-container">
+                    <div class="no-data-message">
+                        <img src="assets/imagens/no-data.svg" alt="Sem arquivos">
+                        <p>Nenhum arquivo selecionado.</p>
+                    </div>
+                </div>
+                
+                <div class="container-lista-arquivos">
+                    <div class="container-arquivos" *ngIf="documentoCorretoArquivos.length > 0">
+                        <span>Arquivos corretos</span>
+                        <div class="list-group">
+                            <div class="list-group-item" *ngFor="let arquivo of documentoCorretoArquivos; let i = index">
+                                {{ arquivo.name }}
+                                <button type="button" class="btn btn-delete" (click)="removerArquivoCorreto(i)">
+                                Remover
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-arquivos" *ngIf="documentoIncorretoArquivos.length > 0">
+                        <span>Arquivos errados</span>
+                        <div class="list-group">
+                            <div class="list-group-item" *ngFor="let arquivo of documentoIncorretoArquivos; let i = index">
+                                {{ arquivo.name }}
+                                <button type="button" class="btn btn-delete" (click)="removerArquivoIncorreto(i)">
+                                Remover
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </ng-container>
     </div>
+
+    <app-loading *ngIf="isLoading"></app-loading>
 </div>
+
+<app-feedback></app-feedback>
 
 <ng-template #formCadastroTemplate>
     <div class="forms-container">
         <form class="modal-form" [formGroup]="scannerForm">
             <div class="form-group">
-                <label for="empresas">Empresas</label>
+                <label for="empresaId">Empresa</label>
                 <app-select-auto-complete
                 placeholder="Buscar empresas..."
                 [options]="empresasOptions"
-                formControlName="empresasSelecionadas"
-                [multiple]="true"
-                (itemAdded)="onEmpresaSelecionada(scannerForm.get('empresasSelecionadas')?.value)"
-                (itemRemoved)="onEmpresaSelecionada(scannerForm.get('empresasSelecionadas')?.value)">
+                formControlName="empresaSelecionada"
+                [multiple]="false"
+                [maxItems]="1"
+                (itemAdded)="onEmpresaSelecionada(scannerForm.get('empresaSelecionada')?.value)"
+                (itemRemoved)="onEmpresaSelecionada(scannerForm.get('empresaSelecionada')?.value)">
                 </app-select-auto-complete>
             </div>
 
             <div class="form-group">
-                <label for="observacoes">Observações</label>
-                <textarea formControlName="observacoes" placeholder="Digite as observações da analise" type="text"></textarea>
+                <label for="descricao">Observações</label>
+                <textarea formControlName="descricao" placeholder="Digite as observações da analise" type="text"></textarea>
             </div>
         </form>
     </div>

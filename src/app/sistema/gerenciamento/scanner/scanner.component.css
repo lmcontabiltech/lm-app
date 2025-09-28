@@ -179,3 +179,56 @@
     flex-direction: column;
   }
 }
+
+/* resultado analise de arquivos */
+.resultado-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 32px;
+  width: 100%;
+}
+
+.analise-detalhada {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.analise-geral {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: fit-content;
+}
+
+.progress-bar-bg {
+  background: #eee;
+  border-radius: 8px;
+  height: 20px;
+  width: 100%;
+  margin-bottom: 4px;
+  position: relative;
+}
+.progress-bar-fill {
+  background: #007bff;
+  height: 100%;
+  border-radius: 8px;
+  transition: width 0.3s;
+}
+.progress-label {
+  font-size: 14px;
+  margin-left: 8px;
+}
+.planilha-nome {
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+.botoes-download {
+  margin-top: 16px;
+  display: flex;
+  gap: 8px;
+}

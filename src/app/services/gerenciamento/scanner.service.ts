@@ -3,17 +3,20 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { ScannerRunResponseDTO } from 'src/app/sistema/gerenciamento/scanner/scanner';
 
 export interface ScannerResponse {
+  id: number;
   file_id: string;
   errors: { [filename: string]: number[] };
+  corrections: any[];
 }
 
 @Injectable({
   providedIn: 'root',
 })
-export class DocumentosService {
-  apiURL: string = environment.apiURLBase;
+export class ScannerService {
+  apiURL: string = environment.apiURLBase + '/api/ia/scanner';
 
   constructor(private http: HttpClient) {}
 
@@ -23,26 +26,62 @@ export class DocumentosService {
       .pipe(catchError((error) => throwError(() => error)));
   }
 
-  /** Envia arquivos para correção (primeiro é o correto, os demais são comparados) */
-  enviarArquivosParaCorrecao(files: File[]): Observable<ScannerResponse> {
+  enviarArquivosParaScanner(
+    arquivosCorretos: File[],
+    arquivosIncorretos: File[],
+    meta?: string
+  ): Observable<ScannerResponse> {
     const formData = new FormData();
-    files.forEach((file) => formData.append('files', file, file.name));
+
+    arquivosCorretos.forEach((file) =>
+      formData.append('correct', file, file.name)
+    );
+    arquivosIncorretos.forEach((file) =>
+      formData.append('incorrect', file, file.name)
+    );
+    if (meta) {
+      formData.append('meta', meta);
+    }
+
     return this.http
-      .post<ScannerResponse>(`${this.apiURL}/scanner`, formData)
+      .post<ScannerResponse>(`${this.apiURL}`, formData)
       .pipe(catchError((error) => throwError(() => error)));
   }
 
-  /** Baixa o ZIP dos arquivos corrigidos */
-  baixarArquivosCorrigidos(fileId: string): Observable<Blob> {
+  listarExecucoesScanner(): Observable<ScannerRunResponseDTO[]> {
     return this.http
-      .get(`${this.apiURL}/download/${fileId}`, { responseType: 'blob' })
+      .get<ScannerRunResponseDTO[]>(`${this.apiURL}`)
       .pipe(catchError((error) => throwError(() => error)));
   }
 
-  /** Limpa arquivos temporários do servidor */
-  limparArquivosTemporarios(): Observable<any> {
+  buscarExecucaoScannerPorId(
+    id: number | string
+  ): Observable<ScannerRunResponseDTO> {
     return this.http
-      .get(`${this.apiURL}/clear`)
+      .get<ScannerRunResponseDTO>(`${this.apiURL}/${id}`)
+      .pipe(catchError((error) => throwError(() => error)));
+  }
+
+  listarExecucoesScannerPorEmpresa(
+    empresaId: number | string
+  ): Observable<ScannerRunResponseDTO[]> {
+    const url = `${this.apiURL}/empresa/${empresaId}`;
+    return this.http
+      .get<ScannerRunResponseDTO[]>(url)
+      .pipe(catchError((error) => throwError(() => error)));
+  }
+
+  baixarCorrecaoZip(runId: number | string): Observable<Blob> {
+    const url = `${this.apiURL}/${runId}/corrections/download`;
+    return this.http
+      .get(url, { responseType: 'blob' })
+      .pipe(catchError((error) => throwError(() => error)));
+  }
+
+  baixarRelatorioScanner(runId: number | string): Observable<Blob> {
+    const url = `${this.apiURL}/${runId}/report/download`;
+    return this.http
+      .get(url, { responseType: 'blob' })
       .pipe(catchError((error) => throwError(() => error)));
   }
 }
