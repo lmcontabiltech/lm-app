@@ -32,6 +32,7 @@ import { CentralDeNoticiasComponent } from './gerenciamento/central-de-noticias/
 import { DetalhesNoticiaComponent } from './gerenciamento/visualizar-gerenciamento/detalhes-noticia/detalhes-noticia.component';
 import { AgendaComponent } from './gerenciamento/agenda/agenda.component';
 import { ScannerComponent } from './gerenciamento/scanner/scanner.component';
+import { HistoricoScannerComponent } from './gerenciamento/visualizar-gerenciamento/historico-scanner/historico-scanner.component';
 
 const routes: Routes = [
   {  path: 'usuario', 
@@ -77,7 +78,8 @@ const routes: Routes = [
       { path: 'fluxos', component: FluxosComponent},
       { path: 'detalhes-fluxo/:id', component: DetalhesFluxoComponent},
       { path: 'agenda', component: AgendaComponent},
-      { path: 'scanner', component: ScannerComponent}
+      { path: 'scanner', component: ScannerComponent},
+      { path: 'historico-movimentacao', component: HistoricoScannerComponent}
     ] 
   }
 ];
