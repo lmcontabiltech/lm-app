@@ -70,14 +70,10 @@ export class AtividadeService {
     );
   }
 
-  deletarAtividade(id: string): Observable<void> {
-    const url = `${this.apiURL}/${id}`;
-    return this.http.delete<void>(url).pipe(
-      catchError((error) => {
-        console.error('Erro ao deletar atividade:', error);
-        return throwError(() => error);
-      })
-    );
+  deletarAtividade(id: string | number): Observable<string> {
+    return this.http.delete<string>(`${this.apiURL}/${id}`, {
+      responseType: 'text' as 'json',
+    });
   }
 
   atualizarAtividade(id: string, atividade: Atividade): Observable<Atividade> {

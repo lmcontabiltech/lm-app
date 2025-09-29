@@ -241,12 +241,17 @@ export class AtividadesComponent implements OnInit, AfterViewInit {
 
   deletarAtividade(id: string) {
     this.atividadeService.deletarAtividade(id).subscribe({
-      next: () => {
+      next: (result: string) => {
         this.modalAtividadeService.closeModal();
         this.carregarAtividades();
-        this.showFeedback('success', 'Atividade arquivada com sucesso!');
+        this.showFeedback(
+          'success',
+          result || 'Atividade arquivada com sucesso!'
+        );
       },
       error: (err) => {
+        // Log para depuração
+        console.error('Erro ao arquivar:', err);
         const status = err.status || 500;
         const msg = err.error?.message
           ? `Atividade: ${err.error.message}`
