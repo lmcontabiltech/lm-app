@@ -17,6 +17,7 @@ import {
   ScannerResponse,
 } from 'src/app/services/gerenciamento/scanner.service';
 import { FeedbackComponent } from 'src/app/shared/feedback/feedback.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-scanner',
@@ -50,7 +51,8 @@ export class ScannerComponent implements OnInit {
     private colaboradoresService: ColaboradoresService,
     private authService: AuthService,
     private empresasService: EmpresasService,
-    private documentosService: ScannerService
+    private documentosService: ScannerService,
+    private router: Router
   ) {
     this.scannerForm = this.formBuilder.group({
       documentoCorreto: [[]],
@@ -68,6 +70,10 @@ export class ScannerComponent implements OnInit {
     if (this.resultadoScanner) {
       this.processarResultado();
     }
+  }
+
+  historicoMovimentacao(): void {
+    this.router.navigate(['/usuario/historico-movimentacao']);
   }
 
   // limparArquivos(): void {
