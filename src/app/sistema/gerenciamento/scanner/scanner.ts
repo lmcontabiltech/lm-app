@@ -4,8 +4,13 @@ export interface ScannerRunResponseDTO {
   descricao: string;
   empresa: any;
   errorsCounts: { [key: string]: number };
-  id: number;
+  id: string;
   reportS3Key: string;
   totalArquivos: number;
-  usuario: any;
+  usuario: {
+    id: string;
+    nome: string;
+    foto: { fotoUrl: string; id: number; name: string };
+    status: string;
+  } | null;
 }
