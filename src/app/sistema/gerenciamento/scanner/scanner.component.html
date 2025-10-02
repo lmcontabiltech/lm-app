@@ -55,7 +55,7 @@
                                 ></div>
                             </div>
                             <span class="progress-label">
-                                {{ planilha.qtd }} erros corrigidos
+                                {{ planilha.qtd }} linhas corrigidas ({{ planilha.percent }}% da planilha)
                             </span>
                         </div>
                     </div>
@@ -68,7 +68,7 @@
                 [series]="graficoErrosCorretos.series"
                 [labels]="graficoErrosCorretos.labels"
                 colorPalette="palette2"
-                title="Erros x Correções"
+                title="Linhas Corrigidas x Linhas Corretas"
                 [height]="300"
                 donutSize="70%"
                 legendPosition="bottom"

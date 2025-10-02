@@ -235,22 +235,30 @@ export class ScannerComponent implements OnInit {
 
   processarResultado(): void {
     const errors = this.resultadoScanner?.errors || {};
-    const totalErros = Object.values(errors).reduce(
-      (acc, arr) => acc + arr.length,
-      0
-    );
-    const totalCorretos = this.resultadoScanner?.corrections?.length || 0;
+    let totalErrosCorrigidos = 0;
+    let totalLinhasProcessadas = 0;
 
     this.planilhasComErros = Object.keys(errors).map((nome) => {
-      const qtd = errors[nome].length;
-      const percent = totalErros ? Math.round((qtd / totalErros) * 100) : 0;
-      return { nome, qtd, percent };
+      const [errosCorrigidos, totalLinhas] = errors[nome];
+      totalErrosCorrigidos += errosCorrigidos;
+      totalLinhasProcessadas += totalLinhas;
+
+      const percent = totalLinhas
+        ? Math.round((errosCorrigidos / totalLinhas) * 100)
+        : 0;
+      return {
+        nome,
+        qtd: errosCorrigidos,
+        percent,
+      };
     });
 
-    // Dados para o gráfico rosquinha
     this.graficoErrosCorretos = {
-      series: [totalErros, totalCorretos],
-      labels: ['Erros encontrados', 'Planilhas corrigidas'],
+      series: [
+        totalErrosCorrigidos,
+        totalLinhasProcessadas - totalErrosCorrigidos,
+      ],
+      labels: ['Linhas corrigidas', 'Linhas corretas'],
     };
   }
 
