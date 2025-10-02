@@ -19,6 +19,15 @@ import {
 import { FeedbackComponent } from 'src/app/shared/feedback/feedback.component';
 import { Router } from '@angular/router';
 
+interface PlanilhaAnalise {
+  nome: string;
+  qtd: number;
+  totalLinhas: number;
+  linhasCorretas: number;
+  percent: number;
+  percentCorretas: number;
+}
+
 @Component({
   selector: 'app-scanner',
   templateUrl: './scanner.component.html',
@@ -37,7 +46,7 @@ export class ScannerComponent implements OnInit {
   @ViewChild('formCadastroTemplate') formCadastroTemplate!: TemplateRef<any>;
   @ViewChild(FeedbackComponent) feedbackComponent!: FeedbackComponent;
 
-  planilhasComErros: { nome: string; qtd: number; percent: number }[] = [];
+  planilhasComErros: PlanilhaAnalise[] = [];
   graficoData: any = null;
 
   graficoErrosCorretos: { series: number[]; labels: string[] } = {
@@ -243,13 +252,24 @@ export class ScannerComponent implements OnInit {
       totalErrosCorrigidos += errosCorrigidos;
       totalLinhasProcessadas += totalLinhas;
 
-      const percent = totalLinhas
+      // Porcentagem de erros corrigidos em relação ao total da planilha
+      const percentCorrigidos = totalLinhas
         ? Math.round((errosCorrigidos / totalLinhas) * 100)
         : 0;
+
+      // Porcentagem de linhas corretas (sem erro)
+      const linhasCorretas = totalLinhas - errosCorrigidos;
+      const percentCorretas = totalLinhas
+        ? Math.round((linhasCorretas / totalLinhas) * 100)
+        : 0;
+
       return {
         nome,
         qtd: errosCorrigidos,
-        percent,
+        totalLinhas,
+        linhasCorretas,
+        percent: percentCorrigidos,
+        percentCorretas,
       };
     });
 
@@ -295,5 +315,13 @@ export class ScannerComponent implements OnInit {
     this.resultadoScanner = null;
     this.planilhasComErros = [];
     this.graficoData = null;
+  }
+
+  getTotalErros(errorsCounts: { [key: string]: number } | undefined): number {
+    if (!errorsCounts) return 0;
+    return Object.values(errorsCounts).reduce(
+      (total, count) => total + count,
+      0
+    );
   }
 }

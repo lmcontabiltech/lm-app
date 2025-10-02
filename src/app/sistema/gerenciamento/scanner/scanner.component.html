@@ -49,13 +49,15 @@
                         <div class="planilha-nome">{{ planilha.nome }}</div>
                         <div class="progress-bar-wrapper">
                             <div class="progress-bar-bg">
-                                <div
-                                class="progress-bar-fill"
-                                [style.width.%]="planilha.percent"
-                                ></div>
+                                <div class="progress-bar-fill" [style.width.%]="planilha.percent">
+                                </div>
                             </div>
-                            <span class="progress-label">
-                                {{ planilha.qtd }} linhas corrigidas ({{ planilha.percent }}% da planilha)
+                        </div>
+                    
+                        <div class="analise-resumo">
+                            <span class="resumo-text">
+                                {{ planilha.percent }}% da planilha teve erros que foram corrigidos 
+                                ({{ planilha.qtd }} de {{ planilha.totalLinhas }} linhas)
                             </span>
                         </div>
                     </div>

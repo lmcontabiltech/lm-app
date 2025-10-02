@@ -178,6 +178,11 @@
     display: flex;
     flex-direction: column;
   }
+
+  .resultado-container {
+    display: flex;
+    flex-direction: column-reverse;
+  }
 }
 
 /* resultado analise de arquivos */
@@ -231,4 +236,16 @@
   margin-top: 16px;
   display: flex;
   gap: 8px;
+}
+
+.analise-resumo {
+  margin-top: 12px;
+  padding: 8px;
+  background: #f4f5f7;
+  border-radius: 4px;
+}
+
+.resumo-text {
+  font-size: 14px;
+  color: #404040;
 }
