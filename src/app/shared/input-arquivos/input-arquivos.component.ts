@@ -98,6 +98,8 @@ export class InputArquivosComponent {
     if (this.arquivos.length < 3) {
       this.errorMessage = null;
     }
+
+    this.resetInput();
   }
 
   onDrop(event: DragEvent): void {
@@ -124,6 +126,8 @@ export class InputArquivosComponent {
     this.onChange([...this.arquivos]);
     this.arquivosSelecionados.emit([...this.arquivos]);
     this.errorMessage = null;
+
+    this.resetInput();
   }
 
   isSameArquivo(
@@ -149,5 +153,14 @@ export class InputArquivosComponent {
     arquivo: File | { id: number; name: string; documentoUrl: string }
   ): arquivo is { id: number; name: string; documentoUrl: string } {
     return (arquivo as { documentoUrl: string }).documentoUrl !== undefined;
+  }
+
+  resetInput(): void {
+    const inputElement = document.getElementById(
+      this.inputId
+    ) as HTMLInputElement;
+    if (inputElement) {
+      inputElement.value = ''; // Reseta o valor do input
+    }
   }
 }

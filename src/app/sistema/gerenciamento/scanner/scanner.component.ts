@@ -315,6 +315,17 @@ export class ScannerComponent implements OnInit {
     this.resultadoScanner = null;
     this.planilhasComErros = [];
     this.graficoData = null;
+
+    // Reseta os inputs de arquivos
+    const inputCorreto = document.getElementById(
+      'input-arquivos-corretos'
+    ) as HTMLInputElement;
+    const inputIncorreto = document.getElementById(
+      'input-arquivos-errados'
+    ) as HTMLInputElement;
+
+    if (inputCorreto) inputCorreto.value = '';
+    if (inputIncorreto) inputIncorreto.value = '';
   }
 
   getTotalErros(errorsCounts: { [key: string]: number } | undefined): number {

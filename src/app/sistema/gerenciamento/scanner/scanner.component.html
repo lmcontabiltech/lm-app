@@ -34,6 +34,7 @@
         </form>
 
         <div class="acoes">
+            <button class="btn btn-rules">Regras da análise</button>
             <button class="btn btn-reset" (click)="limparArquivos()">Limpar dados</button>
             <button class="btn btn-secondary" (click)="inverterArquivos()">Inverter arquivos</button>
             <button class="btn btn-primary" (click)="processarArquivos()">Processar arquivos</button>
@@ -71,6 +72,7 @@
                 [labels]="graficoErrosCorretos.labels"
                 colorPalette="palette2"
                 title="Linhas Corrigidas x Linhas Corretas"
+                [tooltipLabel]="'itens'"
                 [height]="300"
                 donutSize="70%"
                 legendPosition="bottom"

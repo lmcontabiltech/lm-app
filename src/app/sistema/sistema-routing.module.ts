@@ -33,6 +33,7 @@ import { DetalhesNoticiaComponent } from './gerenciamento/visualizar-gerenciamen
 import { AgendaComponent } from './gerenciamento/agenda/agenda.component';
 import { ScannerComponent } from './gerenciamento/scanner/scanner.component';
 import { HistoricoScannerComponent } from './gerenciamento/visualizar-gerenciamento/historico-scanner/historico-scanner.component';
+import { DetalhesScannerComponent } from './gerenciamento/visualizar-gerenciamento/detalhes-scanner/detalhes-scanner.component';
 
 const routes: Routes = [
   {  path: 'usuario', 
@@ -79,7 +80,9 @@ const routes: Routes = [
       { path: 'detalhes-fluxo/:id', component: DetalhesFluxoComponent},
       { path: 'agenda', component: AgendaComponent},
       { path: 'scanner', component: ScannerComponent},
-      { path: 'historico-movimentacao', component: HistoricoScannerComponent}
+      { path: 'historico-movimentacao', component: HistoricoScannerComponent},
+      { path: 'detalhes-movimentacao/:id', component: DetalhesScannerComponent}
+
     ] 
   }
 ];

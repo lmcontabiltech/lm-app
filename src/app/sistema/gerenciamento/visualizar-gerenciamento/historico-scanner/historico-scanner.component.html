@@ -11,18 +11,18 @@
         <div class="filtro-container">
             <div class="select-container">
                 <app-select-padrao
-                  label="Setor"
-                  [options]="setores"
-                  [(selectedValue)]="selectedSetor"
-                  (selectedValueChange)="onSetorChange()"
+                  label="Empresa"
+                  [options]="empresas"
+                  [(selectedValue)]="selectedEmpresa"
+                  (selectedValueChange)="onEmpresaChange()"
                   [showDefaultOption]="true"
-                  [defaultLabel]="'Todos os setores'"
+                  [defaultLabel]="'Todas as empresas'"
                   [defaultValue]="''">
                 </app-select-padrao>
             </div>
 
             <div class="search-container">
-                <app-search (searchChange)="onSearch($event)"></app-search>
+                <!-- <app-search (searchChange)="onSearch($event)"></app-search> -->
             </div>
         </div>
 
@@ -50,7 +50,7 @@
                 <tbody *ngIf="execucoesPaginadas.length > 0">
                     <tr *ngFor="let execucao of execucoesPaginadas">
                         <td>
-                            <span>{{ execucao.empresa?.razaoSocial || execucao.empresa?.nome || 'N/A' }}</span>
+                            <span>{{ execucao.empresa.razaoSocial || 'N/A' }}</span>
                         </td>
                         <td>{{ execucao.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
                         <td>

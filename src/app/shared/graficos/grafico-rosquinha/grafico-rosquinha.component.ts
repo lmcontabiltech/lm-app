@@ -61,6 +61,7 @@ export class GraficoRosquinhaComponent implements OnInit, OnChanges, OnDestroy {
     '#95A5A6', // cinza claro
   ];
   @Input() colorPalette: string = 'palette1';
+  @Input() tooltipLabel: string = 'empresas'; // Valor padrão
 
   @ViewChild('chartContainer', { static: true }) chartContainer!: ElementRef;
 
@@ -204,7 +205,7 @@ export class GraficoRosquinhaComponent implements OnInit, OnChanges, OnDestroy {
         enabled: true,
         y: {
           formatter: (val: number) => {
-            return val + ' empresas';
+            return val + ' ' + this.tooltipLabel;
           },
         },
       },
