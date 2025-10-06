@@ -84,8 +84,8 @@ export class HistoricoScannerComponent implements OnInit {
     this.location.back();
   }
 
-  visualizarAnalise(id: string): void {
-    this.router.navigate(['/usuario/detalhes-analise', id]);
+  visualizarAnalise(id: string | number): void {
+    this.router.navigate(['/usuario/detalhes-movimentacao', id]);
   }
 
   onSearch(searchTerm: string) {}
@@ -122,10 +122,6 @@ export class HistoricoScannerComponent implements OnInit {
         this.isLoading = false;
       },
     });
-  }
-
-  editarColaborador(id: string): void {
-    this.router.navigate(['/usuario/cadastro-de-colaborador', id]);
   }
 
   getInitial(name: string): string {

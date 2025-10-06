@@ -36,6 +36,7 @@ import { DetalhesNoticiaComponent } from './gerenciamento/visualizar-gerenciamen
 import { AgendaComponent } from './gerenciamento/agenda/agenda.component';
 import { ScannerComponent } from './gerenciamento/scanner/scanner.component';
 import { HistoricoScannerComponent } from './gerenciamento/visualizar-gerenciamento/historico-scanner/historico-scanner.component';
+import { DetalhesScannerComponent } from './gerenciamento/visualizar-gerenciamento/detalhes-scanner/detalhes-scanner.component';
 
 
 @NgModule({
@@ -71,6 +72,7 @@ import { HistoricoScannerComponent } from './gerenciamento/visualizar-gerenciame
     AgendaComponent,
     ScannerComponent,
     HistoricoScannerComponent,
+    DetalhesScannerComponent,
   ],
   imports:[
     CommonModule, 

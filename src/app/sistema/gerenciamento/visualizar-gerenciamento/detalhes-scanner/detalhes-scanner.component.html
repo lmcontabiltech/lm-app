@@ -1,0 +1,12 @@
+<div class="main-container">
+    <div class="breadcrumb-container">
+        <div class="back-title">
+            <img src="assets/icones/back-left-blue.svg" alt="Back" class="back-icon" (click)="goBack()">
+            <span>Detalhes da análise</span>
+        </div>
+    </div>
+    <div class="actions">
+        <h1>{{ scanner.empresa.razaoSocial || 'N/A' }}</h1>
+        <p>Data da Análise: <span>{{ scanner.createdAt | date: 'dd/MM/yyyy' }}</span></p>
+    </div>
+</div>

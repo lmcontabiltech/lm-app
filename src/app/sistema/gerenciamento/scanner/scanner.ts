@@ -2,7 +2,7 @@ export interface ScannerRunResponseDTO {
   corrections: any[];
   createdAt: string;
   descricao: string;
-  empresa: any;
+  empresa: { razaoSocial: string };
   errorsCounts: { [key: string]: number };
   id: string;
   reportS3Key: string;

@@ -50,7 +50,7 @@
                 <tbody *ngIf="execucoesPaginadas.length > 0">
                     <tr *ngFor="let execucao of execucoesPaginadas">
                         <td>
-                            <span>{{ execucao.empresa?.razaoSocial || execucao.empresa?.nome || 'N/A' }}</span>
+                            <span>{{ execucao.empresa.razaoSocial || 'N/A' }}</span>
                         </td>
                         <td>{{ execucao.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
                         <td>
