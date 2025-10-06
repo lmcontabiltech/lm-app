@@ -7,6 +7,88 @@
     </div>
     <div class="actions">
         <h1>{{ scanner.empresa.razaoSocial || 'N/A' }}</h1>
-        <p>Data da Análise: <span>{{ scanner.createdAt | date: 'dd/MM/yyyy' }}</span></p>
+        <p>Data da Análise: <span>{{ scanner.createdAt | date: 'dd/MM/yyyy' }} às {{ scanner.createdAt | date: 'HH:mm' }}</span></p>
+        <p>Descrição: <span>{{ scanner.descricao || 'N/A' }}</span></p>
+    </div>
+</div>
+
+<div class="subMain-container">
+     <div class="divisao">
+        <p>Análise geral</p>
+        <hr class="line">
+    </div>
+    <div class="detail-info">
+        <div class="data-container">
+            <app-grafico-rosquinha
+                [series]="graficoErrosCorretos.series"
+                [labels]="graficoErrosCorretos.labels"
+                colorPalette="palette2"
+                title="Linhas Corrigidas x Linhas Corretas"
+                [tooltipLabel]="'itens'"
+                [height]="300"
+                donutSize="70%"
+                legendPosition="bottom"
+                [showLegend]="true">
+            </app-grafico-rosquinha>
+            <div class="botoes-download">
+                <button class="btn btn-secondary" (click)="baixarZip()">
+                    Baixar planilhas corrigidas
+                </button>
+                <button class="btn btn-secondary" (click)="baixarPdf()">
+                    Baixar PDF da análise
+                </button>
+            </div>
+        </div>
+        
+        <div class="data-container">
+            <div class="duo-card">
+                <div class="card">
+                    <div class="qtd">
+                        <span>{{ scanner.totalArquivos }}</span>
+                    </div>
+                    <p>Arquivos analisados</p>
+                </div>
+                <div class="card">
+                    <div class="qtd">
+                        <span>{{ totalItens }}</span>
+                    </div>
+                    <p>Total de itens analisados</p>
+                </div>
+            </div>
+
+            <div class="duo-card">
+                <div class="card">
+                    <div class="qtd">
+                        <span>{{ totalErros }}</span>
+                    </div>
+                    <p>Total de itens errados</p>
+                </div>
+                <div class="card">
+                    <div class="qtd">
+                        <span>{{ totalCorrecoes }}</span>
+                    </div>
+                    <p>Total de itens corrigidos</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="divisao">
+        <p>Análise detalhada</p>
+        <hr class="line">
+    </div>
+    <div *ngFor="let planilha of planilhasComErros">
+      <div class="planilha-nome">{{ planilha.nome }}</div>
+      <div class="progress-bar-wrapper">
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" [style.width.%]="planilha.percent"></div>
+        </div>
+      </div>
+      <div class="analise-resumo">
+        <span class="resumo-text">
+          {{ planilha.percent }}% da planilha teve erros corrigidos 
+          ({{ planilha.qtd }} de {{ planilha.totalLinhas }} linhas)
+        </span>
+      </div>
     </div>
 </div>

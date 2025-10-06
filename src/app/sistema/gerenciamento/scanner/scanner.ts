@@ -1,9 +1,15 @@
 export interface ScannerRunResponseDTO {
-  corrections: any[];
+  corrections: {
+    id: number;
+    s3Key: string;
+    url: string;
+    filename: string;
+    createdAt: string;
+  }[];
   createdAt: string;
   descricao: string;
   empresa: { razaoSocial: string };
-  errorsCounts: { [key: string]: number };
+  errorsCounts: { [key: string]: [number, number] };
   id: string;
   reportS3Key: string;
   totalArquivos: number;
