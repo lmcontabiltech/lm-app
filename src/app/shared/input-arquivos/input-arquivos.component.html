@@ -4,6 +4,7 @@
        (drop)="onDrop($event)"
        (dragover)="onDragOver($event)">
     <input type="file"
+           #fileInput
            [id]="inputId"
            name="arquivo"
            [accept]="accept"
