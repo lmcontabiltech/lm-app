@@ -11,6 +11,8 @@ import {
   ScannerResponse,
 } from 'src/app/services/gerenciamento/scanner.service';
 import { ScannerRunResponseDTO } from '../../scanner/scanner';
+import { Empresa } from 'src/app/sistema/administrativo/empresas/empresa';
+import { EmpresasService } from 'src/app/services/administrativo/empresas.service';
 
 @Component({
   selector: 'app-historico-scanner',
@@ -41,18 +43,23 @@ export class HistoricoScannerComponent implements OnInit {
   successMessage: string = '';
   messageTimeout: any;
 
+  empresas: { value: string; description: string }[] = [];
+  selectedEmpresa: string = '';
+
   constructor(
     private router: Router,
     private colaboradoresService: ColaboradoresService,
     private authService: AuthService,
     private location: Location,
-    private scannerService: ScannerService
+    private scannerService: ScannerService,
+    private empresasService: EmpresasService
   ) {}
 
   ngOnInit(): void {
     this.exibirMensagemDeSucesso();
     this.fetchExecucoes();
     this.atualizarPaginacao();
+    this.carregarEmpresas();
 
     const usuario = this.authService.getUsuarioAutenticado();
     if (usuario?.permissao) {
@@ -157,5 +164,54 @@ export class HistoricoScannerComponent implements OnInit {
     if (this.messageTimeout) clearTimeout(this.messageTimeout);
   }
 
-  onSetorChange() {}
+  onEmpresaChange() {
+    if (!this.selectedEmpresa) {
+      this.fetchExecucoes();
+      return;
+    }
+
+    this.isLoading = true;
+    this.scannerService
+      .listarExecucoesScannerPorEmpresa(this.selectedEmpresa)
+      .subscribe(
+        (execucoes) => {
+          this.execucoes = execucoes;
+          this.paginaAtual = 1;
+          this.totalPaginas = Math.ceil(
+            this.execucoes.length / this.itensPorPagina
+          );
+          this.atualizarPaginacao();
+          this.isLoading = false;
+          this.mensagemBusca =
+            this.execucoes.length === 0
+              ? 'Nenhuma análise encontrada para a empresa selecionada.'
+              : '';
+        },
+        (error) => {
+          this.isLoading = false;
+          this.mensagemBusca = 'Erro ao buscar histórico por empresa.';
+          console.error(error);
+        }
+      );
+  }
+
+  carregarEmpresas(callback?: () => void): void {
+    this.empresasService.getEmpresas().subscribe(
+      (empresas) => {
+        this.empresas = empresas.map((empresa) => ({
+          value: empresa.id,
+          description: empresa.razaoSocial,
+        }));
+      },
+      (error) => {
+        console.error('Erro ao carregar as empresas:', error);
+        if (callback) callback();
+      }
+    );
+  }
+
+  atualizarEmpresas(): void {
+    console.log('Atualizando lista de empresas...');
+    this.carregarEmpresas();
+  }
 }

@@ -11,18 +11,18 @@
         <div class="filtro-container">
             <div class="select-container">
                 <app-select-padrao
-                  label="Setor"
-                  [options]="setores"
-                  [(selectedValue)]="selectedSetor"
-                  (selectedValueChange)="onSetorChange()"
+                  label="Empresa"
+                  [options]="empresas"
+                  [(selectedValue)]="selectedEmpresa"
+                  (selectedValueChange)="onEmpresaChange()"
                   [showDefaultOption]="true"
-                  [defaultLabel]="'Todos os setores'"
+                  [defaultLabel]="'Todas as empresas'"
                   [defaultValue]="''">
                 </app-select-padrao>
             </div>
 
             <div class="search-container">
-                <app-search (searchChange)="onSearch($event)"></app-search>
+                <!-- <app-search (searchChange)="onSearch($event)"></app-search> -->
             </div>
         </div>
 
