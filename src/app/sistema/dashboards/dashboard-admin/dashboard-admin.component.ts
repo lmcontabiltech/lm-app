@@ -40,6 +40,7 @@ export class DashboardAdminComponent implements OnInit {
 
   totalColaboradores: number = 0;
   totalEmpresas: number = 0;
+  totalPerifericos: number = 0;
   totalAtividadesNaoAtribuidas: number = 0;
 
   funcionariosPorSetor: FuncionarioPorSetor[] = [];
@@ -294,6 +295,7 @@ export class DashboardAdminComponent implements OnInit {
       empresas: this.dashboardAdminService.getQuantidadeEmpresasNumero(),
       atividadesNaoAtribuidas:
         this.dashboardAdminService.getQuantidadeAtividadesNaoAtribuidas(),
+      perifericos: this.dashboardAdminService.getQuantidadePerifericos(),
     };
 
     forkJoin(requests).subscribe({
@@ -301,18 +303,15 @@ export class DashboardAdminComponent implements OnInit {
         this.totalColaboradores = data.colaboradores.total;
         this.totalEmpresas = data.empresas.total;
         this.totalAtividadesNaoAtribuidas = data.atividadesNaoAtribuidas.total;
-
-        console.log('Dados do dashboard carregados:', {
-          colaboradores: this.totalColaboradores,
-          empresas: this.totalEmpresas,
-          atividadesNaoAtribuidas: this.totalAtividadesNaoAtribuidas,
-        });
+        this.totalPerifericos = data.perifericos;
+        console.log('Total de periféricos:', this.totalPerifericos);
       },
       error: (error) => {
         console.error('Erro ao carregar dados do dashboard:', error);
         this.totalColaboradores = 0;
         this.totalEmpresas = 0;
         this.totalAtividadesNaoAtribuidas = 0;
+        this.totalPerifericos = 0;
       },
     });
   }
