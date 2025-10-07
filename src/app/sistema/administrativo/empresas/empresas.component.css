@@ -384,4 +384,10 @@ tr:hover {
     width: 100%;
     flex-direction: column;
   }
+
+  .acoes-container {
+    width: 100%;
+    flex-direction: column;
+    gap: 16px;
+  }
 }
