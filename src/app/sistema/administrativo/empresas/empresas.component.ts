@@ -6,6 +6,10 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ModalDeleteService } from 'src/app/services/modal/modalDeletar.service';
 import { RegimeDaEmpresa } from './enums/regime-da-empresa';
 import { RegimeDaEmpresaDescricao } from './enums/regime-da-empresa-descricao';
+import {
+  ExportService,
+  Header,
+} from 'src/app/services/feedback/export.service';
 
 @Component({
   selector: 'app-empresas',
@@ -47,11 +51,30 @@ export class EmpresasComponent implements OnInit {
 
   ordenacaoNome: 'asc' | 'desc' | null = null;
 
+  isExporting = false;
+
+  exportHeaders: Header[] = [
+    { key: 'razaoSocial', label: 'Razão social' },
+    { key: 'cnpj', label: 'CNPJ' },
+    { key: 'unidadeEmpresa', label: 'Unidade da empresa' },
+    { key: 'matriz', label: 'Matriz' },
+    { key: 'codQuestor', label: 'Código no questor' },
+    { key: 'codEmpDominio', label: 'Código no domínio' },
+    { key: 'regimeEmpresa', label: 'Regime da empresa' },
+    { key: 'controleParcelamento', label: 'Controle de parcelamento' },
+    { key: 'tipo', label: 'Tipo' },
+    { key: 'situacao', label: 'Situação' },
+    { key: 'estado', label: 'Estado' },
+    { key: 'cidade', label: 'Cidade' },
+    { key: 'status', label: 'Status' },
+  ];
+
   constructor(
     private router: Router,
     private empresasService: EmpresasService,
     private authService: AuthService,
-    private modalDeleteService: ModalDeleteService
+    private modalDeleteService: ModalDeleteService,
+    private exportSvc: ExportService
   ) {}
 
   ngOnInit(): void {
@@ -313,5 +336,53 @@ export class EmpresasComponent implements OnInit {
     });
     this.paginaAtual = 1;
     this.atualizarPaginacao();
+  }
+
+  exportCsv() {
+    this.isExporting = true;
+    const data = this.empresas;
+
+    if (!data?.length) {
+      this.showMessage('error', 'Nada para exportar com o setor atual.');
+      this.isExporting = false;
+      return;
+    }
+
+    const rows = this.mapForExport(data);
+    this.exportSvc.toCsv(
+      `empresas${this.selectedRegime ? '_' + this.selectedRegime : ''}${
+        this.selectedUnidade ? '_' + this.selectedUnidade : ''
+      }`,
+      rows,
+      this.exportHeaders
+    );
+
+    this.isExporting = false;
+  }
+
+  private mapForExport(rows: any[]) {
+    return rows.map((r) => ({
+      razaoSocial: r.razaoSocial ?? '',
+      cnpj: r.cnpj ?? '',
+      codQuestor: r.codQuestor ?? '',
+      codEmpDominio: r.codEmpDominio ?? '',
+      unidadeEmpresa: r.unidadeEmpresa ?? '',
+      matriz: r.matriz?.razaoSocial ?? '',
+      regimeEmpresa: this.getDescricaoRegime(r.regimeEmpresa) ?? '',
+      controleParcelamento: r.controleParcelamento ?? '',
+      situacao: r.situacao ?? '',
+      tipo: r.tipo ?? '',
+      estado: r.estado ?? '',
+      cidade: r.cidade ?? '',
+      status: r.status
+        ? r.status.toUpperCase() === 'ATIVO'
+          ? 'Ativo'
+          : 'Inativo'
+        : r.ativo === true
+        ? 'Ativo'
+        : r.ativo === false
+        ? 'Inativo'
+        : '',
+    }));
   }
 }
