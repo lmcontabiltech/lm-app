@@ -31,6 +31,7 @@ export class AgendaComponent implements OnInit {
   eventoForm: FormGroup;
 
   colaboradores: Colaborador[] = [];
+  agenda: string = 'PESSOAL';
 
   isLoading = false;
 
@@ -107,8 +108,9 @@ export class AgendaComponent implements OnInit {
       frequenciaEvento: [''],
       tipo: ['', Validators.required],
       link: [''],
-      cor: [''],
+      cor: [this.cores[7]],
       participantes: [[]],
+      agenda: ['PESSOAL'],
     });
   }
 
@@ -324,6 +326,34 @@ export class AgendaComponent implements OnInit {
           this.formCadastroTemplate
         );
       });
+  }
+
+  cores: string[] = [
+    '#D50000', // Tomate
+    '#dc3058ff', // chiclete
+    '#E67C73', // Flamingo
+    '#E3683E', // Tangerina
+    '#E7BA51', // Banana
+    '#55B080', // Sálvia
+    '#489160', // Manjericão
+    '#4B99D2', // Pavão
+    '#3F51B5', // Mirtilo
+    '#6E72C3', // Lavanda
+    '#A75ABA', // Uva
+    '#7C7C7C', // Grafite
+  ];
+
+  dropdownOpen: boolean = false;
+
+  toggleDropdown(): void {
+    this.dropdownOpen = !this.dropdownOpen;
+  }
+
+  selecionarCor(cor: string): void {
+    this.eventoForm.get('cor')?.setValue(cor);
+    setTimeout(() => {
+      this.dropdownOpen = false;
+    }, 100);
   }
 
   onSubmit(colab: Colaborador): void {

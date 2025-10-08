@@ -121,8 +121,41 @@
               </div>
               <div class="form-group">
                   <label for="cor">Cor</label>
-                  <input formControlName="cor" type="color" />
+                  <div class="color-dropdown" (click)="toggleDropdown()">
+                    <div class="selected-color-container">
+                      <div
+                        class="selected-color"
+                        [ngStyle]="{ 'background-color': eventoForm.get('cor')?.value }"
+                      ></div>
+                      <div class="arrow-down" [ngClass]="{ 'icon-rotate': dropdownOpen }">
+                        <img src="assets/icones/carret.svg" alt="Arrow down" />
+                      </div>
+                    </div>
+                    <div class="color-options" *ngIf="dropdownOpen">
+                      <div
+                        *ngFor="let cor of cores"
+                        class="color-option"
+                        [ngStyle]="{ 'background-color': cor }"
+                        [class.selected]="eventoForm.get('cor')?.value === cor"
+                        (click)="selecionarCor(cor)"
+                      ></div>
+                    </div>
+                  </div>
               </div>
+            </div>
+
+            <div class="form-group">
+                <label>Agenda</label>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="pessoal" name="agenda" value="PESSOAL" formControlName="agenda" checked>
+                        <label for="pessoal">Minha Agenda</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="coordenador" name="agenda" value="GERAL" formControlName="agenda">
+                        <label for="coordenador">Agenda Geral</label>
+                    </div>
+                </div>
             </div>
 
             <div class="form-group">
