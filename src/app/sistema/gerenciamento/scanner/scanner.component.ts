@@ -18,6 +18,7 @@ import {
 } from 'src/app/services/gerenciamento/scanner.service';
 import { FeedbackComponent } from 'src/app/shared/feedback/feedback.component';
 import { Router } from '@angular/router';
+import { ModalPadraoService } from 'src/app/services/modal/modalConfirmacao.service';
 
 interface PlanilhaAnalise {
   nome: string;
@@ -61,7 +62,8 @@ export class ScannerComponent implements OnInit {
     private authService: AuthService,
     private empresasService: EmpresasService,
     private documentosService: ScannerService,
-    private router: Router
+    private router: Router,
+    private modalService: ModalPadraoService
   ) {
     this.scannerForm = this.formBuilder.group({
       documentoCorreto: [[]],
@@ -333,6 +335,31 @@ export class ScannerComponent implements OnInit {
     return Object.values(errorsCounts).reduce(
       (total, count) => total + count,
       0
+    );
+  }
+
+  abrirRegrasScanner(): void {
+    this.modalService.openModal(
+      {
+        title: 'Regras do Scanner',
+        description: `
+        <span><strong>1) Formatos aceitos</strong></span>
+        <p>.csv      .xls      .xlsx</p>
+        <p>Obs: sempre minúsculo</p>
+        <span><strong>2) Padrão de nome do arquivo</strong></span>
+        <p>[prefixo] Mês MM-AAAA – CÓDIGO.xls</p>
+        <p>Ex.: Filial 09 Mês 07-2025 - 06001044001780.xls</p>
+        <span><strong>3) Consistência do período</strong></span>
+        <p>Todos os arquivos do lote devem ser do mesmo mês/ano.</p>
+      `,
+        size: 'md',
+        confirmTextoBotao: 'Entendido',
+        cancelTextoBotao: 'Fechar',
+        hideConfirmButton: true
+      },
+      () => {
+        console.log('Modal fechado');
+      }
     );
   }
 }

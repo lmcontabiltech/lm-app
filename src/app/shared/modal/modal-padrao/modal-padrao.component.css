@@ -206,3 +206,24 @@
 .btn-acao.cancelar:hover {
   background: #d5d5d5;
 }
+
+
+/* texto modal */
+.descricao.estilizada {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+}
+
+.descricao.estilizada p {
+  margin: 8px 0;
+}
+
+.descricao.estilizada ul {
+  margin: 8px 0;
+  padding-left: 20px;
+}
+
+.descricao.estilizada li {
+  margin-bottom: 4px;
+}

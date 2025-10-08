@@ -18,14 +18,14 @@
 
               <h2>{{ title }}</h2>
               <hr class="modal-divider" />
-              <span [innerHTML]="description"></span>
+              <div [innerHTML]="description" class="descricao estilizada"></div>
 
               <div class="modal-botoes">
-                <button class="btn-acao delete" (click)="confirmarAcao()">
+                <button class="btn-acao delete" (click)="confirmarAcao()" *ngIf="!hideConfirmButton">
                   {{ confirmTextoBotao || 'Confirmar' }}
                 </button>
                 <button class="btn-acao cancelar" (click)="onModalClose()">
-                  Cancelar
+                  {{ cancelTextoBotao || 'Cancelar' }}
                 </button>
               </div>
             </div>
