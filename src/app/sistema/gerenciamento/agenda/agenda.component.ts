@@ -11,6 +11,8 @@ import { Colaborador } from '../../administrativo/colaboradores/colaborador';
 import { AuthService } from 'src/app/services/auth.service';
 import { TipoEvento } from './enums/tipo-evento';
 import { TipoEventoDescricao } from './enums/tipo-evento-descricao';
+import { Frequencia } from './enums/frequencia';
+import { FrequenciaDescricao } from './enums/frequencia-descricao';
 import { Evento } from './evento';
 
 type ViewMode = 'week' | 'month' | 'year';
@@ -74,8 +76,21 @@ export class AgendaComponent implements OnInit {
 
   hoje = new Date().toDateString();
 
-  TipoEvento = TipoEvento;
   TipoEventoDescricao = TipoEventoDescricao;
+
+  selectedFrequencia: string = '';
+  frequencia = Object.keys(Frequencia).map((key) => ({
+    value: Frequencia[key as keyof typeof Frequencia],
+    description:
+      FrequenciaDescricao[Frequencia[key as keyof typeof Frequencia]],
+  }));
+
+  selectedTipo: string = '';
+  TipoEvento = Object.keys(TipoEvento).map((key) => ({
+    value: TipoEvento[key as keyof typeof TipoEvento],
+    description:
+      TipoEventoDescricao[TipoEvento[key as keyof typeof TipoEvento]],
+  }));
 
   constructor(
     private formBuilder: FormBuilder,
