@@ -102,6 +102,7 @@
   font-size: 24px;
   color: var(--lm-text);
   margin: 0;
+  text-align: center;
 }
 
 .modal-conteudo span {
@@ -206,7 +207,6 @@
 .btn-acao.cancelar:hover {
   background: #d5d5d5;
 }
-
 
 /* texto modal */
 .descricao.estilizada {
