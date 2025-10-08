@@ -5,6 +5,10 @@ import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
 import { ProcessoService } from 'src/app/services/gerenciamento/processo.service';
 import { ModalDeleteService } from 'src/app/services/modal/modalDeletar.service';
 import { SetorDescricao } from '../../administrativo/cadastro-de-colaborador/setor-descricao';
+import {
+  ExportService,
+  Header,
+} from 'src/app/services/feedback/export.service';
 
 @Component({
   selector: 'app-processos',
@@ -31,10 +35,23 @@ export class ProcessosComponent implements OnInit {
 
   selectedSetor: string = '';
 
+  isExporting = false;
+
+  exportHeaders: Header[] = [
+    { key: 'nome', label: 'Nome' },
+    { key: 'setor', label: 'Setor' },
+    { key: 'tipoDeProcesso', label: 'Tipo do Processo' },
+    { key: 'dependeDeOutroSetor', label: 'Depende de outro setor' },
+    { key: 'setorDeDependencia', label: 'Setor de dependência' },
+    { key: 'dataCadastro', label: 'Data de cadastro' },
+    { key: 'subprocessos', label: 'Subprocessos' },
+  ];
+
   constructor(
     private router: Router,
     private processoService: ProcessoService,
-    private modaldeleteService: ModalDeleteService
+    private modaldeleteService: ModalDeleteService,
+    private exportSvc: ExportService
   ) {}
 
   ngOnInit(): void {
@@ -201,5 +218,41 @@ export class ProcessosComponent implements OnInit {
         console.error(error);
       }
     );
+  }
+
+  exportCsv() {
+    this.isExporting = true;
+    const data = this.processos;
+
+    if (!data?.length) {
+      this.showMessage('error', 'Nada para exportar com o setor atual.');
+      this.isExporting = false;
+      return;
+    }
+
+    const rows = this.mapForExport(data);
+    this.exportSvc.toCsv(
+      `processos${this.selectedSetor ? '_' + this.selectedSetor : ''}`,
+      rows,
+      this.exportHeaders
+    );
+
+    this.isExporting = false;
+  }
+
+  private mapForExport(rows: any[]) {
+    return rows.map((r) => ({
+      nome: r.nome ?? '',
+      setor: r.setor ? SetorDescricao[r.setor as keyof typeof Setor] : '',
+      tipoDeProcesso: r.tipoDeProcesso ?? '',
+      dependeDeOutroSetor: r.dependeDeOutroSetor ?? '',
+      setorDeDependencia: r.setorDeDependencia
+        ? SetorDescricao[r.setorDeDependencia as keyof typeof Setor]
+        : '',
+      dataCadastro: r.dataCadastro ?? '',
+      subprocessos: r.subprocessos
+        ? r.subprocessos.map((s: any) => s.tarefa).join('; ')
+        : '',
+    }));
   }
 }
