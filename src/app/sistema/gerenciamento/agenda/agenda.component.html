@@ -2,6 +2,14 @@
   <div class="header-container">
     <h2>Agenda</h2>
     <div class="header-actions">
+      <div class="select-container">
+         <app-select-padrao
+            label="Agenda"
+            [options]="Agenda"
+            [(selectedValue)]="selectedAgenda"
+            [showDefaultOption]="false">
+        </app-select-padrao>
+      </div>
       <div class="view-toggle">
         <button
           class="toggle-btn"

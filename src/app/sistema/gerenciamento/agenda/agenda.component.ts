@@ -14,6 +14,8 @@ import { TipoEventoDescricao } from './enums/tipo-evento-descricao';
 import { Frequencia } from './enums/frequencia';
 import { FrequenciaDescricao } from './enums/frequencia-descricao';
 import { Evento } from './evento';
+import { Agenda } from './enums/agenda';
+import { AgendaDescricao } from './enums/agenda-descricao';
 
 type ViewMode = 'week' | 'month' | 'year';
 
@@ -91,6 +93,12 @@ export class AgendaComponent implements OnInit {
     value: TipoEvento[key as keyof typeof TipoEvento],
     description:
       TipoEventoDescricao[TipoEvento[key as keyof typeof TipoEvento]],
+  }));
+
+  selectedAgenda: string = '';
+  Agenda = Object.keys(Agenda).map((key) => ({
+    value: Agenda[key as keyof typeof Agenda],
+    description: AgendaDescricao[Agenda[key as keyof typeof Agenda]],
   }));
 
   constructor(

@@ -27,6 +27,10 @@
   gap: 16px;
 }
 
+.select-container {
+  width: 250px;
+}
+
 .subMain-container {
   display: flex;
   margin: 0;
@@ -159,7 +163,12 @@
 
   .header-actions {
     align-items: flex-end;
-    flex-direction: column;
+    flex-direction: column-reverse;
+    width: 100%;
+  }
+
+  .select-container {
+    width: 100%;
   }
 }
 
