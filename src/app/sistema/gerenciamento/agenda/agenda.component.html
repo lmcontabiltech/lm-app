@@ -2,6 +2,14 @@
   <div class="header-container">
     <h2>Agenda</h2>
     <div class="header-actions">
+      <div class="select-container">
+         <app-select-padrao
+            label="Agenda"
+            [options]="Agenda"
+            [(selectedValue)]="selectedAgenda"
+            [showDefaultOption]="false">
+        </app-select-padrao>
+      </div>
       <div class="view-toggle">
         <button
           class="toggle-btn"
@@ -80,7 +88,7 @@
         <form class="modal-form" [formGroup]="eventoForm">
           <div class="form-group">
               <label for="titulo">Titulo</label>
-              <input formControlName="titulo" type="text" />
+              <input formControlName="titulo" type="text" placeholder="Insira um titulo para o evento" />
           </div>
 
             <div class="form-group">
@@ -101,18 +109,61 @@
 
             <div class="form-group">
                 <label for="frequenciaEvento">Frequência do evento</label>
-                <input formControlName="frequenciaEvento" type="text" />
+                <app-select-padrao
+                  label="Frequência"
+                  [options]="frequencia"
+                  [(selectedValue)]="selectedFrequencia"
+                  [showDefaultOption]="false">
+                </app-select-padrao>
             </div>
 
             <div class="input-duo">
               <div class="form-group">
                   <label for="tipo">Tipo</label>
-                  <input formControlName="tipo" type="text" />
+                  <app-select-padrao
+                    label="Tipo"
+                    [options]="TipoEvento"
+                    [(selectedValue)]="selectedTipo"
+                    [showDefaultOption]="false">
+                  </app-select-padrao>
               </div>
               <div class="form-group">
                   <label for="cor">Cor</label>
-                  <input formControlName="cor" type="color" />
+                  <div class="color-dropdown" (click)="toggleDropdown()">
+                    <div class="selected-color-container">
+                      <div
+                        class="selected-color"
+                        [ngStyle]="{ 'background-color': eventoForm.get('cor')?.value }"
+                      ></div>
+                      <div class="arrow-down" [ngClass]="{ 'icon-rotate': dropdownOpen }">
+                        <img src="assets/icones/carret.svg" alt="Arrow down" />
+                      </div>
+                    </div>
+                    <div class="color-options" *ngIf="dropdownOpen">
+                      <div
+                        *ngFor="let cor of cores"
+                        class="color-option"
+                        [ngStyle]="{ 'background-color': cor }"
+                        [class.selected]="eventoForm.get('cor')?.value === cor"
+                        (click)="selecionarCor(cor)"
+                      ></div>
+                    </div>
+                  </div>
               </div>
+            </div>
+
+            <div class="form-group">
+                <label>Agenda</label>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="pessoal" name="agenda" value="PESSOAL" formControlName="agenda" checked>
+                        <label for="pessoal">Minha Agenda</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="coordenador" name="agenda" value="GERAL" formControlName="agenda">
+                        <label for="coordenador">Agenda Geral</label>
+                    </div>
+                </div>
             </div>
 
             <div class="form-group">
@@ -122,12 +173,12 @@
 
             <div class="form-group">
                 <label for="link">Link da reunião</label>
-                <input formControlName="link" type="text" />
+                <input formControlName="link" type="text" placeholder="Insira o link da reunião" />
             </div>
 
             <div class="form-group">
                 <label for="descricao">Descrição</label>
-                <textarea formControlName="descricao" placeholder="Digite a descrição do evento" type="text"></textarea>
+                <textarea formControlName="descricao" placeholder="Digite uma descrição para o evento" type="text"></textarea>
             </div>
         </form>
     </div>

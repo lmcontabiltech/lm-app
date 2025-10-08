@@ -10,7 +10,9 @@ export class ModalPadraoComponent {
   @Input() description: string = 'Tem certeza que deseja efetuar a ação?';
   @Input() item: any;
   @Input() confirmTextoBotao: string = 'Confirmar';
+  @Input() cancelTextoBotao: string = 'Cancelar';
   @Input() size: string = 'xl:max-w-7xl';
+  @Input() hideConfirmButton: boolean = false;
 
   @Output() closeModal = new EventEmitter<void>();
   @Output() confirmAcao = new EventEmitter<void>();

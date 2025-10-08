@@ -6,6 +6,10 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Setor } from '../cadastro-de-colaborador/setor';
 import { SetorDescricao } from '../cadastro-de-colaborador/setor-descricao';
 import { ModalDeleteService } from 'src/app/services/modal/modalDeletar.service';
+import {
+  ExportService,
+  Header,
+} from 'src/app/services/feedback/export.service';
 
 @Component({
   selector: 'app-perifericos',
@@ -34,11 +38,24 @@ export class PerifericosComponent implements OnInit {
     description: SetorDescricao[Setor[key as keyof typeof Setor]],
   }));
 
+  isExporting = false;
+
+  exportHeaders: Header[] = [{ key: 'nome', label: 'Nome' },
+    { key: 'descricaoProduto', label: 'Descrição' },
+    { key: 'dataEntrega', label: 'Data de Entrega' },
+    { key: 'dataDevolucao', label: 'Data de Devolução' },
+    { key: 'colaborador.nome', label: 'Colaborador' },
+    { key: 'anotacao', label: 'Anotação' },
+    { key: 'estacao', label: 'Estação' },
+    { key: 'tipoPosse', label: 'Tipo de Posse' }
+  ];
+
   constructor(
     private router: Router,
     private perifericoService: PerifericoService,
     private authService: AuthService,
-    private modalDeleteService: ModalDeleteService
+    private modalDeleteService: ModalDeleteService,
+    private exportSvc: ExportService
   ) {}
 
   ngOnInit(): void {
@@ -240,5 +257,38 @@ export class PerifericosComponent implements OnInit {
         console.error(error);
       }
     );
+  }
+
+  exportCsv() {
+    this.isExporting = true;
+    const data = this.perifericos;
+
+    if (!data?.length) {
+      this.showMessage('error', 'Nada para exportar com o setor atual.');
+      this.isExporting = false;
+      return;
+    }
+
+    const rows = this.mapForExport(data);
+    this.exportSvc.toCsv(
+      `perifericos${this.selectedSetor ? '_' + this.selectedSetor : ''}`,
+      rows,
+      this.exportHeaders
+    );
+
+    this.isExporting = false;
+  }
+
+  private mapForExport(rows: any[]) {
+    return rows.map((r) => ({
+      nome: r.nome ?? '',
+      descricaoProduto: r.descricaoProduto ?? '',
+      dataEntrega: r.dataEntrega ?? '',
+      dataDevolucao: r.dataDevolucao ?? '',
+      'colaborador.nome': r.colaborador?.nome ?? '',
+      anotacao: r.anotacao ?? '',
+      estacao: r.estacao ?? '',
+      tipoPosse: r.tipoPosse ?? '',
+    }));
   }
 }

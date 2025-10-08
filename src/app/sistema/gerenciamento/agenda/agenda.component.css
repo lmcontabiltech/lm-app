@@ -27,6 +27,10 @@
   gap: 16px;
 }
 
+.select-container {
+  width: 250px;
+}
+
 .subMain-container {
   display: flex;
   margin: 0;
@@ -115,6 +119,25 @@
   width: 100%;
 }
 
+/* radio btn */
+.radio-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.radio-group input[type="radio"] {
+  width: 24px;
+  height: 24px;
+  background: var(--form-background);
+}
+
+.radio-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 /* Breakpoints */
 @media (min-width: 1200px) {
   .main-container {
@@ -140,6 +163,89 @@
 
   .header-actions {
     align-items: flex-end;
-    flex-direction: column;
+    flex-direction: column-reverse;
+    width: 100%;
   }
+
+  .select-container {
+    width: 100%;
+  }
+}
+
+/* input de cores */
+.color-dropdown {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1px solid var(--lm-border02);
+}
+
+.selected-color-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.selected-color {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  transition: border-color 0.2s;
+}
+
+.selected-color:hover {
+  border-color: #000;
+}
+
+.color-options {
+  position: absolute;
+  top: 48px;
+  left: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.color-option {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.color-option:hover {
+  transform: scale(1.1);
+}
+
+.color-option.selected {
+  border-color: #000;
+}
+
+.arrow-down {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.arrow-down img {
+  width: 24px;
+  height: 24px;
+}
+
+.icon-rotate {
+  transform: rotate(180deg);
 }

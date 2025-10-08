@@ -193,4 +193,24 @@ export class DashboardAdminService {
         })
       );
   }
+
+  getQuantidadePerifericos(): Observable<number> {
+    const url = `${environment.apiURLBase}/api/periferico/count`;
+    return this.http.get<number>(url).pipe(
+      map((response) => {
+        console.log('Resposta da API (periféricos):', response); // Log para depuração
+        return response; // Retorna o número bruto diretamente
+      }),
+      catchError((error) => {
+        let errorMessage = 'Erro ao buscar quantidade de periféricos.';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
 }

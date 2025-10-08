@@ -1,0 +1,8 @@
+export enum Frequencia {
+  NAO_REPETE = 'NAO_REPETE',
+  TODO_DIA = 'TODO_DIA',
+  SEMANAL = 'SEMANAL',
+  QUINZENAL = 'QUINZENAL',
+  MENSAL = 'MENSAL',
+  ANUAL = 'ANUAL',
+}
