@@ -10,4 +10,5 @@ export interface Evento {
   cor: string;
   link?: string;
   tipoEvento?: TipoEvento;
+  agenda: string;
 }
