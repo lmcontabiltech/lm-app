@@ -325,7 +325,7 @@ export class AgendaComponent implements OnInit {
       .subscribe((colab) => {
         this.modalCadastroService.openModal(
           {
-            title: 'cadastrar evento',
+            title: 'Cadastrar evento',
             description: `Preencha os dados do evento`,
             size: 'md',
             confirmTextoBotao: 'Salvar',

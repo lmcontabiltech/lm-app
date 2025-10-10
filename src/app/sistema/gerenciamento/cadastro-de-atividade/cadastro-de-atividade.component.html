@@ -53,14 +53,13 @@
 
             <div class="form-group" *ngIf="!isEditMode">
                 <label for="idEmpresas">Empresas</label>
-                <app-multiplo-select
-                  label="Selecionar empresas"
+                <app-select-auto-complete
+                  placeholder="Buscar empresas..."
                   [options]="empresas"
-                  [(selectedValue)]="selectedEmpresas"
+                  (selectionChange)="onEmpresasChange($event)"
                   [multiple]="true"
-                  formControlName="idEmpresas"
-                  (selectedValueChange)="onEmpresasChange($event)">
-                </app-multiplo-select>
+                  formControlName="idEmpresas">
+                </app-select-auto-complete>
             </div>
 
             <div class="form-group" *ngIf="isEditMode">
