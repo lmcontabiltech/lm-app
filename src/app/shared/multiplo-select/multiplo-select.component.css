@@ -45,7 +45,7 @@ label.active {
   display: flex;
   align-items: center;
   padding: 5px 10px;
-  background: #deebe5;
+  background: #dee3eb;
   border-radius: 16px;
   font-size: 14px;
   max-width: 100%;
@@ -136,4 +136,19 @@ label.active {
   .selected-value-multiple {
     font-size: 12px;
   }
+}
+
+.option {
+  padding: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.option:hover,
+.option.highlighted {
+  background-color: #b3cefd;
+}
+
+.option.selected {
+  background-color: #d1d1d1;
 }

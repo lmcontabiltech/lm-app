@@ -17,7 +17,7 @@
         type="text"
         class="search-input"
         [(ngModel)]="searchText"
-        [placeholder]="selectedItems.length === 0 ? placeholder : ''"
+        [placeholder]="hasSelection ? 'Buscar...' : placeholder"
         (input)="onSearch($event)"
         (focus)="isOpen = true"
         (keydown)="onKeydown($event)"

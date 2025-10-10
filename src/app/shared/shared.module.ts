@@ -30,6 +30,7 @@ import { MensalComponent } from './agenda/mensal/mensal.component';
 import { SemanalComponent } from './agenda/semanal/semanal.component';
 import { AnualComponent } from './agenda/anual/anual.component';
 import { ModalCadastroComponent } from './modal/modal-cadastro/modal-cadastro.component';
+import { InputParticipantesComponent } from './input-participantes/input-participantes.component';
 
 export function playerFactory() {
   return player;
@@ -64,6 +65,7 @@ export function playerFactory() {
     SemanalComponent,
     AnualComponent,
     ModalCadastroComponent,
+    InputParticipantesComponent,
   ],
   imports: [
     CommonModule,
@@ -97,7 +99,8 @@ export function playerFactory() {
     MensalComponent,
     SemanalComponent,
     AnualComponent,
-    ModalCadastroComponent
+    ModalCadastroComponent,
+    InputParticipantesComponent,
   ],
 })
 export class SharedModule {}

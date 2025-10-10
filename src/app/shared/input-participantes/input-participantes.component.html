@@ -1,0 +1,71 @@
+<div class="multi-select-container">
+  <div class="input-wrapper">
+    <input
+      type="text"
+      class="multi-select-input"
+      placeholder="Buscar colaboradores..."
+      [(ngModel)]="searchText"
+      (focus)="onInputFocus()"
+      (input)="filterColaboradores()"
+      (keydown)="onKeydown($event)"
+      (blur)="onInputBlur()"
+    />
+    <div class="multi-select-options" *ngIf="dropdownOpen">
+      <ng-container *ngIf="filteredColaboradores.length > 0; else noResultsTpl">
+        <div
+          class="multi-select-option"
+          *ngFor="let colaborador of filteredColaboradores; let i = index"
+          (click)="addParticipante(colaborador)"
+          [class.highlighted]="i === highlightedIndex"
+        >
+          <div
+            class="avatar"
+            [ngStyle]="{ 'background-color': getRandomColor(colaborador.nome) }"
+          >
+            <img
+              *ngIf="colaborador.fotoUrl"
+              [src]="colaborador.fotoUrl"
+              alt="Foto do colaborador"
+            />
+            <span *ngIf="!colaborador.fotoUrl">
+              {{ getInitial(colaborador.nome) }}
+            </span>
+          </div>
+          <span>{{ colaborador.nome }}</span>
+        </div>
+      </ng-container>
+
+      <ng-template #noResultsTpl>
+        <div
+          class="no-results"
+          *ngIf="searchText && searchText.trim().length > 0"
+        >
+          Usuário não encontrado
+        </div>
+      </ng-template>
+    </div>
+  </div>
+  <div class="selected-participantes">
+    <div class="participante" *ngFor="let participante of participantes">
+      <div
+        class="avatar"
+        [ngStyle]="{ 'background-color': getRandomColor(participante.nome) }"
+      >
+        <img
+          *ngIf="participante.fotoUrl"
+          [src]="participante.fotoUrl"
+          alt="Foto do participante"
+        />
+        <span *ngIf="!participante.fotoUrl">
+          {{ getInitial(participante.nome) }}
+        </span>
+      </div>
+      <div class="participante-info">
+        <span class="participante-nome">{{ participante.nome }}</span>
+        <button class="remove-btn" (click)="removeParticipante(participante)">
+          x
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
