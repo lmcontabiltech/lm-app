@@ -10,31 +10,39 @@
       (keydown)="onKeydown($event)"
       (blur)="onInputBlur()"
     />
-    <div
-      class="multi-select-options"
-      *ngIf="dropdownOpen && filteredColaboradores.length > 0"
-    >
-      <div
-        class="multi-select-option"
-        *ngFor="let colaborador of filteredColaboradores; let i = index"
-        (click)="addParticipante(colaborador)"
-        [class.highlighted]="i === highlightedIndex"
-      >
+    <div class="multi-select-options" *ngIf="dropdownOpen">
+      <ng-container *ngIf="filteredColaboradores.length > 0; else noResultsTpl">
         <div
-          class="avatar"
-          [ngStyle]="{ 'background-color': getRandomColor(colaborador.nome) }"
+          class="multi-select-option"
+          *ngFor="let colaborador of filteredColaboradores; let i = index"
+          (click)="addParticipante(colaborador)"
+          [class.highlighted]="i === highlightedIndex"
         >
-          <img
-            *ngIf="colaborador.foto?.documentoUrl"
-            [src]="colaborador.foto?.documentoUrl"
-            alt="Foto do colaborador"
-          />
-          <span *ngIf="!colaborador.foto?.documentoUrl">
-            {{ getInitial(colaborador.nome) }}
-          </span>
+          <div
+            class="avatar"
+            [ngStyle]="{ 'background-color': getRandomColor(colaborador.nome) }"
+          >
+            <img
+              *ngIf="colaborador.fotoUrl"
+              [src]="colaborador.fotoUrl"
+              alt="Foto do colaborador"
+            />
+            <span *ngIf="!colaborador.fotoUrl">
+              {{ getInitial(colaborador.nome) }}
+            </span>
+          </div>
+          <span>{{ colaborador.nome }}</span>
         </div>
-        <span>{{ colaborador.nome }}</span>
-      </div>
+      </ng-container>
+
+      <ng-template #noResultsTpl>
+        <div
+          class="no-results"
+          *ngIf="searchText && searchText.trim().length > 0"
+        >
+          Usuário não encontrado
+        </div>
+      </ng-template>
     </div>
   </div>
   <div class="selected-participantes">
@@ -44,11 +52,11 @@
         [ngStyle]="{ 'background-color': getRandomColor(participante.nome) }"
       >
         <img
-          *ngIf="participante.foto?.documentoUrl"
-          [src]="participante.foto?.documentoUrl"
+          *ngIf="participante.fotoUrl"
+          [src]="participante.fotoUrl"
           alt="Foto do participante"
         />
-        <span *ngIf="!participante.foto?.documentoUrl">
+        <span *ngIf="!participante.fotoUrl">
           {{ getInitial(participante.nome) }}
         </span>
       </div>

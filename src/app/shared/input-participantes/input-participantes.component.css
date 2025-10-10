@@ -1,5 +1,5 @@
 .multi-select-container {
-  position: relative; /* Define o contêiner como referência para o menu */
+  position: relative;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -7,7 +7,7 @@
 }
 
 .input-wrapper {
-  position: relative; /* Permite que o menu seja posicionado em relação ao input */
+  position: relative;
 }
 
 .multi-select-input {
@@ -19,15 +19,15 @@
 }
 
 .multi-select-options {
-  position: absolute; /* Fixa o menu em relação ao input-wrapper */
-  top: 100%; /* Garante que o menu fique logo abaixo do input */
+  position: absolute;
+  top: 100%;
   left: 0;
   width: 100%;
   background: #fff;
   border: 1px solid #ccc;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 12; /* Garante que o menu fique na frente dos itens selecionados */
+  z-index: 12;
   max-height: 200px;
   overflow-y: auto;
 }
@@ -129,4 +129,13 @@
   font-size: 14px;
   color: #202020;
   font-weight: 500;
+}
+
+.no-results {
+  padding: 12px;
+  color: #666;
+  text-align: center;
+  font-size: 14px;
+  background: #fff7f7;
+  border-radius: 6px;
 }
