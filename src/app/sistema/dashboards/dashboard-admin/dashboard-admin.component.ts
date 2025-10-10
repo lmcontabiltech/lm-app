@@ -706,23 +706,44 @@ export class DashboardAdminComponent implements OnInit {
       });
   }
 
-  onPeriodoChangeSetor(setor: string, novoPeriodo: string) {
+  onPeriodoChangeSetor(setor: string, novoPeriodo: string): void {
     const setorEnum = Setor[setor as keyof typeof Setor];
     this.periodoSelecionadoSetor[setorEnum] = novoPeriodo;
+
     this.carregarResumoAtividadesSetor(setorEnum);
   }
 
   getDataInicioPeriodoSetor(setor: Setor): string {
+    const periodoSelecionado = this.periodoSelecionadoSetor[setor];
+
+    // Se o período estiver vazio, usa o início do ano como padrão
+    if (!periodoSelecionado) {
+      const dataInicioAno = this.getDataInicioAno();
+      console.log(
+        `Período vazio para o setor ${setor}. Usando início do ano: ${dataInicioAno}`
+      );
+      return dataInicioAno;
+    }
+
     const hoje = new Date();
-    const dias = Number(this.periodoSelecionadoSetor[setor]) || 7;
+    const dias = Number(periodoSelecionado);
     hoje.setDate(hoje.getDate() - dias);
-    return hoje.toISOString().split('T')[0];
+    const dataInicio = hoje.toISOString().split('T')[0];
+
+    console.log(
+      `Período enviado para o setor ${setor}:`,
+      `Dias: ${dias}, Data de início: ${dataInicio}`
+    );
+
+    return dataInicio;
   }
 
-  resetPeriodo() {
+  resetPeriodo(): void {
+    // Define o início do ano como o valor padrão para todos os setores
     Object.keys(this.periodoSelecionadoSetor).forEach((setor) => {
-      this.periodoSelecionadoSetor[setor] = PeriodoDias.SETE;
+      this.periodoSelecionadoSetor[setor] = this.getDataInicioAno();
     });
+
     this.carregarResumoAtividadesSetores();
   }
 }

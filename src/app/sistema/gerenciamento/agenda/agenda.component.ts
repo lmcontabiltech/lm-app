@@ -124,6 +124,7 @@ export class AgendaComponent implements OnInit {
 
   ngOnInit(): void {
     this.applyFilters();
+    this.carregarColaboradores();
   }
 
   setView(mode: ViewMode) {
@@ -362,6 +363,23 @@ export class AgendaComponent implements OnInit {
     setTimeout(() => {
       this.dropdownOpen = false;
     }, 100);
+  }
+
+  carregarColaboradores(): void {
+    this.isLoading = true;
+    this.colaboradoresService.getUsuariosNonAdmin().subscribe(
+      (response: Colaborador[]) => {
+        this.colaboradores = response.map((colaborador) => ({
+          ...colaborador,
+        }));
+        this.isLoading = false; // Finaliza o estado de carregamento
+        console.log('Colaboradores carregados na agenda:', this.colaboradores);
+      },
+      (error) => {
+        this.isLoading = false; // Finaliza o estado de carregamento em caso de erro
+        console.error('Erro ao carregar colaboradores na agenda:', error);
+      }
+    );
   }
 
   onSubmit(colab: Colaborador): void {

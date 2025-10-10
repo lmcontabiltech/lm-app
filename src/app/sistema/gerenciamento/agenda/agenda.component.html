@@ -167,8 +167,12 @@
             </div>
 
             <div class="form-group">
-                <label for="participantes">Participantes</label>
-                <input formControlName="participantes" type="text" />
+              <label for="participantes">Participantes</label>
+              <app-input-participantes
+                [colaboradores]="colaboradores"
+                [participantes]="eventoForm.get('participantes')?.value"
+                (participantesChange)="eventoForm.get('participantes')?.setValue($event)"
+              ></app-input-participantes>
             </div>
 
             <div class="form-group">

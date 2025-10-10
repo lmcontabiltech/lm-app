@@ -1,0 +1,63 @@
+<div class="multi-select-container">
+  <div class="input-wrapper">
+    <input
+      type="text"
+      class="multi-select-input"
+      placeholder="Buscar colaboradores..."
+      [(ngModel)]="searchText"
+      (focus)="onInputFocus()"
+      (input)="filterColaboradores()"
+      (keydown)="onKeydown($event)"
+      (blur)="onInputBlur()"
+    />
+    <div
+      class="multi-select-options"
+      *ngIf="dropdownOpen && filteredColaboradores.length > 0"
+    >
+      <div
+        class="multi-select-option"
+        *ngFor="let colaborador of filteredColaboradores; let i = index"
+        (click)="addParticipante(colaborador)"
+        [class.highlighted]="i === highlightedIndex"
+      >
+        <div
+          class="avatar"
+          [ngStyle]="{ 'background-color': getRandomColor(colaborador.nome) }"
+        >
+          <img
+            *ngIf="colaborador.foto?.documentoUrl"
+            [src]="colaborador.foto?.documentoUrl"
+            alt="Foto do colaborador"
+          />
+          <span *ngIf="!colaborador.foto?.documentoUrl">
+            {{ getInitial(colaborador.nome) }}
+          </span>
+        </div>
+        <span>{{ colaborador.nome }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="selected-participantes">
+    <div class="participante" *ngFor="let participante of participantes">
+      <div
+        class="avatar"
+        [ngStyle]="{ 'background-color': getRandomColor(participante.nome) }"
+      >
+        <img
+          *ngIf="participante.foto?.documentoUrl"
+          [src]="participante.foto?.documentoUrl"
+          alt="Foto do participante"
+        />
+        <span *ngIf="!participante.foto?.documentoUrl">
+          {{ getInitial(participante.nome) }}
+        </span>
+      </div>
+      <div class="participante-info">
+        <span class="participante-nome">{{ participante.nome }}</span>
+        <button class="remove-btn" (click)="removeParticipante(participante)">
+          x
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
