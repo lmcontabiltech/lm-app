@@ -32,6 +32,11 @@ export class MultiploSelectComponent {
   @Input() disabled: boolean = false;
 
   isOpen: boolean = false;
+  value: string = '';
+  filteredOptions: { value: string; description: string }[] = [];
+  searchText: string = '';
+  searchTimeout: any;
+  highlightedValue: string = '';
 
   private onChange: (value: any) => void = () => {};
   private onTouched: () => void = () => {};
@@ -44,6 +49,8 @@ export class MultiploSelectComponent {
     } else if (!this.multiple) {
       this.selectedValue = null;
     }
+
+    this.filteredOptions = [...this.options];
   }
 
   writeValue(value: any): void {
@@ -78,6 +85,7 @@ export class MultiploSelectComponent {
       this.isOpen = false;
     }
     this.isOpen = false;
+    this.highlightedValue = value.value;
   }
 
   removeValue(value: any) {
@@ -86,6 +94,8 @@ export class MultiploSelectComponent {
         (item: any) => item.value !== value.value
       );
       this.selectedValueChange.emit([...this.selectedValue]);
+      this.highlightedValue = '';
+      this.filteredOptions = [...this.options];
     }
   }
 
@@ -97,6 +107,46 @@ export class MultiploSelectComponent {
   clickout(event: Event) {
     if (!this.elementRef.nativeElement.contains(event.target)) {
       this.isOpen = false;
+    }
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  onKeydown(event: KeyboardEvent): void {
+    if (this.isOpen) {
+      clearTimeout(this.searchTimeout);
+
+      // Adiciona a tecla digitada ao texto de busca
+      this.searchText += event.key.toLowerCase();
+
+      // Encontra a primeira opção que corresponde ao texto digitado
+      const matchingOptionIndex = this.options.findIndex((option) =>
+        option.description.toLowerCase().startsWith(this.searchText)
+      );
+
+      if (matchingOptionIndex !== -1) {
+        this.highlightedValue = this.options[matchingOptionIndex].value;
+
+        const dropdownContainer =
+          this.elementRef.nativeElement.querySelector('.options-container');
+
+        const optionElement = dropdownContainer.querySelector(
+          `.option[data-value="${this.highlightedValue}"]`
+        );
+
+        if (dropdownContainer && optionElement) {
+          const optionOffsetTop = optionElement.offsetTop;
+          const optionHeight = optionElement.offsetHeight;
+          const containerHeight = dropdownContainer.offsetHeight;
+
+          dropdownContainer.scrollTop =
+            optionOffsetTop - containerHeight / 2 + optionHeight / 2;
+        }
+      }
+
+      // Limpa o texto de busca após 1 segundo
+      this.searchTimeout = setTimeout(() => {
+        this.searchText = '';
+      }, 1000);
     }
   }
 }

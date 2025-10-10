@@ -32,6 +32,8 @@
       *ngFor="let option of options || []"
       (click)="onSelect(option)"
       [class.selected]="selectedValue?.includes(option)"
+      [class.highlighted]="highlightedValue === option.value"
+      [attr.data-value]="option.value"
     >
       {{ option.description }}
     </div>
