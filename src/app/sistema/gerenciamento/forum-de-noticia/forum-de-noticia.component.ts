@@ -6,6 +6,8 @@ import { SetorDescricao } from '../../administrativo/cadastro-de-colaborador/set
 import { NoticiaService } from 'src/app/services/gerenciamento/noticia.service';
 import { TipoNoticia, TipoNoticiaCor } from './enums/tipo-noticia';
 import { TipoNoticiaDescricao } from './enums/tipo-noticia-descricao';
+import { Permissao } from 'src/app/login/permissao';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-forum-de-noticia',
@@ -14,6 +16,7 @@ import { TipoNoticiaDescricao } from './enums/tipo-noticia-descricao';
 })
 export class ForumDeNoticiaComponent implements OnInit {
   noticias: Noticia[] = [];
+  permissaoUsuario: string = '';
 
   itensPorPagina = 8;
   paginaAtual = 1;
@@ -32,9 +35,14 @@ export class ForumDeNoticiaComponent implements OnInit {
   ];
   selectedLida: string = '';
 
-  constructor(private router: Router, private noticiaService: NoticiaService) {}
+  constructor(
+    private router: Router,
+    private noticiaService: NoticiaService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
+    this.permissaoUsuario = this.authService.getPermissao();
     this.exibirMensagemDeSucesso();
     this.atualizarPaginacao();
     this.fetchNoticias();

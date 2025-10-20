@@ -239,4 +239,18 @@ export class AuthService {
 
     return this.http.post(this.tokenURL, params.toString(), { headers });
   }
+
+  getPermissao(): string {
+    const token = this.obterToken();
+    if (token) {
+      try {
+        const decodedToken = this.jwtHelper.decodeToken(token);
+        return decodedToken?.authorities?.[0] || decodedToken?.role || '';
+      } catch (error) {
+        console.error('Erro ao decodificar token:', error);
+        return '';
+      }
+    }
+    return '';
+  }
 }
