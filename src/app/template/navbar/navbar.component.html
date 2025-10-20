@@ -96,7 +96,7 @@
           </div>
         </div>
 
-        <div *ngIf="permissaoUsuario === 'Administrador' || permissaoUsuario === 'Coordenador' || permissaoUsuario === 'Estagiario'">
+        <div *ngIf="permissaoUsuario === 'Administrador' || permissaoUsuario === 'Coordenador'">
           <h3 class="sidebar-title">ADMINISTRATIVO</h3>
           <div class="sidebar-list">
             <a 
@@ -109,7 +109,7 @@
             </a>
 
             <a 
-              *ngIf="permissaoUsuario === 'Administrador' || permissaoUsuario === 'Coordenador' || permissaoUsuario === 'Estagiario'" 
+              *ngIf="permissaoUsuario === 'Administrador' || permissaoUsuario === 'Coordenador'" 
               routerLink="/usuario/empresas" 
               class="sidebar-link" 
               [ngClass]="{'active-link': isActive('/usuario/empresas')}">
@@ -118,7 +118,7 @@
             </a>
 
             <a 
-              *ngIf="permissaoUsuario === 'Administrador' || permissaoUsuario === 'Coordenador' || permissaoUsuario === 'Estagiario'"
+              *ngIf="permissaoUsuario === 'Administrador' || permissaoUsuario === 'Coordenador'"
               routerLink="/usuario/perifericos" 
               class="sidebar-link" 
               [ngClass]="{'active-link': isActive('/usuario/perifericos')}">
@@ -132,7 +132,11 @@
             <h3 class="sidebar-title">GERENCIAMENTO</h3>
   
             <div class="sidebar-list">
-              <a routerLink="/usuario/processos" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/processos')}">
+              <a
+                *ngIf="permissaoUsuario === 'Administrador' || permissaoUsuario === 'Coordenador'" 
+                routerLink="/usuario/processos" 
+                class="sidebar-link" 
+                [ngClass]="{'active-link': isActive('/usuario/processos')}">
                 <img src="assets/icones/processo-icon.svg" alt="home icon" />
                 <span>Processos</span>
               </a>
@@ -144,7 +148,7 @@
 
               <a routerLink="/usuario/fluxos" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/fluxos')}">
                 <img src="assets/icones/fluxo-icon.svg" alt="home icon" />
-                <span>Fluxos</span>
+                <span>Fluxo dos Processos</span>
               </a>
 
               <a routerLink="/usuario/historico-atividades" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/historico-atividades')}">
