@@ -2,15 +2,6 @@
     <div class="title-container">
         <h2>Bem-vindo(a), {{ usuario?.nome }}</h2>
         <div class="select-container">
-        <!-- <app-select-padrao
-            label="Período"
-            [options]="periodos"
-            [(selectedValue)]="periodoSelecionado"
-            [showDefaultOption]="true"
-            [defaultLabel]="'Sem período'"
-            [defaultValue]="''"
-            [customStyles]="{ 'background-color': '#f8f9fa' }">
-        </app-select-padrao> -->
         </div>
     </div>
     <div class="cards-container">
@@ -322,16 +313,6 @@
                 <h3> 
                     Dados gerais
                 </h3>
-                <div class="select-container">
-                    <app-select-padrao
-                        label="Período"
-                        [options]="periodos"
-                        [showDefaultOption]="true"
-                        [defaultLabel]="'Sem período'"
-                        [defaultValue]="''"
-                        [customStyles]="{ 'background-color': '#f8f9fa' }">
-                    </app-select-padrao>
-                </div>
             </div>
 
             <app-grafico-linha

@@ -11,6 +11,8 @@ import { DashboardColaboradorService } from 'src/app/services/graficos/dashboard
 import { DashboardAtividadesPorSetorResponseDTO } from '../dashboard-admin/models/atividades-por-setor';
 import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
 import { GraficoAtividadesPorMes } from '../dashboard-admin/models/atividades-por-mes';
+import { PeriodoDias } from '../dashboard-admin/enums/periodo-dias';
+import { PeriodoDiasDescricao } from '../dashboard-admin/enums/periodo-dias-descricao';
 
 @Component({
   selector: 'app-dashboard-colaborador',
@@ -23,6 +25,7 @@ export class DashboardColaboradorComponent implements OnInit {
   selic: string = '';
   permissaoUsuario: string = '';
   nomeSetorGrafico: string = '';
+  setorUsuarioEnum: Setor | null = null;
 
   setorUsuario = {
     nome: '',
@@ -39,6 +42,18 @@ export class DashboardColaboradorComponent implements OnInit {
     PESSOAL: { nome: 'Pessoal', key: 'pessoal', icone: 'duo.svg' },
     PARALEGAL: { nome: 'Paralegal', key: 'paralegal', icone: 'balanca.svg' },
     FINANCEIRO: { nome: 'Financeiro', key: 'financeiro', icone: 'money.svg' },
+    JURIDICO: { nome: 'Jurídico', key: 'juridico', icone: 'balanca.svg' },
+    ADMINISTRATIVO: {
+      nome: 'Administrativo',
+      key: 'administrativo',
+      icone: 'briefcase.svg',
+    },
+    RH: { nome: 'RH', key: 'rh', icone: 'duo.svg' },
+    SUPORTE_TI: {
+      nome: 'Suporte TI',
+      key: 'suporte_ti',
+      icone: 'computer.svg',
+    },
   };
 
   resumoAtividadesUsuario = {
@@ -46,6 +61,14 @@ export class DashboardColaboradorComponent implements OnInit {
     emAndamento: 0,
     totalAtribuidas: 0,
   };
+
+  periodos = Object.keys(PeriodoDias).map((key) => ({
+    value: PeriodoDias[key as keyof typeof PeriodoDias],
+    description:
+      PeriodoDiasDescricao[PeriodoDias[key as keyof typeof PeriodoDias]],
+  }));
+
+  periodoSelecionado: string = '';
 
   atividadesResumoSetor?: DashboardAtividadesPorSetorResponseDTO;
 
@@ -170,12 +193,13 @@ export class DashboardColaboradorComponent implements OnInit {
   }
 
   carregarResumoSetor(setor: Setor): void {
-    const dataInicio = this.getDataInicioUltimos7Dias();
+    const dataInicio = this.getDataInicioPeriodo();
     this.dashboardColaboradorService
       .getAtividadesResumoSetor(setor, dataInicio)
       .subscribe({
         next: (resumo) => {
           this.atividadesResumoSetor = resumo;
+          console.log('Resumo de atividades do setor carregado:', resumo);
         },
         error: (err) => {
           console.error('Erro ao buscar resumo de atividades do setor:', err);
@@ -183,11 +207,21 @@ export class DashboardColaboradorComponent implements OnInit {
       });
   }
 
-  // Função utilitária para pegar a data de 7 dias atrás
-  getDataInicioUltimos7Dias(): string {
+  getDataInicioPeriodo(): string {
+    if (!this.periodoSelecionado) {
+      return this.getDataInicioAno();
+    }
+
     const hoje = new Date();
-    hoje.setDate(hoje.getDate() - 7);
+    const dias = Number(this.periodoSelecionado);
+    hoje.setDate(hoje.getDate() - dias);
     return hoje.toISOString().split('T')[0];
+  }
+
+  getDataInicioAno(): string {
+    const hoje = new Date();
+    const inicioAno = new Date(hoje.getFullYear(), 0, 1);
+    return inicioAno.toISOString().split('T')[0];
   }
 
   carregarGraficoAtividadesPorMes(setor: Setor): void {
@@ -242,5 +276,14 @@ export class DashboardColaboradorComponent implements OnInit {
         data: dadosGrafico,
       },
     ];
+  }
+
+  onPeriodoChange(novoPeriodo: string): void {
+    this.periodoSelecionado = novoPeriodo;
+    console.log('Novo período selecionado:', novoPeriodo);
+
+    if (this.setorUsuarioEnum) {
+      this.carregarResumoSetor(this.setorUsuarioEnum);
+    }
   }
 }

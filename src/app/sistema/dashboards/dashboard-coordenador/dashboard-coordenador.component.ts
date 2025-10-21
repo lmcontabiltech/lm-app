@@ -23,6 +23,10 @@ export class DashboardCoordenadorComponent implements OnInit {
   permissaoUsuario: string = '';
   nomeSetorGrafico: string = '';
 
+  totalColaboradores: number = 0;
+  totalEmpresas: number = 0;
+  totalAtividadesNaoAtribuidas: number = 0;
+
   setorUsuario = {
     nome: '',
     key: '',
