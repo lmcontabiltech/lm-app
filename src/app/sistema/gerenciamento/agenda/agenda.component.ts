@@ -515,7 +515,9 @@ export class AgendaComponent implements OnInit {
         description: '',
         size: 'md',
         confirmTextoBotao: 'Editar',
-        cancelTextoBotao: 'Cancelar',
+        cancelTextoBotao: 'Fechar',
+        extraButtonText: 'Deletar',
+        extraButtonEnabled: false,
       },
       () => this.modalCadastroService.closeModal(),
       this.detalheEventoTemplate
@@ -530,8 +532,8 @@ export class AgendaComponent implements OnInit {
         title: 'Eventos do dia',
         description: '',
         size: 'md',
-        confirmTextoBotao: 'Fechar',
-        cancelTextoBotao: 'Cancelar',
+        cancelTextoBotao: 'Fechar',
+        showConfirmButton: false,
       },
       () => this.modalCadastroService.closeModal(),
       this.listaEventosDiaTemplate

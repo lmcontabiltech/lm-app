@@ -268,6 +268,25 @@
   gap: 40px;
 }
 
+.btn-acao.extra {
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 10px 18px;
+  background: #b72130;
+  color: #ffffff;
+  width: 100%;
+}
+
+.btn-acao.extra:hover {
+  background-color: #d22536;
+}
+
 @media (max-width: 767px) {
   .input-duo {
     display: flex;
