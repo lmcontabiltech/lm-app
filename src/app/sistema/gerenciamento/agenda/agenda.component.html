@@ -83,6 +83,9 @@
   </div>
 </div>
 
+<app-feedback></app-feedback>
+<app-loading *ngIf="isLoading"></app-loading>
+
 <ng-template #formCadastroTemplate>
     <div class="forms-container">
         <form class="modal-form" [formGroup]="eventoForm">
@@ -113,7 +116,8 @@
                   label="Frequência"
                   [options]="frequencia"
                   [(selectedValue)]="selectedFrequencia"
-                  [showDefaultOption]="false">
+                  [showDefaultOption]="false"
+                  formControlName="frequenciaEvento">
                 </app-select-padrao>
             </div>
 
@@ -124,32 +128,34 @@
                     label="Tipo"
                     [options]="TipoEvento"
                     [(selectedValue)]="selectedTipo"
-                    [showDefaultOption]="false">
+                    [showDefaultOption]="false"
+                    formControlName="tipo">
                   </app-select-padrao>
               </div>
               <div class="form-group">
                   <label for="cor">Cor</label>
-                  <div class="color-dropdown" (click)="toggleDropdown()">
-                    <div class="selected-color-container">
-                      <div
-                        class="selected-color"
-                        [ngStyle]="{ 'background-color': eventoForm.get('cor')?.value }"
-                      ></div>
-                      <div class="arrow-down" [ngClass]="{ 'icon-rotate': dropdownOpen }">
-                        <img src="assets/icones/carret.svg" alt="Arrow down" />
+                  <input type="hidden" formControlName="cor" />
+                    <div class="color-dropdown" (click)="toggleDropdown()">
+                      <div class="selected-color-container">
+                        <div
+                          class="selected-color"
+                          [ngStyle]="{ 'background-color': eventoForm.get('cor')?.value }"
+                        ></div>
+                        <div class="arrow-down" [ngClass]="{ 'icon-rotate': dropdownOpen }">
+                          <img src="assets/icones/carret.svg" alt="Arrow down" />
+                        </div>
                       </div>
-                    </div>
-                    <div class="color-options" *ngIf="dropdownOpen">
-                      <div
-                        *ngFor="let cor of cores"
-                        class="color-option"
-                        [ngStyle]="{ 'background-color': cor }"
-                        [class.selected]="eventoForm.get('cor')?.value === cor"
-                        (click)="selecionarCor(cor)"
-                      ></div>
-                    </div>
+                      <div class="color-options" *ngIf="dropdownOpen">
+                        <div
+                          *ngFor="let cor of cores"
+                          class="color-option"
+                          [ngStyle]="{ 'background-color': cor }"
+                          [class.selected]="eventoForm.get('cor')?.value === cor"
+                          (click)="selecionarCor(cor); $event.stopPropagation()"
+                        ></div>
+                      </div>
                   </div>
-              </div>
+                </div>
             </div>
 
             <div class="form-group">
@@ -157,11 +163,11 @@
                 <div class="radio-group">
                     <div class="radio-item">
                         <input type="radio" id="pessoal" name="agenda" value="PESSOAL" formControlName="agenda" checked>
-                        <label for="pessoal">Minha Agenda</label>
+                        <label for="pessoal">Agenda (Pessoal)</label>
                     </div>
                     <div class="radio-item">
                         <input type="radio" id="coordenador" name="agenda" value="GERAL" formControlName="agenda">
-                        <label for="coordenador">Agenda Geral</label>
+                        <label for="coordenador">Agenda (Compartilhada)</label>
                     </div>
                 </div>
             </div>
@@ -172,6 +178,7 @@
                 [colaboradores]="colaboradores"
                 [participantes]="eventoForm.get('participantes')?.value"
                 (participantesChange)="eventoForm.get('participantes')?.setValue($event)"
+                formControlName="participantes"
               ></app-input-participantes>
             </div>
 

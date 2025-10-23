@@ -1,12 +1,6 @@
 <div class="main-container">
     <div class="title-container">
         <h2>Bem-vindo(a), {{ usuario?.nome }}</h2>
-        <div class="select-container">
-        <app-select-padrao
-            label="Últimos 7 dias"
-            [customStyles]="{ 'background-color': '#f8f9fa' }">
-        </app-select-padrao>
-        </div>
     </div>
     <div class="cards-container">
         <div class="cards-moedas">
@@ -84,8 +78,14 @@
                 </h3>
                 <div class="select-container">
                     <app-select-padrao
-                    label="Últimos 7 dias"
-                    [customStyles]="{ 'background-color': '#f8f9fa' }">
+                        label="Período"
+                        [options]="periodos"
+                        [(selectedValue)]="periodoSelecionado"
+                        (selectedValueChange)="onPeriodoChange($event)"
+                        [showDefaultOption]="true"
+                        [defaultLabel]="'Sem período'"
+                        [defaultValue]="''"
+                        [customStyles]="{ 'background-color': '#f8f9fa' }">
                     </app-select-padrao>
                 </div>
             </div>

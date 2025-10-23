@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   FormBuilder,
   FormGroup,
@@ -16,6 +17,10 @@ import { FrequenciaDescricao } from './enums/frequencia-descricao';
 import { Evento } from './evento';
 import { Agenda } from './enums/agenda';
 import { AgendaDescricao } from './enums/agenda-descricao';
+import { AgendaService } from 'src/app/services/gerenciamento/agenda.service';
+import { finalize } from 'rxjs/operators';
+import { FeedbackComponent } from 'src/app/shared/feedback/feedback.component';
+import { ErrorMessageService } from 'src/app/services/feedback/error-message.service';
 
 type ViewMode = 'week' | 'month' | 'year';
 
@@ -30,12 +35,15 @@ interface CalendarDay {
   styleUrls: ['./agenda.component.css'],
 })
 export class AgendaComponent implements OnInit {
+  @ViewChild(FeedbackComponent) feedbackComponent!: FeedbackComponent;
   eventoForm: FormGroup;
 
   colaboradores: Colaborador[] = [];
   agenda: string = 'PESSOAL';
 
   isLoading = false;
+  successMessage: string = '';
+  messageTimeout: any;
 
   @ViewChild('formCadastroTemplate') formCadastroTemplate!: TemplateRef<any>;
 
@@ -105,7 +113,9 @@ export class AgendaComponent implements OnInit {
     private formBuilder: FormBuilder,
     private modalCadastroService: ModalCadastroService,
     private colaboradoresService: ColaboradoresService,
-    private authService: AuthService
+    private authService: AuthService,
+    private agendaService: AgendaService,
+    private errorMessageService: ErrorMessageService
   ) {
     this.eventoForm = this.formBuilder.group({
       titulo: ['', [Validators.required, Validators.maxLength(100)]],
@@ -113,7 +123,7 @@ export class AgendaComponent implements OnInit {
       data: ['', Validators.required],
       horaInicio: [''],
       horaFim: [''],
-      frequenciaEvento: [''],
+      frequenciaEvento: ['NAO_REPETE'],
       tipo: ['', Validators.required],
       link: [''],
       cor: [this.cores[7]],
@@ -125,6 +135,7 @@ export class AgendaComponent implements OnInit {
   ngOnInit(): void {
     this.applyFilters();
     this.carregarColaboradores();
+    this.fetchEventos();
   }
 
   setView(mode: ViewMode) {
@@ -337,6 +348,46 @@ export class AgendaComponent implements OnInit {
       });
   }
 
+  onSubmit(colab: Colaborador): void {
+    if (this.eventoForm.invalid) return;
+
+    const dadosEvento: Evento = {
+      ...this.eventoForm.value,
+      colaboradorId: colab.id,
+    };
+
+    console.log('📦 Novo evento montado:', dadosEvento);
+    console.log('👤 Colaborador ID:', colab.id);
+    console.log('🚀 Iniciando requisição...');
+
+    this.isLoading = true;
+
+    this.agendaService
+      .cadastrarEvento(Number(colab.id), dadosEvento)
+      .subscribe({
+        next: () => {
+          this.showFeedback('success', 'Evento cadastrado com sucesso!');
+          this.modalCadastroService.closeModal();
+          this.eventoForm.reset();
+          this.isLoading = false;
+        },
+        error: (err) => {
+          const status = err?.status || 500;
+          const msg = this.errorMessageService.getErrorMessage(
+            status,
+            'POST',
+            'evento'
+          );
+          this.showFeedback('error', msg);
+        },
+      });
+  }
+
+  private showFeedback(type: 'success' | 'error', message: string): void {
+    const title = type === 'success' ? 'Sucesso' : 'Erro';
+    this.feedbackComponent?.show(type, title, message);
+  }
+
   cores: string[] = [
     '#D50000', // Tomate
     '#dc3058ff', // chiclete
@@ -382,7 +433,55 @@ export class AgendaComponent implements OnInit {
     );
   }
 
-  onSubmit(colab: Colaborador): void {
-    this.eventoForm.reset();
+  private getMesAtual(): string {
+    return `${this.selectedYear}-${String(this.selectedMonth + 1).padStart(
+      2,
+      '0'
+    )}`;
+  }
+
+  fetchEventos(): void {
+    this.eventos = [];
+
+    this.authService.obterPerfilUsuario().subscribe({
+      next: (usuario: any) => {
+        const mes = this.getMesAtual();
+        this.agendaService
+          .listarEventosDoMes(Number(usuario.id), mes)
+          .subscribe({
+            next: (eventos) => {
+              this.eventos = eventos || [];
+            },
+            error: (err) => {
+              console.error('Erro ao buscar eventos do mês:', err);
+              this.eventos = [];
+            },
+          });
+      },
+      error: (err) => {
+        console.error('Erro ao obter usuário logado:', err);
+        this.eventos = [];
+      },
+    });
+  }
+
+  exibirMensagemDeSucesso(): void {
+    const state = window.history.state as { successMessage?: string };
+    if (state?.successMessage) {
+      this.successMessage = state.successMessage;
+      setTimeout(() => (this.successMessage = ''), 3000);
+      window.history.replaceState({}, document.title);
+    }
+  }
+
+  showMessage(type: 'success' | 'error', msg: string) {
+    this.clearMessage();
+    if (type === 'success') this.successMessage = msg;
+    this.messageTimeout = setTimeout(() => this.clearMessage(), 3000);
+  }
+
+  clearMessage() {
+    this.successMessage = '';
+    if (this.messageTimeout) clearTimeout(this.messageTimeout);
   }
 }

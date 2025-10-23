@@ -1,7 +1,7 @@
 <div class="main-container">
     <div class="header-container">
         <h2>Fórum de notícias</h2>
-        <button class="btn btn-secondary" (click)="centralNoticia()">Central de notícias</button>
+        <button class="btn btn-secondary" (click)="centralNoticia()" *ngIf="permissaoUsuario === 'ROLE_ADMIN' || permissaoUsuario === 'ROLE_COORDENADOR'">Central de notícias</button>
     </div>
 
     <div class="table-container">
@@ -17,10 +17,6 @@
                       [defaultValue]="''">
                 </app-select-padrao>
             </div>
-
-            <!-- <div class="search-container">
-                <app-search (searchChange)="onSearch($event)"></app-search>
-            </div> -->
         </div>
 
         <div *ngIf="successMessage" class="alert alert-success">
