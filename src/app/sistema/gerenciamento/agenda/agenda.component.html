@@ -48,6 +48,7 @@
         [getEventosNoHorario]="getEventosNoHorario.bind(this)"
         (prevPeriod)="prevPeriod()"
         (nextPeriod)="nextPeriod()"
+        (eventClick)="openDetalheEventoModal($event)"
       ></app-semanal>
     </ng-container>
 
@@ -63,6 +64,8 @@
         [getEventosDoDia]="getEventosDoDia.bind(this)"
         (prevPeriod)="prevPeriod()"
         (nextPeriod)="nextPeriod()"
+        (dayClick)="openEventosDoDiaModal($event)"
+        (eventClick)="openDetalheEventoModal($event)"
       ></app-mensal>
     </ng-container>
 
@@ -111,25 +114,25 @@
             </div>
 
             <div class="form-group">
-                <label for="frequenciaEvento">Frequência do evento</label>
+                <label for="frequencia">Frequência do evento</label>
                 <app-select-padrao
                   label="Frequência"
                   [options]="frequencia"
                   [(selectedValue)]="selectedFrequencia"
                   [showDefaultOption]="false"
-                  formControlName="frequenciaEvento">
+                  formControlName="frequencia">
                 </app-select-padrao>
             </div>
 
             <div class="input-duo">
               <div class="form-group">
-                  <label for="tipo">Tipo</label>
+                  <label for="tipoEvento">Tipo</label>
                   <app-select-padrao
                     label="Tipo"
                     [options]="TipoEvento"
                     [(selectedValue)]="selectedTipo"
                     [showDefaultOption]="false"
-                    formControlName="tipo">
+                    formControlName="tipoEvento">
                   </app-select-padrao>
               </div>
               <div class="form-group">
@@ -193,4 +196,51 @@
             </div>
         </form>
     </div>
+</ng-template>
+
+<ng-template #detalheEventoTemplate>
+  <div class="evento-detalhe">
+    <div class="header">
+      <span class="dot" [ngStyle]="{ 'background-color': eventoSelecionado?.cor || '#7C7C7C' }"></span>
+      <h3>{{ eventoSelecionado?.titulo }}</h3>
+    </div>
+    <div class="info">
+      <p><strong>Data:</strong> {{ eventoSelecionado?.data | date:'dd/MM/yyyy' }}</p>
+      <p *ngIf="eventoSelecionado?.horaInicio"><strong>Início:</strong> {{ eventoSelecionado?.horaInicio }}</p>
+      <p *ngIf="eventoSelecionado?.horaFim"><strong>Fim:</strong> {{ eventoSelecionado?.horaFim }}</p>
+      <p><strong>Tipo:</strong> {{ getTipoDescricao(eventoSelecionado?.tipoEvento) }}</p>
+      <p><strong>Agenda:</strong> {{ eventoSelecionado?.agenda }}</p>
+      <p *ngIf="eventoSelecionado?.link"><strong>Link:</strong><a [href]="eventoSelecionado?.link" target="_blank" rel="noopener" style="word-break: break-all;">{{ eventoSelecionado?.link }}</a></p>
+      <p *ngIf="eventoSelecionado?.descricao"><strong>Descrição:</strong> {{ eventoSelecionado?.descricao }}</p>
+      <div *ngIf="eventoSelecionado?.participantes?.length">
+        <strong>Participantes:</strong>
+        <ul>
+          <li *ngFor="let p of eventoSelecionado?.participantes">{{ p }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!-- Modal: Lista de Eventos do Dia -->
+<ng-template #listaEventosDiaTemplate>
+  <div class="lista-eventos-dia">
+    <h3>Eventos de {{ dataSelecionada | date:'dd/MM/yyyy' }}</h3>
+    <div *ngIf="eventosDoDiaSelecionado?.length; else semEventos">
+      <div class="evento-item" *ngFor="let ev of eventosDoDiaSelecionado" (click)="openDetalheEventoModal(ev)">
+        <span class="dot" [ngStyle]="{ 'background-color': ev.cor || '#7C7C7C' }"></span>
+        <div class="texto">
+          <div class="titulo">{{ ev.titulo }}</div>
+          <div class="sub">
+            <span *ngIf="ev.horaInicio">{{ ev.horaInicio }}</span>
+            <span *ngIf="ev.horaFim"> - {{ ev.horaFim }}</span>
+            <span> • {{ getTipoDescricao(ev.tipoEvento) }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template #semEventos>
+      <p>Sem eventos neste dia.</p>
+    </ng-template>
+  </div>
 </ng-template>

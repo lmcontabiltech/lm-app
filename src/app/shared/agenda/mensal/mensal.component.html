@@ -15,10 +15,22 @@
       *ngFor="let dt of monthDays"
       [class.other-month]="dt.otherMonth"
       [class.today]="dt.date.toDateString() === hoje"
+      (click)="dayClick.emit(dt.date)"
     >
       <span class="date-label">{{ dt.date.getDate() }}</span>
       <ng-container *ngFor="let ev of getEventosDoDia(dt.date)">
-        <div class="post-it">{{ ev.titulo }}</div>
+        <button
+          type="button"
+          class="event-chip"
+          (click)="eventClick.emit(ev); $event.stopPropagation()"
+          title="{{ ev.titulo }}"
+        >
+          <span
+            class="dot"
+            [ngStyle]="{ 'background-color': ev.cor || '#7C7C7C' }"
+          ></span>
+          <span class="chip-title">{{ ev.titulo }}</span>
+        </button>
       </ng-container>
     </div>
   </div>

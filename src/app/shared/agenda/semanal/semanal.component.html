@@ -26,7 +26,12 @@
         <div class="hour-cell">{{ hour }}</div>
         <div class="event-cell" *ngFor="let dt of weekDays">
           <ng-container *ngFor="let ev of getEventosNoHorario(dt, hour)">
-            <div class="event-block">
+            <div
+              class="event-block"
+              [ngStyle]="getEventStyle(ev)"
+              (click)="eventClick.emit(ev)"
+              title="{{ ev.titulo }}"
+            >
               {{ ev.titulo }}
               <span class="event-time">
                 {{ ev.horaInicio }} - {{ ev.horaFim }}
