@@ -1,4 +1,4 @@
-<div class="year-calendar">
+<div class="year-calendar" #yearCalendarContainer (scroll)="onContainerScroll()">
   <div class="year-header">
     <button class="nav-btn" (click)="prevPeriod.emit()">
       <img src="assets/icones/carret-left.svg" alt="Esquerda" />
@@ -30,29 +30,40 @@
       </div>
     </div>
   </div>
+</div>
 
   <!-- Pop-up de eventos do dia -->
-  <div
+ <div
     class="day-popup"
     *ngIf="showDayPopup"
-    [ngStyle]="{
-      top: popupPosition.top + 'px',
-      left: popupPosition.left + 'px'
-    }"
+    [ngStyle]="{ top: popupPosition.top + 'px', left: popupPosition.left + 'px' }"
   >
     <div class="day-popup-header">
       <span>{{ selectedDayLabel }}</span>
       <button class="close-btn" (click)="closeDayPopup()">×</button>
     </div>
+
     <div *ngIf="selectedDayEvents.length; else noEvents">
-      <div class="event-item" *ngFor="let ev of selectedDayEvents">
-        <span class="event-title">{{ ev.titulo }}</span>
-        <span class="event-time">{{ ev.horaInicio }} - {{ ev.horaFim }}</span>
-        <span class="event-desc">{{ ev.descricao }}</span>
+      <div
+        class="event-item"
+        *ngFor="let ev of selectedDayEvents"
+        (click)="openEventDetail(ev)"
+        role="button"
+        tabindex="0"
+        (keydown.enter)="openEventDetail(ev)"
+        title="{{ ev.titulo }}"
+      >
+        <span class="event-dot" [ngStyle]="{ 'background-color': ev.cor || '#7C7C7C' }"></span>
+        <div class="event-text">
+          <span class="event-title">{{ ev.titulo }}</span>
+          <span class="event-time">
+            {{ ev.horaInicio }} <ng-container *ngIf="ev.horaFim">- {{ ev.horaFim }}</ng-container>
+          </span>
+        </div>
       </div>
     </div>
+
     <ng-template #noEvents>
       <div class="no-events">Nenhum evento neste dia.</div>
     </ng-template>
   </div>
-</div>

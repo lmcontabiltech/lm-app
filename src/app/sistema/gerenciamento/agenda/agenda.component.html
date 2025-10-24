@@ -81,6 +81,7 @@
         [getEventosDoDia]="getEventosDoDia.bind(this)"
         (prevPeriod)="prevPeriod()"
         (nextPeriod)="nextPeriod()"
+        (eventClick)="openDetalheEventoModal($event)"
       ></app-anual>
     </ng-container>
   </div>
