@@ -546,4 +546,11 @@ export class AgendaComponent implements OnInit {
       ? this.TipoEventoDescricao[key]
       : String(value || '');
   }
+
+  getAgendaDescricao(value: any): string {
+    const key = value as keyof typeof AgendaDescricao;
+    return value && AgendaDescricao[key]
+      ? AgendaDescricao[key]
+      : String(value || '');
+  }
 }
