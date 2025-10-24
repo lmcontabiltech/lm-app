@@ -21,7 +21,8 @@
               class="mini-day-cell"
               [class.other-month]="day.otherMonth"
               [class.today]="day.date.toDateString() === hoje"
-              (click)="onDayClick(day.date, $event)"
+              (click)="onDayClick(day.date, day.otherMonth, $event)"
+              [class.selected]="!day.otherMonth && isSelected(day.date)"
             >
               {{ day.date.getDate() }}
             </div>

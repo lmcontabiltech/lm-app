@@ -61,6 +61,11 @@
   padding: 12px 4px 8px 4px;
   text-align: center;
   min-width: 180px;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+.month-calendar-mini.selected {
+  background: #eef0fa;
+  border: 2px solid #1e3591;
 }
 .month-title-mini {
   font-size: 1.1rem;
@@ -103,6 +108,16 @@
 .mini-day-cell:hover {
   background: #e0e0e0;
   color: #1e3591;
+}
+.mini-day-cell.selected {
+  background: #bbbbbb;
+  border: 1px solid #484848;
+  color: #1a1918;
+  font-weight: 500;
+}
+.mini-day-cell.other-month {
+  cursor: default;
+  pointer-events: none;
 }
 
 /* Pop-up de eventos do dia */

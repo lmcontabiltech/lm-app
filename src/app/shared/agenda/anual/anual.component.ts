@@ -39,28 +39,42 @@ export class AnualComponent implements OnInit {
   selectedDayLabel: string = '';
   popupPosition = { top: 0, left: 0 };
   private clickedMonthContainer?: HTMLElement;
+  private selectedDayKey?: string;
 
   constructor() {}
 
   ngOnInit(): void {}
 
-  onDayClick(date: Date, event: MouseEvent) {
+  onDayClick(date: Date, isOtherMonth: boolean, event: MouseEvent) {
+    if (isOtherMonth) return; // não permite marcar/abrir popup
+
+    // remove seleção de mês anterior
+    if (this.clickedMonthContainer) {
+      this.clickedMonthContainer.classList.remove('selected');
+    }
+
     this.selectedDayEvents = this.getEventosDoDia(date);
-    this.selectedDayLabel = `${
-      this.diaSemana[date.getDay()]
-    }, ${date.getDate()} de ${
-      this.meses[date.getMonth()]
-    } de ${date.getFullYear()}`;
+    this.selectedDayLabel = `${this.diaSemana[date.getDay()]}, ${date.getDate()} de ${this.meses[date.getMonth()]} de ${date.getFullYear()}`;
 
-    // Encontra o container do mês (.month-calendar-mini)
     const target = event.currentTarget as HTMLElement;
-    this.clickedMonthContainer = target.closest(
-      '.month-calendar-mini'
-    ) as HTMLElement;
+    this.clickedMonthContainer = target.closest('.month-calendar-mini') as HTMLElement;
+    if (this.clickedMonthContainer) {
+      this.clickedMonthContainer.classList.add('selected');
+    }
 
-    // Calcula posição inicial
+    this.selectedDayKey = this.toKey(date);
     this.updatePopupPosition();
     this.showDayPopup = true;
+  }
+
+  // helper p/ chave do dia
+  private toKey(d: Date): string {
+    return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+  }
+
+  // usado no template
+  isSelected(d: Date): boolean {
+    return this.selectedDayKey === this.toKey(d);
   }
 
   private updatePopupPosition() {
@@ -136,7 +150,13 @@ export class AnualComponent implements OnInit {
 
   closeDayPopup() {
     this.showDayPopup = false;
+
+    if (this.clickedMonthContainer) {
+      this.clickedMonthContainer.classList.remove('selected');
+    }
     this.clickedMonthContainer = undefined;
+
+    this.selectedDayKey = undefined;
   }
 
   openEventDetail(ev: Evento) {
