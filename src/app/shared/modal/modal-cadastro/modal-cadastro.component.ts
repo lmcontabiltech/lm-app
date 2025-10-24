@@ -24,6 +24,11 @@ export class ModalCadastroComponent implements OnInit {
 
   @Output() closeModal = new EventEmitter<void>();
   @Output() confirm = new EventEmitter<void>();
+  @Output() extraButtonClick = new EventEmitter<void>();
+
+  @Input() showConfirmButton: boolean = true;
+  @Input() extraButtonText?: string;
+  @Input() extraButtonEnabled: boolean = false;
 
   constructor() {}
 
@@ -35,5 +40,9 @@ export class ModalCadastroComponent implements OnInit {
 
   onConfirm(): void {
     this.confirm.emit();
+  }
+
+  onExtraButtonClick(): void {
+    this.extraButtonClick.emit();
   }
 }

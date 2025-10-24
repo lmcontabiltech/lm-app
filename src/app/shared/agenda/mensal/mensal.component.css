@@ -63,20 +63,24 @@
   background: #f4f4f4;
 }
 .day-cell {
-  height: 100px;
+  min-height: 100px;
+  height: auto;
   position: relative;
   background: #fff;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
 }
 .day-cell.other-month {
   background: #f9f9f9;
   color: #ccc;
 }
 .day-cell:hover {
-  background: #eaeaea;
+  background: #fafafa;
 }
 .date-label {
-  position: absolute;
   top: 4px;
   left: 4px;
   font-size: 0.8rem;
@@ -230,4 +234,39 @@
   text-align: center;
   color: #888;
   margin: 8px 0;
+}
+
+/* Chips de evento dentro do dia */
+.event-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  margin: 2px 0;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--lm-text);
+  font-size: 12px;
+  line-height: 16px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.event-chip:hover {
+  background: #dedede;
+}
+
+.event-chip .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.event-chip .chip-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

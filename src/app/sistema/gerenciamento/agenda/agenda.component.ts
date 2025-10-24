@@ -46,6 +46,13 @@ export class AgendaComponent implements OnInit {
   messageTimeout: any;
 
   @ViewChild('formCadastroTemplate') formCadastroTemplate!: TemplateRef<any>;
+  @ViewChild('detalheEventoTemplate') detalheEventoTemplate!: TemplateRef<any>;
+  @ViewChild('listaEventosDiaTemplate')
+  listaEventosDiaTemplate!: TemplateRef<any>;
+
+  eventoSelecionado?: Evento;
+  dataSelecionada!: Date;
+  eventosDoDiaSelecionado: Evento[] = [];
 
   diaSemana = [
     'Domingo',
@@ -123,8 +130,8 @@ export class AgendaComponent implements OnInit {
       data: ['', Validators.required],
       horaInicio: [''],
       horaFim: [''],
-      frequenciaEvento: ['NAO_REPETE'],
-      tipo: ['', Validators.required],
+      frequencia: [''],
+      tipoEvento: ['', Validators.required],
       link: [''],
       cor: [this.cores[7]],
       participantes: [[]],
@@ -159,6 +166,7 @@ export class AgendaComponent implements OnInit {
       this.selectedYear--;
     }
     this.applyFilters();
+    this.fetchEventos();
   }
 
   nextPeriod() {
@@ -177,6 +185,7 @@ export class AgendaComponent implements OnInit {
       this.selectedYear++;
     }
     this.applyFilters();
+    this.fetchEventos();
   }
 
   goToMonth(month: number) {
@@ -243,14 +252,26 @@ export class AgendaComponent implements OnInit {
 
   // Eventos do dia
   getEventosDoDia(date: Date): Evento[] {
-    return this.eventos.filter((ev) => {
-      const evDate = new Date(ev.data);
-      return (
+    const resultado = this.eventos.filter((ev) => {
+      // Parse manual: "2025-10-21" → ano, mês, dia
+      const [ano, mes, dia] = ev.data.split('-').map(Number);
+      // Cria Date local (sem conversão UTC)
+      const evDate = new Date(ano, mes - 1, dia);
+
+      const match =
         evDate.getFullYear() === date.getFullYear() &&
         evDate.getMonth() === date.getMonth() &&
-        evDate.getDate() === date.getDate()
-      );
+        evDate.getDate() === date.getDate();
+
+      return match;
     });
+
+    console.log(
+      `📅 getEventosDoDia(${date.toLocaleDateString()}) →`,
+      resultado.map((e) => ({ id: e.id, data: e.data, titulo: e.titulo }))
+    );
+
+    return resultado;
   }
 
   // Eventos do mês (usado na visão anual)
@@ -370,6 +391,7 @@ export class AgendaComponent implements OnInit {
           this.modalCadastroService.closeModal();
           this.eventoForm.reset();
           this.isLoading = false;
+          this.fetchEventos();
         },
         error: (err) => {
           const status = err?.status || 500;
@@ -483,5 +505,45 @@ export class AgendaComponent implements OnInit {
   clearMessage() {
     this.successMessage = '';
     if (this.messageTimeout) clearTimeout(this.messageTimeout);
+  }
+
+  openDetalheEventoModal(ev: Evento): void {
+    this.eventoSelecionado = ev;
+    this.modalCadastroService.openModal(
+      {
+        title: 'Detalhes do evento',
+        description: '',
+        size: 'md',
+        confirmTextoBotao: 'Editar',
+        cancelTextoBotao: 'Fechar',
+        extraButtonText: 'Deletar',
+        extraButtonEnabled: false,
+      },
+      () => this.modalCadastroService.closeModal(),
+      this.detalheEventoTemplate
+    );
+  }
+
+  openEventosDoDiaModal(date: Date): void {
+    this.dataSelecionada = date;
+    this.eventosDoDiaSelecionado = this.getEventosDoDia(date);
+    this.modalCadastroService.openModal(
+      {
+        title: 'Eventos do dia',
+        description: '',
+        size: 'md',
+        cancelTextoBotao: 'Fechar',
+        showConfirmButton: false,
+      },
+      () => this.modalCadastroService.closeModal(),
+      this.listaEventosDiaTemplate
+    );
+  }
+
+  getTipoDescricao(value: any): string {
+    const key = value as keyof typeof this.TipoEventoDescricao;
+    return value && this.TipoEventoDescricao[key]
+      ? this.TipoEventoDescricao[key]
+      : String(value || '');
   }
 }

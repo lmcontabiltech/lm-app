@@ -22,17 +22,30 @@
 
               <!-- Conteúdo dinâmico via TemplateRef ou ng-content -->
               <ng-container *ngIf="contentTemplate; else defaultContent">
-                <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+                <ng-container
+                  *ngTemplateOutlet="contentTemplate"
+                ></ng-container>
               </ng-container>
               <ng-template #defaultContent>
                 <ng-content></ng-content>
               </ng-template>
-              
+
               <div class="modal-botoes">
                 <button class="btn-acao cancelar" (click)="onModalClose()">
-                  Cancelar
+                  {{ cancelTextoBotao }}
                 </button>
-                <button class="btn-acao salvar" (click)="onConfirm()">
+                <button
+                  *ngIf="extraButtonText"
+                  class="btn-acao extra"
+                  (click)="onExtraButtonClick()"
+                >
+                  {{ extraButtonText }}
+                </button>
+                <button
+                  *ngIf="showConfirmButton"
+                  class="btn-acao salvar"
+                  (click)="onConfirm()"
+                >
                   {{ confirmTextoBotao || "Confirmar" }}
                 </button>
               </div>

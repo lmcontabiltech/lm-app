@@ -22,6 +22,8 @@ export class MensalComponent implements OnInit {
 
   @Output() prevPeriod = new EventEmitter<void>();
   @Output() nextPeriod = new EventEmitter<void>();
+  @Output() dayClick = new EventEmitter<Date>();
+  @Output() eventClick = new EventEmitter<Evento>();
 
   constructor() {}
 
