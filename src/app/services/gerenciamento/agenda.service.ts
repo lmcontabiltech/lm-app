@@ -60,4 +60,32 @@ export class AgendaService {
       .get<Evento[]>(url, { params })
       .pipe(catchError(this.handleError('Erro ao buscar eventos do mês')));
   }
+
+  listarEventosGeraisDoMes(mes: string): Observable<Evento[]> {
+    const url = `${this.apiURL}/geral/mes`;
+    const params = new HttpParams().set('mes', mes);
+    return this.http
+      .get<Evento[]>(url, { params })
+      .pipe(
+        catchError(this.handleError('Erro ao buscar eventos gerais do mês'))
+      );
+  }
+
+  buscarEventoPorId(usuarioId: number, eventoId: number): Observable<Evento> {
+    const url = `${this.apiURL}/usuarios/${encodeURIComponent(
+      String(usuarioId)
+    )}/eventos/${encodeURIComponent(String(eventoId))}`;
+    return this.http
+      .get<Evento>(url)
+      .pipe(catchError(this.handleError('Erro ao buscar o evento')));
+  }
+
+  deletarEvento(usuarioId: number, eventoId: number): Observable<void> {
+    const url = `${this.apiURL}/usuarios/${encodeURIComponent(
+      String(usuarioId)
+    )}/eventos/${encodeURIComponent(String(eventoId))}`;
+    return this.http
+      .delete<void>(url)
+      .pipe(catchError(this.handleError('Erro ao deletar o evento')));
+  }
 }

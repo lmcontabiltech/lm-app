@@ -19,7 +19,8 @@ export class ModalCadastroService {
   openModal(
     config?: Partial<ModalCadastroComponent>,
     onConfirm?: () => void,
-    contentTemplate?: TemplateRef<any>
+    contentTemplate?: TemplateRef<any>,
+    onExtraButtonClick?: () => void
   ): void {
     if (!this.outlet) throw new Error('Outlet não registrado!');
     this.outlet.clear();
@@ -42,6 +43,12 @@ export class ModalCadastroService {
       if (onConfirm) onConfirm();
       this.closeModal();
     });
+
+    if (onExtraButtonClick) {
+      this.modalRef.instance.extraButtonClick.subscribe(() => {
+        onExtraButtonClick();
+      });
+    }
   }
 
   closeModal(): void {

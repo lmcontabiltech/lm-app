@@ -7,6 +7,7 @@ import {
   AbstractControl,
 } from '@angular/forms';
 import { ModalCadastroService } from 'src/app/services/modal/modal-cadastro.service';
+import { ModalDeleteService } from 'src/app/services/modal/modalDeletar.service';
 import { ColaboradoresService } from 'src/app/services/administrativo/colaboradores.service';
 import { Colaborador } from '../../administrativo/colaboradores/colaborador';
 import { AuthService } from 'src/app/services/auth.service';
@@ -119,6 +120,7 @@ export class AgendaComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private modalCadastroService: ModalCadastroService,
+    private modalDeleteService: ModalDeleteService,
     private colaboradoresService: ColaboradoresService,
     private authService: AuthService,
     private agendaService: AgendaService,
@@ -520,7 +522,8 @@ export class AgendaComponent implements OnInit {
         extraButtonEnabled: false,
       },
       () => this.modalCadastroService.closeModal(),
-      this.detalheEventoTemplate
+      this.detalheEventoTemplate,
+      () => this.abrirModalConfirmacaoDeletar(ev) 
     );
   }
 
@@ -552,5 +555,48 @@ export class AgendaComponent implements OnInit {
     return value && AgendaDescricao[key]
       ? AgendaDescricao[key]
       : String(value || '');
+  }
+
+  deletarEvento(evento: Evento): void {
+    if (evento.id) {
+      this.authService.obterUsuarioAutenticadoDoBackend().subscribe({
+        next: (usuario) => {
+          const usuarioId = Number(usuario.id);
+          this.agendaService.deletarEvento(usuarioId, Number(evento.id)).subscribe({
+            next: () => {
+              this.showFeedback('success', 'Evento excluído com sucesso!');
+              this.fetchEventos();
+            },
+            error: (err) => {
+              const status = err?.status || 500;
+              const msg = this.errorMessageService.getErrorMessage(
+                status,
+                'DELETE',
+                'evento'
+              );
+              this.showFeedback('error', msg);
+            },
+          });
+        },
+        error: (err) => {
+          this.showFeedback('error', 'Erro ao obter usuário autenticado.');
+        },
+      });
+    } else {
+      this.showFeedback('error', 'Evento inválido para exclusão.');
+    }
+  }
+
+  abrirModalConfirmacaoDeletar(evento: Evento): void {
+    this.modalDeleteService.openModal(
+      {
+        title: 'Deletar Evento',
+        description: `Tem certeza que deseja deletar o evento <strong>${evento.titulo}</strong>?`,
+        item: evento,
+        deletarTextoBotao: 'Deletar',
+        size: 'md',
+      },
+      () => this.deletarEvento(evento)
+    );
   }
 }
