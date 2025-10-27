@@ -70,8 +70,40 @@
         </div>
     </div>
 
+    <!-- <div class="me-atividades">
+        <div class="title-grafico">
+                <h3>Atribuídas a mim</h3>
+                <div class="select-container">
+                    <app-select-padrao
+                        label="Período"
+                        [options]="periodos"
+                        [(selectedValue)]="periodoSelecionado"
+                        (selectedValueChange)="onPeriodoChange($event)"
+                        [showDefaultOption]="true"
+                        [defaultLabel]="'Sem período'"
+                        [defaultValue]="''"
+                        [customStyles]="{ 'background-color': '#f8f9fa' }">
+                    </app-select-padrao>
+                </div>
+            </div>
+        <div class="atividade-container">
+            <div class="atividade-item">
+                <span class="titulo-atividade">Processos</span>
+                <span class="status-tag" 
+                      [style.color]="getStatusConfig(atividade.status).color"
+                      [style.background-color]="getStatusConfig(atividade.status).background"
+                      [style.border]="'1px solid ' + getStatusConfig(atividade.status).color + '33'">
+                    {{ getStatusConfig(atividade.status).label }}
+                </span>
+                <div class="data-atividade">
+                    <span>24/05/2025</span> - <span>29/05/2025</span>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
     <div class="graficos-container">
-        <div id="contabil">
+        <div>
              <div class="title-grafico">
                 <h3>
                     Atividades do Setor {{ nomeSetorGrafico }}

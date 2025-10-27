@@ -13,6 +13,8 @@ import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
 import { GraficoAtividadesPorMes } from '../dashboard-admin/models/atividades-por-mes';
 import { PeriodoDias } from '../dashboard-admin/enums/periodo-dias';
 import { PeriodoDiasDescricao } from '../dashboard-admin/enums/periodo-dias-descricao';
+import { Status } from '../../gerenciamento/atividades/enums/status';
+import { StatusDescricao } from '../../gerenciamento/atividades/enums/status-descricao';
 
 @Component({
   selector: 'app-dashboard-colaborador',
@@ -54,7 +56,11 @@ export class DashboardColaboradorComponent implements OnInit {
       key: 'suporte_ti',
       icone: 'computer.svg',
     },
-    ESTAGIARIO: { nome: 'Estagiário', key: 'estagiario', icone: 'estagiario.svg' },
+    ESTAGIARIO: {
+      nome: 'Estagiário',
+      key: 'estagiario',
+      icone: 'estagiario.svg',
+    },
     OUTROS: { nome: 'Outros', key: 'outros', icone: 'outros.svg' },
   };
 
@@ -95,6 +101,28 @@ export class DashboardColaboradorComponent implements OnInit {
       'Nov',
       'Dez',
     ],
+  };
+
+  private statusColorsMap: Record<
+    Status,
+    { color: string; background: string }
+  > = {
+    [Status.A_FAZER]: {
+      color: '#a22bc6',
+      background: '#a22bc615',
+    },
+    [Status.EM_PROGRESSO]: {
+      color: '#3498db',
+      background: '#3498db15',
+    },
+    [Status.REVISAO]: {
+      color: '#f39c12',
+      background: '#f39c1215',
+    },
+    [Status.CONCLUIDO]: {
+      color: '#1D7206',
+      background: '#1D720615',
+    },
   };
 
   constructor(
@@ -287,5 +315,21 @@ export class DashboardColaboradorComponent implements OnInit {
     if (this.setorUsuarioEnum) {
       this.carregarResumoSetor(this.setorUsuarioEnum);
     }
+  }
+
+  getStatusConfig(status: Status): {
+    label: string;
+    color: string;
+    background: string;
+  } {
+    const colors = this.statusColorsMap[status] || {
+      color: '#666',
+      background: '#f0f0f0',
+    };
+
+    return {
+      label: StatusDescricao[status] || status,
+      ...colors,
+    };
   }
 }
