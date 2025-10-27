@@ -11,6 +11,12 @@ import { DashboardColaboradorService } from 'src/app/services/graficos/dashboard
 import { DashboardAtividadesPorSetorResponseDTO } from '../dashboard-admin/models/atividades-por-setor';
 import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
 import { forkJoin } from 'rxjs';
+import { PeriodoDias } from '../dashboard-admin/enums/periodo-dias';
+import { PeriodoDiasDescricao } from '../dashboard-admin/enums/periodo-dias-descricao';
+import {
+  AtividadePorMes,
+  GraficoAtividadesPorMes,
+} from 'src/app/sistema/dashboards/dashboard-admin/models/atividades-por-mes';
 
 @Component({
   selector: 'app-dashboard-coordenador',
@@ -23,8 +29,8 @@ export class DashboardCoordenadorComponent implements OnInit {
   selic: string = '';
   permissaoUsuario: string = '';
   nomeSetorGrafico: string = '';
+  setorUsuarioEnum: Setor | null = null;
 
-  totalColaboradores: number = 0;
   totalEmpresas: number = 0;
   totalAtividadesNaoAtribuidas: number = 0;
 
@@ -43,6 +49,24 @@ export class DashboardCoordenadorComponent implements OnInit {
     PESSOAL: { nome: 'Pessoal', key: 'pessoal', icone: 'duo.svg' },
     PARALEGAL: { nome: 'Paralegal', key: 'paralegal', icone: 'balanca.svg' },
     FINANCEIRO: { nome: 'Financeiro', key: 'financeiro', icone: 'money.svg' },
+    JURIDICO: { nome: 'Jurídico', key: 'juridico', icone: 'materlo.svg' },
+    ADMINISTRATIVO: {
+      nome: 'Administrativo',
+      key: 'administrativo',
+      icone: 'case.svg',
+    },
+    RH: { nome: 'RH', key: 'rh', icone: 'duo.svg' },
+    SUPORTE_TI: {
+      nome: 'Suporte TI',
+      key: 'suporte_ti',
+      icone: 'computer.svg',
+    },
+    ESTAGIARIO: {
+      nome: 'Estagiário',
+      key: 'estagiario',
+      icone: 'estagiario.svg',
+    },
+    OUTROS: { nome: 'Outros', key: 'outros', icone: 'outros.svg' },
   };
 
   resumoAtividadesUsuario = {
@@ -51,7 +75,39 @@ export class DashboardCoordenadorComponent implements OnInit {
     totalAtribuidas: 0,
   };
 
+  periodos = Object.keys(PeriodoDias).map((key) => ({
+    value: PeriodoDias[key as keyof typeof PeriodoDias],
+    description:
+      PeriodoDiasDescricao[PeriodoDias[key as keyof typeof PeriodoDias]],
+  }));
+
+  periodoSelecionado: string = '';
+
   atividadesResumoSetor?: DashboardAtividadesPorSetorResponseDTO;
+
+  atividadesPorMes: AtividadePorMes[] = [];
+  atividadesPorMesSetor: { mes: string; quantidade: number }[] = [];
+  totalAtividadesPorMes: number = 0;
+
+  graficoAtividadesMensaisSetor = {
+    series: [
+      { name: 'Atividades', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+    ],
+    categories: [
+      'Jan',
+      'Fev',
+      'Mar',
+      'Abr',
+      'Mai',
+      'Jun',
+      'Jul',
+      'Ago',
+      'Set',
+      'Out',
+      'Nov',
+      'Dez',
+    ],
+  };
 
   constructor(
     private exchangeService: ExchangeService,
@@ -118,10 +174,31 @@ export class DashboardCoordenadorComponent implements OnInit {
           this.nomeSetorGrafico = this.setoresMap[usuario.setor].nome;
           this.carregarProgressoSetor(usuario.setor);
           this.carregarResumoSetor(usuario.setor);
+          this.carregarGraficoAtividadesPorMes(usuario.setor);
         }
       },
       error: (error) => {
         console.error('Erro ao obter perfil do usuário:', error);
+      },
+    });
+  }
+
+  carregarDadosGeral(): void {
+    const requests = {
+      empresas: this.dashboardAdminService.getQuantidadeEmpresasNumero(),
+      atividadesNaoAtribuidas:
+        this.dashboardAdminService.getQuantidadeAtividadesNaoAtribuidas(),
+    };
+
+    forkJoin(requests).subscribe({
+      next: (data) => {
+        this.totalEmpresas = data.empresas.total;
+        this.totalAtividadesNaoAtribuidas = data.atividadesNaoAtribuidas.total;
+      },
+      error: (error) => {
+        console.error('Erro ao carregar dados do dashboard:', error);
+        this.totalEmpresas = 0;
+        this.totalAtividadesNaoAtribuidas = 0;
       },
     });
   }
@@ -155,12 +232,13 @@ export class DashboardCoordenadorComponent implements OnInit {
   }
 
   carregarResumoSetor(setor: Setor): void {
-    const dataInicio = this.getDataInicioUltimos7Dias();
+    const dataInicio = this.getDataInicioPeriodo();
     this.dashboardColaboradorService
       .getAtividadesResumoSetor(setor, dataInicio)
       .subscribe({
         next: (resumo) => {
           this.atividadesResumoSetor = resumo;
+          console.log('Resumo de atividades do setor carregado:', resumo);
         },
         error: (err) => {
           console.error('Erro ao buscar resumo de atividades do setor:', err);
@@ -168,30 +246,83 @@ export class DashboardCoordenadorComponent implements OnInit {
       });
   }
 
-  // Função utilitária para pegar a data de 7 dias atrás
-  getDataInicioUltimos7Dias(): string {
+  getDataInicioPeriodo(): string {
+    if (!this.periodoSelecionado) {
+      return this.getDataInicioAno();
+    }
+
     const hoje = new Date();
-    hoje.setDate(hoje.getDate() - 7);
+    const dias = Number(this.periodoSelecionado);
+    hoje.setDate(hoje.getDate() - dias);
     return hoje.toISOString().split('T')[0];
   }
 
-  carregarDadosGeral(): void {
-    const requests = {
-      empresas: this.dashboardAdminService.getQuantidadeEmpresasNumero(),
-      atividadesNaoAtribuidas:
-        this.dashboardAdminService.getQuantidadeAtividadesNaoAtribuidas(),
-    };
+  getDataInicioAno(): string {
+    const hoje = new Date();
+    const inicioAno = new Date(hoje.getFullYear(), 0, 1);
+    return inicioAno.toISOString().split('T')[0];
+  }
 
-    forkJoin(requests).subscribe({
-      next: (data) => {
-        this.totalEmpresas = data.empresas.total;
-        this.totalAtividadesNaoAtribuidas = data.atividadesNaoAtribuidas.total;
+  carregarGraficoAtividadesPorMes(setor: Setor): void {
+    this.dashboardColaboradorService.getAtividadesPorMesSetor(setor).subscribe({
+      next: (data: GraficoAtividadesPorMes) => {
+        console.log('Dados recebidos para atividades por mês:', data);
+        this.atividadesPorMesSetor = data.valoresPorMes;
+        this.totalAtividadesPorMes = data.total;
+        this.atualizarGraficoAtividades();
       },
       error: (error) => {
-        console.error('Erro ao carregar dados do dashboard:', error);
-        this.totalEmpresas = 0;
-        this.totalAtividadesNaoAtribuidas = 0;
+        console.error('Erro ao carregar atividades por mês:', error);
+        this.atividadesPorMesSetor = [];
+        this.totalAtividadesPorMes = 0;
+        this.graficoAtividadesMensaisSetor.series = [
+          { name: 'Atividades', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] },
+        ];
       },
     });
+  }
+
+  atualizarGraficoAtividades(): void {
+    const mesesOrdenados = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+
+    const dadosGrafico: number[] = [];
+
+    mesesOrdenados.forEach((mes) => {
+      const mesEncontrado = this.atividadesPorMesSetor.find(
+        (m) => m.mes === mes
+      );
+      dadosGrafico.push(
+        mesEncontrado ? Math.floor(mesEncontrado.quantidade) : 0
+      );
+    });
+
+    this.graficoAtividadesMensaisSetor.series = [
+      {
+        name: 'Atividades',
+        data: dadosGrafico,
+      },
+    ];
+  }
+
+  onPeriodoChange(novoPeriodo: string): void {
+    this.periodoSelecionado = novoPeriodo;
+    console.log('Novo período selecionado:', novoPeriodo);
+
+    if (this.setorUsuarioEnum) {
+      this.carregarResumoSetor(this.setorUsuarioEnum);
+    }
   }
 }
