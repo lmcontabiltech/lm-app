@@ -42,11 +42,11 @@ export class DashboardColaboradorComponent implements OnInit {
     PESSOAL: { nome: 'Pessoal', key: 'pessoal', icone: 'duo.svg' },
     PARALEGAL: { nome: 'Paralegal', key: 'paralegal', icone: 'balanca.svg' },
     FINANCEIRO: { nome: 'Financeiro', key: 'financeiro', icone: 'money.svg' },
-    JURIDICO: { nome: 'Jurídico', key: 'juridico', icone: 'balanca.svg' },
+    JURIDICO: { nome: 'Jurídico', key: 'juridico', icone: 'materlo.svg' },
     ADMINISTRATIVO: {
       nome: 'Administrativo',
       key: 'administrativo',
-      icone: 'briefcase.svg',
+      icone: 'case.svg',
     },
     RH: { nome: 'RH', key: 'rh', icone: 'duo.svg' },
     SUPORTE_TI: {
@@ -54,6 +54,8 @@ export class DashboardColaboradorComponent implements OnInit {
       key: 'suporte_ti',
       icone: 'computer.svg',
     },
+    ESTAGIARIO: { nome: 'Estagiário', key: 'estagiario', icone: 'estagiario.svg' },
+    OUTROS: { nome: 'Outros', key: 'outros', icone: 'outros.svg' },
   };
 
   resumoAtividadesUsuario = {
