@@ -95,8 +95,8 @@ export class EmpresasComponent implements OnInit {
         case 'ROLE_USER':
           this.permissaoUsuario = 'Colaborador';
           break;
-        case 'ROLE_ESTAGIARIO':
-          this.permissaoUsuario = 'Estagiario';
+        case 'ROLE_SUPORTE_TI':
+          this.permissaoUsuario = 'Suporte de TI';
           break;
         default:
           this.permissaoUsuario = 'Desconhecido';

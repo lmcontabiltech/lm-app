@@ -54,7 +54,7 @@
 
           <div class="sidebar-list">
             <a
-              *ngIf="permissaoUsuario === 'Administrador'"
+              *ngIf="permissaoUsuario === 'Administrador' || permissaoUsuario === 'Suporte de TI'"
               routerLink="/usuario/dashboard-admin"
               class="sidebar-link"
               [ngClass]="{ 'active-link': isActive('/usuario/dashboard-admin') }"
@@ -74,7 +74,7 @@
             </a>
       
             <a
-              *ngIf="permissaoUsuario === 'Colaborador'|| permissaoUsuario === 'Estagiario'"
+              *ngIf="permissaoUsuario === 'Colaborador'"
               routerLink="/usuario/dashboard-colaborador"
               class="sidebar-link"
               [ngClass]="{ 'active-link': isActive('/usuario/dashboard-colaborador') }"
@@ -96,11 +96,11 @@
           </div>
         </div>
 
-        <div *ngIf="permissaoUsuario === 'Administrador' || permissaoUsuario === 'Coordenador'">
+        <div *ngIf="permissaoUsuario === 'Administrador' || permissaoUsuario === 'Suporte de TI' || permissaoUsuario === 'Coordenador'">
           <h3 class="sidebar-title">ADMINISTRATIVO</h3>
           <div class="sidebar-list">
             <a 
-              *ngIf="permissaoUsuario === 'Administrador' || permissaoUsuario === 'Coordenador'" 
+              *ngIf="permissaoUsuario === 'Administrador' || permissaoUsuario === 'Suporte de TI'" 
               routerLink="/usuario/colaboradores" 
               class="sidebar-link" 
               [ngClass]="{'active-link': isActive('/usuario/colaboradores')}">
@@ -109,7 +109,7 @@
             </a>
 
             <a 
-              *ngIf="permissaoUsuario === 'Administrador' || permissaoUsuario === 'Coordenador'" 
+              *ngIf="permissaoUsuario === 'Administrador' || permissaoUsuario === 'Suporte de TI' || permissaoUsuario === 'Coordenador'" 
               routerLink="/usuario/empresas" 
               class="sidebar-link" 
               [ngClass]="{'active-link': isActive('/usuario/empresas')}">
@@ -118,7 +118,7 @@
             </a>
 
             <a 
-              *ngIf="permissaoUsuario === 'Administrador' || permissaoUsuario === 'Coordenador'"
+              *ngIf="permissaoUsuario === 'Administrador' || permissaoUsuario === 'Suporte de TI' || permissaoUsuario === 'Coordenador'"
               routerLink="/usuario/perifericos" 
               class="sidebar-link" 
               [ngClass]="{'active-link': isActive('/usuario/perifericos')}">
@@ -133,7 +133,7 @@
   
             <div class="sidebar-list">
               <a
-                *ngIf="permissaoUsuario === 'Administrador' || permissaoUsuario === 'Coordenador'" 
+                *ngIf="permissaoUsuario === 'Administrador' || permissaoUsuario === 'Suporte de TI' || permissaoUsuario === 'Coordenador'" 
                 routerLink="/usuario/processos" 
                 class="sidebar-link" 
                 [ngClass]="{'active-link': isActive('/usuario/processos')}">
