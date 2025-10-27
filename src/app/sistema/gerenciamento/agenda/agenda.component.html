@@ -7,7 +7,8 @@
             label="Agenda"
             [options]="Agenda"
             [(selectedValue)]="selectedAgenda"
-            [showDefaultOption]="false">
+            [showDefaultOption]="false"
+            (selectedValueChange)="onAgendaChange()">
         </app-select-padrao>
       </div>
       <div class="view-toggle">
@@ -81,6 +82,7 @@
         [getEventosDoDia]="getEventosDoDia.bind(this)"
         (prevPeriod)="prevPeriod()"
         (nextPeriod)="nextPeriod()"
+        (eventClick)="openDetalheEventoModal($event)"
       ></app-anual>
     </ng-container>
   </div>
@@ -204,14 +206,41 @@
       <span class="dot" [ngStyle]="{ 'background-color': eventoSelecionado?.cor || '#7C7C7C' }"></span>
       <h3>{{ eventoSelecionado?.titulo }}</h3>
     </div>
-    <div class="info">
-      <p><strong>Data:</strong> {{ eventoSelecionado?.data | date:'dd/MM/yyyy' }}</p>
-      <p *ngIf="eventoSelecionado?.horaInicio"><strong>Início:</strong> {{ eventoSelecionado?.horaInicio }}</p>
-      <p *ngIf="eventoSelecionado?.horaFim"><strong>Fim:</strong> {{ eventoSelecionado?.horaFim }}</p>
-      <p><strong>Tipo:</strong> {{ getTipoDescricao(eventoSelecionado?.tipoEvento) }}</p>
-      <p><strong>Agenda:</strong> {{ eventoSelecionado?.agenda }}</p>
-      <p *ngIf="eventoSelecionado?.link"><strong>Link:</strong><a [href]="eventoSelecionado?.link" target="_blank" rel="noopener" style="word-break: break-all;">{{ eventoSelecionado?.link }}</a></p>
-      <p *ngIf="eventoSelecionado?.descricao"><strong>Descrição:</strong> {{ eventoSelecionado?.descricao }}</p>
+    <div class="info-container">
+      <div class="info-item">
+        <label>Data</label>
+        <p>{{ eventoSelecionado?.data | date:'dd/MM/yyyy' }}</p>
+      </div>
+      <div class="info-duo">
+        <div class="info-item">
+          <label>Hora de inicio</label>
+          <p>{{ eventoSelecionado?.horaInicio }}</p>
+        </div>
+        <div class="info-item">
+          <label>Hora de fim</label>
+          <p>{{ eventoSelecionado?.horaFim }}</p>
+        </div>
+      </div>
+      <div class="info-duo">
+        <div class="info-item">
+          <label>Tipo de evento</label>
+          <p>{{ getTipoDescricao(eventoSelecionado?.tipoEvento) }}</p>
+        </div>
+        <div class="info-item">
+          <label>Agenda</label>
+          <p>{{ getAgendaDescricao(eventoSelecionado?.agenda) }}</p>
+        </div>
+      </div>
+      <div class="info-item">
+          <label>Link</label>
+          <p *ngIf="eventoSelecionado?.link">
+            <a [href]="eventoSelecionado?.link" target="_blank" rel="noopener" style="word-break: break-all;">{{ eventoSelecionado?.link || '-' }}</a>
+          </p>
+      </div>
+      <div class="info-item">
+          <label>Descrição</label>
+          <p *ngIf="eventoSelecionado?.descricao">{{ eventoSelecionado?.descricao || '-' }}</p>
+      </div>
       <div *ngIf="eventoSelecionado?.participantes?.length">
         <strong>Participantes:</strong>
         <ul>

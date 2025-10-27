@@ -206,3 +206,61 @@
     flex-direction: column;
   }
 }
+
+/* minhas atividades */
+.atividade-container {
+  display: flex;
+  flex-direction: column;
+  background: var(--container-background);
+  gap: 5px;
+  padding: 24px;
+  border-radius: 8px;
+  border: var(--lm-border03, #e0e0e0) 1px solid;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+}
+
+.atividade-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border: var(--lm-border03, #e0e0e0) 1px solid;
+  border-radius: 8px;
+}
+
+.titulo-atividade {
+  margin: 0;
+  font-weight: 500;
+  font-size: 18px;
+  color: #160968;
+  white-space: normal;
+}
+
+.data-atividade {
+  color: #b44727;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-direction: row;
+}
+
+.status-tag {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-tag::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: currentColor;
+}

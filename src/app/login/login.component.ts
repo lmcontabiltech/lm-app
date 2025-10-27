@@ -77,13 +77,13 @@ export class LoginComponent {
   
         switch (usuario.permissao) {
           case Permissao.ADMIN:
+          case Permissao.SUPORTE_TI:
             this.router.navigate(['/usuario/dashboard-admin']);
             break;
           case Permissao.COORDENADOR:
             this.router.navigate(['/usuario/dashboard-coordenador']);
             break;
           case Permissao.USER:
-          case Permissao.ESTAGIARIO:
             this.router.navigate(['/usuario/dashboard-colaborador']);
             break;
           default:

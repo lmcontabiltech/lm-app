@@ -7,6 +7,7 @@ import {
   AbstractControl,
 } from '@angular/forms';
 import { ModalCadastroService } from 'src/app/services/modal/modal-cadastro.service';
+import { ModalDeleteService } from 'src/app/services/modal/modalDeletar.service';
 import { ColaboradoresService } from 'src/app/services/administrativo/colaboradores.service';
 import { Colaborador } from '../../administrativo/colaboradores/colaborador';
 import { AuthService } from 'src/app/services/auth.service';
@@ -110,7 +111,7 @@ export class AgendaComponent implements OnInit {
       TipoEventoDescricao[TipoEvento[key as keyof typeof TipoEvento]],
   }));
 
-  selectedAgenda: string = '';
+  selectedAgenda: string = 'PESSOAL';
   Agenda = Object.keys(Agenda).map((key) => ({
     value: Agenda[key as keyof typeof Agenda],
     description: AgendaDescricao[Agenda[key as keyof typeof Agenda]],
@@ -119,6 +120,7 @@ export class AgendaComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private modalCadastroService: ModalCadastroService,
+    private modalDeleteService: ModalDeleteService,
     private colaboradoresService: ColaboradoresService,
     private authService: AuthService,
     private agendaService: AgendaService,
@@ -143,6 +145,10 @@ export class AgendaComponent implements OnInit {
     this.applyFilters();
     this.carregarColaboradores();
     this.fetchEventos();
+
+    this.eventoForm.get('agenda')?.valueChanges.subscribe(() => {
+      this.fetchEventos();
+    });
   }
 
   setView(mode: ViewMode) {
@@ -265,11 +271,6 @@ export class AgendaComponent implements OnInit {
 
       return match;
     });
-
-    console.log(
-      `📅 getEventosDoDia(${date.toLocaleDateString()}) →`,
-      resultado.map((e) => ({ id: e.id, data: e.data, titulo: e.titulo }))
-    );
 
     return resultado;
   }
@@ -464,27 +465,56 @@ export class AgendaComponent implements OnInit {
 
   fetchEventos(): void {
     this.eventos = [];
+    const mes = this.getMesAtual();
 
     this.authService.obterPerfilUsuario().subscribe({
       next: (usuario: any) => {
-        const mes = this.getMesAtual();
-        this.agendaService
-          .listarEventosDoMes(Number(usuario.id), mes)
-          .subscribe({
+        const usuarioId = Number(usuario.id);
+
+        console.log('🔍 Filtro selecionado:', this.selectedAgenda); // DEBUG
+
+        if (this.selectedAgenda === 'PESSOAL') {
+          console.log('📅 Buscando eventos PESSOAIS...'); // DEBUG
+          this.agendaService.listarEventosDoMes(usuarioId, mes).subscribe({
             next: (eventos) => {
               this.eventos = eventos || [];
+              console.log('✅ Eventos pessoais:', this.eventos);
             },
             error: (err) => {
-              console.error('Erro ao buscar eventos do mês:', err);
+              console.error('❌ Erro ao buscar eventos pessoais:', err);
               this.eventos = [];
             },
           });
+        } else if (this.selectedAgenda === 'GERAL') {
+          console.log('🌍 Buscando eventos GERAIS...'); // DEBUG
+          this.agendaService.listarEventosGeraisDoMes(mes).subscribe({
+            next: (eventos) => {
+              this.eventos = eventos || [];
+              console.log('✅ Eventos gerais:', this.eventos);
+            },
+            error: (err) => {
+              console.error('❌ Erro ao buscar eventos compartilhados:', err);
+              this.eventos = [];
+            },
+          });
+        } else {
+          console.warn(
+            '⚠️ Valor de agenda não reconhecido:',
+            this.selectedAgenda
+          );
+        }
       },
       error: (err) => {
-        console.error('Erro ao obter usuário logado:', err);
+        console.error('❌ Erro ao obter usuário logado:', err);
         this.eventos = [];
       },
     });
+  }
+
+  // Adicione um método para reagir à mudança do select
+  onAgendaChange(): void {
+    console.log('🔄 Filtro de agenda alterado para:', this.selectedAgenda);
+    this.fetchEventos();
   }
 
   exibirMensagemDeSucesso(): void {
@@ -519,8 +549,15 @@ export class AgendaComponent implements OnInit {
         extraButtonText: 'Deletar',
         extraButtonEnabled: false,
       },
-      () => this.modalCadastroService.closeModal(),
-      this.detalheEventoTemplate
+      () => {
+        this.modalCadastroService.closeModal();
+        this.editarEvento(ev); // Chama método de edição
+      },
+      this.detalheEventoTemplate,
+      () => {
+        this.modalCadastroService.closeModal();
+        this.abrirModalConfirmacaoDeletar(ev);
+      }
     );
   }
 
@@ -545,5 +582,137 @@ export class AgendaComponent implements OnInit {
     return value && this.TipoEventoDescricao[key]
       ? this.TipoEventoDescricao[key]
       : String(value || '');
+  }
+
+  getAgendaDescricao(value: any): string {
+    const key = value as keyof typeof AgendaDescricao;
+    return value && AgendaDescricao[key]
+      ? AgendaDescricao[key]
+      : String(value || '');
+  }
+
+  deletarEvento(evento: Evento): void {
+    if (evento.id) {
+      this.authService.obterPerfilUsuario().subscribe({
+        next: (usuario) => {
+          const usuarioId = Number(usuario.id);
+          this.agendaService
+            .deletarEvento(usuarioId, Number(evento.id))
+            .subscribe({
+              next: () => {
+                this.showFeedback('success', 'Evento excluído com sucesso!');
+                this.fetchEventos();
+              },
+              error: (err) => {
+                const status = err?.status || 500;
+                const msg = this.errorMessageService.getErrorMessage(
+                  status,
+                  'DELETE',
+                  'evento'
+                );
+                this.showFeedback('error', msg);
+              },
+            });
+        },
+        error: (err) => {
+          this.showFeedback('error', 'Erro ao obter usuário autenticado.');
+        },
+      });
+    } else {
+      this.showFeedback('error', 'Evento inválido para exclusão.');
+    }
+  }
+
+  abrirModalConfirmacaoDeletar(evento: Evento): void {
+    this.modalDeleteService.openModal(
+      {
+        title: 'Deletar Evento',
+        description: `Tem certeza que deseja deletar o evento <strong>${evento.titulo}</strong>?`,
+        item: evento,
+        deletarTextoBotao: 'Deletar',
+        size: 'md',
+      },
+      () => this.deletarEvento(evento)
+    );
+  }
+
+  editarEvento(evento: Evento): void {
+    this.isLoading = true;
+
+    this.eventoForm.patchValue({
+      titulo: evento.titulo,
+      descricao: evento.descricao,
+      data: evento.data,
+      horaInicio: evento.horaInicio,
+      horaFim: evento.horaFim,
+      frequencia: evento.frequencia,
+      tipoEvento: evento.tipoEvento,
+      link: evento.link,
+      cor: evento.cor || this.cores[7],
+      participantes: evento.participantes || [],
+      agenda: evento.agenda,
+    });
+
+    // Atualiza os valores dos selects
+    this.selectedFrequencia = evento.frequencia || '';
+    this.selectedTipo = evento.tipoEvento || '';
+    this.selectedAgenda = evento.agenda;
+
+    this.authService.obterPerfilUsuario().subscribe({
+      next: (usuario) => {
+        this.isLoading = false;
+        this.modalCadastroService.openModal(
+          {
+            title: 'Editar evento',
+            description: `Atualize os dados do evento`,
+            size: 'md',
+            confirmTextoBotao: 'Salvar alterações',
+          },
+          () => this.onSubmitEdicao(usuario, evento),
+          this.formCadastroTemplate
+        );
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.showFeedback('error', 'Erro ao obter usuário autenticado.');
+      },
+    });
+  }
+
+  onSubmitEdicao(usuario: any, eventoOriginal: Evento): void {
+    if (this.eventoForm.invalid) return;
+
+    const dadosAtualizados: Evento = {
+      ...this.eventoForm.value,
+      id: eventoOriginal.id,
+    };
+
+    this.isLoading = true;
+
+    this.agendaService
+      .atualizarEvento(
+        Number(usuario.id),
+        Number(eventoOriginal.id!),
+        dadosAtualizados
+      )
+      .subscribe({
+        next: () => {
+          this.showFeedback('success', 'Evento atualizado com sucesso!');
+          this.modalCadastroService.closeModal();
+          this.eventoForm.reset();
+          this.isLoading = false;
+          this.fetchEventos();
+        },
+        error: (err) => {
+          this.isLoading = false;
+          const status = err?.status || 500;
+          const msg = this.errorMessageService.getErrorMessage(
+            status,
+            'PUT',
+            'evento'
+          );
+          this.showFeedback('error', msg);
+        },
+      });
   }
 }

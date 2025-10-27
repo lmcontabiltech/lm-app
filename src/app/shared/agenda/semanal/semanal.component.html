@@ -33,7 +33,7 @@
               title="{{ ev.titulo }}"
             >
               {{ ev.titulo }}
-              <span class="event-time">
+              <span class="event-time" [ngStyle]="getEventStyle(ev)">
                 {{ ev.horaInicio }} - {{ ev.horaFim }}
               </span>
             </div>

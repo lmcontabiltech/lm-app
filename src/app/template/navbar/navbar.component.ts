@@ -42,7 +42,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     ADMIN: 'Administrador',
     COORDENADOR: 'Coordenador',
     USER: 'Colaborador',
-    ESTAGIARIO: 'Estagiario',
+    SUPORTE_TI: 'Suporte de TI',
   };
 
   constructor(

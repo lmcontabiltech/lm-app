@@ -98,7 +98,9 @@
 }
 .event-cell {
   flex: 1;
-  min-height: 36px;
+  min-height: 48px;
+  height: auto;
+  max-height: 100%;
   border-right: 1px solid #eee;
   position: relative;
 }
@@ -116,6 +118,10 @@
   transition: background-color 0.15s ease, box-shadow 0.15s ease,
     color 0.15s ease;
 }
+.event-block:hover {
+  filter: brightness(0.9);
+}
+
 .event-time {
   display: block;
   font-size: 0.7rem;

@@ -1,4 +1,8 @@
 /* modal */
+:host h2, span {
+  text-align: center;
+}
+
 .modal-geral {
   position: relative;
   z-index: 9999;

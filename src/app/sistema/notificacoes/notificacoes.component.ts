@@ -102,8 +102,7 @@ export class NotificacoesComponent implements OnInit, OnDestroy {
       next: (contador) => {
         this.contadorNaoLidas = contador;
       },
-      error: (error) => {
-      },
+      error: (error) => {},
     });
   }
 
@@ -143,7 +142,6 @@ export class NotificacoesComponent implements OnInit, OnDestroy {
 
     this.notificacaoService.marcarTodasComoLidas().subscribe({
       next: (quantidadeMarcadas: number) => {
-
         // Marcar todas como lidas localmente
         this.notificacoes.forEach((notificacao) => {
           notificacao.lida = true;
@@ -153,13 +151,13 @@ export class NotificacoesComponent implements OnInit, OnDestroy {
         this.aplicarFiltros();
 
         if (quantidadeMarcadas > 0) {
+          const q = quantidadeMarcadas;
+          const palavra = q === 1 ? 'notificação' : 'notificações';
+          const verbo = q === 1 ? 'marcada' : 'marcadas';
+          const lida = q === 1 ? 'lida' : 'lidas';
           this.showFeedback(
             'success',
-            `${quantidadeMarcadas} notificação${
-              quantidadeMarcadas > 1 ? 'ões' : ''
-            } marcada${quantidadeMarcadas > 1 ? 's' : ''} como lida${
-              quantidadeMarcadas > 1 ? 's' : ''
-            }!`
+            `${q} ${palavra} ${verbo} como ${lida}!`
           );
         } else {
           this.showFeedback('info', 'Todas as notificações já estavam lidas');
@@ -254,7 +252,6 @@ export class NotificacoesComponent implements OnInit, OnDestroy {
       .getNotificacoesTempoReal()
       .subscribe({
         next: (notificacao: Notificacao) => {
-
           this.notificacoes.unshift(notificacao);
 
           this.aplicarFiltros();
@@ -323,5 +320,33 @@ export class NotificacoesComponent implements OnInit, OnDestroy {
     });
 
     return this.sanitizer.bypassSecurityTrustHtml(resultado);
+  }
+
+  formatarDataHora(input?: string): string {
+    if (!input) return '';
+    const d = this.parseDateLocal(input);
+    const pad = (n: number) => String(n).padStart(2, '0');
+    return `${pad(d.getDate())}/${pad(
+      d.getMonth() + 1
+    )}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  }
+
+  private parseDateLocal(s: string): Date {
+    // Suporta "YYYY-MM-DD" e "YYYY-MM-DDTHH:mm:ss"
+    const m =
+      /^(\d{4})-(\d{2})-(\d{2})(?:[T ](\d{2}):(\d{2})(?::(\d{2}))?)?/.exec(s);
+    if (m) {
+      const [, y, mo, da, hh = '00', mm = '00', ss = '00'] = m;
+      return new Date(
+        Number(y),
+        Number(mo) - 1,
+        Number(da),
+        Number(hh),
+        Number(mm),
+        Number(ss)
+      );
+    }
+    const d = new Date(s);
+    return isNaN(d.getTime()) ? new Date() : d;
   }
 }
