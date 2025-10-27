@@ -111,7 +111,7 @@ export class AgendaComponent implements OnInit {
       TipoEventoDescricao[TipoEvento[key as keyof typeof TipoEvento]],
   }));
 
-  selectedAgenda: string = '';
+  selectedAgenda: string = 'PESSOAL';
   Agenda = Object.keys(Agenda).map((key) => ({
     value: Agenda[key as keyof typeof Agenda],
     description: AgendaDescricao[Agenda[key as keyof typeof Agenda]],
@@ -145,6 +145,10 @@ export class AgendaComponent implements OnInit {
     this.applyFilters();
     this.carregarColaboradores();
     this.fetchEventos();
+
+    this.eventoForm.get('agenda')?.valueChanges.subscribe(() => {
+      this.fetchEventos();
+    });
   }
 
   setView(mode: ViewMode) {
@@ -267,11 +271,6 @@ export class AgendaComponent implements OnInit {
 
       return match;
     });
-
-    console.log(
-      `📅 getEventosDoDia(${date.toLocaleDateString()}) →`,
-      resultado.map((e) => ({ id: e.id, data: e.data, titulo: e.titulo }))
-    );
 
     return resultado;
   }
@@ -466,27 +465,56 @@ export class AgendaComponent implements OnInit {
 
   fetchEventos(): void {
     this.eventos = [];
+    const mes = this.getMesAtual();
 
     this.authService.obterPerfilUsuario().subscribe({
       next: (usuario: any) => {
-        const mes = this.getMesAtual();
-        this.agendaService
-          .listarEventosDoMes(Number(usuario.id), mes)
-          .subscribe({
+        const usuarioId = Number(usuario.id);
+
+        console.log('🔍 Filtro selecionado:', this.selectedAgenda); // DEBUG
+
+        if (this.selectedAgenda === 'PESSOAL') {
+          console.log('📅 Buscando eventos PESSOAIS...'); // DEBUG
+          this.agendaService.listarEventosDoMes(usuarioId, mes).subscribe({
             next: (eventos) => {
               this.eventos = eventos || [];
+              console.log('✅ Eventos pessoais:', this.eventos);
             },
             error: (err) => {
-              console.error('Erro ao buscar eventos do mês:', err);
+              console.error('❌ Erro ao buscar eventos pessoais:', err);
               this.eventos = [];
             },
           });
+        } else if (this.selectedAgenda === 'GERAL') {
+          console.log('🌍 Buscando eventos GERAIS...'); // DEBUG
+          this.agendaService.listarEventosGeraisDoMes(mes).subscribe({
+            next: (eventos) => {
+              this.eventos = eventos || [];
+              console.log('✅ Eventos gerais:', this.eventos);
+            },
+            error: (err) => {
+              console.error('❌ Erro ao buscar eventos compartilhados:', err);
+              this.eventos = [];
+            },
+          });
+        } else {
+          console.warn(
+            '⚠️ Valor de agenda não reconhecido:',
+            this.selectedAgenda
+          );
+        }
       },
       error: (err) => {
-        console.error('Erro ao obter usuário logado:', err);
+        console.error('❌ Erro ao obter usuário logado:', err);
         this.eventos = [];
       },
     });
+  }
+
+  // Adicione um método para reagir à mudança do select
+  onAgendaChange(): void {
+    console.log('🔄 Filtro de agenda alterado para:', this.selectedAgenda);
+    this.fetchEventos();
   }
 
   exibirMensagemDeSucesso(): void {
@@ -523,7 +551,7 @@ export class AgendaComponent implements OnInit {
       },
       () => this.modalCadastroService.closeModal(),
       this.detalheEventoTemplate,
-      () => this.abrirModalConfirmacaoDeletar(ev) 
+      () => this.abrirModalConfirmacaoDeletar(ev)
     );
   }
 
@@ -559,24 +587,26 @@ export class AgendaComponent implements OnInit {
 
   deletarEvento(evento: Evento): void {
     if (evento.id) {
-      this.authService.obterUsuarioAutenticadoDoBackend().subscribe({
+      this.authService.obterPerfilUsuario().subscribe({
         next: (usuario) => {
           const usuarioId = Number(usuario.id);
-          this.agendaService.deletarEvento(usuarioId, Number(evento.id)).subscribe({
-            next: () => {
-              this.showFeedback('success', 'Evento excluído com sucesso!');
-              this.fetchEventos();
-            },
-            error: (err) => {
-              const status = err?.status || 500;
-              const msg = this.errorMessageService.getErrorMessage(
-                status,
-                'DELETE',
-                'evento'
-              );
-              this.showFeedback('error', msg);
-            },
-          });
+          this.agendaService
+            .deletarEvento(usuarioId, Number(evento.id))
+            .subscribe({
+              next: () => {
+                this.showFeedback('success', 'Evento excluído com sucesso!');
+                this.fetchEventos();
+              },
+              error: (err) => {
+                const status = err?.status || 500;
+                const msg = this.errorMessageService.getErrorMessage(
+                  status,
+                  'DELETE',
+                  'evento'
+                );
+                this.showFeedback('error', msg);
+              },
+            });
         },
         error: (err) => {
           this.showFeedback('error', 'Erro ao obter usuário autenticado.');

@@ -7,7 +7,8 @@
             label="Agenda"
             [options]="Agenda"
             [(selectedValue)]="selectedAgenda"
-            [showDefaultOption]="false">
+            [showDefaultOption]="false"
+            (selectedValueChange)="onAgendaChange()">
         </app-select-padrao>
       </div>
       <div class="view-toggle">
