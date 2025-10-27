@@ -32,7 +32,12 @@
           <div class="notificacao-mensagem">
             <p class="notificacao-descricao" [innerHTML]="formatarDescricaoComStatus(notificacao.descricao)"></p>
           </div>
-          <div class="notificacao-new" *ngIf="!notificacao.lida && !isNotificacaoBeingProcessed(notificacao)"></div>
+          <div class="data-info">
+            <div class="notificacao-data">
+              {{ formatarDataHora(notificacao.dataNotificacao) }}
+            </div>
+            <div class="notificacao-new" *ngIf="!notificacao.lida && !isNotificacaoBeingProcessed(notificacao)"></div>
+          </div>
         </div>
     </div>
 
