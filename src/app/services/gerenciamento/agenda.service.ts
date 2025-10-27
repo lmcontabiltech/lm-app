@@ -81,7 +81,7 @@ export class AgendaService {
   }
 
   deletarEvento(usuarioId: number, eventoId: number): Observable<void> {
-    const url = `${this.apiURL}/usuarios/${encodeURIComponent(
+    const url = `${this.apiURL}/${encodeURIComponent(
       String(usuarioId)
     )}/eventos/${encodeURIComponent(String(eventoId))}`;
     return this.http

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { Usuario } from 'src/app/login/usuario';
 import { ColaboradoresService } from 'src/app/services/administrativo/colaboradores.service';
 import { ExchangeService } from 'src/app/services/exchange.service';
@@ -15,6 +15,8 @@ import { PeriodoDias } from '../dashboard-admin/enums/periodo-dias';
 import { PeriodoDiasDescricao } from '../dashboard-admin/enums/periodo-dias-descricao';
 import { Status } from '../../gerenciamento/atividades/enums/status';
 import { StatusDescricao } from '../../gerenciamento/atividades/enums/status-descricao';
+import { ModalCadastroService } from 'src/app/services/modal/modal-cadastro.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-dashboard-colaborador',
@@ -28,6 +30,10 @@ export class DashboardColaboradorComponent implements OnInit {
   permissaoUsuario: string = '';
   nomeSetorGrafico: string = '';
   setorUsuarioEnum: Setor | null = null;
+
+  @ViewChild('videoModalTemplate') videoModalTemplate!: TemplateRef<any>;
+  videoUrl: string = 'https://drive.google.com/file/d/1J1JjuLWT4QU2x_L_EpaFoMawtduHZMcJ/view?usp=sharing';
+  safeVideoUrl!: SafeResourceUrl;
 
   setorUsuario = {
     nome: '',
@@ -130,13 +136,19 @@ export class DashboardColaboradorComponent implements OnInit {
     private colaboradorService: ColaboradoresService,
     private dashboardAdminService: DashboardAdminService,
     private authService: AuthService,
-    private dashboardColaboradorService: DashboardColaboradorService
+    private dashboardColaboradorService: DashboardColaboradorService,
+    private modalCadastroService: ModalCadastroService,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
     this.loadTaxas();
     this.carregarPerfilUsuario();
     this.carregarResumoAtividadesUsuario();
+  }
+
+  ngAfterViewInit(): void {
+    this.safeVideoUrl = this.buildSafeVideoUrl(this.videoUrl);
   }
 
   loadTaxas(): void {
@@ -186,6 +198,21 @@ export class DashboardColaboradorComponent implements OnInit {
           this.carregarProgressoSetor(usuario.setor);
           this.carregarResumoSetor(usuario.setor);
           this.carregarGraficoAtividadesPorMes(usuario.setor);
+          this.usuario = usuario;
+        }
+
+        try {
+          const key = `videoSeen_${usuario.id}`;
+          const seen = localStorage.getItem(key);
+          // abrir apenas se não foi marcado como assistido
+          if (!seen) {
+            this.openModalVideo();
+            console.log('Modal de vídeo aberto automaticamente');
+          } else {
+            console.log('Vídeo já marcado como assistido para', usuario.id);
+          }
+        } catch (e) {
+          console.warn('Erro ao verificar videoSeen no localStorage', e);
         }
       },
       error: (error) => {
@@ -331,5 +358,71 @@ export class DashboardColaboradorComponent implements OnInit {
       label: StatusDescricao[status] || status,
       ...colors,
     };
+  }
+
+  openModalVideo(): void {
+    this.safeVideoUrl = this.buildSafeVideoUrl(this.videoUrl);
+    const open = () => {
+      try {
+        console.log(
+          'Abrindo modal de vídeo, template:',
+          this.videoModalTemplate
+        );
+        const key = `videoSeen_${this.usuario?.id ?? 'anon'}`;
+
+        // callback chamado ao clicar no botão confirm (Assistido)
+        const onConfirm = () => {
+          try {
+            localStorage.setItem(key, 'true'); // marca como assistido
+          } catch (e) {
+            console.warn(
+              'Não foi possível salvar videoSeen no localStorage',
+              e
+            );
+          }
+          this.modalCadastroService.closeModal();
+        };
+
+        // abre modal (passa callback de confirm)
+        this.modalCadastroService.openModal(
+          {
+            title: 'Primeiro acesso',
+            description: `Assista ao vídeo para entender como utilizar o sistema de forma eficiente.`,
+            size: 'lg',
+            confirmTextoBotao: 'Assistido',
+            cancelTextoBotao: 'Fechar',
+          },
+          onConfirm,
+          this.videoModalTemplate
+        );
+      } catch (err) {
+        console.error('Erro ao abrir modal de vídeo:', err);
+      }
+    };
+
+    if (!this.videoModalTemplate) {
+      setTimeout(() => open(), 50);
+    } else {
+      open();
+    }
+  }
+
+  private buildSafeVideoUrl(url: string): SafeResourceUrl {
+    if (!url) return this.sanitizer.bypassSecurityTrustResourceUrl('');
+    const ytMatch = url.match(
+      /(?:youtube\.com\/watch\?v=|youtu\.be\/)([A-Za-z0-9_-]+)/
+    );
+    if (ytMatch && ytMatch[1]) {
+      const embed = `https://www.youtube.com/embed/${ytMatch[1]}?rel=0`;
+      return this.sanitizer.bypassSecurityTrustResourceUrl(embed);
+    }
+    const driveMatch = url.match(
+      /drive\.google\.com\/file\/d\/([A-Za-z0-9_-]+)/
+    );
+    if (driveMatch && driveMatch[1]) {
+      const embed = `https://drive.google.com/file/d/${driveMatch[1]}/preview`;
+      return this.sanitizer.bypassSecurityTrustResourceUrl(embed);
+    }
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 }
