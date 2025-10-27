@@ -26,42 +26,39 @@ export class InputPlusComponent implements OnInit {
   @Output() itemsChange = new EventEmitter<any[]>();
   @Input() initialCount = 0;
 
+  private initialized = false;
   onChange: (value: any[]) => void = () => {};
   onTouched: () => void = () => {};
 
   ngOnInit(): void {
-    if (this.items.length === 0 && this.initialCount > 0) {
-      const newItems: Tarefa[] = Array.from(
-        { length: this.initialCount },
-        (_, i) => ({
-          id: 0,
-          tarefa: '',
-          checked: false,
-        })
-      );
-      this.items = [...newItems];
-      this.onChange(this.items);
-      this.itemsChange.emit(this.items);
-      console.log('Inicializado com itens vazios:', this.items);
+    if (!this.initialized && this.items.length === 0 && this.initialCount > 0) {
+      this.initializeItems();
     }
+    this.initialized = true;
+  }
+
+  private initializeItems(): void {
+    const newItems: Tarefa[] = Array.from(
+      { length: this.initialCount },
+      () => ({
+        id: 0,
+        tarefa: '',
+        checked: false,
+      })
+    );
+    this.items = [...newItems];
+    this.emitChange();
   }
 
   writeValue(value: any[]): void {
     if (value && value.length > 0) {
-      this.items = value;
-    } else if (this.items.length === 0 && this.initialCount > 0) {
-      const newItems: Tarefa[] = Array.from(
-        { length: this.initialCount },
-        (_, i) => ({
-          id: 0,
-          tarefa: '',
-          checked: false,
-        })
-      );
-      this.items = [...newItems];
+      this.items = [...value];
+    } else if (!this.initialized && this.initialCount > 0) {
+      this.initializeItems();
+    } else if (!value) {
+      this.items = [];
     }
-    this.onChange(this.items);
-    this.emitChange();
+    this.initialized = true;
   }
 
   registerOnChange(fn: (value: any[]) => void): void {
