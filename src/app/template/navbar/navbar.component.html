@@ -118,7 +118,7 @@
             </a>
 
             <a 
-              *ngIf="permissaoUsuario === 'Administrador' || permissaoUsuario === 'Suporte de TI' || permissaoUsuario === 'Coordenador'"
+              *ngIf="permissaoUsuario === 'Administrador' || permissaoUsuario === 'Suporte de TI'"
               routerLink="/usuario/perifericos" 
               class="sidebar-link" 
               [ngClass]="{'active-link': isActive('/usuario/perifericos')}">
