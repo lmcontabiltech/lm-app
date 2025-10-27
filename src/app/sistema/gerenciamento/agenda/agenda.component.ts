@@ -549,9 +549,15 @@ export class AgendaComponent implements OnInit {
         extraButtonText: 'Deletar',
         extraButtonEnabled: false,
       },
-      () => this.modalCadastroService.closeModal(),
+      () => {
+        this.modalCadastroService.closeModal();
+        this.editarEvento(ev); // Chama método de edição
+      },
       this.detalheEventoTemplate,
-      () => this.abrirModalConfirmacaoDeletar(ev)
+      () => {
+        this.modalCadastroService.closeModal();
+        this.abrirModalConfirmacaoDeletar(ev);
+      }
     );
   }
 
@@ -628,5 +634,85 @@ export class AgendaComponent implements OnInit {
       },
       () => this.deletarEvento(evento)
     );
+  }
+
+  editarEvento(evento: Evento): void {
+    this.isLoading = true;
+
+    this.eventoForm.patchValue({
+      titulo: evento.titulo,
+      descricao: evento.descricao,
+      data: evento.data,
+      horaInicio: evento.horaInicio,
+      horaFim: evento.horaFim,
+      frequencia: evento.frequencia,
+      tipoEvento: evento.tipoEvento,
+      link: evento.link,
+      cor: evento.cor || this.cores[7],
+      participantes: evento.participantes || [],
+      agenda: evento.agenda,
+    });
+
+    // Atualiza os valores dos selects
+    this.selectedFrequencia = evento.frequencia || '';
+    this.selectedTipo = evento.tipoEvento || '';
+    this.selectedAgenda = evento.agenda;
+
+    this.authService.obterPerfilUsuario().subscribe({
+      next: (usuario) => {
+        this.isLoading = false;
+        this.modalCadastroService.openModal(
+          {
+            title: 'Editar evento',
+            description: `Atualize os dados do evento`,
+            size: 'md',
+            confirmTextoBotao: 'Salvar alterações',
+          },
+          () => this.onSubmitEdicao(usuario, evento),
+          this.formCadastroTemplate
+        );
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.showFeedback('error', 'Erro ao obter usuário autenticado.');
+      },
+    });
+  }
+
+  onSubmitEdicao(usuario: any, eventoOriginal: Evento): void {
+    if (this.eventoForm.invalid) return;
+
+    const dadosAtualizados: Evento = {
+      ...this.eventoForm.value,
+      id: eventoOriginal.id,
+    };
+
+    this.isLoading = true;
+
+    this.agendaService
+      .atualizarEvento(
+        Number(usuario.id),
+        Number(eventoOriginal.id!),
+        dadosAtualizados
+      )
+      .subscribe({
+        next: () => {
+          this.showFeedback('success', 'Evento atualizado com sucesso!');
+          this.modalCadastroService.closeModal();
+          this.eventoForm.reset();
+          this.isLoading = false;
+          this.fetchEventos();
+        },
+        error: (err) => {
+          this.isLoading = false;
+          const status = err?.status || 500;
+          const msg = this.errorMessageService.getErrorMessage(
+            status,
+            'PUT',
+            'evento'
+          );
+          this.showFeedback('error', msg);
+        },
+      });
   }
 }
