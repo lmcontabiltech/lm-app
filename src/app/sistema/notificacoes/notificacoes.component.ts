@@ -151,13 +151,13 @@ export class NotificacoesComponent implements OnInit, OnDestroy {
         this.aplicarFiltros();
 
         if (quantidadeMarcadas > 0) {
+          const q = quantidadeMarcadas;
+          const palavra = q === 1 ? 'notificação' : 'notificações';
+          const verbo = q === 1 ? 'marcada' : 'marcadas';
+          const lida = q === 1 ? 'lida' : 'lidas';
           this.showFeedback(
             'success',
-            `${quantidadeMarcadas} notificação${
-              quantidadeMarcadas > 1 ? 'ões' : ''
-            } marcada${quantidadeMarcadas > 1 ? 's' : ''} como lida${
-              quantidadeMarcadas > 1 ? 's' : ''
-            }!`
+            `${q} ${palavra} ${verbo} como ${lida}!`
           );
         } else {
           this.showFeedback('info', 'Todas as notificações já estavam lidas');
