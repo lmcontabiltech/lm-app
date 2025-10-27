@@ -10,6 +10,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { DashboardColaboradorService } from 'src/app/services/graficos/dashboard-colaborador.service';
 import { DashboardAtividadesPorSetorResponseDTO } from '../dashboard-admin/models/atividades-por-setor';
 import { Setor } from '../../administrativo/cadastro-de-colaborador/setor';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard-coordenador',
@@ -64,6 +65,7 @@ export class DashboardCoordenadorComponent implements OnInit {
     this.loadTaxas();
     this.carregarPerfilUsuario();
     this.carregarResumoAtividadesUsuario();
+    this.carregarDadosGeral();
   }
 
   loadTaxas(): void {
@@ -92,6 +94,7 @@ export class DashboardCoordenadorComponent implements OnInit {
 
         switch (usuario.permissao) {
           case 'ROLE_ADMIN':
+          case 'ROLE_SUPORTE_TI':
             this.permissaoUsuario = 'Administrador';
             break;
           case 'ROLE_COORDENADOR':
@@ -170,5 +173,25 @@ export class DashboardCoordenadorComponent implements OnInit {
     const hoje = new Date();
     hoje.setDate(hoje.getDate() - 7);
     return hoje.toISOString().split('T')[0];
+  }
+
+  carregarDadosGeral(): void {
+    const requests = {
+      empresas: this.dashboardAdminService.getQuantidadeEmpresasNumero(),
+      atividadesNaoAtribuidas:
+        this.dashboardAdminService.getQuantidadeAtividadesNaoAtribuidas(),
+    };
+
+    forkJoin(requests).subscribe({
+      next: (data) => {
+        this.totalEmpresas = data.empresas.total;
+        this.totalAtividadesNaoAtribuidas = data.atividadesNaoAtribuidas.total;
+      },
+      error: (error) => {
+        console.error('Erro ao carregar dados do dashboard:', error);
+        this.totalEmpresas = 0;
+        this.totalAtividadesNaoAtribuidas = 0;
+      },
+    });
   }
 }
