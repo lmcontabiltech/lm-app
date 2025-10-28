@@ -72,8 +72,6 @@ export class CadastroDeColaboradorComponent implements OnInit {
         return 'Coordenador';
       case 'ROLE_USER':
         return 'Colaborador';
-      case 'ROLE_ESTAGIARIO':
-        return 'Estagiario';
       default:
         return 'Desconhecido';
     }

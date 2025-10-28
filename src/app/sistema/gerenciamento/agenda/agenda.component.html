@@ -181,9 +181,9 @@
               <label for="participantes">Participantes</label>
               <app-input-participantes
                 [colaboradores]="colaboradores"
-                [participantes]="eventoForm.get('participantes')?.value"
-                (participantesChange)="eventoForm.get('participantes')?.setValue($event)"
-                formControlName="participantes"
+                [participantes]="eventoForm.get('participanteIds')?.value"
+                (participantesChange)="eventoForm.get('participanteIds')?.setValue($event)"
+                formControlName="participanteIds"
               ></app-input-participantes>
             </div>
 
@@ -241,10 +241,10 @@
           <label>Descrição</label>
           <p *ngIf="eventoSelecionado?.descricao">{{ eventoSelecionado?.descricao || '-' }}</p>
       </div>
-      <div *ngIf="eventoSelecionado?.participantes?.length">
+      <div *ngIf="eventoSelecionado?.participanteIds?.length">
         <strong>Participantes:</strong>
         <ul>
-          <li *ngFor="let p of eventoSelecionado?.participantes">{{ p }}</li>
+          <li *ngFor="let p of eventoSelecionado?.participanteIds">{{ p }}</li>
         </ul>
       </div>
     </div>
