@@ -31,8 +31,11 @@ export class DashboardColaboradorComponent implements OnInit {
   nomeSetorGrafico: string = '';
   setorUsuarioEnum: Setor | null = null;
 
+  @ViewChild('anuncioTemplate') anuncioTemplate!: TemplateRef<any>;
+
   @ViewChild('videoModalTemplate') videoModalTemplate!: TemplateRef<any>;
-  videoUrl: string = 'https://drive.google.com/file/d/1J1JjuLWT4QU2x_L_EpaFoMawtduHZMcJ/view?usp=sharing';
+  videoUrl: string =
+    'https://drive.google.com/file/d/1J1JjuLWT4QU2x_L_EpaFoMawtduHZMcJ/view?usp=sharing';
   safeVideoUrl!: SafeResourceUrl;
 
   setorUsuario = {
@@ -381,6 +384,17 @@ export class DashboardColaboradorComponent implements OnInit {
             );
           }
           this.modalCadastroService.closeModal();
+          setTimeout(() => {
+            this.openModalAnuncio();
+          }, 300); // pequeno delay para transição suave
+        };
+
+        // também abre o anúncio se clicar em Fechar (cancelar)
+        const onCancel = () => {
+          this.modalCadastroService.closeModal();
+          setTimeout(() => {
+            this.openModalAnuncio();
+          }, 300);
         };
 
         // abre modal (passa callback de confirm)
@@ -424,5 +438,45 @@ export class DashboardColaboradorComponent implements OnInit {
       return this.sanitizer.bypassSecurityTrustResourceUrl(embed);
     }
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
+  openModalAnuncio(): void {
+    try {
+      console.log('Abrindo modal de anúncio, template:', this.anuncioTemplate);
+
+      const key = `anuncioSeen_${this.usuario?.id ?? 'anon'}`;
+      const seen = localStorage.getItem(key);
+
+      // só abre se não foi marcado como visto
+      if (seen) {
+        console.log('Anúncio já foi visto pelo usuário');
+        return;
+      }
+
+      const onConfirm = () => {
+        try {
+          localStorage.setItem(key, 'true');
+        } catch (e) {
+          console.warn(
+            'Não foi possível salvar anuncioSeen no localStorage',
+            e
+          );
+        }
+        this.modalCadastroService.closeModal();
+      };
+
+      this.modalCadastroService.openModal(
+        {
+          title: 'Aviso importante',
+          description: 'Informação sobre o sistema',
+          size: 'md',
+          confirmTextoBotao: 'Entendi',
+        },
+        onConfirm,
+        this.anuncioTemplate
+      );
+    } catch (err) {
+      console.error('Erro ao abrir modal de anúncio:', err);
+    }
   }
 }

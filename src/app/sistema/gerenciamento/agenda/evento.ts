@@ -13,5 +13,6 @@ export class Evento {
   tipoEvento?: TipoEvento;
   frequencia?: Frequencia | string;
   agenda!: string;
-  participantes?: [];
+  participanteIds?: [];
+  participantes?: [{ id: number; nome: string }];
 }

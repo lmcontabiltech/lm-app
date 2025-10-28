@@ -1,4 +1,4 @@
-<div  *ngIf="permissaoUsuario === 'Administrador' || permissaoUsuario === 'Coordenador' || permissaoUsuario === 'Estagiario'">
+<div  *ngIf="permissaoUsuario === 'Administrador'">
 <div class="main-container">
     <div class="back-title">
         <img src="assets/icones/back-left.svg" alt="Back" class="back-icon" (click)="goBack()">
@@ -17,6 +17,10 @@
             <div class="form-group">
                 <label>Permissão</label>
                 <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="colaborador" name="permissao" value="ADMIN" formControlName="permissao" checked>
+                        <label for="colaborador">Administrador</label>
+                    </div>
                     <div class="radio-item">
                         <input type="radio" id="colaborador" name="permissao" value="USER" formControlName="permissao" checked>
                         <label for="colaborador">Colaborador</label>

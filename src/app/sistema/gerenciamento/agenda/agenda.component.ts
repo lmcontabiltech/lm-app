@@ -136,7 +136,7 @@ export class AgendaComponent implements OnInit {
       tipoEvento: ['', Validators.required],
       link: [''],
       cor: [this.cores[7]],
-      participantes: [[]],
+      participanteIds: [[]],
       agenda: ['PESSOAL'],
     });
   }
@@ -373,9 +373,13 @@ export class AgendaComponent implements OnInit {
   onSubmit(colab: Colaborador): void {
     if (this.eventoForm.invalid) return;
 
+    const participanteIds = this.mapParticipanteIds(
+      this.eventoForm.get('participanteIds')?.value
+    );
+
     const dadosEvento: Evento = {
       ...this.eventoForm.value,
-      colaboradorId: colab.id,
+      participanteIds,
     };
 
     console.log('📦 Novo evento montado:', dadosEvento);
@@ -402,6 +406,7 @@ export class AgendaComponent implements OnInit {
             'evento'
           );
           this.showFeedback('error', msg);
+          this.isLoading = false;
         },
       });
   }
@@ -649,7 +654,7 @@ export class AgendaComponent implements OnInit {
       tipoEvento: evento.tipoEvento,
       link: evento.link,
       cor: evento.cor || this.cores[7],
-      participantes: evento.participantes || [],
+      participantes: evento.participanteIds || [],
       agenda: evento.agenda,
     });
 
@@ -714,5 +719,37 @@ export class AgendaComponent implements OnInit {
           this.showFeedback('error', msg);
         },
       });
+  }
+
+  private mapParticipanteIds(value: any): number[] {
+    if (!value) return [];
+    if (Array.isArray(value)) {
+      return value
+        .map((v) => {
+          if (v == null) return null;
+          if (typeof v === 'number') return v;
+          if (typeof v === 'string') {
+            const n = Number(v);
+            return Number.isFinite(n) ? n : null;
+          }
+          if (typeof v === 'object' && 'id' in v) {
+            const n = Number((v as any).id);
+            return Number.isFinite(n) ? n : null;
+          }
+          return null;
+        })
+        .filter((n): n is number => n !== null);
+    }
+    // caso venha um único objeto/id
+    if (typeof value === 'number') return [value];
+    if (typeof value === 'string') {
+      const n = Number(value);
+      return Number.isFinite(n) ? [n] : [];
+    }
+    if (typeof value === 'object' && 'id' in value) {
+      const n = Number((value as any).id);
+      return Number.isFinite(n) ? [n] : [];
+    }
+    return [];
   }
 }
