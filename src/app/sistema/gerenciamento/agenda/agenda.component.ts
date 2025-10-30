@@ -752,4 +752,14 @@ export class AgendaComponent implements OnInit {
     }
     return [];
   }
+
+  getInitial(name: string): string {
+    return name ? name.trim().charAt(0).toUpperCase() : '?';
+  }
+
+  getRandomColor(seed: string): string {
+    const colors = ['#FFB3BA', '#FFDFBA', '#BAFFC9', '#BAE1FF', '#D5BAFF'];
+    const i = seed ? seed.charCodeAt(0) % colors.length : 0;
+    return colors[i];
+  }
 }

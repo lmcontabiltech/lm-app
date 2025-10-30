@@ -241,11 +241,31 @@
           <label>Descrição</label>
           <p *ngIf="eventoSelecionado?.descricao">{{ eventoSelecionado?.descricao || '-' }}</p>
       </div>
-      <div *ngIf="eventoSelecionado?.participanteIds?.length">
-        <strong>Participantes:</strong>
-        <ul>
-          <li *ngFor="let p of eventoSelecionado?.participanteIds">{{ p }}</li>
-        </ul>
+      <div class="info-item">
+        <label>Participantes</label>
+        <div class="usuarios-fotos">
+          <ng-container *ngIf="eventoSelecionado?.participantes?.length;">
+            <ng-container *ngFor="let usuario of eventoSelecionado?.participantes">
+              <ng-container *ngIf="usuario.fotoUrl; else inicial">
+                <img
+                  [src]="usuario.fotoUrl"
+                  [alt]="usuario.nome"
+                  class="usuario-foto"
+                  [title]="usuario.nome"
+                />
+              </ng-container>
+              <ng-template #inicial>
+                <span
+                  class="usuario-inicial"
+                  [ngStyle]="{ 'background-color': getRandomColor(usuario.nome) }"
+                  [title]="usuario.nome"
+                >
+                  {{ getInitial(usuario.nome) }}
+                </span>
+              </ng-template>
+            </ng-container>
+          </ng-container>
+        </div>
       </div>
     </div>
   </div>
