@@ -88,4 +88,18 @@ export class AgendaService {
       .delete<void>(url)
       .pipe(catchError(this.handleError('Erro ao deletar o evento')));
   }
+
+  removerParticipanteDoEvento(
+    eventoId: number,
+    participanteId: number
+  ): Observable<void> {
+    const url = `${this.apiURL}/${encodeURIComponent(
+      String(eventoId)
+    )}/participantes/${encodeURIComponent(String(participanteId))}`;
+    return this.http
+      .delete<void>(url)
+      .pipe(
+        catchError(this.handleError('Erro ao remover participante do evento'))
+      );
+  }
 }
