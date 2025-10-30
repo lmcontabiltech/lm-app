@@ -117,6 +117,8 @@ export class AgendaComponent implements OnInit {
     description: AgendaDescricao[Agenda[key as keyof typeof Agenda]],
   }));
 
+  participantesVisual: { id: number; nome: string; fotoUrl?: string }[] = [];
+
   constructor(
     private formBuilder: FormBuilder,
     private modalCadastroService: ModalCadastroService,
@@ -644,6 +646,8 @@ export class AgendaComponent implements OnInit {
   editarEvento(evento: Evento): void {
     this.isLoading = true;
 
+    const idsSelecionados = this.getParticipanteIdsFromEvento(evento);
+
     this.eventoForm.patchValue({
       titulo: evento.titulo,
       descricao: evento.descricao,
@@ -654,7 +658,7 @@ export class AgendaComponent implements OnInit {
       tipoEvento: evento.tipoEvento,
       link: evento.link,
       cor: evento.cor || this.cores[7],
-      participantes: evento.participanteIds || [],
+      participanteIds: idsSelecionados,
       agenda: evento.agenda,
     });
 
@@ -687,8 +691,13 @@ export class AgendaComponent implements OnInit {
   onSubmitEdicao(usuario: any, eventoOriginal: Evento): void {
     if (this.eventoForm.invalid) return;
 
+    const participanteIds = this.mapParticipanteIds(
+      this.eventoForm.get('participanteIds')?.value
+    );
+
     const dadosAtualizados: Evento = {
       ...this.eventoForm.value,
+      participanteIds,
       id: eventoOriginal.id,
     };
 
@@ -753,6 +762,15 @@ export class AgendaComponent implements OnInit {
     return [];
   }
 
+  private getParticipanteIdsFromEvento(evento: Evento): number[] {
+    if (evento?.participanteIds?.length) return [...evento.participanteIds];
+    if (evento?.participantes?.length)
+      return evento.participantes
+        .map((p) => Number(p.id))
+        .filter((id) => Number.isFinite(id));
+    return [];
+  }
+
   getInitial(name: string): string {
     return name ? name.trim().charAt(0).toUpperCase() : '?';
   }
@@ -761,5 +779,25 @@ export class AgendaComponent implements OnInit {
     const colors = ['#FFB3BA', '#FFDFBA', '#BAFFC9', '#BAE1FF', '#D5BAFF'];
     const i = seed ? seed.charCodeAt(0) % colors.length : 0;
     return colors[i];
+  }
+
+  get participantesSelecionadosIds(): number[] {
+    return (this.eventoForm.get('participanteIds')?.value as number[]) || [];
+  }
+
+  // Colaboradores selecionados (para exibir nome/foto)
+  get participantesSelecionados(): Colaborador[] {
+    const ids = new Set(this.participantesSelecionadosIds);
+    return this.colaboradores.filter((c) => ids.has(Number(c.id)));
+  }
+
+  // Novo: ao mudar no componente, persiste apenas os IDs no form
+  onParticipantesSelecionadosChange(selection: any[]) {
+    const ids = this.mapParticipanteIds(selection);
+    this.eventoForm.get('participanteIds')?.setValue(ids);
+    this.eventoForm.get('participanteIds')?.markAsDirty();
+    this.eventoForm
+      .get('participanteIds')
+      ?.updateValueAndValidity({ onlySelf: true });
   }
 }

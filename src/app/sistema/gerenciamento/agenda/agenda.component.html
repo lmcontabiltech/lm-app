@@ -181,9 +181,8 @@
               <label for="participantes">Participantes</label>
               <app-input-participantes
                 [colaboradores]="colaboradores"
-                [participantes]="eventoForm.get('participanteIds')?.value"
-                (participantesChange)="eventoForm.get('participanteIds')?.setValue($event)"
-                formControlName="participanteIds"
+                [participantes]="participantesSelecionados"
+                (participantesChange)="onParticipantesSelecionadosChange($event)"
               ></app-input-participantes>
             </div>
 
