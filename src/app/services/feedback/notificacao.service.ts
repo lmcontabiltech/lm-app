@@ -83,10 +83,8 @@ export class NotificacaoService {
 
   atualizarContadorGlobal(): void {
     this.getContadorNaoLidas().subscribe({
-      next: (contador) => {
-      },
-      error: (error) => {
-      },
+      next: (contador) => {},
+      error: (error) => {},
     });
   }
 
@@ -239,5 +237,22 @@ export class NotificacaoService {
         }
       } catch (error) {}
     }
+  }
+
+  getContadorNaoLidasForum(): Observable<number> {
+    return this.http
+      .get<number>(`${this.apiURL}/contador-nao-lidas/forum`)
+      .pipe(
+        map((response: any) => {
+          const contador =
+            typeof response === 'number'
+              ? response
+              : response.contador || response.count || response.total || 0;
+          return contador;
+        }),
+        catchError((error) => {
+          return throwError(() => error);
+        })
+      );
   }
 }
