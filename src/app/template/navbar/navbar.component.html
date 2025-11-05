@@ -174,6 +174,9 @@
               <a routerLink="/usuario/forum-de-noticias" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/forum-de-noticias')}">
                 <img src="assets/icones/forum.svg" alt="home icon" />
                 <span>Fórum de notícias</span>
+                <div class="notification-badge" *ngIf="contadorForumNaoLidas > 0">
+                  {{ contadorForumNaoLidas > 99 ? '99+' : contadorForumNaoLidas }}
+                </div>
               </a>
             </div>
           </div>

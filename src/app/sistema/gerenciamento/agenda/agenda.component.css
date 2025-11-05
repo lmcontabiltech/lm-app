@@ -310,3 +310,80 @@
   color: #1156be;
   text-decoration: underline;
 }
+
+/* participantes */
+.usuarios-fotos {
+  display: flex;
+  gap: -8px;
+  margin: 8px 0;
+  padding: 0;
+}
+
+.usuario-foto {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  border: 2px solid #ffffff;
+  object-fit: cover;
+  margin-left: -8px;
+}
+
+.usuarios-fotos .usuario-foto:first-child {
+  margin-left: 0;
+}
+
+.usuario-inicial {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  color: #0c0c0c;
+  font-weight: 500;
+  font-size: 1rem;
+  margin-left: -8px;
+  border: 2px solid #ffffff;
+}
+
+.usuarios-fotos .usuario-inicial:first-child {
+  margin-left: 0;
+}
+
+.usuarios-fotos {
+  display: flex;
+  gap: -8px;
+  margin: 8px 0;
+  padding: 0;
+}
+
+.usuario-foto {
+  width: 32px;
+  height: 32px;
+  border-radius: 100%;
+  border: 2px solid #ffffff;
+  object-fit: cover;
+  margin-left: -8px;
+}
+
+.usuarios-fotos .usuario-foto:first-child {
+  margin-left: 0;
+}
+
+.usuario-inicial {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 100%;
+  color: #0c0c0c;
+  font-weight: 500;
+  font-size: 1rem;
+  margin-left: -8px;
+  border: 2px solid #ffffff;
+}
+
+.usuarios-fotos .usuario-inicial:first-child {
+  margin-left: 0;
+}

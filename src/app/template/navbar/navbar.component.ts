@@ -34,9 +34,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
   fotoUsuario: string = '';
 
   contadorNaoLidas = 0;
+  contadorForumNaoLidas = 0;
   private notificacaoSubscription?: Subscription;
   private tempoRealSubscription?: Subscription;
   private intervalSubscription?: Subscription;
+  private forumSubscription?: Subscription;
 
   private permissaoDescricao: { [key: string]: string } = {
     ADMIN: 'Administrador',
@@ -181,6 +183,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
         },
         error: (error) => {},
       });
+
+    this.forumSubscription = this.notificacaoService
+      .getContadorNaoLidasForum()
+      .subscribe({
+        next: (contador) => {
+          this.contadorForumNaoLidas = contador;
+        },
+        error: (error) => {},
+      });
   }
 
   private conectarNotificacaoTempoReal(): void {
@@ -224,6 +235,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     if (this.intervalSubscription) {
       this.intervalSubscription.unsubscribe();
+    }
+
+    if (this.forumSubscription) {
+      this.forumSubscription.unsubscribe();
     }
   }
 

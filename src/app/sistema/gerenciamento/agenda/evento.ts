@@ -14,5 +14,6 @@ export class Evento {
   frequencia?: Frequencia | string;
   agenda!: string;
   participanteIds?: [];
-  participantes?: [{ id: number; nome: string }];
+  participantes?: { id: number; nome: string; fotoUrl?: string }[];
+  usuario?: { id: number; nome: string; fotoUrl?: string };
 }
