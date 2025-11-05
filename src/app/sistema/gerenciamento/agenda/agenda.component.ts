@@ -258,31 +258,39 @@ export class AgendaComponent implements OnInit {
     return Array.from({ length: 12 }, (_, i) => i);
   }
 
+  private toYMD(date: Date): string {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  }
+
   // Eventos do dia
   getEventosDoDia(date: Date): Evento[] {
-    const resultado = this.eventos.filter((ev) => {
-      // Parse manual: "2025-10-21" → ano, mês, dia
-      const [ano, mes, dia] = ev.data.split('-').map(Number);
-      // Cria Date local (sem conversão UTC)
-      const evDate = new Date(ano, mes - 1, dia);
+    // evita mostrar eventos nas células de "outro mês"
+    if (
+      date.getFullYear() !== this.selectedYear ||
+      date.getMonth() !== this.selectedMonth
+    ) {
+      return [];
+    }
 
-      const match =
-        evDate.getFullYear() === date.getFullYear() &&
-        evDate.getMonth() === date.getMonth() &&
-        evDate.getDate() === date.getDate();
+    const target = this.toYMD(date);
 
-      return match;
+    // filtra por string YYYY-MM-DD — protege contra timezone/hora no backend
+    return this.eventos.filter((ev) => {
+      if (!ev || !ev.data) return false;
+      // ev.data pode vir com hora ou timezone; pega só a parte YYYY-MM-DD
+      const evDateStr = String(ev.data).slice(0, 10);
+      return evDateStr === target;
     });
-
-    return resultado;
   }
 
   // Eventos do mês (usado na visão anual)
   getEventosNoMes(mes: number, ano: number): number {
-    return this.eventos.filter((ev) => {
-      const evDate = new Date(ev.data);
-      return evDate.getFullYear() === ano && evDate.getMonth() === mes;
-    }).length;
+    const prefix = `${ano}-${String(mes + 1).padStart(2, '0')}`;
+    return this.eventos.filter((ev) => String(ev.data).startsWith(prefix))
+      .length;
   }
 
   // Eventos por hora (usado na visão semanal)
@@ -472,7 +480,7 @@ export class AgendaComponent implements OnInit {
 
   fetchEventos(): void {
     this.eventos = [];
-    const mes = this.getMesAtual();
+    const mesStr = this.getMesAtual(); // "YYYY-MM"
 
     this.authService.obterPerfilUsuario().subscribe({
       next: (usuario: any) => {
@@ -480,13 +488,23 @@ export class AgendaComponent implements OnInit {
 
         console.log('🔍 Filtro selecionado:', this.selectedAgenda); // DEBUG
 
+        const assignAndFilter = (eventos: Evento[] | null) => {
+          const arr = (eventos || []).filter((ev) => {
+            if (!ev?.data) return false;
+            // pega apenas os 7 primeiros chars "YYYY-MM"
+            return String(ev.data).slice(0, 7) === mesStr;
+          });
+          this.eventos = arr;
+          console.log(
+            `✅ Eventos (${this.selectedAgenda}) filtrados para ${mesStr}:`,
+            this.eventos
+          );
+        };
+
         if (this.selectedAgenda === 'PESSOAL') {
           console.log('📅 Buscando eventos PESSOAIS...'); // DEBUG
-          this.agendaService.listarEventosDoMes(usuarioId, mes).subscribe({
-            next: (eventos) => {
-              this.eventos = eventos || [];
-              console.log('✅ Eventos pessoais:', this.eventos);
-            },
+          this.agendaService.listarEventosDoMes(usuarioId, mesStr).subscribe({
+            next: (eventos) => assignAndFilter(eventos),
             error: (err) => {
               console.error('❌ Erro ao buscar eventos pessoais:', err);
               this.eventos = [];
@@ -494,11 +512,8 @@ export class AgendaComponent implements OnInit {
           });
         } else if (this.selectedAgenda === 'GERAL') {
           console.log('🌍 Buscando eventos GERAIS...'); // DEBUG
-          this.agendaService.listarEventosGeraisDoMes(mes).subscribe({
-            next: (eventos) => {
-              this.eventos = eventos || [];
-              console.log('✅ Eventos gerais:', this.eventos);
-            },
+          this.agendaService.listarEventosGeraisDoMes(mesStr).subscribe({
+            next: (eventos) => assignAndFilter(eventos),
             error: (err) => {
               console.error('❌ Erro ao buscar eventos compartilhados:', err);
               this.eventos = [];

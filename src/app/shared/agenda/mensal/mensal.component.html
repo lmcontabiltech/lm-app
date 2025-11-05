@@ -14,23 +14,27 @@
       class="day-cell"
       *ngFor="let dt of monthDays"
       [class.other-month]="dt.otherMonth"
-      [class.today]="dt.date.toDateString() === hoje"
+      [class.today]="!dt.otherMonth && dt.date.toDateString() === hoje"
       (click)="dayClick.emit(dt.date)"
     >
       <span class="date-label">{{ dt.date.getDate() }}</span>
-      <ng-container *ngFor="let ev of getEventosDoDia(dt.date)">
-        <button
-          type="button"
-          class="event-chip"
-          (click)="eventClick.emit(ev); $event.stopPropagation()"
-          title="{{ ev.titulo }}"
-        >
-          <span
-            class="dot"
-            [ngStyle]="{ 'background-color': ev.cor || '#7C7C7C' }"
-          ></span>
-          <span class="chip-title">{{ ev.titulo }}</span>
-        </button>
+
+      <!-- NÃO renderiza eventos para células de outro mês -->
+      <ng-container *ngIf="!dt.otherMonth">
+        <ng-container *ngFor="let ev of eventosDoDia(dt.date)">
+          <button
+            type="button"
+            class="event-chip"
+            (click)="eventClick.emit(ev); $event.stopPropagation()"
+            title="{{ ev.titulo }}"
+          >
+            <span
+              class="dot"
+              [ngStyle]="{ 'background-color': ev.cor || '#7C7C7C' }"
+            ></span>
+            <span class="chip-title">{{ ev.titulo }}</span>
+          </button>
+        </ng-container>
       </ng-container>
     </div>
   </div>
