@@ -3,12 +3,13 @@
     <h2>Agenda</h2>
     <div class="header-actions">
       <div class="select-container">
-         <app-select-padrao
-            label="Agenda"
-            [options]="Agenda"
-            [(selectedValue)]="selectedAgenda"
-            [showDefaultOption]="false"
-            (selectedValueChange)="onAgendaChange()">
+        <app-select-padrao
+          label="Agenda"
+          [options]="Agenda"
+          [(selectedValue)]="selectedAgenda"
+          [showDefaultOption]="false"
+          (selectedValueChange)="onAgendaChange()"
+        >
         </app-select-padrao>
       </div>
       <div class="view-toggle">
@@ -34,7 +35,9 @@
           Ano
         </button>
       </div>
-      <button class="btn btn-primary" (click)="adicionarEvento()">Evento +</button>
+      <button class="btn btn-primary" (click)="adicionarEvento()">
+        Evento +
+      </button>
     </div>
   </div>
 
@@ -92,123 +95,156 @@
 <app-loading *ngIf="isLoading"></app-loading>
 
 <ng-template #formCadastroTemplate>
-    <div class="forms-container">
-        <form class="modal-form" [formGroup]="eventoForm">
-          <div class="form-group">
-              <label for="titulo">Titulo</label>
-              <input formControlName="titulo" type="text" placeholder="Insira um titulo para o evento" />
+  <div class="forms-container">
+    <form class="modal-form" [formGroup]="eventoForm">
+      <div class="form-group">
+        <label for="titulo">Titulo</label>
+        <input
+          formControlName="titulo"
+          type="text"
+          placeholder="Insira um titulo para o evento"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="data">Data</label>
+        <input formControlName="data" type="date" />
+      </div>
+
+      <div class="input-duo">
+        <div class="form-group">
+          <label for="horaInicio">Hora Início</label>
+          <input formControlName="horaInicio" type="time" />
+        </div>
+        <div class="form-group">
+          <label for="horaFim">Hora Fim</label>
+          <input formControlName="horaFim" type="time" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="frequencia">Frequência do evento</label>
+        <app-select-padrao
+          label="Frequência"
+          [options]="frequencia"
+          [(selectedValue)]="selectedFrequencia"
+          [showDefaultOption]="false"
+          formControlName="frequencia"
+        >
+        </app-select-padrao>
+      </div>
+
+      <div class="input-duo">
+        <div class="form-group">
+          <label for="tipoEvento">Tipo</label>
+          <app-select-padrao
+            label="Tipo"
+            [options]="TipoEvento"
+            [(selectedValue)]="selectedTipo"
+            [showDefaultOption]="false"
+            formControlName="tipoEvento"
+          >
+          </app-select-padrao>
+        </div>
+        <div class="form-group">
+          <label for="cor">Cor</label>
+          <input type="hidden" formControlName="cor" />
+          <div class="color-dropdown" (click)="toggleDropdown()">
+            <div class="selected-color-container">
+              <div
+                class="selected-color"
+                [ngStyle]="{ 'background-color': eventoForm.get('cor')?.value }"
+              ></div>
+              <div
+                class="arrow-down"
+                [ngClass]="{ 'icon-rotate': dropdownOpen }"
+              >
+                <img src="assets/icones/carret.svg" alt="Arrow down" />
+              </div>
+            </div>
+            <div class="color-options" *ngIf="dropdownOpen">
+              <div
+                *ngFor="let cor of cores"
+                class="color-option"
+                [ngStyle]="{ 'background-color': cor }"
+                [class.selected]="eventoForm.get('cor')?.value === cor"
+                (click)="selecionarCor(cor); $event.stopPropagation()"
+              ></div>
+            </div>
           </div>
+        </div>
+      </div>
 
-            <div class="form-group">
-                <label for="data">Data</label>
-                <input formControlName="data" type="date" />
-            </div>
+      <div class="form-group">
+        <label>Agenda</label>
+        <div class="radio-group">
+          <div class="radio-item">
+            <input
+              type="radio"
+              id="pessoal"
+              name="agenda"
+              value="PESSOAL"
+              formControlName="agenda"
+              checked
+            />
+            <label for="pessoal">Agenda (Pessoal)</label>
+          </div>
+          <div class="radio-item">
+            <input
+              type="radio"
+              id="coordenador"
+              name="agenda"
+              value="GERAL"
+              formControlName="agenda"
+            />
+            <label for="coordenador">Agenda (Compartilhada)</label>
+          </div>
+        </div>
+      </div>
 
-            <div class="input-duo">
-              <div class="form-group">
-                  <label for="horaInicio">Hora Início</label>
-                  <input formControlName="horaInicio" type="time" />
-              </div>
-              <div class="form-group">
-                  <label for="horaFim">Hora Fim</label>
-                  <input formControlName="horaFim" type="time" />
-              </div>
-            </div>
+      <div class="form-group">
+        <label for="participantes">Participantes</label>
+        <app-input-participantes
+          [colaboradores]="colaboradores"
+          [participantes]="participantesSelecionados"
+          (participantesChange)="onParticipantesSelecionadosChange($event)"
+        ></app-input-participantes>
+      </div>
 
-            <div class="form-group">
-                <label for="frequencia">Frequência do evento</label>
-                <app-select-padrao
-                  label="Frequência"
-                  [options]="frequencia"
-                  [(selectedValue)]="selectedFrequencia"
-                  [showDefaultOption]="false"
-                  formControlName="frequencia">
-                </app-select-padrao>
-            </div>
+      <div class="form-group">
+        <label for="link">Link da reunião</label>
+        <input
+          formControlName="link"
+          type="text"
+          placeholder="Insira o link da reunião"
+        />
+      </div>
 
-            <div class="input-duo">
-              <div class="form-group">
-                  <label for="tipoEvento">Tipo</label>
-                  <app-select-padrao
-                    label="Tipo"
-                    [options]="TipoEvento"
-                    [(selectedValue)]="selectedTipo"
-                    [showDefaultOption]="false"
-                    formControlName="tipoEvento">
-                  </app-select-padrao>
-              </div>
-              <div class="form-group">
-                  <label for="cor">Cor</label>
-                  <input type="hidden" formControlName="cor" />
-                    <div class="color-dropdown" (click)="toggleDropdown()">
-                      <div class="selected-color-container">
-                        <div
-                          class="selected-color"
-                          [ngStyle]="{ 'background-color': eventoForm.get('cor')?.value }"
-                        ></div>
-                        <div class="arrow-down" [ngClass]="{ 'icon-rotate': dropdownOpen }">
-                          <img src="assets/icones/carret.svg" alt="Arrow down" />
-                        </div>
-                      </div>
-                      <div class="color-options" *ngIf="dropdownOpen">
-                        <div
-                          *ngFor="let cor of cores"
-                          class="color-option"
-                          [ngStyle]="{ 'background-color': cor }"
-                          [class.selected]="eventoForm.get('cor')?.value === cor"
-                          (click)="selecionarCor(cor); $event.stopPropagation()"
-                        ></div>
-                      </div>
-                  </div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Agenda</label>
-                <div class="radio-group">
-                    <div class="radio-item">
-                        <input type="radio" id="pessoal" name="agenda" value="PESSOAL" formControlName="agenda" checked>
-                        <label for="pessoal">Agenda (Pessoal)</label>
-                    </div>
-                    <div class="radio-item">
-                        <input type="radio" id="coordenador" name="agenda" value="GERAL" formControlName="agenda">
-                        <label for="coordenador">Agenda (Compartilhada)</label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group">
-              <label for="participantes">Participantes</label>
-              <app-input-participantes
-                [colaboradores]="colaboradores"
-                [participantes]="participantesSelecionados"
-                (participantesChange)="onParticipantesSelecionadosChange($event)"
-              ></app-input-participantes>
-            </div>
-
-            <div class="form-group">
-                <label for="link">Link da reunião</label>
-                <input formControlName="link" type="text" placeholder="Insira o link da reunião" />
-            </div>
-
-            <div class="form-group">
-                <label for="descricao">Descrição</label>
-                <textarea formControlName="descricao" placeholder="Digite uma descrição para o evento" type="text"></textarea>
-            </div>
-        </form>
-    </div>
+      <div class="form-group">
+        <label for="descricao">Descrição</label>
+        <textarea
+          formControlName="descricao"
+          placeholder="Digite uma descrição para o evento"
+          type="text"
+        ></textarea>
+      </div>
+    </form>
+  </div>
 </ng-template>
 
 <ng-template #detalheEventoTemplate>
   <div class="evento-detalhe">
     <div class="header">
-      <span class="dot" [ngStyle]="{ 'background-color': eventoSelecionado?.cor || '#7C7C7C' }"></span>
+      <span
+        class="dot"
+        [ngStyle]="{ 'background-color': eventoSelecionado?.cor || '#7C7C7C' }"
+      ></span>
       <h3>{{ eventoSelecionado?.titulo }}</h3>
     </div>
     <div class="info-container">
       <div class="info-item">
         <label>Data</label>
-        <p>{{ eventoSelecionado?.data | date:'dd/MM/yyyy' }}</p>
+        <p>{{ eventoSelecionado?.data | date : "dd/MM/yyyy" }}</p>
       </div>
       <div class="info-duo">
         <div class="info-item">
@@ -230,21 +266,41 @@
           <p>{{ getAgendaDescricao(eventoSelecionado?.agenda) }}</p>
         </div>
       </div>
-      <div class="info-item">
-          <label>Link</label>
-          <p *ngIf="eventoSelecionado?.link">
-            <a [href]="eventoSelecionado?.link" target="_blank" rel="noopener" style="word-break: break-all;">{{ eventoSelecionado?.link || '-' }}</a>
-          </p>
+      <div class="info-duo">
+        <div class="info-item">
+          <label>frequência</label>
+          <p>{{ getFrequenciaDescricao(eventoSelecionado?.frequencia) }}</p>
+        </div>
+        <div class="info-item">
+          <label>Criado por</label>
+          <p>{{ eventoSelecionado?.usuario?.nome }}</p>
+        </div>
       </div>
       <div class="info-item">
-          <label>Descrição</label>
-          <p *ngIf="eventoSelecionado?.descricao">{{ eventoSelecionado?.descricao || '-' }}</p>
+        <label>Link</label>
+        <p *ngIf="eventoSelecionado?.link">
+          <a
+            [href]="eventoSelecionado?.link"
+            target="_blank"
+            rel="noopener"
+            style="word-break: break-all"
+            >{{ eventoSelecionado?.link || "-" }}</a
+          >
+        </p>
+      </div>
+      <div class="info-item">
+        <label>Descrição</label>
+        <p *ngIf="eventoSelecionado?.descricao">
+          {{ eventoSelecionado?.descricao || "-" }}
+        </p>
       </div>
       <div class="info-item">
         <label>Participantes</label>
         <div class="usuarios-fotos">
-          <ng-container *ngIf="eventoSelecionado?.participantes?.length;">
-            <ng-container *ngFor="let usuario of eventoSelecionado?.participantes">
+          <ng-container *ngIf="eventoSelecionado?.participantes?.length">
+            <ng-container
+              *ngFor="let usuario of eventoSelecionado?.participantes"
+            >
               <ng-container *ngIf="usuario.fotoUrl; else inicial">
                 <img
                   [src]="usuario.fotoUrl"
@@ -256,7 +312,9 @@
               <ng-template #inicial>
                 <span
                   class="usuario-inicial"
-                  [ngStyle]="{ 'background-color': getRandomColor(usuario.nome) }"
+                  [ngStyle]="{
+                    'background-color': getRandomColor(usuario.nome)
+                  }"
                   [title]="usuario.nome"
                 >
                   {{ getInitial(usuario.nome) }}
@@ -273,10 +331,17 @@
 <!-- Modal: Lista de Eventos do Dia -->
 <ng-template #listaEventosDiaTemplate>
   <div class="lista-eventos-dia">
-    <h3>Eventos de {{ dataSelecionada | date:'dd/MM/yyyy' }}</h3>
+    <h3>Eventos de {{ dataSelecionada | date : "dd/MM/yyyy" }}</h3>
     <div *ngIf="eventosDoDiaSelecionado?.length; else semEventos">
-      <div class="evento-item" *ngFor="let ev of eventosDoDiaSelecionado" (click)="openDetalheEventoModal(ev)">
-        <span class="dot" [ngStyle]="{ 'background-color': ev.cor || '#7C7C7C' }"></span>
+      <div
+        class="evento-item"
+        *ngFor="let ev of eventosDoDiaSelecionado"
+        (click)="openDetalheEventoModal(ev)"
+      >
+        <span
+          class="dot"
+          [ngStyle]="{ 'background-color': ev.cor || '#7C7C7C' }"
+        ></span>
         <div class="texto">
           <div class="titulo">{{ ev.titulo }}</div>
           <div class="sub">

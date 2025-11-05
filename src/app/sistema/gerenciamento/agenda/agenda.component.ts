@@ -598,6 +598,13 @@ export class AgendaComponent implements OnInit {
       : String(value || '');
   }
 
+  getFrequenciaDescricao(value: any): string {
+    const key = value as keyof typeof FrequenciaDescricao;
+    return value && FrequenciaDescricao[key]
+      ? FrequenciaDescricao[key]
+      : String(value || '');
+  }
+
   deletarEvento(evento: Evento): void {
     if (evento.id) {
       this.authService.obterPerfilUsuario().subscribe({

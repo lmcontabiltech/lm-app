@@ -15,4 +15,5 @@ export class Evento {
   agenda!: string;
   participanteIds?: [];
   participantes?: { id: number; nome: string; fotoUrl?: string }[];
+  usuario?: { id: number; nome: string; fotoUrl?: string };
 }
