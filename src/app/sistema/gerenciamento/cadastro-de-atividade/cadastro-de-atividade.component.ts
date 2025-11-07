@@ -184,7 +184,7 @@ export class CadastroDeAtividadeComponent implements OnInit {
     let empresasParaEnviar: string[] = [];
 
     if (this.isEditMode) {
-      empresasParaEnviar = [this.atividadeForm.value.idEmpresa];
+      empresasParaEnviar = [this.atividadeForm.value.idEmpresas];
     } else {
       empresasParaEnviar = this.atividadeForm.value.idEmpresas;
     }
