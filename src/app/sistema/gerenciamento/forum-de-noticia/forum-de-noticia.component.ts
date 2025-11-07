@@ -8,6 +8,7 @@ import { TipoNoticia, TipoNoticiaCor } from './enums/tipo-noticia';
 import { TipoNoticiaDescricao } from './enums/tipo-noticia-descricao';
 import { Permissao } from 'src/app/login/permissao';
 import { AuthService } from 'src/app/services/auth.service';
+import { NotificacaoService } from 'src/app/services/feedback/notificacao.service';
 
 @Component({
   selector: 'app-forum-de-noticia',
@@ -38,7 +39,8 @@ export class ForumDeNoticiaComponent implements OnInit {
   constructor(
     private router: Router,
     private noticiaService: NoticiaService,
-    private authService: AuthService
+    private authService: AuthService,
+    private notificacaoService: NotificacaoService
   ) {}
 
   ngOnInit(): void {
@@ -99,7 +101,11 @@ export class ForumDeNoticiaComponent implements OnInit {
           (n) => String(n.id) === String(id)
         );
         if (noticia) noticia.lida = true;
-        // Navegue para detalhes se necessário
+
+        // atualiza o contador de notícias (usa API dedicada)
+        this.noticiaService.refreshContadorNoticias();
+
+        // navegue para detalhes se necessário
         this.router.navigate(['/usuario/detalhes-noticia', idNum]);
       },
       error: (err) => {

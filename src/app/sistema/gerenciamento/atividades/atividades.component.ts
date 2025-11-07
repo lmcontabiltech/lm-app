@@ -28,6 +28,7 @@ import {
   Validators,
   AbstractControl,
 } from '@angular/forms';
+import { finalize } from 'rxjs/operators';
 
 interface Tasks {
   [key: string]: Atividade[];
@@ -170,25 +171,32 @@ export class AtividadesComponent implements OnInit, AfterViewInit {
   }
 
   carregarAtividades(): void {
-    this.atividadeService.getAtividades().subscribe(
-      (atividades: Atividade[]) => {
-        console.log('Lista de atividades retornada pelo backend:', atividades);
-        this.statuses.forEach((status) => (this.atividades[status] = []));
-        atividades.forEach((atividade) => {
-          const statusColuna = this.mapStatusToColuna(
-            atividade.status ?? 'A_FAZER'
+    this.isLoading = true;
+    this.atividadeService
+      .getAtividades()
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe({
+        next: (atividades: Atividade[]) => {
+          console.log(
+            'Lista de atividades retornada pelo backend:',
+            atividades
           );
-          if (this.atividades[statusColuna]) {
-            this.atividades[statusColuna].push(atividade);
-          } else {
-            this.atividades['backlog'].push(atividade);
-          }
-        });
-      },
-      (error) => {
-        console.error('Erro ao carregar atividades:', error);
-      }
-    );
+          this.statuses.forEach((status) => (this.atividades[status] = []));
+          atividades.forEach((atividade) => {
+            const statusColuna = this.mapStatusToColuna(
+              atividade.status ?? 'A_FAZER'
+            );
+            if (this.atividades[statusColuna]) {
+              this.atividades[statusColuna].push(atividade);
+            } else {
+              this.atividades['backlog'].push(atividade);
+            }
+          });
+        },
+        error: (error) => {
+          console.error('Erro ao carregar atividades:', error);
+        },
+      });
   }
 
   private statusToColunaMap: { [key: string]: string } = {

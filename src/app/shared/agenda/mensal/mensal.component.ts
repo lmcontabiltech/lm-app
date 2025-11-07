@@ -30,7 +30,7 @@ export class MensalComponent implements OnInit {
 
   ngOnInit(): void {}
 
-   private toYMD(date: Date): string {
+  private toYMD(date: Date): string {
     const y = date.getFullYear();
     const m = String(date.getMonth() + 1).padStart(2, '0');
     const d = String(date.getDate()).padStart(2, '0');
@@ -38,7 +38,10 @@ export class MensalComponent implements OnInit {
   }
 
   eventosDoDia(date: Date): Evento[] {
-    if (date.getFullYear() !== this.selectedYear || date.getMonth() !== this.selectedMonth) {
+    if (
+      date.getFullYear() !== this.selectedYear ||
+      date.getMonth() !== this.selectedMonth
+    ) {
       return [];
     }
 
@@ -48,5 +51,13 @@ export class MensalComponent implements OnInit {
       const evDateStr = String(ev.data).slice(0, 10);
       return evDateStr === target;
     });
+  }
+
+  // bloqueia ações para células de outro mês
+  onDayClick(day: CalendarDay): void {
+    if (day.otherMonth) {
+      return;
+    }
+    this.dayClick.emit(day.date);
   }
 }

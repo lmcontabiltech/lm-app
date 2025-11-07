@@ -6,14 +6,19 @@ import {
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Noticia } from 'src/app/sistema/gerenciamento/forum-de-noticia/noticia';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NoticiaService {
   apiURL: string = environment.apiURLBase + '/api/noticias';
+
+  private contadorNoticiasNaoLidasSubject = new BehaviorSubject<number>(0);
+  public contadorNoticiasNaoLidas$ =
+    this.contadorNoticiasNaoLidasSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
@@ -25,6 +30,7 @@ export class NoticiaService {
 
     return this.http.post<any>(this.apiURL, formData).pipe(
       map((response) => response),
+        tap(() => this.refreshContadorNoticias()),
       catchError((error: HttpErrorResponse) => {
         console.error('Erro bruto recebido do servidor:', error);
 
@@ -236,5 +242,31 @@ export class NoticiaService {
         return throwError(() => new Error(errorMessage));
       })
     );
+  }
+
+  getContadorNoticiasNaoLidas(): Observable<number> {
+    const url = `${this.apiURL}/nao-lidas`;
+    return this.http.get<number>(url).pipe(
+      map((response: any) => {
+        const contador =
+          typeof response === 'number'
+            ? response
+            : response.count ?? response.total ?? response.contador ?? 0;
+        return contador;
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error('Erro ao obter contador de notícias não lidas:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  // força refresh do subject a partir do servidor
+  refreshContadorNoticias(): void {
+    this.getContadorNoticiasNaoLidas().subscribe({
+      next: (count) => this.contadorNoticiasNaoLidasSubject.next(count),
+      error: () => {
+      },
+    });
   }
 }
