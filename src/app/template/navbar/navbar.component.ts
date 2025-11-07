@@ -13,6 +13,7 @@ import { Usuario } from 'src/app/login/usuario';
 import { NotificacaoService } from 'src/app/services/feedback/notificacao.service';
 import { Subscription } from 'rxjs';
 import { ModalPadraoService } from 'src/app/services/modal/modalConfirmacao.service';
+import { NoticiaService } from 'src/app/services/gerenciamento/noticia.service';
 
 @Component({
   selector: 'app-navbar',
@@ -34,11 +35,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
   fotoUsuario: string = '';
 
   contadorNaoLidas = 0;
-  contadorForumNaoLidas = 0;
   private notificacaoSubscription?: Subscription;
   private tempoRealSubscription?: Subscription;
   private intervalSubscription?: Subscription;
-  private forumSubscription?: Subscription;
+
+  contadorNoticiasNaoLidas = 0;
+  private noticiaCounterSub?: Subscription;
 
   private permissaoDescricao: { [key: string]: string } = {
     ADMIN: 'Administrador',
@@ -52,7 +54,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private renderer: Renderer2,
     private authService: AuthService,
     private notificacaoService: NotificacaoService,
-    private modalConfirmacaoService: ModalPadraoService
+    private modalConfirmacaoService: ModalPadraoService,
+    private noticiaService: NoticiaService
   ) {}
 
   ngOnInit(): void {
@@ -60,6 +63,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.carregarContadorNotificacoes();
     this.conectarNotificacaoTempoReal();
     this.iniciarAtualizacaoPeriodica();
+    this.carregarContadorNoticias();
     this.authService.obterPerfilUsuario().subscribe(
       (response: Usuario) => {
         console.log('Perfil do usuário:', response);
@@ -81,6 +85,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.desconectarNotificacoes();
+    this.noticiaCounterSub?.unsubscribe();
   }
 
   toggleSidebar(): void {
@@ -183,15 +188,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
         },
         error: (error) => {},
       });
-
-    this.forumSubscription = this.notificacaoService
-      .getContadorNaoLidasForum()
-      .subscribe({
-        next: (contador) => {
-          this.contadorForumNaoLidas = contador;
-        },
-        error: (error) => {},
-      });
   }
 
   private conectarNotificacaoTempoReal(): void {
@@ -236,10 +232,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     if (this.intervalSubscription) {
       this.intervalSubscription.unsubscribe();
     }
-
-    if (this.forumSubscription) {
-      this.forumSubscription.unsubscribe();
-    }
   }
 
   public atualizarContadorNotificacoes(): void {
@@ -264,5 +256,17 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.logout();
       }
     );
+  }
+
+  private carregarContadorNoticias(): void {
+    this.noticiaCounterSub?.unsubscribe();
+
+    this.noticiaCounterSub =
+      this.noticiaService.contadorNoticiasNaoLidas$.subscribe({
+        next: (c) => (this.contadorNoticiasNaoLidas = c),
+        error: () => {},
+      });
+
+    this.noticiaService.refreshContadorNoticias();
   }
 }
