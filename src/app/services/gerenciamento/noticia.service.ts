@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import { Noticia } from 'src/app/sistema/gerenciamento/forum-de-noticia/noticia';
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +30,7 @@ export class NoticiaService {
 
     return this.http.post<any>(this.apiURL, formData).pipe(
       map((response) => response),
+        tap(() => this.refreshContadorNoticias()),
       catchError((error: HttpErrorResponse) => {
         console.error('Erro bruto recebido do servidor:', error);
 
