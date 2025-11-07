@@ -106,7 +106,7 @@ export class NotificacaoService {
     const url = `${this.apiURL}/${notificacaoId}/marcar-como-lida`;
 
     return this.http.put<void>(url, {}).pipe(
-      tap((response) => {
+      tap(() => {
         this.decrementarContador();
       }),
       catchError((error) => {
@@ -119,15 +119,14 @@ export class NotificacaoService {
     return this.http
       .put<number>(`${this.apiURL}/marcar-todas-como-lidas`, {})
       .pipe(
+        tap(() => {
+          this.contadorNaoLidasSubject.next(0);
+        }),
         map((response: any) => {
           const quantidadeMarcadas =
             typeof response === 'number'
               ? response
               : response.count || response.total || response.marcadas || 0;
-
-          // Zera contador local
-          this.contadorNaoLidasSubject.next(0);
-
           return quantidadeMarcadas;
         }),
         catchError((error) => {
@@ -199,7 +198,19 @@ export class NotificacaoService {
                 buffer = lines.pop() || '';
 
                 for (const line of lines) {
-                  this.processarLinhaSSE(line, observer);
+                  const trimmed = line.trim();
+                  if (trimmed.startsWith('data: ')) {
+                    try {
+                      const data = trimmed.substring(6);
+                      if (data.trim()) {
+                        const notificacao: Notificacao = JSON.parse(data);
+                        if (notificacao && !notificacao.lida) {
+                          this.incrementarContador();
+                        }
+                        observer.next(notificacao);
+                      }
+                    } catch (err) {}
+                  }
                 }
               }
             } catch (error) {
@@ -221,12 +232,8 @@ export class NotificacaoService {
 
   private processarLinhaSSE(line: string, observer: any): void {
     const trimmedLine = line.trim();
-
-    // Log de todas as linhas recebidas para debug
     if (trimmedLine) {
     }
-
-    // Processar linha de dados SSE
     if (trimmedLine.startsWith('data: ')) {
       try {
         const data = trimmedLine.substring(6);

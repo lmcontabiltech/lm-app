@@ -180,58 +180,59 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   private carregarContadorNotificacoes(): void {
-    this.notificacaoSubscription = this.notificacaoService
-      .getContadorNaoLidas()
-      .subscribe({
+    this.notificacaoSubscription?.unsubscribe();
+
+    this.notificacaoSubscription =
+      this.notificacaoService.contadorNaoLidas$.subscribe({
         next: (contador) => {
           this.contadorNaoLidas = contador;
         },
-        error: (error) => {},
+        error: (err) => {
+          console.error('[Navbar] erro contador notificações:', err);
+        },
       });
+
+    this.notificacaoService
+      .getContadorNaoLidas()
+      .subscribe({ next: () => {}, error: () => {} });
   }
 
   private conectarNotificacaoTempoReal(): void {
+    // evita múltiplas conexões
+    if (this.tempoRealSubscription && !this.tempoRealSubscription.closed) {
+      return;
+    }
+
     this.tempoRealSubscription = this.notificacaoService
       .getNotificacoesTempoReal()
       .subscribe({
         next: (novaNotificacao) => {
-          if (!novaNotificacao.lida) {
-            this.contadorNaoLidas++;
-            console.log('🔢 Contador atualizado para:', this.contadorNaoLidas);
-          }
+          console.log('[SSE] notificação recebida no Navbar:', novaNotificacao);
         },
         error: (error) => {
-          // Reconectar após 5 segundos
-          setTimeout(() => {
-            this.conectarNotificacaoTempoReal();
-          }, 5000);
+          console.error('[SSE] erro:', error);
+          setTimeout(() => this.conectarNotificacaoTempoReal(), 5000);
         },
       });
   }
 
   private iniciarAtualizacaoPeriodica(): void {
-    // Atualizar contador a cada 2 minutos como fallback
-    this.intervalSubscription = new Subscription();
+    this.intervalSubscription?.unsubscribe();
 
     const interval = setInterval(() => {
-      this.carregarContadorNotificacoes();
-    }, 120000); // 2 minutos
+      this.notificacaoService
+        .getContadorNaoLidas()
+        .subscribe({ next: () => {}, error: () => {} });
+    }, 5000);
 
+    this.intervalSubscription = new Subscription();
     this.intervalSubscription.add(() => clearInterval(interval));
   }
 
   private desconectarNotificacoes(): void {
-    if (this.notificacaoSubscription) {
-      this.notificacaoSubscription.unsubscribe();
-    }
-
-    if (this.tempoRealSubscription) {
-      this.tempoRealSubscription.unsubscribe();
-    }
-
-    if (this.intervalSubscription) {
-      this.intervalSubscription.unsubscribe();
-    }
+    this.notificacaoSubscription?.unsubscribe();
+    this.tempoRealSubscription?.unsubscribe();
+    this.intervalSubscription?.unsubscribe();
   }
 
   public atualizarContadorNotificacoes(): void {
