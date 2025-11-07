@@ -64,6 +64,7 @@
 </div>
 
 <app-feedback></app-feedback>
+<app-loading *ngIf="isLoading"></app-loading>
 
 <ng-template #copyFormTemplate>
   <form [formGroup]="copyForm" class="modal-form">
