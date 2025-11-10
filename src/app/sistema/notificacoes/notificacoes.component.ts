@@ -40,9 +40,8 @@ export class NotificacoesComponent implements OnInit, OnDestroy {
   filtroLidas: string = 'todas';
 
   contadorNaoLidas = 0;
+  private contadorSub?: Subscription;
   selectedNotificacao: any = null;
-
-  // SSE Subscription
   private sseSubscription?: Subscription;
 
   setores = Object.keys(Setor).map((key) => ({
@@ -71,7 +70,13 @@ export class NotificacoesComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.carregarNotificacoes();
-    this.carregarContadorNaoLidas();
+    this.contadorSub = this.notificacaoService.contadorNaoLidas$.subscribe({
+      next: (c) => (this.contadorNaoLidas = c),
+      error: () => {},
+    });
+    this.notificacaoService
+      .getContadorNaoLidas()
+      .subscribe({ next: () => {}, error: () => {} });
     this.conectarNotificacoesTempoReal();
   }
 
@@ -79,6 +84,8 @@ export class NotificacoesComponent implements OnInit, OnDestroy {
     if (this.sseSubscription) {
       this.sseSubscription.unsubscribe();
     }
+    this.sseSubscription?.unsubscribe();
+    this.contadorSub?.unsubscribe();
   }
 
   carregarNotificacoes(): void {
@@ -121,7 +128,9 @@ export class NotificacoesComponent implements OnInit, OnDestroy {
       next: () => {
         console.log('Notificação marcada como lida:', notificacao.id);
         notificacao.lida = true;
-        this.carregarContadorNaoLidas();
+        this.notificacaoService
+          .getContadorNaoLidas()
+          .subscribe({ next: () => {}, error: () => {} });
         this.aplicarFiltros();
         this.isMarkingAsRead[notificacao.id] = false;
       },
@@ -142,12 +151,14 @@ export class NotificacoesComponent implements OnInit, OnDestroy {
 
     this.notificacaoService.marcarTodasComoLidas().subscribe({
       next: (quantidadeMarcadas: number) => {
-        // Marcar todas como lidas localmente
         this.notificacoes.forEach((notificacao) => {
           notificacao.lida = true;
         });
 
-        this.carregarContadorNaoLidas();
+        this.notificacaoService
+          .getContadorNaoLidas()
+          .subscribe({ next: () => {}, error: () => {} });
+
         this.aplicarFiltros();
 
         if (quantidadeMarcadas > 0) {
