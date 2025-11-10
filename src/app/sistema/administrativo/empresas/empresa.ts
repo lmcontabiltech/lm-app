@@ -1,4 +1,5 @@
 import { Atividade } from '../../gerenciamento/atividades/atividades';
+import { Endereco } from './endereco';
 
 export class Empresa {
   id!: string;
@@ -58,4 +59,5 @@ export class Empresa {
   unidadeEmpresa!: string;
   identificadorEmpresaMatriz!: string;
   matriz!: { id: string; razaoSocial: string; cnpj: string } | null;
+  endereco!: Endereco;
 }
