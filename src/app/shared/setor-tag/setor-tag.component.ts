@@ -36,8 +36,6 @@ export class SetorTagComponent {
         return '#585A60';
       case Setor.FINANCEIRO:
         return '#5a5f7b';
-      case Setor.JURIDICO:
-        return '#2C3E50';
       case Setor.ADMINISTRATIVO:
         return '#34495E';
       case Setor.RH:

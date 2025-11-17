@@ -51,7 +51,6 @@ export class DashboardAdminComponent implements OnInit {
     Setor.FINANCEIRO,
     Setor.PARALEGAL,
     Setor.PESSOAL,
-    Setor.JURIDICO,
     Setor.ADMINISTRATIVO,
     Setor.RH,
     Setor.SUPORTE_TI,
