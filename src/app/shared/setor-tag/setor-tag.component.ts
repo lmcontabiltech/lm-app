@@ -21,6 +21,7 @@ export class SetorTagComponent {
     return this.setor ? SetorDescricao[this.setor] : 'Desconhecido';
   }
 
+  // cores das tags por setor
   get cor(): string {
     if (this.setor === 'ALL') {
       return '#47484e';
