@@ -21,6 +21,7 @@ export class SetorTagComponent {
     return this.setor ? SetorDescricao[this.setor] : 'Desconhecido';
   }
 
+  // cores das tags por setor
   get cor(): string {
     if (this.setor === 'ALL') {
       return '#47484e';
@@ -36,8 +37,6 @@ export class SetorTagComponent {
         return '#585A60';
       case Setor.FINANCEIRO:
         return '#5a5f7b';
-      case Setor.JURIDICO:
-        return '#2C3E50';
       case Setor.ADMINISTRATIVO:
         return '#34495E';
       case Setor.RH:
