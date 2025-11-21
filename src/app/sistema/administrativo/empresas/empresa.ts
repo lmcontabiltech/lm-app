@@ -33,22 +33,6 @@ export class Empresa {
   } | null;
   identificadorPessoal!: string;
   pessoal!: { id: string; nome: string; email: string; fotoUrl: string } | null;
-  identificadorJuridico!: string;
-  juridico!: {
-    id: string;
-    nome: string;
-    email: string;
-    fotoUrl: string;
-  } | null;
-  identificadorEstagiario!: string;
-  estagiario!: {
-    id: string;
-    nome: string;
-    email: string;
-    fotoUrl: string;
-  } | null;
-  identificadorOutros!: string;
-  outros!: { id: string; nome: string; email: string; fotoUrl: string } | null;
   atividades!: Atividade[];
   status!: string;
   controleParcelamento!: string;
@@ -60,4 +44,8 @@ export class Empresa {
   identificadorEmpresaMatriz!: string;
   matriz!: { id: string; razaoSocial: string; cnpj: string } | null;
   endereco!: Endereco;
+  tipoIdentificacao!: string;
+  cpf!: string;
+  porteEmpresa!: string;
+  naturezaJuridica!: string;
 }
