@@ -71,7 +71,7 @@
                                 </button>
                             </div>
                         </th>
-                        <th>CNPJ</th>
+                        <th>CNPJ/CPF</th>
                         <th>Unidade da empresa</th>
                         <th>Regime da Empresa</th>
                         <th>Ações</th>
@@ -88,7 +88,7 @@
                                 </span>
                             </div>
                         </td>
-                        <td>{{ empresa.cnpj }}</td>
+                        <td>{{ empresa.cnpj }} {{ empresa.cpf }}</td>
                         <td>{{ empresa.unidadeEmpresa }}</td>
                         <td>{{ getDescricaoRegime(empresa.regimeEmpresa) }}</td>
                         <td>
