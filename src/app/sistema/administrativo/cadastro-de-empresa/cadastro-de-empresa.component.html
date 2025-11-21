@@ -160,6 +160,9 @@
                         [(selectedValue)]="selectedNaturezaJuridica"
                         formControlName="naturezaJuridica">
                         </app-select-padrao>
+                        <div *ngIf="empresaForm.get('naturezaJuridica')?.invalid && (empresaForm.get('naturezaJuridica')?.touched || empresaForm.get('naturezaJuridica')?.dirty)" class="error-obrigatorio">
+                            O campo Natureza juridica é obrigatório.
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="porteEmpresa">Porte da empresa<span *ngIf="isRequired('porteEmpresa')" class="required-asterisk">*</span></label>
@@ -169,6 +172,9 @@
                         [(selectedValue)]="selectedPorteEmpresa"
                         formControlName="porteEmpresa">
                         </app-select-padrao>
+                        <div *ngIf="empresaForm.get('porteEmpresa')?.invalid && (empresaForm.get('porteEmpresa')?.touched || empresaForm.get('porteEmpresa')?.dirty)" class="error-obrigatorio">
+                            O campo Porte da empresa é obrigatório.
+                        </div>
                     </div>
                 </div>
 
