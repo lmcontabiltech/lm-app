@@ -144,7 +144,7 @@ export class CadastroDeEmpresaComponent implements OnInit {
       identificadorParalegal: [[]],
       identificadorPessoal: [[]],
       status: ['ATIVO'],
-      controleParcelamento: [[], Validators.required],
+      controleParcelamento: [[]],
       situacao: ['', Validators.required],
       tipo: ['', Validators.required],
       porteEmpresa: ['', Validators.required],

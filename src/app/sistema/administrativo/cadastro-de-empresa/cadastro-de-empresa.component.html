@@ -111,7 +111,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="controleParcelamento">Controle de Parcelamento<span *ngIf="isRequired('controleParcelamento')" class="required-asterisk">*</span></label>
+                    <label for="controleParcelamento">Controle de Parcelamento</label>
                     <app-multiplo-select
                     label="Selecionar controle de parcelamento"
                     [options]="controleParcelamento"
@@ -119,9 +119,6 @@
                     [multiple]="true" 
                     formControlName="controleParcelamento">
                     </app-multiplo-select>
-                    <div *ngIf="empresaForm.get('controleParcelamento')?.invalid && (empresaForm.get('controleParcelamento')?.touched || empresaForm.get('controleParcelamento')?.dirty)" class="error-obrigatorio">
-                        O campo Controle de Parcelamento é obrigatório.
-                    </div>
                 </div>
 
                 <div class="input-duo">
