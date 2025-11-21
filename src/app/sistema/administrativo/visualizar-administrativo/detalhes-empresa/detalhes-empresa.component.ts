@@ -8,6 +8,8 @@ import { RegimeDaEmpresaDescricao } from '../../empresas/enums/regime-da-empresa
 import { ControleDeParcelamentoDescricao } from '../../empresas/enums/controle-de-parcelamento-descricao';
 import { TipoEmpresaDescricao } from '../../empresas/enums/tipo-empresa-descricao';
 import { SituacaoDescricao } from '../../empresas/enums/situacao-descricao';
+import { NaturezaJuridicaDescricao } from '../../empresas/enums/natureza-juridica-descricao';
+import { PorteEmpresaDescricao } from '../../empresas/enums/porte-empresa-descricao';
 
 @Component({
   selector: 'app-detalhes-empresa',
@@ -103,16 +105,26 @@ export class DetalhesEmpresaComponent implements OnInit {
 
   getTipoEmpresaDescricao(tipo?: string): string {
     if (!tipo) return '-';
-
     const tipoKey = tipo as keyof typeof TipoEmpresaDescricao;
     return TipoEmpresaDescricao[tipoKey] || tipo;
   }
 
   getSituacaoDescricao(situacao?: string): string {
     if (!situacao) return '-';
-
     const situacaoKey = situacao as keyof typeof SituacaoDescricao;
     return SituacaoDescricao[situacaoKey] || situacao;
+  }
+
+  getNaturezaJuridicaDescricao(natureza?: string): string {
+    if (!natureza) return '-';
+    const naturezaKey = natureza as keyof typeof NaturezaJuridicaDescricao;
+    return NaturezaJuridicaDescricao[naturezaKey] || natureza;
+  }
+
+  getPorteEmpresaDescricao(porte?: string): string {
+    if (!porte) return '-';
+    const porteKey = porte as keyof typeof PorteEmpresaDescricao;
+    return PorteEmpresaDescricao[porteKey] || porte;
   }
 
   extrairColaboradores(): void {

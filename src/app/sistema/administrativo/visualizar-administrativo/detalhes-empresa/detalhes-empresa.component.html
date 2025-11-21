@@ -8,6 +8,7 @@
     <div class="actions">
         <h1>{{ empresa.razaoSocial }}</h1>
         <p>{{ empresa.cnpj }}</p>
+        <p>{{ empresa.cpf }}</p>
     </div>
 </div>
 <div class="subMain-container">
@@ -50,12 +51,57 @@
         </div>
         <div class="data-grid">
             <div class="item-data">
+                <label>Natureza jurídica</label>
+                <p>{{ getNaturezaJuridicaDescricao(empresa.naturezaJuridica) || '-' }}</p>
+            </div>
+            <div class="item-data">
+                <label>Porte da Empresa</label>
+                <p>{{ getPorteEmpresaDescricao(empresa.porteEmpresa) || '-' }}</p>
+            </div>
+        </div>
+
+        <div class="divisao">
+            <p>Endereço</p>
+            <hr class="line">
+        </div>
+        <div class="data-grid">
+            <div class="item-data">
                 <label>Estado</label>
-                <p>{{ empresa.estado || '-' }}</p>
+                <p>{{ empresa.endereco.estado || '-' }}</p>
             </div>
             <div class="item-data">
                 <label>Cidade</label>
-                <p>{{ empresa.cidade || '-' }}</p>
+                <p>{{ empresa.endereco.cidade || '-' }}</p>
+            </div>
+        </div>
+        <div class="data-grid">
+            <div class="item-data">
+                <label>CEP</label>
+                <p>{{ empresa.endereco.cep || '-' }}</p>
+            </div>
+            <div class="item-data">
+                <label>Bairro</label>
+                <p>{{ empresa.endereco.bairro || '-' }}</p>
+            </div>
+        </div>
+        <div class="data-grid">
+            <div class="item-data">
+                <label>Rua</label>
+                <p>{{ empresa.endereco.rua || '-' }}</p>
+            </div>
+            <div class="item-data">
+                <label>Número</label>
+                <p>{{ empresa.endereco.numero || '-' }}</p>
+            </div>
+        </div>
+        <div class="data-grid">
+            <div class="item-data">
+                <label>Complemento</label>
+                <p>{{ empresa.endereco.complemento || '-' }}</p>
+            </div>
+            <div class="item-data">
+                <label>Logradouro</label>
+                <p>{{ empresa.endereco.logradouro || '-' }}</p>
             </div>
         </div>
     </div>
