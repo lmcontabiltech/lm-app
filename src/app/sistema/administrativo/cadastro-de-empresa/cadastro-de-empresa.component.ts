@@ -247,6 +247,12 @@ export class CadastroDeEmpresaComponent implements OnInit {
       ),
     };
 
+    if (this.selectedTipoIdentificacao === 'CPF') {
+      delete (empresa as any).cnpj;
+    } else if (this.selectedTipoIdentificacao === 'CNPJ') {
+      delete (empresa as any).cpf;
+    }
+
     console.log('Dados enviados para o backend:', empresa);
 
     if (this.isEditMode && this.empresaId) {
@@ -330,6 +336,15 @@ export class CadastroDeEmpresaComponent implements OnInit {
         this.empresaForm.patchValue({
           ...empresa,
         });
+
+        const tipoFromServer =
+          empresa.tipoIdentificacao ||
+          (empresa.cpf ? 'CPF' : empresa.cnpj ? 'CNPJ' : null);
+        if (tipoFromServer) {
+          this.empresaForm.get('tipoIdentificacao')?.setValue(tipoFromServer);
+          this.selectedTipoIdentificacao = tipoFromServer;
+          this.updateIdentificacaoValidators(tipoFromServer);
+        }
 
         this.enderecoService.getCidadesByEstado(estado).subscribe((cidades) => {
           this.cidades = cidades.map((cidade) => ({
