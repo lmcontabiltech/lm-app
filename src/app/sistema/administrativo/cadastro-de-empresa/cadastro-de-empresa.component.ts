@@ -20,6 +20,12 @@ import { Situacao } from '../empresas/enums/situacao';
 import { SituacaoDescricao } from '../empresas/enums/situacao-descricao';
 import { TipoEmpresa } from '../empresas/enums/tipo-empresa';
 import { TipoEmpresaDescricao } from '../empresas/enums/tipo-empresa-descricao';
+import { PorteEmpresa } from '../empresas/enums/porte-empresa';
+import { PorteEmpresaDescricao } from '../empresas/enums/porte-empresa-descricao';
+import { NaturezaJuridica } from '../empresas/enums/natureza-juridica';
+import { NaturezaJuridicaDescricao } from '../empresas/enums/natureza-juridica-descricao';
+import { TipoIdentificacao } from '../empresas/enums/tipo-identificacao';
+import { TipoIdentificacaoDescricao } from '../empresas/enums/tipo-identificacao-descricao';
 import { EnderecoService, Estado } from 'src/app/services/endereco.service';
 
 @Component({
@@ -80,6 +86,31 @@ export class CadastroDeEmpresaComponent implements OnInit {
   }));
   selectedTipoEmpresa: string = '';
 
+  porteEmpresa = Object.keys(PorteEmpresa).map((key) => ({
+    value: PorteEmpresa[key as keyof typeof PorteEmpresa],
+    description:
+      PorteEmpresaDescricao[PorteEmpresa[key as keyof typeof PorteEmpresa]],
+  }));
+  selectedPorteEmpresa: string = '';
+
+  naturezaJuridica = Object.keys(NaturezaJuridica).map((key) => ({
+    value: NaturezaJuridica[key as keyof typeof NaturezaJuridica],
+    description:
+      NaturezaJuridicaDescricao[
+        NaturezaJuridica[key as keyof typeof NaturezaJuridica]
+      ],
+  }));
+  selectedNaturezaJuridica: string = '';
+
+  tipoIdentificacao = Object.keys(TipoIdentificacao).map((key) => ({
+    value: TipoIdentificacao[key as keyof typeof TipoIdentificacao],
+    description:
+      TipoIdentificacaoDescricao[
+        TipoIdentificacao[key as keyof typeof TipoIdentificacao]
+      ],
+  }));
+  selectedTipoIdentificacao: string = '';
+
   estados: { value: string; description: string }[] = [];
   selectedEstado: string = '';
   cidades: { value: string; description: string }[] = [];
@@ -101,7 +132,9 @@ export class CadastroDeEmpresaComponent implements OnInit {
   ) {
     this.empresaForm = this.formBuilder.group({
       razaoSocial: ['', Validators.required],
-      cnpj: ['', Validators.required],
+      tipoIdentificacao: ['CNPJ', Validators.required],
+      cnpj: [''],
+      cpf: [''],
       regimeEmpresa: ['', Validators.required],
       codQuestor: ['', Validators.required],
       codEmpDominio: ['', Validators.required],
@@ -110,18 +143,34 @@ export class CadastroDeEmpresaComponent implements OnInit {
       identificadorFinanceiro: [[]],
       identificadorParalegal: [[]],
       identificadorPessoal: [[]],
-      // identificadorJuridico: [''],
-      // identificadorEstagiario: [''],
-      // identificadorOutros: [''],
       status: ['ATIVO'],
       controleParcelamento: [[]],
       situacao: ['', Validators.required],
       tipo: ['', Validators.required],
-      estado: [''],
-      cidade: [''],
+      porteEmpresa: ['', Validators.required],
+      naturezaJuridica: ['', Validators.required],
       unidadeEmpresa: ['MATRIZ'],
       identificadorEmpresaMatriz: [''],
+      endereco: this.formBuilder.group({
+        estado: [''],
+        cidade: [''],
+        cep: [''],
+        bairro: [''],
+        rua: [''],
+        numero: [''],
+        logradouro: [''],
+        complemento: [''],
+      }),
     });
+    this.selectedTipoIdentificacao = 'CNPJ';
+    this.updateIdentificacaoValidators(this.selectedTipoIdentificacao);
+
+    this.empresaForm
+      .get('tipoIdentificacao')
+      ?.valueChanges.subscribe((valor) => {
+        this.selectedTipoIdentificacao = valor;
+        this.updateIdentificacaoValidators(valor);
+      });
   }
 
   ngOnInit(): void {
@@ -446,5 +495,27 @@ export class CadastroDeEmpresaComponent implements OnInit {
 
   get matrizSelecionada(): boolean {
     return this.empresaForm.get('unidadeEmpresa')?.value === 'MATRIZ';
+  }
+
+  private updateIdentificacaoValidators(valor: string | null): void {
+    const cpfControl = this.empresaForm.get('cpf');
+    const cnpjControl = this.empresaForm.get('cnpj');
+
+    cpfControl?.clearValidators();
+    cnpjControl?.clearValidators();
+
+    if (valor === 'CPF') {
+      cpfControl?.setValidators([Validators.required]);
+      cnpjControl?.setValue('');
+    } else if (valor === 'CNPJ') {
+      cnpjControl?.setValidators([Validators.required]);
+      cpfControl?.setValue('');
+    } else {
+      cpfControl?.setValue('');
+      cnpjControl?.setValue('');
+    }
+
+    cpfControl?.updateValueAndValidity();
+    cnpjControl?.updateValueAndValidity();
   }
 }

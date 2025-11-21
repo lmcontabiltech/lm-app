@@ -15,11 +15,37 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="cnpj">CNPJ<span *ngIf="isRequired('cnpj')" class="required-asterisk">*</span></label>
-                    <input type="text" id="cnpj" name="cnpj" formControlName="cnpj" class="form-control" placeholder="00.000.000/0000-00" mask="00.000.000/0000-00" [dropSpecialCharacters]="false" required>
-                    <div *ngIf="empresaForm.get('cnpj')?.invalid && (empresaForm.get('cnpj')?.touched || empresaForm.get('cnpj')?.dirty)" class="error-obrigatorio">
-                        O campo CNPJ é obrigatório.
+                <div class="input-duo">
+                    <div class="form-group">
+                        <label for="tipoIdentificacao">Tipo da identificação<span *ngIf="isRequired('tipoIdentificacao')" class="required-asterisk">*</span></label>
+                        <app-select-padrao
+                        label="Selecionar tipo da identificação"
+                        [options]="tipoIdentificacao"
+                        [(selectedValue)]="selectedTipoIdentificacao"
+                        formControlName="tipoIdentificacao">
+                        </app-select-padrao>
+                        <div *ngIf="empresaForm.get('tipoIdentificacao')?.invalid && (empresaForm.get('tipoIdentificacao')?.touched || empresaForm.get('tipoIdentificacao')?.dirty)" class="error-obrigatorio">
+                            O campo Tipo da identificação é obrigatório.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <!-- CNPJ: exibido quando tipo !== 'CPF' -->
+                        <div *ngIf="selectedTipoIdentificacao !== 'CPF'" class="identificacaoInput" class="form-group">
+                            <label for="cnpj">CNPJ<span *ngIf="isRequired('cnpj')" class="required-asterisk">*</span></label>
+                            <input type="text" id="cnpj" name="cnpj" formControlName="cnpj" class="form-control" placeholder="00.000.000/0000-00" mask="00.000.000/0000-00" [dropSpecialCharacters]="false">
+                            <div *ngIf="empresaForm.get('cnpj')?.invalid && (empresaForm.get('cnpj')?.touched || empresaForm.get('cnpj')?.dirty)" class="error-obrigatorio">
+                                O campo CNPJ é obrigatório.
+                            </div>
+                        </div>
+
+                        <!-- CPF: exibido quando tipo === 'CPF' -->
+                        <div *ngIf="selectedTipoIdentificacao === 'CPF'" class="form-group">
+                            <label for="cpf">CPF<span *ngIf="isRequired('cpf')" class="required-asterisk">*</span></label>
+                            <input type="text" id="cpf" name="cpf" formControlName="cpf" class="form-control" placeholder="000.000.000-00" mask="000.000.000-00" [dropSpecialCharacters]="false">
+                            <div *ngIf="empresaForm.get('cpf')?.invalid && (empresaForm.get('cpf')?.touched || empresaForm.get('cpf')?.dirty)" class="error-obrigatorio">
+                                O campo CPF é obrigatório.
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -124,27 +150,21 @@
 
                 <div class="input-duo">
                     <div class="form-group">
-                        <label for="estado">Estado</label>
+                        <label for="naturezaJuridica">Natureza juridica<span *ngIf="isRequired('naturezaJuridica')" class="required-asterisk">*</span></label>
                         <app-select-padrao
-                          label="Selecione o estado"
-                          [options]="estados"
-                          [(selectedValue)]="selectedEstado"
-                          (selectedValueChange)="onEstadoChange($event)"
-                          formControlName="estado"
-                          [showDefaultOption]="false"
-                          [defaultLabel]="''"
-                          [defaultValue]="''">
+                        label="Selecionar natureza juridica"
+                        [options]="naturezaJuridica"
+                        [(selectedValue)]="selectedNaturezaJuridica"
+                        formControlName="naturezaJuridica">
                         </app-select-padrao>
                     </div>
                     <div class="form-group">
-                        <label for="cidade">Cidade</label>
+                        <label for="porteEmpresa">Porte da empresa<span *ngIf="isRequired('porteEmpresa')" class="required-asterisk">*</span></label>
                         <app-select-padrao
-                          label="Selecione a cidade"
-                          [options]="cidades"
-                          [(selectedValue)]="selectedCidade"
-                          (selectedValueChange)="onCidadeChange($event)"
-                          formControlName="cidade"
-                          [disabled]="empresaForm.get('cidade')?.disabled === true">
+                        label="Selecionar porte da empresa"
+                        [options]="porteEmpresa"
+                        [(selectedValue)]="selectedPorteEmpresa"
+                        formControlName="porteEmpresa">
                         </app-select-padrao>
                     </div>
                 </div>
@@ -159,6 +179,73 @@
                         <div class="radio-item">
                             <input type="radio" id="inativo" name="status" value="INATIVO" formControlName="status">
                             <label for="inativo">Inativo</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="divisao">
+                    <p>Endereço</p>
+                    <hr class="line">
+                </div>
+
+                <div formGroupName="endereco" class="form-div">
+                    <div class="input-duo">
+                        <div class="form-group">
+                            <label for="estado">Estado</label>
+                            <app-select-padrao
+                            label="Selecione o estado"
+                            [options]="estados"
+                            [(selectedValue)]="selectedEstado"
+                            (selectedValueChange)="onEstadoChange($event)"
+                            formControlName="estado"
+                            [showDefaultOption]="false"
+                            [defaultLabel]="''"
+                            [defaultValue]="''">
+                            </app-select-padrao>
+                        </div>
+                        <div class="form-group">
+                            <label for="cidade">Cidade</label>
+                            <app-select-padrao
+                            label="Selecione a cidade"
+                            [options]="cidades"
+                            [(selectedValue)]="selectedCidade"
+                            (selectedValueChange)="onCidadeChange($event)"
+                            formControlName="cidade"
+                            [disabled]="empresaForm.get('cidade')?.disabled === true">
+                            </app-select-padrao>
+                        </div>
+                    </div>
+
+                    <div class="input-duo">
+                        <div class="form-group">
+                            <label for="cep">CEP</label>
+                            <input type="text" id="cep" name="cep" formControlName="cep" class="form-control" placeholder="00000-000" mask="00000-000" [dropSpecialCharacters]="false" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="bairro">Bairro</label>
+                            <input type="text" id="bairro" name="bairro" formControlName="bairro" class="form-control" placeholder="Digite o bairro" required maxlength="250">
+                        </div>
+                    </div>
+    
+                    <div class="input-duo">
+                        <div class="form-group">
+                            <label for="rua">Rua</label>
+                            <input type="text" id="rua" name="rua" formControlName="rua" class="form-control" placeholder="Digite a rua" required maxlength="250">
+                        </div>
+                        <div class="form-group">
+                            <label for="numero">Número</label>
+                            <input type="text" id="numero" name="numero" formControlName="numero" class="form-control" placeholder="Digite o número" required maxlength="250">
+                        </div>
+                    </div>
+
+                    <div class="input-duo">
+                        <div class="form-group">
+                            <label for="complemento">Complemento</label>
+                            <input type="text" id="complemento" name="complemento" formControlName="complemento" class="form-control" placeholder="Digite um complemento" maxlength="250">
+                        </div>
+                        <div class="form-group">
+                            <label for="logradouro">Logradouro</label>
+                            <input type="text" id="logradouro" name="logradouro" formControlName="logradouro" class="form-control" placeholder="Digite o logradouro" maxlength="250">
                         </div>
                     </div>
                 </div>

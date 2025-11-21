@@ -49,11 +49,22 @@ form {
   gap: 16px;
 }
 
+.form-div {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 .form-group {
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.identificacao {
+  gap: 0;
 }
 
 .form-group label {
