@@ -247,6 +247,8 @@ export class CadastroDeEmpresaComponent implements OnInit {
       ),
     };
 
+    (empresa as any).endereco = (empresa as any).endereco || {};
+
     if (this.selectedTipoIdentificacao === 'CPF') {
       delete (empresa as any).cnpj;
     } else if (this.selectedTipoIdentificacao === 'CNPJ') {
