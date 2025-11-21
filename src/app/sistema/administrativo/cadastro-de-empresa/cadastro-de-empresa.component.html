@@ -220,7 +220,7 @@
                             [(selectedValue)]="selectedCidade"
                             (selectedValueChange)="onCidadeChange($event)"
                             formControlName="cidade"
-                            [disabled]="empresaForm.get('cidade')?.disabled === true">
+                            [disabled]="empresaForm.get('endereco.cidade')?.disabled === true">
                             </app-select-padrao>
                         </div>
                     </div>

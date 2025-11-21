@@ -358,7 +358,7 @@ export class CadastroDeEmpresaComponent implements OnInit {
             description: cidade.nome,
           }));
           this.selectedCidade = cidade;
-          this.empresaForm.get('cidade')?.setValue(cidade);
+          this.empresaForm.get('endereco.cidade')?.setValue(cidade);
         });
 
         this.tratarColaboradores(empresa);
@@ -369,7 +369,7 @@ export class CadastroDeEmpresaComponent implements OnInit {
         this.selectedPorteEmpresa = empresa.porteEmpresa || '';
         this.selectedNaturezaJuridica = empresa.naturezaJuridica || '';
         this.selectedEstado = estado;
-        this.empresaForm.get('cidade')?.enable();
+        this.empresaForm.get('endereco.cidade')?.enable();
         let controleParcelamentoArr: string[] = [];
         if (Array.isArray(empresa.controleParcelamento)) {
           controleParcelamentoArr = empresa.controleParcelamento;
@@ -466,9 +466,9 @@ export class CadastroDeEmpresaComponent implements OnInit {
   }
 
   onEstadoChange(nome: string): void {
-    const cidadeControl = this.empresaForm.get('cidade');
+    const cidadeControl = this.empresaForm.get('endereco.cidade');
 
-    this.empresaForm.get('estado')?.setValue(nome);
+    this.empresaForm.get('endereco.estado')?.setValue(nome);
 
     if (!nome) {
       cidadeControl?.disable();
@@ -494,7 +494,7 @@ export class CadastroDeEmpresaComponent implements OnInit {
   }
 
   onCidadeChange(nome: string): void {
-    this.empresaForm.get('cidade')?.setValue(nome);
+    this.empresaForm.get('endereco.cidade')?.setValue(nome);
   }
 
   private carregarEstadosECidades(): void {
