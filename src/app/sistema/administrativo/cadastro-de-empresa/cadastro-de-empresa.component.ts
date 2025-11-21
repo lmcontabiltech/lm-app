@@ -330,11 +330,17 @@ export class CadastroDeEmpresaComponent implements OnInit {
             ?.setValue(this.selectedMatriz);
         });
 
-        const estado = empresa.estado;
-        const cidade = empresa.cidade;
+        const estado = empresa.endereco?.estado || empresa.estado || '';
+        const cidade = empresa.endereco?.cidade || empresa.cidade || '';
 
         this.empresaForm.patchValue({
           ...empresa,
+          endereco: {
+            ...(this.empresaForm.get('endereco')?.value || {}),
+            ...(empresa.endereco || {}),
+            estado,
+            cidade,
+          },
         });
 
         const tipoFromServer =
