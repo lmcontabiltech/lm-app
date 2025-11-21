@@ -144,7 +144,7 @@ export class CadastroDeEmpresaComponent implements OnInit {
       identificadorParalegal: [[]],
       identificadorPessoal: [[]],
       status: ['ATIVO'],
-      controleParcelamento: [[]],
+      controleParcelamento: [[], Validators.required],
       situacao: ['', Validators.required],
       tipo: ['', Validators.required],
       porteEmpresa: ['', Validators.required],
@@ -344,6 +344,9 @@ export class CadastroDeEmpresaComponent implements OnInit {
         this.selectedRegime = empresa.regimeEmpresa || '';
         this.selectedSituacao = empresa.situacao || '';
         this.selectedTipoEmpresa = empresa.tipo || '';
+        this.selectedTipoIdentificacao = empresa.tipoIdentificacao || '';
+        this.selectedPorteEmpresa = empresa.porteEmpresa || '';
+        this.selectedNaturezaJuridica = empresa.naturezaJuridica || '';
         this.selectedEstado = estado;
         this.empresaForm.get('cidade')?.enable();
         let controleParcelamentoArr: string[] = [];
