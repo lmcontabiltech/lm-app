@@ -96,6 +96,12 @@ form {
   justify-content: space-between;
   gap: 40px;
 }
+.input-triplo {
+  display: flex;
+  justify-content: space-between;
+  gap: 32px;
+  width: 100%;
+}
 
 /* Divisão */
 .divisao {
@@ -108,6 +114,13 @@ form {
   font-weight: 600;
   margin: 0;
   color: var(--lm-text);
+}
+
+.header-divisao {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
 }
 
 /* radio btn */
@@ -164,4 +177,43 @@ form {
     flex-direction: column;
     gap: 16px;
   }
+}
+
+/* itens para cadastrar socios  */
+.socios {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.socio-item {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-end;
+}
+.socio-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+.btn-remover {
+  background-color: var(--danger);
+  color: white;
+  border: none;
+  padding: 16px 22px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.btn-remover:hover {
+  background-color: #e60400;
+}
+
+.btn-adicionar {
+  background: var(--lm-accent);
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
 }

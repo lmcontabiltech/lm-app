@@ -7,6 +7,7 @@ import {
   FormGroup,
   Validators,
   AbstractControl,
+  FormArray
 } from '@angular/forms';
 import { EmpresasService } from '../../../services/administrativo/empresas.service';
 import { ColaboradoresService } from 'src/app/services/administrativo/colaboradores.service';
@@ -175,6 +176,7 @@ export class CadastroDeEmpresaComponent implements OnInit {
         logradouro: [''],
         complemento: [''],
       }),
+      socios: this.formBuilder.array([]),
     });
     this.selectedTipoIdentificacao = 'CNPJ';
     this.updateIdentificacaoValidators(this.selectedTipoIdentificacao);
@@ -563,5 +565,25 @@ export class CadastroDeEmpresaComponent implements OnInit {
 
     cpfControl?.updateValueAndValidity();
     cnpjControl?.updateValueAndValidity();
+  }
+
+  private createSocioGroup(socio?: any): FormGroup {
+    return this.formBuilder.group({
+      nome: [socio?.nome || ''],
+      cpf: [socio?.cpf || ''],
+      estadoCivil: [socio?.estadoCivil || ''],
+    });
+  }
+
+  get socios(): FormArray {
+    return this.empresaForm.get('socios') as FormArray;
+  }
+
+  addSocio(socio?: any): void {
+    this.socios.push(this.createSocioGroup(socio));
+  }
+
+  removeSocio(index: number): void {
+    this.socios.removeAt(index);
   }
 }

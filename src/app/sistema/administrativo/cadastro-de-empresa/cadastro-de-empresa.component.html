@@ -257,28 +257,39 @@
                 </div>
 
                 <!-- <div class="divisao">
-                    <p>Sócios</p>
+                    <div class="header-divisao">
+                        <p>Sócios</p>
+                        <div class="add-socio">
+                            <button type="button" (click)="addSocio()" class="btn-adicionar">Adicionar +</button>
+                        </div>
+                    </div>
                     <hr class="line">
                 </div>
 
-                <div class="input-duo">
-                    <div class="form-group">
-                        <label for="nomeSocio">Nome</label>
-                        <input type="text" id="nomeSocio" name="nomeSocio" formControlName="nomeSocio" class="form-control" placeholder="Digite o nome" maxlength="250">
-                    </div>
-                    <div class="form-group">
-                        <label for="cpfSocio">CPF</label>
-                        <input type="text" id="cpfSocio" name="cpfSocio" formControlName="cpfSocio" class="form-control" placeholder="Digite o CPF" maxlength="250">
-                    </div>
-                    <div class="form-group">
-                        <label for="estadoCivil">Estado civil</label>
+                <div formArrayName="socios" class="socios">
+                  <div *ngFor="let socioCtrl of socios.controls; let i = index" [formGroupName]="i" class="socio-item">
+                    <div class="input-triplo">
+                      <div class="form-group">
+                        <label for="nomeSocio{{i}}">Nome</label>
+                        <input type="text" id="nomeSocio{{i}}" formControlName="nome" class="form-control" placeholder="Digite o nome" maxlength="250">
+                      </div>
+                      <div class="form-group">
+                        <label for="cpfSocio{{i}}">CPF</label>
+                        <input type="text" id="cpfSocio{{i}}" formControlName="cpf" class="form-control" placeholder="Digite o CPF" mask="000.000.000-00" [dropSpecialCharacters]="false">
+                      </div>
+                      <div class="form-group">
+                        <label for="estadoCivil{{i}}">Estado civil</label>
                         <app-select-padrao
-                        label="Selecionar estado civil"
-                        [options]="estadoCivil"
-                        [(selectedValue)]="selectedEstadoCivil"
-                        formControlName="estadoCivil">
+                          label="Selecionar estado civil"
+                          [options]="estadoCivil"
+                          formControlName="estadoCivil">
                         </app-select-padrao>
+                      </div>
                     </div>
+                    <div class="socio-actions">
+                      <button type="button" (click)="removeSocio(i)" class="btn-remover">Remover</button>
+                    </div>
+                  </div>
                 </div>
 
                 <div class="divisao">
