@@ -31,12 +31,15 @@ export class DashboardColaboradorComponent implements OnInit {
   nomeSetorGrafico: string = '';
   setorUsuarioEnum: Setor | null = null;
 
-  @ViewChild('anuncioTemplate') anuncioTemplate!: TemplateRef<any>;
-
-  @ViewChild('videoModalTemplate') videoModalTemplate!: TemplateRef<any>;
-  videoUrl: string =
-    'https://drive.google.com/file/d/1J1JjuLWT4QU2x_L_EpaFoMawtduHZMcJ/view?usp=sharing';
+  @ViewChild('anuncioModalTemplate') anuncioModalTemplate!: TemplateRef<any>;
+  anuncios: string[] = [
+    'Recomendação: arquive as atividades concluídas para registrar o encerramento do card.',
+    'Todas as mensagens do BOT estão sendo visualizadas e em breve respondidas',
+  ];
+  currentAnuncioIndex: number = 0;
+  modalAnuncioTitle: string = 'Avisos e Anúncios';
   safeVideoUrl!: SafeResourceUrl;
+  private anuncioModalAberto = false;
 
   setorUsuario = {
     nome: '',
@@ -150,9 +153,7 @@ export class DashboardColaboradorComponent implements OnInit {
     this.carregarResumoAtividadesUsuario();
   }
 
-  ngAfterViewInit(): void {
-    this.safeVideoUrl = this.buildSafeVideoUrl(this.videoUrl);
-  }
+  ngAfterViewInit(): void {}
 
   loadTaxas(): void {
     this.exchangeService.getExchangeRates().subscribe({
@@ -203,20 +204,9 @@ export class DashboardColaboradorComponent implements OnInit {
           this.carregarGraficoAtividadesPorMes(usuario.setor);
           this.usuario = usuario;
         }
-
-        try {
-          const key = `videoSeen_${usuario.id}`;
-          const seen = localStorage.getItem(key);
-          // abrir apenas se não foi marcado como assistido
-          if (!seen) {
-            this.openModalVideo();
-            console.log('Modal de vídeo aberto automaticamente');
-          } else {
-            console.log('Vídeo já marcado como assistido para', usuario.id);
-          }
-        } catch (e) {
-          console.warn('Erro ao verificar videoSeen no localStorage', e);
-        }
+        setTimeout(() => {
+          this.openModalAnuncio();
+        }, 200);
       },
       error: (error) => {
         console.error('Erro ao obter perfil do usuário:', error);
@@ -363,64 +353,6 @@ export class DashboardColaboradorComponent implements OnInit {
     };
   }
 
-  openModalVideo(): void {
-    this.safeVideoUrl = this.buildSafeVideoUrl(this.videoUrl);
-    const open = () => {
-      try {
-        console.log(
-          'Abrindo modal de vídeo, template:',
-          this.videoModalTemplate
-        );
-        const key = `videoSeen_${this.usuario?.id ?? 'anon'}`;
-
-        // callback chamado ao clicar no botão confirm (Assistido)
-        const onConfirm = () => {
-          try {
-            localStorage.setItem(key, 'true'); // marca como assistido
-          } catch (e) {
-            console.warn(
-              'Não foi possível salvar videoSeen no localStorage',
-              e
-            );
-          }
-          this.modalCadastroService.closeModal();
-          setTimeout(() => {
-            this.openModalAnuncio();
-          }, 300); // pequeno delay para transição suave
-        };
-
-        // também abre o anúncio se clicar em Fechar (cancelar)
-        const onCancel = () => {
-          this.modalCadastroService.closeModal();
-          setTimeout(() => {
-            this.openModalAnuncio();
-          }, 300);
-        };
-
-        // abre modal (passa callback de confirm)
-        this.modalCadastroService.openModal(
-          {
-            title: 'Primeiro acesso',
-            description: `Assista ao vídeo para entender como utilizar o sistema de forma eficiente.`,
-            size: 'lg',
-            confirmTextoBotao: 'Assistido',
-            cancelTextoBotao: 'Fechar',
-          },
-          onConfirm,
-          this.videoModalTemplate
-        );
-      } catch (err) {
-        console.error('Erro ao abrir modal de vídeo:', err);
-      }
-    };
-
-    if (!this.videoModalTemplate) {
-      setTimeout(() => open(), 50);
-    } else {
-      open();
-    }
-  }
-
   private buildSafeVideoUrl(url: string): SafeResourceUrl {
     if (!url) return this.sanitizer.bypassSecurityTrustResourceUrl('');
     const ytMatch = url.match(
@@ -442,17 +374,14 @@ export class DashboardColaboradorComponent implements OnInit {
 
   openModalAnuncio(): void {
     try {
-      console.log('Abrindo modal de anúncio, template:', this.anuncioTemplate);
-
       const key = `anuncioSeen_${this.usuario?.id ?? 'anon'}`;
       const seen = localStorage.getItem(key);
+      if (seen || this.anuncioModalAberto) return;
 
-      // só abre se não foi marcado como visto
-      if (seen) {
-        console.log('Anúncio já foi visto pelo usuário');
-        return;
-      }
+      this.anuncioModalAberto = true;
+      this.currentAnuncioIndex = 0;
 
+      // confirmar agora marca como visto independente da paginação
       const onConfirm = () => {
         try {
           localStorage.setItem(key, 'true');
@@ -462,21 +391,51 @@ export class DashboardColaboradorComponent implements OnInit {
             e
           );
         }
-        this.modalCadastroService.closeModal();
+        this.anuncioModalAberto = false;
+        return true; // permite fechar o modal
       };
 
       this.modalCadastroService.openModal(
         {
-          title: 'Aviso importante',
-          description: 'Informação sobre o sistema',
+          title: this.modalAnuncioTitle,
+          description: '',
           size: 'md',
-          confirmTextoBotao: 'Entendi',
+          confirmTextoBotao: 'Visto',
+          cancelTextoBotao: 'Fechar',
         },
         onConfirm,
-        this.anuncioTemplate
+        this.anuncioModalTemplate
       );
     } catch (err) {
       console.error('Erro ao abrir modal de anúncio:', err);
+      this.anuncioModalAberto = false;
     }
+  }
+
+  prevAnuncio(): void {
+    if (this.currentAnuncioIndex > 0) this.currentAnuncioIndex--;
+  }
+
+  nextAnuncio(): void {
+    if (this.currentAnuncioIndex < this.anuncios.length - 1) {
+      this.currentAnuncioIndex++;
+    }
+  }
+
+  marcarComoVisto(): void {
+    if (this.currentAnuncioIndex !== this.anuncios.length - 1) return;
+    try {
+      const key = `anuncioSeen_${this.usuario?.id ?? 'anon'}`;
+      localStorage.setItem(key, 'true');
+    } catch (e) {
+      console.warn('Não foi possível salvar anuncioSeen no localStorage', e);
+    }
+    this.anuncioModalAberto = false;
+    this.modalCadastroService.closeModal();
+  }
+
+  fecharModal(): void {
+    this.anuncioModalAberto = false;
+    this.modalCadastroService.closeModal();
   }
 }

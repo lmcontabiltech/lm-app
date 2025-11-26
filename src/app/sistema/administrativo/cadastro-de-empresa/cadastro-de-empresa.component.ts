@@ -7,6 +7,7 @@ import {
   FormGroup,
   Validators,
   AbstractControl,
+  FormArray
 } from '@angular/forms';
 import { EmpresasService } from '../../../services/administrativo/empresas.service';
 import { ColaboradoresService } from 'src/app/services/administrativo/colaboradores.service';
@@ -27,6 +28,8 @@ import { NaturezaJuridicaDescricao } from '../empresas/enums/natureza-juridica-d
 import { TipoIdentificacao } from '../empresas/enums/tipo-identificacao';
 import { TipoIdentificacaoDescricao } from '../empresas/enums/tipo-identificacao-descricao';
 import { EnderecoService, Estado } from 'src/app/services/endereco.service';
+import { EstadoCivil } from '../empresas/enums/estado-civil';
+import { EstadoCivilDescricoes } from '../empresas/enums/estado-civil-descricoes';
 
 @Component({
   selector: 'app-cadastro-de-empresa',
@@ -111,6 +114,13 @@ export class CadastroDeEmpresaComponent implements OnInit {
   }));
   selectedTipoIdentificacao: string = '';
 
+  estadoCivil = Object.keys(EstadoCivil).map((key) => ({
+    value: EstadoCivil[key as keyof typeof EstadoCivil],
+    description:
+      EstadoCivilDescricoes[EstadoCivil[key as keyof typeof EstadoCivil]],
+  }));
+  selectedEstadoCivil: string = '';
+
   estados: { value: string; description: string }[] = [];
   selectedEstado: string = '';
   cidades: { value: string; description: string }[] = [];
@@ -118,6 +128,11 @@ export class CadastroDeEmpresaComponent implements OnInit {
 
   empresasMatriz: { value: string; description: string }[] = [];
   selectedMatriz: string = '';
+
+  selectedArquivos: (
+    | File
+    | { documentoUrl: string; id: number; name: string }
+  )[] = [];
 
   constructor(
     private location: Location,
@@ -161,6 +176,7 @@ export class CadastroDeEmpresaComponent implements OnInit {
         logradouro: [''],
         complemento: [''],
       }),
+      socios: this.formBuilder.array([]),
     });
     this.selectedTipoIdentificacao = 'CNPJ';
     this.updateIdentificacaoValidators(this.selectedTipoIdentificacao);
@@ -206,6 +222,14 @@ export class CadastroDeEmpresaComponent implements OnInit {
 
   goBack() {
     this.location.back();
+  }
+
+  onArquivosSelecionados(
+    arquivos: (File | { id: number; name: string; documentoUrl: string })[]
+  ): void {
+    this.selectedArquivos = arquivos;
+    this.empresaForm.get('documentos')?.setValue(arquivos);
+    console.log('Arquivos selecionados:', arquivos);
   }
 
   carregarEmpresas(callback?: () => void): void {
@@ -541,5 +565,25 @@ export class CadastroDeEmpresaComponent implements OnInit {
 
     cpfControl?.updateValueAndValidity();
     cnpjControl?.updateValueAndValidity();
+  }
+
+  private createSocioGroup(socio?: any): FormGroup {
+    return this.formBuilder.group({
+      nome: [socio?.nome || ''],
+      cpf: [socio?.cpf || ''],
+      estadoCivil: [socio?.estadoCivil || ''],
+    });
+  }
+
+  get socios(): FormArray {
+    return this.empresaForm.get('socios') as FormArray;
+  }
+
+  addSocio(socio?: any): void {
+    this.socios.push(this.createSocioGroup(socio));
+  }
+
+  removeSocio(index: number): void {
+    this.socios.removeAt(index);
   }
 }

@@ -165,7 +165,7 @@
     </div>
 </div>
 
-<ng-template #videoModalTemplate>
+<!-- <ng-template #videoModalTemplate>
     <div class="video-container" style="padding:16px 0;">
         <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;">
         <iframe
@@ -184,4 +184,28 @@
             Todas as mensagens do BOT estão sendo visualizadas e em breve respondidas
         </p>
     </div>
+</ng-template> -->
+
+<ng-template #anuncioModalTemplate>
+  <div class="anuncio-modal" style="padding:16px;">
+    <div class="anuncio-carousel" style="min-height:120px; display:flex; flex-direction:column; justify-content:space-between;">
+      <div class="anuncio-item" style="flex:1; display:flex; align-items:center; justify-content:center; padding:8px;">
+        <p style="font-size:16px; line-height:1.6; color:#333; text-align:center; margin:0;">
+          {{ anuncios[currentAnuncioIndex] }}
+        </p>
+      </div>
+
+      <div class="carousel-controls">
+       <div class="paginacao">
+          <button (click)="prevAnuncio()" [disabled]="currentAnuncioIndex === 0" [class.ativo]="currentAnuncioIndex > 0">
+            <img src="assets/icones/carret-left.svg" alt="Esquerda">
+          </button>
+          <span style="align-self:center;">{{ currentAnuncioIndex + 1 }} / {{ anuncios.length }}</span>
+          <button (click)="nextAnuncio()" [disabled]="currentAnuncioIndex === (anuncios.length - 1)" [class.ativo]="currentAnuncioIndex !== (anuncios.length - 1)">
+            <img src="assets/icones/carret-right.svg" alt="Direita">
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </ng-template>
