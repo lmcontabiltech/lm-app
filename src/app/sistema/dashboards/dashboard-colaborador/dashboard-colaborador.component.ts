@@ -33,7 +33,7 @@ export class DashboardColaboradorComponent implements OnInit {
 
   @ViewChild('anuncioModalTemplate') anuncioModalTemplate!: TemplateRef<any>;
   anuncios: string[] = [
-    'Recomendação: arquive as atividades após concluídas para manter o sistema organizado',
+    'Recomendação: arquive as atividades concluídas para registrar o encerramento do card.',
     'Todas as mensagens do BOT estão sendo visualizadas e em breve respondidas',
   ];
   currentAnuncioIndex: number = 0;
