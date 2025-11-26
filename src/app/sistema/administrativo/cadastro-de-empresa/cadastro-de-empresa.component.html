@@ -256,6 +256,44 @@
                     </div>
                 </div>
 
+                <!-- <div class="divisao">
+                    <p>Sócios</p>
+                    <hr class="line">
+                </div>
+
+                <div class="input-duo">
+                    <div class="form-group">
+                        <label for="nomeSocio">Nome</label>
+                        <input type="text" id="nomeSocio" name="nomeSocio" formControlName="nomeSocio" class="form-control" placeholder="Digite o nome" maxlength="250">
+                    </div>
+                    <div class="form-group">
+                        <label for="cpfSocio">CPF</label>
+                        <input type="text" id="cpfSocio" name="cpfSocio" formControlName="cpfSocio" class="form-control" placeholder="Digite o CPF" maxlength="250">
+                    </div>
+                    <div class="form-group">
+                        <label for="estadoCivil">Estado civil</label>
+                        <app-select-padrao
+                        label="Selecionar estado civil"
+                        [options]="estadoCivil"
+                        [(selectedValue)]="selectedEstadoCivil"
+                        formControlName="estadoCivil">
+                        </app-select-padrao>
+                    </div>
+                </div>
+
+                <div class="divisao">
+                    <p>Documentos</p>
+                    <hr class="line">
+                </div>
+
+                <div class="form-group">
+                    <label for="arquivos">Arquivos</label>
+                    <app-input-arquivos 
+                        (arquivosSelecionados)="onArquivosSelecionados($event)"
+                        formControlName="documentos">
+                    </app-input-arquivos>
+                </div> -->
+
                 <div class="divisao">
                     <p>Funcionários responsáveis</p>
                     <hr class="line">
