@@ -2,6 +2,16 @@
     <div class="title-container">
         <h2>Bem-vindo(a), {{ usuario?.nome }}</h2>
     </div>
+    <app-banner-aviso
+    [items]="[
+        { type: 'image', content: 'assets/avisos/banner-aviso.png', alt: 'Banner 1' },
+        { type: 'image', content: 'assets/avisos/aviso-bot.png', alt: 'Banner 2' },
+    ]"
+    [autoplay]="true"
+    [interval]="5000"
+    [showControls]="true"
+    [showIndicators]="true">
+    </app-banner-aviso>
     <div class="cards-container">
         <div class="cards-moedas">
             <div class="card moeda-card">

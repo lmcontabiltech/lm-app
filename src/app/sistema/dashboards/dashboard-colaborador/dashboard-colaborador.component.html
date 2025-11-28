@@ -2,6 +2,16 @@
     <div class="title-container">
         <h2>Bem-vindo(a), {{ usuario?.nome }}</h2>
     </div>
+    <app-banner-aviso
+    [items]="[
+        { type: 'image', content: 'assets/avisos/banner-aviso.png', alt: 'Banner 1' },
+        { type: 'image', content: 'assets/avisos/aviso-bot.png', alt: 'Banner 2' },
+    ]"
+    [autoplay]="true"
+    [interval]="5000"
+    [showControls]="true"
+    [showIndicators]="true">
+    </app-banner-aviso>
     <div class="cards-container">
         <div class="cards-moedas">
             <div class="card moeda-card">
@@ -186,7 +196,7 @@
     </div>
 </ng-template> -->
 
-<ng-template #anuncioModalTemplate>
+<!-- <ng-template #anuncioModalTemplate>
   <div class="anuncio-modal" style="padding:16px;">
     <div class="anuncio-carousel" style="min-height:120px; display:flex; flex-direction:column; justify-content:space-between;">
       <div class="anuncio-item" style="flex:1; display:flex; align-items:center; justify-content:center; padding:8px;">
@@ -208,4 +218,4 @@
       </div>
     </div>
   </div>
-</ng-template>
+</ng-template> -->
