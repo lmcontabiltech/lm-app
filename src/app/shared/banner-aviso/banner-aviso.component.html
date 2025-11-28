@@ -1,0 +1,51 @@
+<div class="banner-slider" *ngIf="items?.length">
+  <div
+    class="slides"
+    [style.transform]="'translateX(-' + currentIndex * 100 + '%)'"
+  >
+    <div class="slide" *ngFor="let item of items; let i = index">
+      <ng-container [ngSwitch]="item.type || 'text'">
+        <img
+          *ngSwitchCase="'image'"
+          [src]="item.content"
+          [alt]="item.alt || 'imagem-' + i"
+        />
+        <div
+          *ngSwitchCase="'html'"
+          class="slide-html"
+          [innerHTML]="sanitizedHtml[i]"
+        ></div>
+        <p *ngSwitchDefault class="slide-text">{{ item.content }}</p>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="controls" *ngIf="showControls">
+    <button
+      type="button"
+      class="control prev"
+      (click)="prev()"
+      aria-label="Anterior"
+    >
+      <img src="assets/icones/carret-left.svg" alt="Anterior" />
+    </button>
+    <button
+      type="button"
+      class="control next"
+      (click)="next()"
+      aria-label="Próximo"
+    >
+      <img src="assets/icones/carret-right.svg" alt="Próximo" />
+    </button>
+  </div>
+
+  <div class="indicators" *ngIf="showIndicators && items.length > 1">
+    <button
+      *ngFor="let _ of items; let idx = index"
+      class="indicator"
+      [class.active]="idx === currentIndex"
+      (click)="goTo(idx)"
+      [attr.aria-label]="'Ir para ' + (idx + 1)"
+    ></button>
+  </div>
+</div>
