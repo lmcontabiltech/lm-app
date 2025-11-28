@@ -1,0 +1,133 @@
+.banner-slider {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  border-radius: 8px;
+  background: #f8f9fb;
+}
+
+.slides {
+  display: flex;
+  width: 100%;
+  transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+  flex: 0 0 100%;
+  box-sizing: border-box;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slide img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.slide-text {
+  font-size: 16px;
+  color: #222;
+  text-align: center;
+  margin: 0;
+}
+
+.slide-html {
+  width: 100%;
+}
+
+/* controls */
+.controls .control {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: rgba(231, 231, 231, 0.685);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  padding: 0;
+  margin: 0;
+  background-clip: padding-box;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  opacity: 1;
+}
+
+.controls .control:hover {
+  background: rgba(200, 200, 200, 0.885);
+}
+
+.controls .prev {
+  left: 8px;
+}
+.controls .next {
+  right: 8px;
+}
+
+.controls .control img {
+  width: 18px;
+  height: 18px;
+  opacity: 1;
+  filter: none;
+}
+
+/* indicators */
+.indicators {
+  position: absolute;
+  bottom: 8px;
+  right: 12px;
+  display: flex;
+  gap: 6px;
+}
+
+.indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(151, 151, 151, 0.3);
+  cursor: pointer;
+  padding: 0;
+}
+
+.indicator.active {
+  background: #006bdd;
+}
+
+@media (max-width: 480px) {
+  .controls .control {
+    width: 20px;
+    height: 20px;
+  }
+  .controls .control img {
+    width: 12px;
+    height: 12px;
+  }
+  .controls .prev {
+    left: 8px;
+  }
+  .controls .next {
+    right: 8px;
+  }
+}
+
+/* tablet */
+@media (min-width: 481px) and (max-width: 900px) {
+  .controls .control {
+    width: 25px;
+    height: 25px;
+  }
+  .controls .control img {
+    width: 16px;
+    height: 16px;
+  }
+}
