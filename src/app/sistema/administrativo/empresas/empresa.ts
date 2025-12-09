@@ -48,4 +48,32 @@ export class Empresa {
   cpf!: string;
   porteEmpresa!: string;
   naturezaJuridica!: string;
+  documentos!: { url: string; id: number; fileName: string }[];
+
+  toJson(): string {
+    return JSON.stringify({
+      id: this.id,
+      razaoSocial: this.razaoSocial,
+      cnpj: this.cnpj,
+      cpf: this.cpf,
+      codQuestor: this.codQuestor,
+      codEmpDominio: this.codEmpDominio,
+      regimeEmpresa: this.regimeEmpresa,
+      identificadorContabil: this.identificadorContabil,
+      identificadorFiscal: this.identificadorFiscal,
+      identificadorFinanceiro: this.identificadorFinanceiro,
+      identificadorParalegal: this.identificadorParalegal,
+      identificadorPessoal: this.identificadorPessoal,
+      status: this.status,
+      controleParcelamento: this.controleParcelamento,
+      situacao: this.situacao,
+      tipo: this.tipo,
+      unidadeEmpresa: this.unidadeEmpresa,
+      identificadorEmpresaMatriz: this.identificadorEmpresaMatriz,
+      tipoIdentificacao: this.tipoIdentificacao,
+      porteEmpresa: this.porteEmpresa,
+      naturezaJuridica: this.naturezaJuridica,
+      endereco: this.endereco ? JSON.parse(this.endereco.toJson()) : null
+    });
+  }
 }

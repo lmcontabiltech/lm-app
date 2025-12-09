@@ -7,7 +7,7 @@ import {
   FormGroup,
   Validators,
   AbstractControl,
-  FormArray
+  FormArray,
 } from '@angular/forms';
 import { EmpresasService } from '../../../services/administrativo/empresas.service';
 import { ColaboradoresService } from 'src/app/services/administrativo/colaboradores.service';
@@ -38,6 +38,7 @@ import { EstadoCivilDescricoes } from '../empresas/enums/estado-civil-descricoes
 })
 export class CadastroDeEmpresaComponent implements OnInit {
   empresaForm: FormGroup;
+  formData = new FormData();
   isLoading = false;
   successMessage: string | null = null;
   errorMessage: string | null = null;
@@ -161,7 +162,6 @@ export class CadastroDeEmpresaComponent implements OnInit {
       status: ['ATIVO'],
       controleParcelamento: [[]],
       situacao: ['', Validators.required],
-      tipo: ['', Validators.required],
       porteEmpresa: ['', Validators.required],
       naturezaJuridica: ['', Validators.required],
       unidadeEmpresa: ['MATRIZ'],
@@ -176,6 +176,7 @@ export class CadastroDeEmpresaComponent implements OnInit {
         logradouro: [''],
         complemento: [''],
       }),
+      arquivos: [[]],
       socios: this.formBuilder.array([]),
     });
     this.selectedTipoIdentificacao = 'CNPJ';
@@ -228,7 +229,7 @@ export class CadastroDeEmpresaComponent implements OnInit {
     arquivos: (File | { id: number; name: string; documentoUrl: string })[]
   ): void {
     this.selectedArquivos = arquivos;
-    this.empresaForm.get('documentos')?.setValue(arquivos);
+    this.empresaForm.get('arquivos')?.setValue(arquivos);
     console.log('Arquivos selecionados:', arquivos);
   }
 
@@ -277,10 +278,19 @@ export class CadastroDeEmpresaComponent implements OnInit {
       delete (empresa as any).cpf;
     }
 
+    const formData = new FormData();
+    formData.append('dto', JSON.stringify(empresa));
+
+    // Adiciona os documentos ao FormData
+    const arquivos = this.empresaForm.get('arquivos')?.value || [];
+    arquivos.forEach((arquivo: File) => {
+      formData.append('arquivos', arquivo);
+    });
+
     console.log('Dados enviados para o backend:', empresa);
 
     if (this.isEditMode && this.empresaId) {
-      this.empresasService.atualizarEmpresa(this.empresaId, empresa).subscribe(
+      this.empresasService.atualizarEmpresa(this.empresaId, formData).subscribe(
         (response) => {
           this.isLoading = false;
           this.successMessage = 'Empresa atualizada com sucesso!';
@@ -300,7 +310,7 @@ export class CadastroDeEmpresaComponent implements OnInit {
         }
       );
     } else {
-      this.empresasService.cadastrarEmpresa(empresa).subscribe(
+      this.empresasService.cadastrarEmpresa(formData).subscribe(
         (response) => {
           this.isLoading = false;
           this.successMessage = 'Empresa cadastrada com sucesso!';
@@ -384,6 +394,22 @@ export class CadastroDeEmpresaComponent implements OnInit {
           this.selectedCidade = cidade;
           this.empresaForm.get('endereco.cidade')?.setValue(cidade);
         });
+
+        if (empresa.documentos && Array.isArray(empresa.documentos)) {
+          const documentosMapeados = empresa.documentos.map((d) => ({
+            documentoUrl: d.url,
+            id: d.id,
+            name: d.fileName,
+          }));
+
+          this.empresaForm.get('arquivos')?.setValue(documentosMapeados);
+          this.selectedArquivos = documentosMapeados;
+
+          console.log(
+            'Arquivos carregados no FormControl:',
+            documentosMapeados
+          );
+        }
 
         this.tratarColaboradores(empresa);
         this.selectedRegime = empresa.regimeEmpresa || '';

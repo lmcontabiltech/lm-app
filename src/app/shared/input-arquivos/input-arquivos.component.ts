@@ -7,6 +7,7 @@ import {
   forwardRef,
 } from '@angular/core';
 import { DocumentosService } from 'src/app/services/gerenciamento/documentos.service';
+import { EmpresasService } from 'src/app/services/administrativo/empresas.service';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -33,6 +34,8 @@ export class InputArquivosComponent {
   @Input() inputId: string =
     'arquivo-' + Math.random().toString(36).substring(2, 9);
 
+  @Input() empresaId?: string | null;
+
   successMessage: string | null = null;
   errorMessage: string | null = null;
   arquivos: (File | { id: number; name: string; documentoUrl: string })[] = [];
@@ -41,7 +44,10 @@ export class InputArquivosComponent {
   ) => void = () => {};
   onTouched: () => void = () => {};
 
-  constructor(private documentosService: DocumentosService) {}
+  constructor(
+    private documentosService: DocumentosService,
+    private empresasService: EmpresasService
+  ) {}
 
   ngOnInit(): void {
     console.log('InputArquivosComponent inicializado');
@@ -76,26 +82,22 @@ export class InputArquivosComponent {
     const arquivoRemovido = this.arquivos[index];
     this.arquivos.splice(index, 1);
 
-    if (this.isArquivoComUrl(arquivoRemovido)) {
-      console.log('Removendo arquivo com URL:', arquivoRemovido);
-      this.documentosService
-        .deleteDocumentoById(arquivoRemovido.id.toString())
+    if (this.isArquivoComUrl(arquivoRemovido) && this.empresaId != null) {
+      this.empresasService
+        .removerDocumento(this.empresaId, arquivoRemovido.id)
         .subscribe({
           next: () => {
-            console.log(
-              'Arquivo removido com sucesso no backend:',
-              arquivoRemovido
-            );
+            console.log('Documento removido:', arquivoRemovido);
           },
           error: (error) => {
-            console.error('Erro ao remover o arquivo no backend:', error);
+            console.error('Erro ao remover documento da empresa:', error);
           },
         });
     }
     this.onChange([...this.arquivos]);
     this.arquivosSelecionados.emit([...this.arquivos]);
 
-    if (this.arquivos.length < 3) {
+    if (this.arquivos.length < 5) {
       this.errorMessage = null;
     }
 

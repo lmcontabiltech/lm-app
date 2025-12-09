@@ -110,18 +110,32 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="controleParcelamento">Controle de Parcelamento</label>
-                    <app-multiplo-select
-                    label="Selecionar controle de parcelamento"
-                    [options]="controleParcelamento"
-                    [(selectedValue)]="selectedControleParcelamento"
-                    [multiple]="true" 
-                    formControlName="controleParcelamento">
-                    </app-multiplo-select>
+                <div class="input-duo">
+                    <div class="form-group">
+                        <label for="controleParcelamento">Controle de Parcelamento</label>
+                        <app-multiplo-select
+                            label="Selecionar controle de parcelamento"
+                            [options]="controleParcelamento"
+                            [(selectedValue)]="selectedControleParcelamento"
+                            [multiple]="true" 
+                            formControlName="controleParcelamento">
+                        </app-multiplo-select>
+                    </div>
+                    <div class="form-group">
+                        <label for="situacao">Situação da empresa<span *ngIf="isRequired('situacao')" class="required-asterisk">*</span></label>
+                        <app-select-padrao
+                            label="Selecionar situação da empresa"
+                            [options]="situacao"
+                            [(selectedValue)]="selectedSituacao"
+                            formControlName="situacao">
+                        </app-select-padrao>
+                        <div *ngIf="empresaForm.get('situacao')?.invalid && (empresaForm.get('situacao')?.touched || empresaForm.get('situacao')?.dirty)" class="error-obrigatorio">
+                            O campo Situação da empresa é obrigatório.
+                        </div>
+                    </div>
                 </div>
 
-                <div class="input-duo">
+                <!-- <div class="input-duo">
                     <div class="form-group">
                         <label for="tipo">Tipo da empresa<span *ngIf="isRequired('tipo')" class="required-asterisk">*</span></label>
                         <app-select-padrao
@@ -134,19 +148,7 @@
                             O campo Tipo da empresa é obrigatório.
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="situacao">Situação da empresa<span *ngIf="isRequired('situacao')" class="required-asterisk">*</span></label>
-                        <app-select-padrao
-                        label="Selecionar situação da empresa"
-                        [options]="situacao"
-                        [(selectedValue)]="selectedSituacao"
-                        formControlName="situacao">
-                        </app-select-padrao>
-                        <div *ngIf="empresaForm.get('situacao')?.invalid && (empresaForm.get('situacao')?.touched || empresaForm.get('situacao')?.dirty)" class="error-obrigatorio">
-                            O campo Situação da empresa é obrigatório.
-                        </div>
-                    </div>
-                </div>
+                </div> -->
 
                 <div class="input-duo">
                     <div class="form-group">
@@ -290,7 +292,7 @@
                       <button type="button" (click)="removeSocio(i)" class="btn-remover">Remover</button>
                     </div>
                   </div>
-                </div>
+                </div> -->
 
                 <div class="divisao">
                     <p>Documentos</p>
@@ -301,9 +303,10 @@
                     <label for="arquivos">Arquivos</label>
                     <app-input-arquivos 
                         (arquivosSelecionados)="onArquivosSelecionados($event)"
-                        formControlName="documentos">
+                        formControlName="arquivos"
+                        [empresaId]="empresaId">
                     </app-input-arquivos>
-                </div> -->
+                </div>
 
                 <div class="divisao">
                     <p>Funcionários responsáveis</p>

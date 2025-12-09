@@ -43,12 +43,12 @@
                 <p>{{ getSituacaoDescricao(empresa.situacao) || '-' }}</p>
             </div>
         </div>
-        <div class="data-grid">
+        <!-- <div class="data-grid">
             <div class="item-data">
                 <label>Tipo da Empresa</label>
                 <p>{{ getTipoEmpresaDescricao(empresa.tipo) || '-' }}</p>
             </div>
-        </div>
+        </div> -->
         <div class="data-grid">
             <div class="item-data">
                 <label>Natureza jurídica</label>
@@ -105,6 +105,24 @@
             </div>
         </div>
     </div>
+
+    <div class="divisao">
+        <p>Documentos</p>
+        <hr class="line">
+    </div>
+    <div *ngIf="empresa && empresa.documentos && empresa.documentos.length > 0; else noMaterialTemplate">
+        <div class="list-group">
+            <div class="list-group-item" *ngFor="let documento of empresa.documentos">
+                <span>{{ formatFileName(documento.fileName) }}</span>
+                <div>
+                    <button class="btn-vizualizar" (click)="viewPdf(documento.url)">Visualizar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-template #noMaterialTemplate>
+        <span>Nenhum arquivo adicionado</span>
+    </ng-template>
 </div>
 
 <div class="subMain-container">
