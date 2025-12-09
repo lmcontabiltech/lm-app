@@ -49,3 +49,47 @@
         </div>
     </div>
 </div>
+
+<div class="subMain-container" *ngIf="isAdmin">
+    <div class="divisao">
+        <p>Colaboradores</p>
+        <hr class="line">
+    </div>
+
+    <div class="container-scroll" *ngIf="colaboradores.length > 0; else noColaboradores">
+        <div class="data-grid-quad" *ngFor="let colaborador of colaboradoresPaginados">
+            <div class="item-data-sub">
+                <div class="perfil">
+                    <div class="avatar" [ngStyle]="{'background-color': getRandomColor(colaborador.nome)}">
+                        <img [src]="colaborador.fotoUrl" alt="Foto do colaborador" *ngIf="colaborador.fotoUrl; else defaultAvatar" />
+                        <ng-template #defaultAvatar>
+                            <span>{{ getInitial(colaborador.nome) }}</span>
+                        </ng-template>
+                    </div>
+                    <span>{{ colaborador.username || '-' }}</span>
+                </div>
+            </div>
+            <div class="item-data-sub">
+                <app-setor-tag [setor]="colaborador.setor"></app-setor-tag>
+            </div>
+            <div class="item-data-sub">
+                <p>{{ colaborador.email || '-' }}</p>
+            </div>
+        </div>
+    </div>
+
+     <ng-template #noColaboradores>
+        <div class="no-colaboradores">
+            <p>Nenhum colaborador visualizou esta notícia.</p>
+        </div>
+    </ng-template>
+
+    <div class="paginacao">
+        <app-pagination
+            [paginaAtual]="paginaAtual"
+            [totalItens]="totalItens"
+            [itensPorPagina]="itensPorPagina"
+            (paginaMudou)="onPaginaMudou($event)">
+        </app-pagination>
+    </div>  
+</div>
