@@ -13,8 +13,8 @@ export class EmpresasService {
 
   constructor(private http: HttpClient) {}
 
-  cadastrarEmpresa(empresa: Empresa): Observable<Empresa> {
-    return this.http.post<Empresa>(this.apiURL, empresa).pipe(
+  cadastrarEmpresa(formData: FormData): Observable<any> {
+    return this.http.post<any>(this.apiURL, formData).pipe(
       map((response) => response),
       catchError((error) => {
         console.error('Erro ao cadastrar a empresa:', error);
@@ -54,9 +54,9 @@ export class EmpresasService {
     );
   }
 
-  atualizarEmpresa(id: string, empresa: Empresa): Observable<Empresa> {
+  atualizarEmpresa(id: string, formData: FormData): Observable<any> {
     const url = `${this.apiURL}/${id}`;
-    return this.http.put<Empresa>(url, empresa).pipe(
+    return this.http.put<any>(url, formData).pipe(
       map((response) => response),
       catchError((error) => {
         console.error('Erro ao atualizar a empresa:', error);
@@ -158,6 +158,19 @@ export class EmpresasService {
         }
         console.error(errorMessage);
         return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
+
+  removerDocumento(
+    empresaId: string | number,
+    arquivoId: string | number
+  ): Observable<void> {
+    const url = `${this.apiURL}/${empresaId}/documentos/${arquivoId}`;
+    return this.http.delete<void>(url).pipe(
+      catchError((error) => {
+        console.error('Erro ao remover documento:', error);
+        return throwError(() => error);
       })
     );
   }

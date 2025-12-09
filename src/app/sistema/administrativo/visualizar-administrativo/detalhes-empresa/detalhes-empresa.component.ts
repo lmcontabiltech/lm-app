@@ -175,4 +175,12 @@ export class DetalhesEmpresaComponent implements OnInit {
   onPaginaMudou(novaPagina: number) {
     this.paginaAtual = novaPagina;
   }
+
+  viewPdf(url: string): void {
+    window.open(url, '_blank');
+  }
+
+  formatFileName(fileName: string): string {
+    return fileName.replace(/^\d+_/, '').replace(/_/g, ' ');
+  }
 }

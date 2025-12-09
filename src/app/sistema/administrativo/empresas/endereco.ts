@@ -8,4 +8,18 @@ export class Endereco {
   logradouro?: string;
   complemento?: string;
   pais?: string;
+
+  toJson(): string {
+    return JSON.stringify({
+      estado: this.estado,
+      cidade: this.cidade,
+      cep: this.cep,
+      bairro: this.bairro,
+      rua: this.rua,
+      numero: this.numero,
+      logradouro: this.logradouro,
+      complemento: this.complemento,
+      pais: this.pais,
+    });
+  }
 }
