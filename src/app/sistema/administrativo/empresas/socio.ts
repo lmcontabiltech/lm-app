@@ -2,7 +2,7 @@ import { Endereco } from './endereco';
 import { EstadoCivil } from './enums/estado-civil';
 
 export class Socio {
-  nome?: string;
+  nomeCompleto?: string;
   cpf?: string;
   estadoCivil?: EstadoCivil;
   endereco?: Endereco;
@@ -13,7 +13,7 @@ export class Socio {
 
   toJson(): string {
     return JSON.stringify({
-      nome: this.nome,
+      nomeCompleto: this.nomeCompleto,
       cpf: this.cpf,
       estadoCivil: this.estadoCivil,
       endereco: this.endereco ? JSON.parse(this.endereco.toJson()) : null,

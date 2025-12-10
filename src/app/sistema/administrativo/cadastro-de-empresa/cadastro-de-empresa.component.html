@@ -274,7 +274,7 @@
                             <div class="data-grid">
                                 <div class="item-data">
                                     <label>Nome</label>
-                                    <p>{{ socioCtrl.get('nome')?.value || '-' }}</p>
+                                    <p>{{ socioCtrl.get('nomeCompleto')?.value || '-' }}</p>
                                 </div>
                                 <div class="item-data">
                                     <label>CPF</label>
@@ -364,32 +364,6 @@
                 <ng-template #nenhumSocio>
                     <p style="color: var(--lm-text02);">Nenhum sócio adicionado.</p>
                 </ng-template>
-
-                <!-- <div formArrayName="socios" class="socios">
-                  <div *ngFor="let socioCtrl of socios.controls; let i = index" [formGroupName]="i" class="socio-item">
-                    <div class="input-triplo">
-                      <div class="form-group">
-                        <label for="nomeSocio{{i}}">Nome</label>
-                        <input type="text" id="nomeSocio{{i}}" formControlName="nome" class="form-control" placeholder="Digite o nome" maxlength="250">
-                      </div>
-                      <div class="form-group">
-                        <label for="cpfSocio{{i}}">CPF</label>
-                        <input type="text" id="cpfSocio{{i}}" formControlName="cpf" class="form-control" placeholder="Digite o CPF" mask="000.000.000-00" [dropSpecialCharacters]="false">
-                      </div>
-                      <div class="form-group">
-                        <label for="estadoCivil{{i}}">Estado civil</label>
-                        <app-select-padrao
-                          label="Selecionar estado civil"
-                          [options]="estadoCivil"
-                          formControlName="estadoCivil">
-                        </app-select-padrao>
-                      </div>
-                    </div>
-                    <div class="socio-actions">
-                      <button type="button" (click)="removeSocio(i)" class="btn-remover">Remover</button>
-                    </div>
-                  </div>
-                </div> -->
 
                 <div class="divisao">
                     <p>Documentos</p>
@@ -490,8 +464,8 @@
   <div class="forms-container">
     <form class="modal-form" [formGroup]="socioForm">
         <div class="form-group">
-            <label for="nome">Nome</label>
-            <input type="text" formControlName="nome" class="form-control" placeholder="Digite o nome" maxlength="250">
+            <label for="nomeCompleto">Nome</label>
+            <input type="text" formControlName="nomeCompleto" class="form-control" placeholder="Digite o nome" maxlength="250">
         </div>
 
         <div class="form-group">

@@ -32,6 +32,7 @@ import { EstadoCivil } from '../empresas/enums/estado-civil';
 import { EstadoCivilDescricoes } from '../empresas/enums/estado-civil-descricoes';
 import { ModalCadastroService } from 'src/app/services/modal/modal-cadastro.service';
 import { Socio } from '../empresas/socio';
+import { Endereco } from '../empresas/endereco';
 
 @Component({
   selector: 'app-cadastro-de-empresa',
@@ -144,7 +145,7 @@ export class CadastroDeEmpresaComponent implements OnInit {
   private socioEditIndex: number | null = null;
   // form do sócio usado no modal
   socioForm: FormGroup = this.formBuilder.group({
-    nome: [''],
+    nomeCompleto: [''],
     cpf: [''],
     email: [''],
     inscricaoEstadual: [''],
@@ -440,6 +441,33 @@ export class CadastroDeEmpresaComponent implements OnInit {
           );
         }
 
+        if (Array.isArray((empresa as any).socios)) {
+          while (this.socios.length) this.socios.removeAt(0);
+          (empresa as any).socios.forEach((s: any) => {
+            const end = new Endereco();
+            end.estado = s.endereco?.estado ?? s.estado ?? '';
+            end.cidade = s.endereco?.cidade ?? s.cidade ?? '';
+            end.cep = s.endereco?.cep ?? '';
+            end.bairro = s.endereco?.bairro ?? '';
+            end.rua = s.endereco?.rua ?? '';
+            end.numero = s.endereco?.numero ?? '';
+            end.logradouro = s.endereco?.logradouro ?? '';
+            end.complemento = s.endereco?.complemento ?? '';
+
+            const socioPadronizado: Partial<Socio> = {
+              nomeCompleto: s.nomeCompleto ?? s.nome ?? '',
+              cpf: s.cpf ?? '',
+              estadoCivil: s.estadoCivil ?? '',
+              email: s.email ?? '',
+              inscricaoEstadual: s.inscricaoEstadual ?? '',
+              telefone: s.telefone ?? '',
+              whatsapp: s.whatsapp ?? '',
+              endereco: end,
+            };
+            this.addSocio(socioPadronizado);
+          });
+        }
+
         this.tratarColaboradores(empresa);
         this.selectedRegime = empresa.regimeEmpresa || '';
         this.selectedSituacao = empresa.situacao || '';
@@ -624,7 +652,7 @@ export class CadastroDeEmpresaComponent implements OnInit {
 
   private createSocioGroup(socio?: Partial<Socio>): FormGroup {
     return this.formBuilder.group({
-      nome: [socio?.nome || ''],
+      nomeCompleto: [socio?.nomeCompleto || ''],
       cpf: [socio?.cpf || ''],
       estadoCivil: [socio?.estadoCivil || ''],
       email: [socio?.email || ''],
@@ -660,7 +688,7 @@ export class CadastroDeEmpresaComponent implements OnInit {
   openModalCadastro(): void {
     this.socioEditIndex = null;
     this.socioForm.reset({
-      nome: '',
+      nomeCompleto: '',
       cpf: '',
       email: '',
       inscricaoEstadual: '',
@@ -702,11 +730,32 @@ export class CadastroDeEmpresaComponent implements OnInit {
   editarSocio(index: number): void {
     this.socioEditIndex = index;
     const socioGroup = this.socios.at(index) as FormGroup;
-    this.socioForm.patchValue(socioGroup.value);
+
+    this.socioForm.patchValue({
+      nomeCompleto: socioGroup.get('nomeCompleto')?.value || '',
+      cpf: socioGroup.get('cpf')?.value || '',
+      email: socioGroup.get('email')?.value || '',
+      inscricaoEstadual: socioGroup.get('inscricaoEstadual')?.value || '',
+      estadoCivil: socioGroup.get('estadoCivil')?.value || '',
+      telefone: socioGroup.get('telefone')?.value || '',
+      whatsapp: socioGroup.get('whatsapp')?.value || '',
+      endereco: {
+        estado: socioGroup.get('endereco.estado')?.value || '',
+        cidade: socioGroup.get('endereco.cidade')?.value || '',
+        cep: socioGroup.get('endereco.cep')?.value || '',
+        bairro: socioGroup.get('endereco.bairro')?.value || '',
+        rua: socioGroup.get('endereco.rua')?.value || '',
+        numero: socioGroup.get('endereco.numero')?.value || '',
+        logradouro: socioGroup.get('endereco.logradouro')?.value || '',
+        complemento: socioGroup.get('endereco.complemento')?.value || '',
+      },
+    });
+    
     const estadoSel = this.socioForm.get('endereco.estado')?.value || '';
     this.selectedEstadoSocio = estadoSel || '';
     this.selectedCidadeSocio =
       this.socioForm.get('endereco.cidade')?.value || '';
+
     if (estadoSel) {
       this.enderecoService
         .getCidadesByEstado(estadoSel)
@@ -723,6 +772,25 @@ export class CadastroDeEmpresaComponent implements OnInit {
     const onConfirm = () => {
       if (this.socioEditIndex != null) {
         const socioAtualizado = this.socioForm.value as Socio;
+        (this.socios.at(this.socioEditIndex) as FormGroup).patchValue({
+          nomeCompleto: socioAtualizado.nomeCompleto,
+          cpf: socioAtualizado.cpf,
+          email: socioAtualizado.email,
+          inscricaoEstadual: socioAtualizado.inscricaoEstadual,
+          estadoCivil: socioAtualizado.estadoCivil,
+          telefone: socioAtualizado.telefone,
+          whatsapp: socioAtualizado.whatsapp,
+          endereco: {
+            estado: socioAtualizado.endereco?.estado ?? '',
+            cidade: socioAtualizado.endereco?.cidade ?? '',
+            cep: socioAtualizado.endereco?.cep ?? '',
+            bairro: socioAtualizado.endereco?.bairro ?? '',
+            rua: socioAtualizado.endereco?.rua ?? '',
+            numero: socioAtualizado.endereco?.numero ?? '',
+            logradouro: socioAtualizado.endereco?.logradouro ?? '',
+            complemento: socioAtualizado.endereco?.complemento ?? '',
+          },
+        });
         (this.socios.at(this.socioEditIndex) as FormGroup).patchValue(
           socioAtualizado
         );
