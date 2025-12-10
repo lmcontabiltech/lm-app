@@ -198,7 +198,7 @@ form {
   justify-content: flex-end;
   flex-direction: row;
   align-items: center;
-  gap: 16px;
+  gap: 8px;
 }
 
 .socio-card {
