@@ -311,7 +311,6 @@ export class CadastroDeEmpresaComponent implements OnInit {
     const formData = new FormData();
     formData.append('dto', JSON.stringify(empresa));
 
-    // Adiciona os documentos ao FormData
     const arquivos = this.empresaForm.get('arquivos')?.value || [];
     arquivos.forEach((arquivo: File) => {
       formData.append('arquivos', arquivo);
@@ -684,7 +683,6 @@ export class CadastroDeEmpresaComponent implements OnInit {
     this.socios.removeAt(index);
   }
 
-  // abre o modal de cadastro de sócio; ao confirmar, adiciona ao FormArray
   openModalCadastro(): void {
     this.socioEditIndex = null;
     this.socioForm.reset({
@@ -750,7 +748,7 @@ export class CadastroDeEmpresaComponent implements OnInit {
         complemento: socioGroup.get('endereco.complemento')?.value || '',
       },
     });
-    
+
     const estadoSel = this.socioForm.get('endereco.estado')?.value || '';
     this.selectedEstadoSocio = estadoSel || '';
     this.selectedCidadeSocio =
