@@ -249,6 +249,9 @@
   .subMain-container {
     margin: 24px 24px 24px;
     padding: 40px;
+    gap: 8px;
+    display: flex;
+    flex-direction: column;
   }
 }
 
@@ -261,6 +264,9 @@
   .subMain-container {
     margin: 24px 24px 24px;
     padding: 40px;
+    gap: 8px;
+    display: flex;
+    flex-direction: column;
   }
 }
 
