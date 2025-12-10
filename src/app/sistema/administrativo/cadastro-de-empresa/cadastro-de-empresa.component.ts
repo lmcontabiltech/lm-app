@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Empresa } from '../empresas/empresa';
@@ -30,6 +30,8 @@ import { TipoIdentificacaoDescricao } from '../empresas/enums/tipo-identificacao
 import { EnderecoService, Estado } from 'src/app/services/endereco.service';
 import { EstadoCivil } from '../empresas/enums/estado-civil';
 import { EstadoCivilDescricoes } from '../empresas/enums/estado-civil-descricoes';
+import { ModalCadastroService } from 'src/app/services/modal/modal-cadastro.service';
+import { Socio } from '../empresas/socio';
 
 @Component({
   selector: 'app-cadastro-de-empresa',
@@ -135,6 +137,30 @@ export class CadastroDeEmpresaComponent implements OnInit {
     | { documentoUrl: string; id: number; name: string }
   )[] = [];
 
+  @ViewChild('formCadastroTemplate') formCadastroTemplate!: TemplateRef<any>;
+  cidadesModal: { value: string; description: string }[] = [];
+  private socioEditIndex: number | null = null;
+  // form do sócio usado no modal
+  socioForm: FormGroup = this.formBuilder.group({
+    nome: [''],
+    cpf: [''],
+    email: [''],
+    inscricaoEstadual: [''],
+    estadoCivil: [''],
+    telefone: [''],
+    whatsapp: [''],
+    endereco: this.formBuilder.group({
+      estado: [''],
+      cidade: [''],
+      cep: [''],
+      bairro: [''],
+      rua: [''],
+      numero: [''],
+      logradouro: [''],
+      complemento: [''],
+    }),
+  });
+
   constructor(
     private location: Location,
     private formBuilder: FormBuilder,
@@ -144,7 +170,8 @@ export class CadastroDeEmpresaComponent implements OnInit {
     private router: Router,
     private colaboradorService: ColaboradoresService,
     private errorMessageService: ErrorMessageService,
-    private enderecoService: EnderecoService
+    private enderecoService: EnderecoService,
+    private modalCadastroService: ModalCadastroService
   ) {
     this.empresaForm = this.formBuilder.group({
       razaoSocial: ['', Validators.required],
@@ -593,11 +620,25 @@ export class CadastroDeEmpresaComponent implements OnInit {
     cnpjControl?.updateValueAndValidity();
   }
 
-  private createSocioGroup(socio?: any): FormGroup {
+  private createSocioGroup(socio?: Partial<Socio>): FormGroup {
     return this.formBuilder.group({
       nome: [socio?.nome || ''],
       cpf: [socio?.cpf || ''],
       estadoCivil: [socio?.estadoCivil || ''],
+      email: [socio?.email || ''],
+      inscricaoEstadual: [socio?.inscricaoEstadual || ''],
+      telefone: [socio?.telefone || ''],
+      whatsapp: [socio?.whatsapp || ''],
+      endereco: this.formBuilder.group({
+        estado: [socio?.endereco?.estado || ''],
+        cidade: [socio?.endereco?.cidade || ''],
+        cep: [socio?.endereco?.cep || ''],
+        bairro: [socio?.endereco?.bairro || ''],
+        rua: [socio?.endereco?.rua || ''],
+        numero: [socio?.endereco?.numero || ''],
+        logradouro: [socio?.endereco?.logradouro || ''],
+        complemento: [socio?.endereco?.complemento || ''],
+      }),
     });
   }
 
@@ -611,5 +652,108 @@ export class CadastroDeEmpresaComponent implements OnInit {
 
   removeSocio(index: number): void {
     this.socios.removeAt(index);
+  }
+
+  // abre o modal de cadastro de sócio; ao confirmar, adiciona ao FormArray
+  openModalCadastro(): void {
+    this.socioEditIndex = null;
+    this.socioForm.reset({
+      nome: '',
+      cpf: '',
+      email: '',
+      inscricaoEstadual: '',
+      estadoCivil: '',
+      telefone: '',
+      whatsapp: '',
+      endereco: {
+        estado: '',
+        cidade: '',
+        cep: '',
+        bairro: '',
+        rua: '',
+        numero: '',
+        logradouro: '',
+        complemento: '',
+      },
+    });
+    this.cidadesModal = [];
+    const onConfirm = () => {
+      const socio = this.socioForm.value as Socio;
+      this.addSocio(socio);
+      this.modalCadastroService.closeModal();
+    };
+    this.modalCadastroService.openModal(
+      {
+        title: 'Inserir sócio',
+        description: 'Preencha os dados do sócio e confirme para adicionar.',
+        size: 'md',
+        confirmTextoBotao: 'Adicionar',
+        cancelTextoBotao: 'Fechar',
+      },
+      onConfirm,
+      this.formCadastroTemplate
+    );
+  }
+
+  editarSocio(index: number): void {
+    this.socioEditIndex = index;
+    const socioGroup = this.socios.at(index) as FormGroup;
+    this.socioForm.patchValue(socioGroup.value);
+    const estadoSel = this.socioForm.get('endereco.estado')?.value || '';
+    if (estadoSel) {
+      this.enderecoService
+        .getCidadesByEstado(estadoSel)
+        .subscribe((cidades) => {
+          this.cidadesModal = cidades.map((c) => ({
+            value: c.nome,
+            description: c.nome,
+          }));
+        });
+    } else {
+      this.cidadesModal = [];
+    }
+
+    const onConfirm = () => {
+      if (this.socioEditIndex != null) {
+        const socioAtualizado = this.socioForm.value as Socio;
+        (this.socios.at(this.socioEditIndex) as FormGroup).patchValue(
+          socioAtualizado
+        );
+        this.socioEditIndex = null;
+      }
+      this.modalCadastroService.closeModal();
+    };
+
+    this.modalCadastroService.openModal(
+      {
+        title: 'Editar sócio',
+        description: 'Atualize os dados do sócio e confirme.',
+        size: 'md',
+        confirmTextoBotao: 'Salvar',
+        cancelTextoBotao: 'Fechar',
+      },
+      onConfirm,
+      this.formCadastroTemplate
+    );
+  }
+
+  onModalEstadoChange(estado: string): void {
+    this.socioForm.get('endereco.estado')?.setValue(estado);
+    if (!estado) {
+      this.cidadesModal = [];
+      this.socioForm.get('endereco.cidade')?.setValue('');
+      return;
+    }
+    this.enderecoService.getCidadesByEstado(estado).subscribe((cidades) => {
+      this.cidadesModal = cidades.map((c) => ({
+        value: c.nome,
+        description: c.nome,
+      }));
+      this.socioForm.get('endereco.cidade')?.setValue('');
+    });
+  }
+
+  onModalCidadeChange(cidade: string): void {
+    this.socioForm.get('endereco.cidade')?.setValue(cidade);
   }
 }

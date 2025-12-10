@@ -258,17 +258,114 @@
                     </div>
                 </div>
 
-                <!-- <div class="divisao">
+                <div class="divisao">
                     <div class="header-divisao">
                         <p>Sócios</p>
                         <div class="add-socio">
-                            <button type="button" (click)="addSocio()" class="btn-adicionar">Adicionar +</button>
+                        <button type="button" (click)="openModalCadastro()" class="btn-adicionar">Adicionar +</button>
                         </div>
                     </div>
                     <hr class="line">
+                    </div>
+
+                    <div formArrayName="socios" class="socios" *ngIf="socios.controls.length > 0; else nenhumSocio">
+                    <div *ngFor="let socioCtrl of socios.controls; let i = index" [formGroupName]="i" class="socio-card">
+                        <div class="socio-info">
+                            <div class="data-grid">
+                                <div class="item-data">
+                                    <label>Nome</label>
+                                    <p>{{ socioCtrl.get('nome')?.value || '-' }}</p>
+                                </div>
+                                <div class="item-data">
+                                    <label>CPF</label>
+                                    <p>{{ socioCtrl.get('cpf')?.value || '-' }}</p>
+                                </div>
+                            </div>
+
+                            <div class="item-data">
+                                <label>E-mail</label>
+                                <p>{{ socioCtrl.get('email')?.value || '-' }}</p>
+                            </div>
+
+                            <div class="data-grid">
+                                <div class="item-data">
+                                    <label>Inscrição Estadual </label>
+                                    <p>{{ socioCtrl.get('inscricaoEstadual')?.value || '-' }}</p>
+                                </div>
+                                <div class="item-data">
+                                    <label>Estado Civil</label>
+                                    <p>{{ socioCtrl.get('estadoCivil')?.value || '-' }}</p>
+                                </div>
+                            </div>
+
+                            <div class="data-grid">
+                                <div class="item-data">
+                                    <label>Telefone</label>
+                                    <p>{{ socioCtrl.get('telefone')?.value || '-' }}</p>
+                                </div>
+                                <div class="item-data">
+                                    <label>WhatsApp</label>
+                                    <p>{{ socioCtrl.get('whatsapp')?.value || '-' }}</p>
+                                </div>
+                            </div>
+
+                            <div class="data-grid">
+                                <div class="item-data">
+                                    <label>Estado</label>
+                                    <p>{{ socioCtrl.get('endereco.estado')?.value || '-' }}</p>
+                                </div>
+                                <div class="item-data">
+                                    <label>Cidade</label>
+                                    <p>{{ socioCtrl.get('endereco.cidade')?.value || '-' }}</p>
+                                </div>
+                            </div>
+                            <div class="data-grid">
+                                <div class="item-data">
+                                    <label>CEP</label>
+                                    <p>{{ socioCtrl.get('endereco.cep')?.value || '-' }}</p>
+                                </div>
+                                <div class="item-data">
+                                    <label>Bairro</label>
+                                    <p>{{ socioCtrl.get('endereco.bairro')?.value || '-' }}</p>
+                                </div>
+                            </div>
+                            <div class="data-grid">
+                                <div class="item-data">
+                                    <label>Rua</label>
+                                    <p>{{ socioCtrl.get('endereco.rua')?.value || '-' }}</p>
+                                </div>
+                                <div class="item-data">
+                                    <label>Número</label>
+                                    <p>{{ socioCtrl.get('endereco.numero')?.value || '-' }}</p>
+                                </div>
+                            </div>
+                            <div class="data-grid">
+                                <div class="item-data">
+                                    <label>Complemento</label>
+                                    <p>{{ socioCtrl.get('endereco.complemento')?.value || '-' }}</p>
+                                </div>
+                                <div class="item-data">
+                                    <label>Logradouro</label>
+                                    <p>{{ socioCtrl.get('endereco.logradouro')?.value || '-' }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="socio-actions">
+                            <button type="button" class="btn-editar" (click)="editarSocio(i)">
+                                <img src="assets/icones/edit.svg" alt="Editar">
+                            </button>
+                            <button type="button" class="btn-remover" (click)="removeSocio(i)">
+                                <img src="assets/icones/delete.svg" alt="Excluir">
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
-                <div formArrayName="socios" class="socios">
+                <ng-template #nenhumSocio>
+                    <p style="color: var(--lm-text02);">Nenhum sócio adicionado.</p>
+                </ng-template>
+
+                <!-- <div formArrayName="socios" class="socios">
                   <div *ngFor="let socioCtrl of socios.controls; let i = index" [formGroupName]="i" class="socio-item">
                     <div class="input-triplo">
                       <div class="form-group">
@@ -388,3 +485,116 @@
         <app-loading *ngIf="isLoading"></app-loading>
     </div>
 </div>
+
+<ng-template #formCadastroTemplate>
+  <div class="forms-container">
+    <form class="modal-form" [formGroup]="socioForm">
+        <div class="form-group">
+            <label for="nome">Nome</label>
+            <input type="text" formControlName="nome" class="form-control" placeholder="Digite o nome" maxlength="250">
+        </div>
+
+        <div class="form-group">
+            <label for="cpf">CPF</label>
+            <input type="text" formControlName="cpf" class="form-control" placeholder="000.000.000-00" mask="000.000.000-00" [dropSpecialCharacters]="false">
+        </div>
+
+        <div class="form-group">
+            <label for="email">E-mail</label>
+            <input type="text" formControlName="email" class="form-control" placeholder="Digite o E-mail">
+        </div>
+
+        <div class="form-group">
+            <label for="inscricaoEstadual">Inscrição Estadual</label>
+            <input type="text" formControlName="inscricaoEstadual" class="form-control" placeholder="Digite a Inscrição Estadual">
+        </div>
+
+        <div class="form-group">
+            <label for="estadoCivil">Estado civil</label>
+            <app-select-padrao
+                label="Selecionar estado civil"
+                [options]="estadoCivil"
+                formControlName="estadoCivil">
+            </app-select-padrao>
+        </div>
+
+        <div class="input-duo">
+            <div class="form-group">
+                <label for="telefone">Telefone</label>
+                <input type="text" formControlName="telefone" class="form-control" placeholder="(00) 00000-0000" mask="(00) 00000-0000" [dropSpecialCharacters]="false">
+            </div>
+            <div class="form-group">
+                <label for="whatsapp">WhatsApp</label>
+                <input type="text" formControlName="whatsapp" class="form-control" placeholder="(00) 00000-0000" mask="(00) 00000-0000" [dropSpecialCharacters]="false">
+            </div>
+        </div>
+
+        <div class="divisao">
+            <p>Endereço</p>
+            <hr class="line">
+        </div>
+
+        <div formGroupName="endereco" class="form-div">
+            <div class="input-duo">
+                <div class="form-group">
+                    <label for="estado">Estado</label>
+                    <app-select-padrao
+                        label="Selecione o estado"
+                        [options]="estados"
+                        [(selectedValue)]="selectedEstado"
+                        (selectedValueChange)="onEstadoChange($event)"
+                        formControlName="estado"
+                        [showDefaultOption]="false"
+                        [defaultLabel]="''"
+                        [defaultValue]="''">
+                    </app-select-padrao>
+                </div>
+                <div class="form-group">
+                    <label for="cidade">Cidade</label>
+                    <app-select-padrao
+                        label="Selecione a cidade"
+                        [options]="cidades"
+                        [(selectedValue)]="selectedCidade"
+                        (selectedValueChange)="onCidadeChange($event)"
+                        formControlName="cidade"
+                        [disabled]="empresaForm.get('endereco.cidade')?.disabled === true">
+                    </app-select-padrao>
+                </div>
+            </div>
+
+            <div class="input-duo">
+                <div class="form-group">
+                    <label for="cep">CEP</label>
+                    <input type="text" id="cep" name="cep" formControlName="cep" class="form-control" placeholder="00000-000" mask="00000-000" [dropSpecialCharacters]="false">
+                </div>
+                <div class="form-group">
+                    <label for="bairro">Bairro</label>
+                        <input type="text" id="bairro" name="bairro" formControlName="bairro" class="form-control" placeholder="Digite o bairro" maxlength="250">
+                </div>
+            </div>
+    
+            <div class="input-duo">
+                <div class="form-group">
+                    <label for="rua">Rua</label>
+                    <input type="text" id="rua" name="rua" formControlName="rua" class="form-control" placeholder="Digite a rua" maxlength="250">
+                </div>
+                <div class="form-group">
+                    <label for="numero">Número</label>
+                    <input type="text" id="numero" name="numero" formControlName="numero" class="form-control" placeholder="Digite o número" maxlength="250">
+                </div>
+            </div>
+
+            <div class="input-duo">
+                <div class="form-group">
+                    <label for="complemento">Complemento</label>
+                    <input type="text" id="complemento" name="complemento" formControlName="complemento" class="form-control" placeholder="Digite um complemento" maxlength="250">
+                </div>
+                <div class="form-group">
+                    <label for="logradouro">Logradouro</label>
+                    <input type="text" id="logradouro" name="logradouro" formControlName="logradouro" class="form-control" placeholder="Digite o logradouro" maxlength="250">
+                </div>
+            </div>
+        </div>
+    </form>
+  </div>
+</ng-template>
