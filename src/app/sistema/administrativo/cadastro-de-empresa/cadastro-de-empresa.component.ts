@@ -139,6 +139,8 @@ export class CadastroDeEmpresaComponent implements OnInit {
 
   @ViewChild('formCadastroTemplate') formCadastroTemplate!: TemplateRef<any>;
   cidadesModal: { value: string; description: string }[] = [];
+  selectedEstadoSocio: string = '';
+  selectedCidadeSocio: string = '';
   private socioEditIndex: number | null = null;
   // form do sócio usado no modal
   socioForm: FormGroup = this.formBuilder.group({
@@ -677,6 +679,8 @@ export class CadastroDeEmpresaComponent implements OnInit {
       },
     });
     this.cidadesModal = [];
+    this.selectedEstadoSocio = '';
+    this.selectedCidadeSocio = '';
     const onConfirm = () => {
       const socio = this.socioForm.value as Socio;
       this.addSocio(socio);
@@ -700,6 +704,9 @@ export class CadastroDeEmpresaComponent implements OnInit {
     const socioGroup = this.socios.at(index) as FormGroup;
     this.socioForm.patchValue(socioGroup.value);
     const estadoSel = this.socioForm.get('endereco.estado')?.value || '';
+    this.selectedEstadoSocio = estadoSel || '';
+    this.selectedCidadeSocio =
+      this.socioForm.get('endereco.cidade')?.value || '';
     if (estadoSel) {
       this.enderecoService
         .getCidadesByEstado(estadoSel)
@@ -738,10 +745,12 @@ export class CadastroDeEmpresaComponent implements OnInit {
   }
 
   onModalEstadoChange(estado: string): void {
+    this.selectedEstadoSocio = estado || '';
     this.socioForm.get('endereco.estado')?.setValue(estado);
     if (!estado) {
       this.cidadesModal = [];
       this.socioForm.get('endereco.cidade')?.setValue('');
+      this.selectedCidadeSocio = '';
       return;
     }
     this.enderecoService.getCidadesByEstado(estado).subscribe((cidades) => {
@@ -750,10 +759,12 @@ export class CadastroDeEmpresaComponent implements OnInit {
         description: c.nome,
       }));
       this.socioForm.get('endereco.cidade')?.setValue('');
+      this.selectedCidadeSocio = '';
     });
   }
 
   onModalCidadeChange(cidade: string): void {
+    this.selectedCidadeSocio = cidade || '';
     this.socioForm.get('endereco.cidade')?.setValue(cidade);
   }
 }

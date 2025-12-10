@@ -541,8 +541,8 @@
                     <app-select-padrao
                         label="Selecione o estado"
                         [options]="estados"
-                        [(selectedValue)]="selectedEstado"
-                        (selectedValueChange)="onEstadoChange($event)"
+                        [(selectedValue)]="selectedEstadoSocio"
+                        (selectedValueChange)="onModalEstadoChange($event)"
                         formControlName="estado"
                         [showDefaultOption]="false"
                         [defaultLabel]="''"
@@ -553,11 +553,11 @@
                     <label for="cidade">Cidade</label>
                     <app-select-padrao
                         label="Selecione a cidade"
-                        [options]="cidades"
-                        [(selectedValue)]="selectedCidade"
-                        (selectedValueChange)="onCidadeChange($event)"
+                        [options]="cidadesModal"
+                        [(selectedValue)]="selectedCidadeSocio"
+                        (selectedValueChange)="onModalCidadeChange($event)"
                         formControlName="cidade"
-                        [disabled]="empresaForm.get('endereco.cidade')?.disabled === true">
+                        [disabled]="cidadesModal.length === 0">
                     </app-select-padrao>
                 </div>
             </div>
