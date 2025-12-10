@@ -142,43 +142,6 @@ form {
   gap: 8px;
 }
 
-/* Breakpoints */
-@media (min-width: 1200px) {
-  .main-container {
-    margin: 120px 32px 24px;
-    padding: 50px;
-  }
-}
-
-@media (min-width: 768px) and (max-width: 1199px) {
-  .main-container {
-    margin: 100px 24px 24px;
-    padding: 40px;
-  }
-}
-
-@media (max-width: 767px) {
-  .main-container {
-    margin: 100px 24px 24px;
-    padding: 20px;
-  }
-
-  .back-title span {
-    font-size: 24px;
-  }
-
-  .back-title img {
-    width: 22px;
-    height: auto;
-  }
-
-  .input-duo {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-}
-
 /* itens para cadastrar socios  */
 .socios {
   display: flex;
@@ -206,7 +169,7 @@ form {
   justify-content: space-between;
   gap: 16px;
   align-items: center;
-  padding: 12px 16px;
+  padding: 16px;
   border: 1px solid var(--lm-border02);
   border-radius: 8px;
   background: #f9f9f9;
@@ -310,4 +273,45 @@ form {
   max-width: 100%;
   margin: 0;
   padding: 0;
+}
+
+/* Breakpoints */
+@media (min-width: 1200px) {
+  .main-container {
+    margin: 120px 32px 24px;
+    padding: 50px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+  .main-container {
+    margin: 100px 24px 24px;
+    padding: 40px;
+  }
+}
+
+@media (max-width: 767px) {
+  .main-container {
+    margin: 100px 24px 24px;
+    padding: 20px;
+  }
+
+  .back-title span {
+    font-size: 24px;
+  }
+
+  .back-title img {
+    width: 22px;
+    height: auto;
+  }
+
+  .input-duo {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .socio-actions {
+    flex-direction: column-reverse;
+  }
 }
