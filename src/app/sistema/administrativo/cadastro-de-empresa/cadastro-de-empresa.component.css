@@ -142,6 +142,139 @@ form {
   gap: 8px;
 }
 
+/* itens para cadastrar socios  */
+.socios {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.socio-item {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-end;
+}
+.socio-actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.socio-card {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid var(--lm-border02);
+  border-radius: 8px;
+  background: #f9f9f9;
+  align-items: flex-start;
+}
+
+.btn-remover {
+  background-color: var(--danger);
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+}
+.btn-remover:hover {
+  background-color: #e60400;
+}
+
+.btn-adicionar {
+  background: var(--lm-accent);
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.btn-adicionar:hover {
+  background: var(--lm-primary);
+}
+
+.btn-editar {
+  background-color: var(--info);
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+}
+
+.btn-editar:hover {
+  background-color: var(--info-hover);
+}
+
+.socio-info {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 5px;
+}
+
+.socio-info p {
+  margin: 2px 0;
+  color: var(--lm-text02);
+}
+
+.data-itens {
+  margin: 16px 0;
+}
+
+.data-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.data-grid-trio {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.item-data label {
+  color: #716f6e;
+}
+
+.item-data p {
+  word-break: break-word;
+  white-space: pre-line;
+  max-width: 100%;
+}
+
+.item-data-sub {
+  display: flex;
+  align-items: center;
+  padding-top: 8px;
+}
+
+.item-data-sub p {
+  word-break: break-word;
+  white-space: pre-line;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 /* Breakpoints */
 @media (min-width: 1200px) {
   .main-container {
@@ -177,43 +310,8 @@ form {
     flex-direction: column;
     gap: 16px;
   }
-}
 
-/* itens para cadastrar socios  */
-.socios {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.socio-item {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  align-items: flex-end;
-}
-.socio-actions {
-  display: flex;
-  justify-content: flex-end;
-}
-.btn-remover {
-  background-color: var(--danger);
-  color: white;
-  border: none;
-  padding: 16px 22px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-.btn-remover:hover {
-  background-color: #e60400;
-}
-
-.btn-adicionar {
-  background: var(--lm-accent);
-  color: #ffffff;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
+  .socio-actions {
+    flex-direction: column-reverse;
+  }
 }

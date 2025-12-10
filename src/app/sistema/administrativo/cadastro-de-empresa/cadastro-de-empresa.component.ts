@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Empresa } from '../empresas/empresa';
@@ -30,6 +30,9 @@ import { TipoIdentificacaoDescricao } from '../empresas/enums/tipo-identificacao
 import { EnderecoService, Estado } from 'src/app/services/endereco.service';
 import { EstadoCivil } from '../empresas/enums/estado-civil';
 import { EstadoCivilDescricoes } from '../empresas/enums/estado-civil-descricoes';
+import { ModalCadastroService } from 'src/app/services/modal/modal-cadastro.service';
+import { Socio } from '../empresas/socio';
+import { Endereco } from '../empresas/endereco';
 
 @Component({
   selector: 'app-cadastro-de-empresa',
@@ -135,6 +138,32 @@ export class CadastroDeEmpresaComponent implements OnInit {
     | { documentoUrl: string; id: number; name: string }
   )[] = [];
 
+  @ViewChild('formCadastroTemplate') formCadastroTemplate!: TemplateRef<any>;
+  cidadesModal: { value: string; description: string }[] = [];
+  selectedEstadoSocio: string = '';
+  selectedCidadeSocio: string = '';
+  private socioEditIndex: number | null = null;
+  // form do sócio usado no modal
+  socioForm: FormGroup = this.formBuilder.group({
+    nomeCompleto: [''],
+    cpf: [''],
+    email: [''],
+    inscricaoEstadual: [''],
+    estadoCivil: [''],
+    telefone: [''],
+    whatsapp: [''],
+    endereco: this.formBuilder.group({
+      estado: [''],
+      cidade: [''],
+      cep: [''],
+      bairro: [''],
+      rua: [''],
+      numero: [''],
+      logradouro: [''],
+      complemento: [''],
+    }),
+  });
+
   constructor(
     private location: Location,
     private formBuilder: FormBuilder,
@@ -144,7 +173,8 @@ export class CadastroDeEmpresaComponent implements OnInit {
     private router: Router,
     private colaboradorService: ColaboradoresService,
     private errorMessageService: ErrorMessageService,
-    private enderecoService: EnderecoService
+    private enderecoService: EnderecoService,
+    private modalCadastroService: ModalCadastroService
   ) {
     this.empresaForm = this.formBuilder.group({
       razaoSocial: ['', Validators.required],
@@ -281,7 +311,6 @@ export class CadastroDeEmpresaComponent implements OnInit {
     const formData = new FormData();
     formData.append('dto', JSON.stringify(empresa));
 
-    // Adiciona os documentos ao FormData
     const arquivos = this.empresaForm.get('arquivos')?.value || [];
     arquivos.forEach((arquivo: File) => {
       formData.append('arquivos', arquivo);
@@ -409,6 +438,33 @@ export class CadastroDeEmpresaComponent implements OnInit {
             'Arquivos carregados no FormControl:',
             documentosMapeados
           );
+        }
+
+        if (Array.isArray((empresa as any).socios)) {
+          while (this.socios.length) this.socios.removeAt(0);
+          (empresa as any).socios.forEach((s: any) => {
+            const end = new Endereco();
+            end.estado = s.endereco?.estado ?? s.estado ?? '';
+            end.cidade = s.endereco?.cidade ?? s.cidade ?? '';
+            end.cep = s.endereco?.cep ?? '';
+            end.bairro = s.endereco?.bairro ?? '';
+            end.rua = s.endereco?.rua ?? '';
+            end.numero = s.endereco?.numero ?? '';
+            end.logradouro = s.endereco?.logradouro ?? '';
+            end.complemento = s.endereco?.complemento ?? '';
+
+            const socioPadronizado: Partial<Socio> = {
+              nomeCompleto: s.nomeCompleto ?? s.nome ?? '',
+              cpf: s.cpf ?? '',
+              estadoCivil: s.estadoCivil ?? '',
+              email: s.email ?? '',
+              inscricaoEstadual: s.inscricaoEstadual ?? '',
+              telefone: s.telefone ?? '',
+              whatsapp: s.whatsapp ?? '',
+              endereco: end,
+            };
+            this.addSocio(socioPadronizado);
+          });
         }
 
         this.tratarColaboradores(empresa);
@@ -593,11 +649,25 @@ export class CadastroDeEmpresaComponent implements OnInit {
     cnpjControl?.updateValueAndValidity();
   }
 
-  private createSocioGroup(socio?: any): FormGroup {
+  private createSocioGroup(socio?: Partial<Socio>): FormGroup {
     return this.formBuilder.group({
-      nome: [socio?.nome || ''],
+      nomeCompleto: [socio?.nomeCompleto || ''],
       cpf: [socio?.cpf || ''],
       estadoCivil: [socio?.estadoCivil || ''],
+      email: [socio?.email || ''],
+      inscricaoEstadual: [socio?.inscricaoEstadual || ''],
+      telefone: [socio?.telefone || ''],
+      whatsapp: [socio?.whatsapp || ''],
+      endereco: this.formBuilder.group({
+        estado: [socio?.endereco?.estado || ''],
+        cidade: [socio?.endereco?.cidade || ''],
+        cep: [socio?.endereco?.cep || ''],
+        bairro: [socio?.endereco?.bairro || ''],
+        rua: [socio?.endereco?.rua || ''],
+        numero: [socio?.endereco?.numero || ''],
+        logradouro: [socio?.endereco?.logradouro || ''],
+        complemento: [socio?.endereco?.complemento || ''],
+      }),
     });
   }
 
@@ -611,5 +681,156 @@ export class CadastroDeEmpresaComponent implements OnInit {
 
   removeSocio(index: number): void {
     this.socios.removeAt(index);
+  }
+
+  openModalCadastro(): void {
+    this.socioEditIndex = null;
+    this.socioForm.reset({
+      nomeCompleto: '',
+      cpf: '',
+      email: '',
+      inscricaoEstadual: '',
+      estadoCivil: '',
+      telefone: '',
+      whatsapp: '',
+      endereco: {
+        estado: '',
+        cidade: '',
+        cep: '',
+        bairro: '',
+        rua: '',
+        numero: '',
+        logradouro: '',
+        complemento: '',
+      },
+    });
+    this.cidadesModal = [];
+    this.selectedEstadoSocio = '';
+    this.selectedCidadeSocio = '';
+    const onConfirm = () => {
+      const socio = this.socioForm.value as Socio;
+      this.addSocio(socio);
+      this.modalCadastroService.closeModal();
+    };
+    this.modalCadastroService.openModal(
+      {
+        title: 'Inserir sócio',
+        description: 'Preencha os dados do sócio e confirme para adicionar.',
+        size: 'md',
+        confirmTextoBotao: 'Adicionar',
+        cancelTextoBotao: 'Fechar',
+      },
+      onConfirm,
+      this.formCadastroTemplate
+    );
+  }
+
+  editarSocio(index: number): void {
+    this.socioEditIndex = index;
+    const socioGroup = this.socios.at(index) as FormGroup;
+
+    this.socioForm.patchValue({
+      nomeCompleto: socioGroup.get('nomeCompleto')?.value || '',
+      cpf: socioGroup.get('cpf')?.value || '',
+      email: socioGroup.get('email')?.value || '',
+      inscricaoEstadual: socioGroup.get('inscricaoEstadual')?.value || '',
+      estadoCivil: socioGroup.get('estadoCivil')?.value || '',
+      telefone: socioGroup.get('telefone')?.value || '',
+      whatsapp: socioGroup.get('whatsapp')?.value || '',
+      endereco: {
+        estado: socioGroup.get('endereco.estado')?.value || '',
+        cidade: socioGroup.get('endereco.cidade')?.value || '',
+        cep: socioGroup.get('endereco.cep')?.value || '',
+        bairro: socioGroup.get('endereco.bairro')?.value || '',
+        rua: socioGroup.get('endereco.rua')?.value || '',
+        numero: socioGroup.get('endereco.numero')?.value || '',
+        logradouro: socioGroup.get('endereco.logradouro')?.value || '',
+        complemento: socioGroup.get('endereco.complemento')?.value || '',
+      },
+    });
+
+    const estadoSel = this.socioForm.get('endereco.estado')?.value || '';
+    this.selectedEstadoSocio = estadoSel || '';
+    this.selectedCidadeSocio =
+      this.socioForm.get('endereco.cidade')?.value || '';
+
+    if (estadoSel) {
+      this.enderecoService
+        .getCidadesByEstado(estadoSel)
+        .subscribe((cidades) => {
+          this.cidadesModal = cidades.map((c) => ({
+            value: c.nome,
+            description: c.nome,
+          }));
+        });
+    } else {
+      this.cidadesModal = [];
+    }
+
+    const onConfirm = () => {
+      if (this.socioEditIndex != null) {
+        const socioAtualizado = this.socioForm.value as Socio;
+        (this.socios.at(this.socioEditIndex) as FormGroup).patchValue({
+          nomeCompleto: socioAtualizado.nomeCompleto,
+          cpf: socioAtualizado.cpf,
+          email: socioAtualizado.email,
+          inscricaoEstadual: socioAtualizado.inscricaoEstadual,
+          estadoCivil: socioAtualizado.estadoCivil,
+          telefone: socioAtualizado.telefone,
+          whatsapp: socioAtualizado.whatsapp,
+          endereco: {
+            estado: socioAtualizado.endereco?.estado ?? '',
+            cidade: socioAtualizado.endereco?.cidade ?? '',
+            cep: socioAtualizado.endereco?.cep ?? '',
+            bairro: socioAtualizado.endereco?.bairro ?? '',
+            rua: socioAtualizado.endereco?.rua ?? '',
+            numero: socioAtualizado.endereco?.numero ?? '',
+            logradouro: socioAtualizado.endereco?.logradouro ?? '',
+            complemento: socioAtualizado.endereco?.complemento ?? '',
+          },
+        });
+        (this.socios.at(this.socioEditIndex) as FormGroup).patchValue(
+          socioAtualizado
+        );
+        this.socioEditIndex = null;
+      }
+      this.modalCadastroService.closeModal();
+    };
+
+    this.modalCadastroService.openModal(
+      {
+        title: 'Editar sócio',
+        description: 'Atualize os dados do sócio e confirme.',
+        size: 'md',
+        confirmTextoBotao: 'Salvar',
+        cancelTextoBotao: 'Fechar',
+      },
+      onConfirm,
+      this.formCadastroTemplate
+    );
+  }
+
+  onModalEstadoChange(estado: string): void {
+    this.selectedEstadoSocio = estado || '';
+    this.socioForm.get('endereco.estado')?.setValue(estado);
+    if (!estado) {
+      this.cidadesModal = [];
+      this.socioForm.get('endereco.cidade')?.setValue('');
+      this.selectedCidadeSocio = '';
+      return;
+    }
+    this.enderecoService.getCidadesByEstado(estado).subscribe((cidades) => {
+      this.cidadesModal = cidades.map((c) => ({
+        value: c.nome,
+        description: c.nome,
+      }));
+      this.socioForm.get('endereco.cidade')?.setValue('');
+      this.selectedCidadeSocio = '';
+    });
+  }
+
+  onModalCidadeChange(cidade: string): void {
+    this.selectedCidadeSocio = cidade || '';
+    this.socioForm.get('endereco.cidade')?.setValue(cidade);
   }
 }

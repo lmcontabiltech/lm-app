@@ -239,6 +239,13 @@
   margin-right: 8px;
 }
 
+.socio-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 8px;
+}
+
 /* Breakpoints */
 @media (min-width: 1200px) {
   .main-container {
@@ -249,6 +256,9 @@
   .subMain-container {
     margin: 24px 24px 24px;
     padding: 40px;
+    gap: 8px;
+    display: flex;
+    flex-direction: column;
   }
 }
 
@@ -261,6 +271,9 @@
   .subMain-container {
     margin: 24px 24px 24px;
     padding: 40px;
+    gap: 8px;
+    display: flex;
+    flex-direction: column;
   }
 }
 

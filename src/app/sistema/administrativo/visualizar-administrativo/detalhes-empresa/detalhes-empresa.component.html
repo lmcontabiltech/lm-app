@@ -43,12 +43,6 @@
                 <p>{{ getSituacaoDescricao(empresa.situacao) || '-' }}</p>
             </div>
         </div>
-        <!-- <div class="data-grid">
-            <div class="item-data">
-                <label>Tipo da Empresa</label>
-                <p>{{ getTipoEmpresaDescricao(empresa.tipo) || '-' }}</p>
-            </div>
-        </div> -->
         <div class="data-grid">
             <div class="item-data">
                 <label>Natureza jurídica</label>
@@ -122,6 +116,99 @@
     </div>
     <ng-template #noMaterialTemplate>
         <span>Nenhum arquivo adicionado</span>
+    </ng-template>
+
+    <div class="divisao">
+        <p>Sócios</p>
+        <hr class="line">
+    </div>
+
+    <div class="socios" *ngIf="empresa.socios?.length; else noSocios">
+        <div class="socio-card" *ngFor="let socio of empresa.socios">
+            <div class="socio-info">
+                <div class="data-grid">
+                    <div class="item-data">
+                        <label>Nome</label>
+                        <p>{{ socio.nomeCompleto || '-' }}</p>
+                    </div>
+                    <div class="item-data">
+                        <label>CPF</label>
+                        <p>{{ socio.cpf || '-' }}</p>
+                    </div>
+                </div>
+
+                <div class="item-data">
+                    <label>E-mail</label>
+                    <p>{{ socio.email || '-' }}</p>
+                </div>
+
+                <div class="data-grid">
+                    <div class="item-data">
+                        <label>Inscrição Estadual </label>
+                        <p>{{ socio.inscricaoEstadual || '-' }}</p>
+                    </div>
+                    <div class="item-data">
+                        <label>Estado Civil</label>
+                        <p>{{ socio.estadoCivil || '-' }}</p>
+                    </div>
+                </div>
+
+                <div class="data-grid">
+                    <div class="item-data">
+                        <label>Telefone</label>
+                        <p>{{ socio.telefone || '-' }}</p>
+                    </div>
+                    <div class="item-data">
+                        <label>WhatsApp</label>
+                        <p>{{ socio.whatsapp || '-' }}</p>
+                    </div>
+                </div>
+
+                <div class="data-grid">
+                    <div class="item-data">
+                        <label>Estado</label>
+                        <p>{{ socio.endereco?.estado || '-' }}</p>
+                    </div>
+                    <div class="item-data">
+                        <label>Cidade</label>
+                        <p>{{ socio.endereco?.cidade || '-' }}</p>
+                    </div>
+                </div>
+                <div class="data-grid">
+                    <div class="item-data">
+                        <label>CEP</label>
+                        <p>{{ socio.endereco?.cep || '-' }}</p>
+                    </div>
+                    <div class="item-data">
+                        <label>Bairro</label>
+                        <p>{{ socio.endereco?.bairro || '-' }}</p>
+                    </div>
+                </div>
+                <div class="data-grid">
+                    <div class="item-data">
+                        <label>Rua</label>
+                        <p>{{ socio.endereco?.rua || '-' }}</p>
+                    </div>
+                    <div class="item-data">
+                        <label>Número</label>
+                        <p>{{ socio.endereco?.numero || '-' }}</p>
+                    </div>
+                </div>
+                <div class="data-grid">
+                    <div class="item-data">
+                        <label>Complemento</label>
+                        <p>{{ socio.endereco?.complemento || '-' }}</p>
+                    </div>
+                    <div class="item-data">
+                        <label>Logradouro</label>
+                        <p>{{ socio.endereco?.logradouro || '-' }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-template #noSocios>
+        <span>Nenhum sócio cadastrado.</span>
     </ng-template>
 </div>
 

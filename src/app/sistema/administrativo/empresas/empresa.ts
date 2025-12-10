@@ -1,5 +1,6 @@
 import { Atividade } from '../../gerenciamento/atividades/atividades';
 import { Endereco } from './endereco';
+import { Socio } from './socio';
 
 export class Empresa {
   id!: string;
@@ -49,6 +50,7 @@ export class Empresa {
   porteEmpresa!: string;
   naturezaJuridica!: string;
   documentos!: { url: string; id: number; fileName: string }[];
+  socios!: Socio[];
 
   toJson(): string {
     return JSON.stringify({
