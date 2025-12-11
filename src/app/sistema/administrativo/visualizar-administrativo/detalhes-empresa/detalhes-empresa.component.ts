@@ -10,6 +10,7 @@ import { TipoEmpresaDescricao } from '../../empresas/enums/tipo-empresa-descrica
 import { SituacaoDescricao } from '../../empresas/enums/situacao-descricao';
 import { NaturezaJuridicaDescricao } from '../../empresas/enums/natureza-juridica-descricao';
 import { PorteEmpresaDescricao } from '../../empresas/enums/porte-empresa-descricao';
+import { EstadoCivilDescricoes } from '../../empresas/enums/estado-civil-descricoes';
 
 @Component({
   selector: 'app-detalhes-empresa',
@@ -125,6 +126,12 @@ export class DetalhesEmpresaComponent implements OnInit {
     if (!porte) return '-';
     const porteKey = porte as keyof typeof PorteEmpresaDescricao;
     return PorteEmpresaDescricao[porteKey] || porte;
+  }
+
+  getEstadoCivilDescricao(estadoCivil?: string): string {
+    if (!estadoCivil) return '-';
+    const estadoCivilKey = estadoCivil as keyof typeof EstadoCivilDescricoes;
+    return EstadoCivilDescricoes[estadoCivilKey] || estadoCivil;
   }
 
   extrairColaboradores(): void {
